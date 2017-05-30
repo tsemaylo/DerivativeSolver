@@ -1,0 +1,11 @@
+# Environment 
+MKDIR=mkdir
+CP=cp
+CCADMIN=CCadmin
+CXX=g++
+CXXFLAGS=--std=c++11 -Wall -Werror -Wextra -Wpedantic -O0 -ggdb
+# CXXFLAGS=--std=c++11 -Wall -Werror -Wextra -Wpedantic -O2 
+BUILD_DIR=build
+OUT=$(BUILD_DIR)/solver
+SRC=src
+GTEST=/opt/gtest

@@ -71,7 +71,7 @@ void Parser::getTokens(const string &strExpr)
 	 * Not allowed characters:
 	 * - all other characters
 	 */
-	string token;
+	string tokenValue;
 	TokenType tokenType=TNoToken;
 	for(uint i=0;i<strExpr.length();i++){
 		char c=strExpr[i];
@@ -96,39 +96,56 @@ void Parser::getTokens(const string &strExpr)
 			// new token
 
 			// save old token
-			if (!token.empty()) {
-				tokenValues.push_back(string(token));
-				tokenTypes.push_back(tokenType);
+			if (!tokenValue.empty()) {
+				Token token(tokenValue, tokenType);
+				tokens.push_back(token);
 			}
 			// prepare a new token
-			token.clear();
+			tokenValue.clear();
 			tokenType = tokenTypeOfSymbol;
 		}
 		//  add symbol to token
-		token += c;
+		tokenValue += c;
 	}
 
 	// put the last token into list
-	if (!token.empty()) {
-		tokenValues.push_back(string(token));
-		tokenTypes.push_back(tokenType);
+	if (!tokenValue.empty()) {
+		Token token(tokenValue, tokenType);
+		tokens.push_back(token);
 	}
+}
+
+/**
+ * Parse some part of the tokens.
+ * 
+ * @param start Iterator for starting token
+ * @param end Iterator for last token.
+ * 
+ * @return Expression as a fragmenzt of syntax tree.
+ */
+Expression *doParseTockens(list<Token>::const_iterator start, list<Token>::const_iterator end){
+
+	// here we should build the syntax tree
+	// what is sthe root node?
+	// how do we parse the tokens? left to right?
+	
+	while(start!=end){
+		// @TODO
+		start++;
+	}
+	
+	Expression *expr=new Constant("42");
+	return expr;
 }
 
 Expression *Parser::parseTokens()
 {
-	this->tokenTypes.clear();
-	this->tokenValues.clear();
-
-	Expression *expr=new Constant("42");
-
-	list<string>::const_iterator token_current=tokenValues.begin();
-	list<string>::const_iterator token_last=tokenValues.end();
-	while(token_current!=token_last){
-		// @TODO
-		token_current++;
-	}
-	return expr;
+//	this->tokenTypes.clear();
+//	this->tokenValues.clear();
+//
+//	Expression *expr=new Constant("42");
+	
+	return doParseTockens(tokens.begin(), tokens.end());
 }
 
 Expression *Parser::parse(const string &strExpr)

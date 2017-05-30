@@ -13,16 +13,9 @@
 #include <list>
 #include <string>
 #include "Expression.h"
+#include "Token.h"
 
 using namespace std;
-
-enum TokenType {
-	TNoToken = 0,
-	TAlphaNumeric = 1,
-	TGroupBracket = 2,
-	TOperation = 3,
-	TNumeric = 4
-};
 
 /**
  * @brief Parser class implements parsing of the expression.
@@ -32,8 +25,7 @@ enum TokenType {
 class Parser {
 
 protected:
-	list<string> tokenValues;
-	list<TokenType> tokenTypes;
+	list<Token> tokens;
 
 	/**
 	 * @brief Split the input string into tokens.

@@ -19,15 +19,10 @@
 class ParserTest: public Parser {
 public:
 
-	// expose tokenValues for test purposes
-	list<string> *_getTokenValues()
+	// expose tokens for test purposes
+	list<Token> *_getTokens()
 	{
-		return &(this->tokenValues);
-	}
-	// expose tokenTypes for test purposes
-	list<TokenType> *_getTokenTypes()
-	{
-		return &(this->tokenTypes);
+		return &(this->tokens);
 	}
 
 	void getTokens(const string &strExpr) {
@@ -72,42 +67,38 @@ TEST_F(FX_Parser, getTokens_AllSymbolsExpression_ok) {
 	ParserTest parser;
 	parser.getTokens("3*sin^2(x + a)/c");
 
-	list<string>::const_iterator tknVal = parser._getTokenValues()->begin();
-	list<TokenType>::const_iterator tknTyp = parser._getTokenTypes()->begin();
+	list<Token>::const_iterator tkn = parser._getTokens()->begin();
 
-	ASSERT_EQ(parser._getTokenValues()->size(), parser._getTokenTypes()->size());
-	ASSERT_EQ(12, parser._getTokenValues()->size());
+	ASSERT_EQ(12, parser._getTokens()->size());
 
-	EXPECT_STREQ("3", tknVal->c_str());
-	EXPECT_EQ(TNumeric, *tknTyp);
-	tknVal++;
-	tknTyp++;
+	EXPECT_STREQ("3", tkn->getValue().c_str());
+	EXPECT_EQ(TNumeric, tkn->getType());
+	tkn++;
+	
+	EXPECT_STREQ("*", tkn->getValue().c_str());
+	EXPECT_EQ(TOperation, tkn->getType());
+	tkn++;
 
-	EXPECT_STREQ("*", tknVal->c_str());
-	EXPECT_EQ(TOperation, *tknTyp);
-	tknVal++;
-	tknTyp++;
-
-	ASSERT_STREQ("sin", tknVal->c_str());
-	tknVal++;
-	ASSERT_STREQ("^", tknVal->c_str());
-	tknVal++;
-	ASSERT_STREQ("2", tknVal->c_str());
-	tknVal++;
-	ASSERT_STREQ("(", tknVal->c_str());
-	tknVal++;
-	ASSERT_STREQ("x", tknVal->c_str());
-	tknVal++;
-	ASSERT_STREQ("+", tknVal->c_str());
-	tknVal++;
-	ASSERT_STREQ("a", tknVal->c_str());
-	tknVal++;
-	ASSERT_STREQ(")", tknVal->c_str());
-	tknVal++;
-	ASSERT_STREQ("/", tknVal->c_str());
-	tknVal++;
-	ASSERT_STREQ("c", tknVal->c_str());
-	tknVal++;
+	ASSERT_STREQ("sin", tkn->getValue().c_str());
+	tkn++;
+	ASSERT_STREQ("^", tkn->getValue().c_str());
+	tkn++;
+	ASSERT_STREQ("2", tkn->getValue().c_str());
+	tkn++;
+	ASSERT_STREQ("(", tkn->getValue().c_str());
+	tkn++;
+	ASSERT_STREQ("x", tkn->getValue().c_str());
+	tkn++;
+	ASSERT_STREQ("+", tkn->getValue().c_str());
+	tkn++;
+	ASSERT_STREQ("a", tkn->getValue().c_str());
+	tkn++;
+	ASSERT_STREQ(")", tkn->getValue().c_str());
+	tkn++;
+	ASSERT_STREQ("/", tkn->getValue().c_str());
+	tkn++;
+	ASSERT_STREQ("c", tkn->getValue().c_str());
+	tkn++;
 }
 
 TEST_F(FX_Parser, isWhitespace_SpaceSymbol_true) {
@@ -124,10 +115,10 @@ TEST_F(FX_Parser, isWhitespace_AlphaSymbol_false) {
 	ParserTest parser;
 
 	// check the parsing tree for expresson a+2
-	list<string> *tokensList=parser._getTokenValues();
-	tokensList->push_back("a");
-	tokensList->push_back("+");
-	tokensList->push_back("2");
+	list<Token> *tokensList=parser._getTokens();
+	tokensList->push_back(Token("a", TAlphaNumeric));
+	tokensList->push_back(Token("+", TOperation));
+	tokensList->push_back(Token("a", TNumeric));
 
 
 	Expression *expr=parser.parseTokens();
