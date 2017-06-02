@@ -13,7 +13,9 @@
 #include <list>
 #include <string>
 #include "Expression.h"
+#include "Constant.h"
 #include "Token.h"
+#include "Rule.h"
 
 using namespace std;
 
@@ -26,6 +28,7 @@ class Parser {
 
 protected:
 	list<Token> tokens;
+	list<Rule *> rules;
 
 	/**
 	 * @brief Split the input string into tokens.
@@ -72,6 +75,30 @@ protected:
 	 * @return Expression tree.
 	 */
 	Expression *parseTokens();
+	
+	// @TODO very very private area... do something with it
+	
+	/**
+	* Parse some part of the tokens.
+	* 
+	* @param [in]	start Iterator for starting token
+	* @param [in]	end Iterator for last token.
+	* @param [in/out]	Stack of parsed non-terminals.
+	* 
+	* @return Expression as a fragmenzt of syntax tree.
+	*/
+	Expression *doParseTokens(list<Token>::const_iterator start, list<Token>::const_iterator end, vector<Expression *> *stack);
+	
+	/**
+	 * Reduce the currant stack of non terminals.
+	 * 
+     * @param [in/out]	Stack of parsed non-terminals.
+	 * 
+     * @return true		If the stack was reduced.
+	 * @return false	If the stack was not reduced.
+     */
+	bool doReduce(vector<Expression *> *stack);
+	
 public:
 	Parser();
 	virtual ~Parser();

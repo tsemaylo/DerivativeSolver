@@ -8,7 +8,6 @@
  */
 
 #include "Parser.h"
-#include "Constant.h"
 
 Parser::Parser() {
 }
@@ -115,27 +114,60 @@ void Parser::getTokens(const string &strExpr)
 	}
 }
 
-/**
- * Parse some part of the tokens.
- * 
- * @param start Iterator for starting token
- * @param end Iterator for last token.
- * 
- * @return Expression as a fragmenzt of syntax tree.
- */
-Expression *doParseTockens(list<Token>::const_iterator start, list<Token>::const_iterator end){
 
-	// here we should build the syntax tree
-	// what is sthe root node?
-	// how do we parse the tokens? left to right?
+bool Parser::doReduce(vector<Expression *> *stack){
+	// go through the list of rules and check if it is applicable to the provided stack
+	list<Rule *>::const_iterator rule = rules.begin();
+	list<Rule *>::const_iterator lastRule = rules.end();
 	
-	while(start!=end){
-		// @TODO
-		start++;
+	while(rule!=lastRule){
+		// try to apply the rule to reduce the stack
+		if((*rule)->apply(stack)){
+			return true;
+		}else{
+			// rule is not applicable try next one
+			rule++;
+		}
 	}
 	
-	Expression *expr=new Constant("42");
-	return expr;
+	return false;
+}
+
+Expression *Parser::doParseTokens(list<Token>::const_iterator start, list<Token>::const_iterator end, vector<Expression *> *stack){
+	// opened question: can this function to be called recursively
+	
+	// LR parsing => shift-reduce method (bottom-up)
+	// the method is chosen since it considers only forward scanning of tokens 
+	// withoun backing up... it looks like easier to implement
+	
+	while(start!=end){
+		// shift
+		
+		// fill up the stack with initial assumption regarding the non-terminal
+		// @TODO extend 
+		if(start->getType()==TNumeric){
+			stack->push_back(new Constant(start->getValue()));
+		}
+		
+		// reduce the stack untill no other posibility to reduce is available
+		while(this->doReduce(stack)){
+			// ???
+		}
+		
+		start++; 
+	}
+	
+	// at the end we should have only one element in the stack that means
+	// everything is reduced and parsed
+	if(stack->size()!=1){
+		// if the stack is not completely reduced 
+		// then probably grammar is not complete
+		// or the syntax of the provided expression is incorrect
+		
+		// trow an exception
+	}
+	
+	return stack->front();
 }
 
 Expression *Parser::parseTokens()
@@ -145,7 +177,8 @@ Expression *Parser::parseTokens()
 //
 //	Expression *expr=new Constant("42");
 	
-	return doParseTockens(tokens.begin(), tokens.end());
+	vector<Expression *> stack;
+	return this->doParseTokens(tokens.begin(), tokens.end(),&stack);
 }
 
 Expression *Parser::parse(const string &strExpr)
