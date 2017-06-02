@@ -3,23 +3,29 @@ Command line tool to calculate the dericative of given expression. Project is cr
 
 # Content
 [General](#general)
+
 [Building](#building) 
+
 [Testing](#testing)
+
 [Usage](#usage)
 
 ## General <a name="general"></a>
 TBD
 
 ## Building <a name="building"></a>
-TBD
+TBD.
 
 ## Testing <a name="testing"></a>
-TBD
+TBD.
 
 ### Unit testing
 Yep, there are some test cases.
-_Details will be defined later_
-The project incorporates [Google's C++ Test Framework](https://github.com/google/googletest "Google Test")
+
+_Details will be defined later_.
+
+The project incorporates [Google's C++ Test Framework](https://github.com/google/googletest "Google Test").
+
 
 ## Usage <a name="usage"></a>
 TBD
