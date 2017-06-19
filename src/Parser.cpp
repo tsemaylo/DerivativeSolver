@@ -9,12 +9,6 @@
 
 #include "Parser.h"
 
-Parser::Parser() {
-}
-
-Parser::~Parser() {
-}
-
 bool Parser::isAlpha(char c) const
 {
 	// assuming ASCII
@@ -145,8 +139,19 @@ Expression *Parser::doParseTokens(list<Token>::const_iterator start, list<Token>
 		
 		// fill up the stack with initial assumption regarding the non-terminal
 		// @TODO extend 
-		if(start->getType()==TNumeric){
+		
+		// UGLY UGLY UGLY
+		if(start->getType() == TNumeric){
 			stack->push_back(new Constant(start->getValue()));
+		}else if(start->getType() == TOperation){
+			string op=start->getValue();
+			if(op == "+"){
+			}else if(op == "-"){
+			}else if(op == "*"){
+			}else if(op == "/"){
+			}else{
+				// @TODO throw unknown OP
+			}
 		}
 		
 		// reduce the stack untill no other posibility to reduce is available

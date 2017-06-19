@@ -10,15 +10,23 @@
 
 #include <string>
 #include "Expression.h"
+#include "Visitor.h"
 
 using namespace std;
 
-class StringGenerator {
-public:
-	StringGenerator();
-	virtual ~StringGenerator();
+class StringGenerator : public Visitor{
+private:
+	string result;
+public:	
+	void visit(const Constant& expr) final;
 
-	string render(const Expression &expr) const;
+	void visit(const Function& expr) final;
+
+	void visit(const Variable& expr) final;
+	
+	void setLastVisitResult(string result);
+	
+	string getLastVisitResult() const;
 };
 
 #endif /* SRC_STRINGGENERATOR_H_ */

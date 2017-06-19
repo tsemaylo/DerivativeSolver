@@ -12,23 +12,19 @@
 
 #include <string>
 
-class Differentiator;
-class StringGenerator;
+class Visitor;
 
 using namespace std;
 
 class Expression {
-public:
-	Expression(string name);
-	virtual ~Expression();
-
-	virtual Expression *differentiate(const Differentiator &differentiator) const =0;
-	virtual string printToString(const StringGenerator &sgen) const =0;
-
-	string getName() const;
-
 private:
 	string name;
+	
+public:
+	Expression(string name);	
+	string getName() const;
+
+	void virtual accept(Visitor & ) const = 0;
 };
 
 #endif /* SRC_EXPRESSION_H_ */

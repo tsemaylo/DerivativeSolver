@@ -12,12 +12,7 @@
 Expression::Expression(string name) : name(name) {
 }
 
-Expression::~Expression() {
-	// TODO Auto-generated destructor stub
-}
-
 string Expression::getName() const
 {
 	return this->name;
 }
-

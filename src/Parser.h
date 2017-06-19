@@ -100,8 +100,6 @@ protected:
 	bool doReduce(vector<Expression *> *stack);
 	
 public:
-	Parser();
-	virtual ~Parser();
 
 	/**
 	 * Parse the expression string.

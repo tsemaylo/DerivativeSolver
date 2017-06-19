@@ -13,19 +13,14 @@
 #include <string>
 
 #include "Expression.h"
-#include "StringGenerator.h"
-
-class Differentiator;
 
 using namespace std;
 
 class Variable: public Expression {
 public:
 	Variable(string name);
-	virtual ~Variable();
-
-	Expression *differentiate(const Differentiator &differentiator) const;
-	string printToString(const StringGenerator &sgen) const;
+	
+	void accept(Visitor & ) const final;
 };
 
 #endif /* SRC_VARIABLE_H_ */

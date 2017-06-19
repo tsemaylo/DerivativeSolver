@@ -8,21 +8,10 @@
  */
 
 #include "Variable.h"
-#include "Differentiator.h"
+#include "Visitor.h"
 
-Variable::Variable(string name) :
-		Expression(name) {
+Variable::Variable(string name) : Expression(name) {}
+
+ void Variable::accept(Visitor &visitor) const {
+	visitor.visit(*this);
 }
-
-Variable::~Variable() {
-}
-
-Expression *Variable::differentiate(
-		const Differentiator &differentiator) const {
-	return differentiator.solve(*this);
-}
-
-string Variable::printToString(const StringGenerator &sgen) const {
-	return sgen.render(*this);
-}
-

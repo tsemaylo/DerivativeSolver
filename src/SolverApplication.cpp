@@ -11,9 +11,9 @@
 #include <iostream>
 #include "SolverApplication.h"
 #include "Expression.h"
-#include "Solver.h"
 #include "Parser.h"
-#include "ExpressionPrinter.h"
+#include "Differentiator.h"
+#include "StringGenerator.h"
 
 SolverApplication::SolverApplication() {
 }
@@ -43,14 +43,17 @@ string SolverApplication::getStrVariable() const
 
 int SolverApplication::run()
 {
-	Parser parser = Parser();
+	Parser parser;
 	Expression *expr = parser.parse(this->strExpression);
 
-	Solver solver=Solver();
-	Expression *solution=solver.solve(*expr, this->strVariable);
+	Differentiator differentiator=Differentiator(this->strVariable);
+	expr->accept(differentiator);
+	
+	StringGenerator stringGenerator;
+	// @TODO hie must be result expression
+	differentiator.getLastVisitResult()->accept(stringGenerator);
 
-	ExpressionPrinter printer = ExpressionPrinter();
-	printer.print(*solution);
+	cout << stringGenerator.getLastVisitResult() << endl;
 	
 	return 0;
 }

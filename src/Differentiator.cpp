@@ -12,11 +12,7 @@
 Differentiator::Differentiator(string var) : variable(var){
 }
 
-Differentiator::~Differentiator() {
-	// TODO Auto-generated destructor stub
-}
-
-Expression *Differentiator::solve(const Constant &expr) const
+void Differentiator::visit(const Constant &expr) 
 {
 	if(expr.getName().empty())
 	{
@@ -24,21 +20,20 @@ Expression *Differentiator::solve(const Constant &expr) const
 		//... i simply dunno what to do with expr, since it is not neaded in this case
 		// but must be represented in interface
 	}
-	Constant *res=new Constant("0");
-	return res;
+	this->result=new Constant("0");
 }
 
-Expression *Differentiator::solve(const Variable &expr) const
+void Differentiator::visit(const Variable &expr)  
 {
 	if(expr.getName()==this->variable)
 	{
-		return new Constant("1");
+		this->result=new Constant("1");
 	}
 
-	return new Constant("0");
+	this->result=new Constant("0");
 }
 
-Expression *Differentiator::solve(const Function &expr) const
+void Differentiator::visit(const Function &expr)  
 {
 	if(expr.getName().empty())
 	{
@@ -55,6 +50,14 @@ Expression *Differentiator::solve(const Function &expr) const
 
 	/// @TODO NYI
 	// so far returning 0
-	Constant *res=new Constant("0");
-	return res;
+	this->result=new Constant("0");
 }
+
+Expression* Differentiator::getLastVisitResult() const {
+	return this->result;
+}
+
+void Differentiator::setLastVisitResult(Expression* result) {
+	this->result=result;
+}
+

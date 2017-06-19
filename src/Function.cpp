@@ -8,14 +8,9 @@
  */
 
 #include "Function.h"
+#include "Visitor.h"
 
 Function::Function(string name) : Expression(name){ }
-
-Function::~Function() {
-	// Should I delete the content of arguments list?
-	// ... preliminary answer is YES
-	//@TODO
-}
 
 const Expression *Function::getArgument(const int i) {
 	return this->arguments[i];
@@ -25,10 +20,6 @@ void Function::addArgument(const Expression *expression){
 	this->arguments.push_back(expression);
 }
 
-Expression *Function::differentiate(const Differentiator &differentiator) const {
-	return differentiator.solve(*this);
-}
-
-string Function::printToString(const StringGenerator &sgen) const {
-	return sgen.render(*this);
+void Function::accept(Visitor &visitor) const {
+	visitor.visit(*this);
 }

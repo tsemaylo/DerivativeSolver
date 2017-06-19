@@ -6,25 +6,10 @@
  */
 
 #include "Constant.h"
-#include "Differentiator.h"
-#include "StringGenerator.h"
+#include "Visitor.h"
 
-Constant::Constant(string name) : Expression(name){
+Constant::Constant(string name) : Expression(name){}
+
+void Constant::accept(Visitor &visitor) const {
+	visitor.visit(*this);
 }
-
-Constant::~Constant() {
-	// TODO Auto-generated destructor stub
-}
-
-Expression *Constant::differentiate(const Differentiator &differentiator) const
-{
-	return differentiator.solve(*this);
-}
-
-string Constant::printToString(const StringGenerator &sgen) const
-{
-	return sgen.render(*this);
-}
-
-
-

@@ -9,16 +9,24 @@
 
 #include "StringGenerator.h"
 
-StringGenerator::StringGenerator() {
-	// TODO Auto-generated constructor stub
-
+void StringGenerator::visit(const Constant& expr) {
+	this->result=expr.getName();
 }
 
-StringGenerator::~StringGenerator() {
-	// TODO Auto-generated destructor stub
+void StringGenerator::visit(const Function& expr) {
+	// NYI
+	this->result=string("NYI ") + expr.getName();
 }
 
-string StringGenerator::render(const Expression &expr) const
-{
-	return expr.getName();
+void StringGenerator::visit(const Variable& expr) {
+	this->result=expr.getName();
 }
+
+string StringGenerator::getLastVisitResult() const {
+	return this->result;
+}
+
+void StringGenerator::setLastVisitResult(string result) {
+	this->result=result;
+}
+

@@ -14,35 +14,37 @@
 #include "Constant.h"
 #include "Variable.h"
 #include "Function.h"
+#include "Visitor.h"
 
 using namespace std;
 
-class Function;
-class Variable;
-class Constant;
-
-class Differentiator {
+class Differentiator : public Visitor{
+private:
+	Expression *result; // @TODO what about cleaning?
+	string variable;
+	
 public:
 	Differentiator(string var);
-	virtual ~Differentiator();
-
+	
 	/**
 	 * @brief Differentiate constant.
 	 */
-	Expression *solve(const Constant &expr) const;
+	void visit(const Constant &expr) final;
 
 	/**
 	 * @brief Differentiate variable.
 	 */
-	Expression *solve(const Variable &expr) const;
+	void visit(const Variable &expr) final;
 
 	/**
 	 * @brief Differentiate function.
 	 */
-	Expression *solve(const Function &expr) const;
+	void visit(const Function &expr) final;
+	
+	void setLastVisitResult(Expression *result);
+	
+	Expression *getLastVisitResult() const;
 
-private:
-	string variable;
 };
 
 #endif /* SRC_DIFFERENTIATOR_H_ */

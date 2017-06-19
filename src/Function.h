@@ -14,9 +14,6 @@
 #include <string>
 
 #include "Expression.h"
-#include "Differentiator.h"
-#include "StringGenerator.h"
-
 
 class Differentiator;
 
@@ -28,13 +25,11 @@ private:
 
 public:
 	Function(string name);
-	virtual ~Function();
 
 	const Expression *getArgument(const int i);
 	void addArgument(const Expression *expression);
-
-	Expression *differentiate(const Differentiator &differentiator) const;
-	string printToString(const StringGenerator &sgen) const;
+	
+	void accept(Visitor & ) const final;
 };
 
 #endif /* SRC_FUNCTION_H_ */

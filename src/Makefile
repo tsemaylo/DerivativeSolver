@@ -9,9 +9,8 @@ obj : $(wildcard *.cpp)
 		$(CXX) $(CXXFLAGS) -c $$f ;\
 	done
 
-app : main.cpp
-	$(CXX) $(CXXFLAGS) -o main.o -c $^
-	$(CXX) $(CXXFLAGS) $(wildcard *.o) -o ../$(OUT)
-
+app : $(wildcard *.o)
+	$(CXX) $(CXXFLAGS) $^ -o ../$(OUT)
+	
 clean:
 	rm -f *.o

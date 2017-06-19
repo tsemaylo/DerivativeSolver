@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="DerivativeSolver" version="4">
+  <OBJECT>
+    <ID name="DerivativeSolver" mc="Standard.Project" uid="6ca5a220-e5bd-48cb-8727-88f8b180ff59"/>
+    <ATTRIBUTES>
+      <ATT name="ProjectContext"></ATT>
+      <ATT name="ProjectDescr"></ATT>
+      <ATT name="Name"><![CDATA[DerivativeSolver]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES>
+      <COMP relation="Model">
+        <COMPID name="derivativesolver" mc="Standard.Package" uid="ec4176a1-17dc-4cae-ac33-1a2eef8e0c27"/>
+      </COMP>
+      <COMP relation="DiagramRoot">
+        <COMPID name="DerivativeSolver" mc="Infrastructure.DiagramSet" uid="85445c3b-0c2c-420c-b1fd-9415a59ca1f5"/>
+      </COMP>
+    </DEPENDENCIES>
+  </OBJECT>
+</EXT>
