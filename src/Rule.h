@@ -11,6 +11,7 @@
 #define	RULE_H
 
 #include <vector>
+#include <memory>
 #include "ParsingException.h"
 
 using namespace std;
@@ -22,7 +23,7 @@ class Expression;
  */
 class Rule{
 public:
-	virtual bool apply(vector<Expression *> *nonterminals) const throw(ParsingException) = 0;
+	virtual bool apply(vector<unique_ptr<Expression>> &stack) const throw(ParsingException) = 0;
 };
 
 #endif	/* RULE_H */

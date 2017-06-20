@@ -9,11 +9,14 @@
  */
 
 #include <iostream>
+#include <memory>
 #include "SolverApplication.h"
 #include "Expression.h"
 #include "Parser.h"
 #include "Differentiator.h"
 #include "StringGenerator.h"
+
+using namespace std;
 
 SolverApplication::SolverApplication() {
 }
@@ -45,7 +48,7 @@ int SolverApplication::run()
 {
 	Parser parser;
 	try{
-		Expression *expr = parser.parse(this->strExpression);
+		unique_ptr<Expression> expr = parser.parse(this->strExpression);
 
 		Differentiator differentiator=Differentiator(this->strVariable);
 		expr->traverse(differentiator);

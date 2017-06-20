@@ -12,6 +12,7 @@
 
 #include <list>
 #include <string>
+#include <memory>
 #include "Expression.h"
 #include "Constant.h"
 #include "Token.h"
@@ -28,8 +29,7 @@ using namespace std;
 class Parser {
 
 protected:
-	list<Token> tokens;
-	list<Rule *> rules;
+	list<unique_ptr<Rule>> grammar;
 
 	/**
 	 * @brief Split the input string into tokens.
@@ -38,7 +38,7 @@ protected:
 	 *
 	 * @return The list of string tokens.
 	 */
-	void getTokens(const string &strExpr);
+	unique_ptr<list<Token>> getTokens(const string &strExpr) const;
 
 	/**
 	 * @brief Determine whether the symbol is an alphabetic character.
@@ -75,7 +75,7 @@ protected:
 	 * @param tokenList The list of tokens.
 	 * @return Expression tree.
 	 */
-	Expression *parseTokens();
+	unique_ptr<Expression> parseTokens(const unique_ptr<list<Token>> tokens) const;
 	
 	// @TODO very very private area... do something with it
 	
@@ -85,10 +85,8 @@ protected:
 	* @param [in]	start Iterator for starting token
 	* @param [in]	end Iterator for last token.
 	* @param [in/out]	Stack of parsed non-terminals.
-	* 
-	* @return Expression as a fragmenzt of syntax tree.
 	*/
-	Expression *doParseTokens(list<Token>::const_iterator start, list<Token>::const_iterator end, vector<Expression *> *stack);
+	void doParseTokens(list<Token>::const_iterator start, list<Token>::const_iterator end, vector<unique_ptr<Expression>> &stack) const;
 	
 	/**
 	 * Reduce the currant stack of non terminals.
@@ -98,7 +96,7 @@ protected:
      * @return true		If the stack was reduced.
 	 * @return false	If the stack was not reduced.
      */
-	bool doReduce(vector<Expression *> *stack);
+	bool doReduce(vector<unique_ptr<Expression>> &stack) const;
 	
 public:
 
@@ -108,7 +106,7 @@ public:
 	 * @param strExpr input string.
 	 * @return Root of the Expression tree.
 	 */
-	Expression *parse(const string &strExpr) throw(ParsingException);
+	unique_ptr<Expression> parse(const string &strExpr) const throw(ParsingException);
 };
 
 #endif /* SRC_PARSER_H_ */
