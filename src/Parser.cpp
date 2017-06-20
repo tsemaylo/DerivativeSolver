@@ -139,20 +139,18 @@ void Parser::doParseTokens(list<Token>::const_iterator start, list<Token>::const
 		// shift
 		
 		// fill up the stack with initial assumption regarding the non-terminal
-		// @TODO extend 
-		
-		// UGLY UGLY UGLY
+		// @TODO refactor it. Extract initiaization of stack into separate method
 		if(start->getType() == TNumeric){
 			stack.push_back(make_unique<Constant>(start->getValue()));
 		}else if(start->getType() == TOperation){
-			string op=start->getValue();
-			if(op == "+"){
-			}else if(op == "-"){
-			}else if(op == "*"){
-			}else if(op == "/"){
-			}else{
-				// @TODO throw unknown OP
-			}
+			stack.push_back(make_unique<Function>(start->getValue()));
+		}else if(start->fetType() == TAlphaNumeric){
+			// assuming that it is variable 
+			stack.push_back(make_unique<Function>(start->getValue()));
+		}else if(start->fetType() == TGroupBracket){
+			// Parenting bracket
+			// @TODO so far no expression for this type
+			// what about to introduce BracketedExpression? which should be eventually eliminated froom AST?
 		}
 		
 		// reduce the stack untill no other posibility to reduce is available
