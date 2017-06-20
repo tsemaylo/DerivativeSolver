@@ -44,16 +44,26 @@ string SolverApplication::getStrVariable() const
 int SolverApplication::run()
 {
 	Parser parser;
-	Expression *expr = parser.parse(this->strExpression);
+	try{
+		Expression *expr = parser.parse(this->strExpression);
 
-	Differentiator differentiator=Differentiator(this->strVariable);
-	expr->accept(differentiator);
+		Differentiator differentiator=Differentiator(this->strVariable);
+		expr->traverse(differentiator);
+
+		StringGenerator stringGenerator;
+		// @TODO hie must be result expression
+		differentiator.getLastVisitResult()->traverse(stringGenerator);
+
+		cout << stringGenerator.getLastVisitResult() << endl;
+	}
 	
-	StringGenerator stringGenerator;
-	// @TODO hie must be result expression
-	differentiator.getLastVisitResult()->accept(stringGenerator);
-
-	cout << stringGenerator.getLastVisitResult() << endl;
+	catch(ParsingException ex){
+		cout << "ERROR: " << ex.what();
+	}
+	
+	catch(TraverseException ex){
+		cout << "ERROR: " << ex.what();
+	}
 	
 	return 0;
 }

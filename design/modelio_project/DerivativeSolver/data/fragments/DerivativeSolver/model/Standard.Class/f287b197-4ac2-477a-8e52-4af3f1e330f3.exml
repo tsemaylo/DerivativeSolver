@@ -73,7 +73,7 @@
           </DEPENDENCIES>
         </OBJECT>
         <OBJECT>
-          <ID name="apply" mc="Standard.Operation" uid="8deafcf1-f81f-453c-8599-b39661b488fe"/>
+          <ID name="traverse" mc="Standard.Operation" uid="e3644643-2a78-4171-8e7d-c43893a12fc8"/>
           <ATTRIBUTES>
             <ATT name="Concurrency">false</ATT>
             <ATT name="Final">false</ATT>
@@ -81,13 +81,27 @@
             <ATT name="Visibility">Public</ATT>
             <ATT name="IsClass">false</ATT>
             <ATT name="IsAbstract">true</ATT>
-            <ATT name="Name"><![CDATA[apply]]></ATT>
+            <ATT name="Name"><![CDATA[traverse]]></ATT>
             <ATT name="status">1970354901745664</ATT>
           </ATTRIBUTES>
           <DEPENDENCIES>
+            <COMP relation="Thrown">
+              <OBJECT>
+                <ID name="RaisedException" mc="Standard.RaisedException" uid="0575e281-d90c-483e-80b2-94852eb70b15"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[RaisedException]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <LINK relation="ThrownType">
+                    <ID name="TraverseException" mc="Standard.Class" uid="4a09998f-6926-4f6c-9daa-364c4b0c74ba"/>
+                  </LINK>
+                </DEPENDENCIES>
+              </OBJECT>
+            </COMP>
             <COMP relation="IO">
               <OBJECT>
-                <ID name="visitor" mc="Standard.Parameter" uid="d5f6cb14-9c55-43bd-9dab-64ccecd56097"/>
+                <ID name="visitor" mc="Standard.Parameter" uid="2015ec89-a4be-45a7-8f31-785361e08a41"/>
                 <ATTRIBUTES>
                   <ATT name="ParameterPassing">In</ATT>
                   <ATT name="MultiplicityMin"><![CDATA[1]]></ATT>
@@ -102,7 +116,25 @@
                   <ATT name="Name"><![CDATA[visitor]]></ATT>
                   <ATT name="status">1970354901745664</ATT>
                 </ATTRIBUTES>
-                <DEPENDENCIES></DEPENDENCIES>
+                <DEPENDENCIES>
+                  <LINK relation="Type">
+                    <ID name="Visitor" mc="Standard.Interface" uid="78448c93-ddbb-4cf3-b5ee-14e31e9352aa"/>
+                  </LINK>
+                </DEPENDENCIES>
+              </OBJECT>
+            </COMP>
+            <COMP relation="DependsOnDependency">
+              <OBJECT>
+                <ID name="" mc="Standard.Usage" uid="e1de5f61-61f5-4c88-ae9c-b78a38e5b2c0"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <LINK relation="DependsOn">
+                    <ID name="Visitor" mc="Standard.Interface" uid="78448c93-ddbb-4cf3-b5ee-14e31e9352aa"/>
+                  </LINK>
+                </DEPENDENCIES>
               </OBJECT>
             </COMP>
           </DEPENDENCIES>

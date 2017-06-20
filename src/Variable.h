@@ -20,7 +20,7 @@ class Variable: public Expression {
 public:
 	Variable(string name);
 	
-	void accept(Visitor & ) const final;
+	void traverse(Visitor & ) const throw(TraverseException) final;
 };
 
 #endif /* SRC_VARIABLE_H_ */

@@ -11,6 +11,7 @@
 #define SRC_EXPRESSION_H_
 
 #include <string>
+#include "TraverseException.h"
 
 class Visitor;
 
@@ -24,7 +25,7 @@ public:
 	Expression(string name);	
 	string getName() const;
 
-	void virtual accept(Visitor & ) const = 0;
+	void virtual traverse(Visitor & ) const throw(TraverseException) = 0;
 };
 
 #endif /* SRC_EXPRESSION_H_ */

@@ -16,6 +16,7 @@
 #include "Constant.h"
 #include "Token.h"
 #include "Rule.h"
+#include "ParsingException.h"
 
 using namespace std;
 
@@ -107,7 +108,7 @@ public:
 	 * @param strExpr input string.
 	 * @return Root of the Expression tree.
 	 */
-	Expression *parse(const string &strExpr);
+	Expression *parse(const string &strExpr) throw(ParsingException);
 };
 
 #endif /* SRC_PARSER_H_ */

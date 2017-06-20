@@ -29,7 +29,7 @@ public:
 	const Expression *getArgument(const int i);
 	void addArgument(const Expression *expression);
 	
-	void accept(Visitor & ) const final;
+	void traverse(Visitor & ) const throw(TraverseException) final;
 };
 
 #endif /* SRC_FUNCTION_H_ */

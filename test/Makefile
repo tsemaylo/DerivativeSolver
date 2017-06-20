@@ -17,7 +17,7 @@ buildDir:
 		
 Parser:
 		$(CXX) $(CXXFLAGS) -isystem=$(GTEST)/include -I ../$(SRC) -c $@Test.cpp -o $@Test.o ;\
-		$(CXX) $(CXXFLAGS)  $(addprefix ../$(SRC)/, Parser.o Token.o Variable.o Function.o Constant.o Expression.o StringGenerator.o Differentiator.o) $@Test.o gtest-all.o gtest_main.o -lpthread  -o ../$(BUILD_DIR)/tests/$@Test 
+		$(CXX) $(CXXFLAGS)  $(addprefix ../$(SRC)/, TraverseException.o ParsingException.o Parser.o Token.o Variable.o Function.o Constant.o Expression.o StringGenerator.o Differentiator.o) $@Test.o gtest-all.o gtest_main.o -lpthread  -o ../$(BUILD_DIR)/tests/$@Test 
 	
 clean:
 	rm -f *.o 

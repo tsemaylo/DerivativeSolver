@@ -186,7 +186,7 @@ Expression *Parser::parseTokens()
 	return this->doParseTokens(tokens.begin(), tokens.end(),&stack);
 }
 
-Expression *Parser::parse(const string &strExpr)
+Expression *Parser::parse(const string &strExpr) throw(ParsingException)
 {
 	this->getTokens(strExpr);
 	return this->parseTokens();

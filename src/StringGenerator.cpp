@@ -9,16 +9,16 @@
 
 #include "StringGenerator.h"
 
-void StringGenerator::visit(const Constant& expr) {
+void StringGenerator::visit(const Constant& expr) throw(TraverseException) {
 	this->result=expr.getName();
 }
 
-void StringGenerator::visit(const Function& expr) {
+void StringGenerator::visit(const Function& expr) throw(TraverseException) {
 	// NYI
 	this->result=string("NYI ") + expr.getName();
 }
 
-void StringGenerator::visit(const Variable& expr) {
+void StringGenerator::visit(const Variable& expr) throw(TraverseException) {
 	this->result=expr.getName();
 }
 

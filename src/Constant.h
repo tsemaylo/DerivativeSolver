@@ -19,7 +19,7 @@ class Constant: public Expression
 public:
 	Constant(string name);
 
-	void accept(Visitor & ) const final;
+	void traverse(Visitor & ) const throw(TraverseException) final;
 };
 
 #endif /* SRC_CONSTANT_H_ */

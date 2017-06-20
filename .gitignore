@@ -1,2 +1,4 @@
 build/
 **/*.o
+design/modelio_project/**/.runtime
+design/modelio_project/**/.settings

@@ -12,6 +12,6 @@
 
 Variable::Variable(string name) : Expression(name) {}
 
- void Variable::accept(Visitor &visitor) const {
+ void Variable::traverse(Visitor &visitor) const throw(TraverseException) {
 	visitor.visit(*this);
 }

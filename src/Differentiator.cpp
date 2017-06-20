@@ -12,7 +12,7 @@
 Differentiator::Differentiator(string var) : variable(var){
 }
 
-void Differentiator::visit(const Constant &expr) 
+void Differentiator::visit(const Constant &expr) throw(TraverseException)
 {
 	if(expr.getName().empty())
 	{
@@ -23,7 +23,7 @@ void Differentiator::visit(const Constant &expr)
 	this->result=new Constant("0");
 }
 
-void Differentiator::visit(const Variable &expr)  
+void Differentiator::visit(const Variable &expr)  throw(TraverseException)
 {
 	if(expr.getName()==this->variable)
 	{
@@ -33,7 +33,7 @@ void Differentiator::visit(const Variable &expr)
 	this->result=new Constant("0");
 }
 
-void Differentiator::visit(const Function &expr)  
+void Differentiator::visit(const Function &expr)  throw(TraverseException)
 {
 	if(expr.getName().empty())
 	{

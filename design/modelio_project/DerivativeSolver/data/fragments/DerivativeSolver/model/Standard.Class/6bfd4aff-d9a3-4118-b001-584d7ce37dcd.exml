@@ -99,7 +99,7 @@
               <OBJECT>
                 <ID name="Note" mc="Infrastructure.Note" uid="6e29343c-b9a8-49b7-bb28-ba9f8d4442c5"/>
                 <ATTRIBUTES>
-                  <ATT name="Content"><![CDATA[<p>setLastVisitResult() should act like an return statement by means of initializing of &quot;result&quot; member with the corresponding results of visit() method execution. It must be a last call in the visit() method.</p><p>Correspondingly the getLastVisitresult() delivers the &quot;return&quot; of previously called visit().</p>
+                  <ATT name="Content"><![CDATA[<p>setLastVisitResult() should act like a&nbsp;return statement by means of initializing of &quot;result&quot; member with the corresponding results of visit() method execution. It must be a last call in the visit() method.</p><p>Correspondingly the getLastVisitresult() delivers the &quot;return&quot; of previously called visit().</p>
 ]]></ATT>
                   <ATT name="MimeType"></ATT>
                   <ATT name="Name"><![CDATA[Note]]></ATT>

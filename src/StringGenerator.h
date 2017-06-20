@@ -11,6 +11,7 @@
 #include <string>
 #include "Expression.h"
 #include "Visitor.h"
+#include "TraverseException.h"
 
 using namespace std;
 
@@ -18,11 +19,11 @@ class StringGenerator : public Visitor{
 private:
 	string result;
 public:	
-	void visit(const Constant& expr) final;
+	void visit(const Constant& expr) throw(TraverseException) final;
 
-	void visit(const Function& expr) final;
+	void visit(const Function& expr) throw(TraverseException) final;
 
-	void visit(const Variable& expr) final;
+	void visit(const Variable& expr) throw(TraverseException) final;
 	
 	void setLastVisitResult(string result);
 	

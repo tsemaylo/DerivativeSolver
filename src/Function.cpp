@@ -20,6 +20,6 @@ void Function::addArgument(const Expression *expression){
 	this->arguments.push_back(expression);
 }
 
-void Function::accept(Visitor &visitor) const {
+void Function::traverse(Visitor &visitor) const throw(TraverseException) {
 	visitor.visit(*this);
 }

@@ -10,6 +10,6 @@
 
 Constant::Constant(string name) : Expression(name){}
 
-void Constant::accept(Visitor &visitor) const {
+void Constant::traverse(Visitor &visitor) const throw(TraverseException) {
 	visitor.visit(*this);
 }

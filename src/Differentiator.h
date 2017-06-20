@@ -15,6 +15,7 @@
 #include "Variable.h"
 #include "Function.h"
 #include "Visitor.h"
+#include "TraverseException.h"
 
 using namespace std;
 
@@ -29,17 +30,17 @@ public:
 	/**
 	 * @brief Differentiate constant.
 	 */
-	void visit(const Constant &expr) final;
+	void visit(const Constant &expr) throw(TraverseException) final;
 
 	/**
 	 * @brief Differentiate variable.
 	 */
-	void visit(const Variable &expr) final;
+	void visit(const Variable &expr) throw(TraverseException) final;
 
 	/**
 	 * @brief Differentiate function.
 	 */
-	void visit(const Function &expr) final;
+	void visit(const Function &expr) throw(TraverseException) final;
 	
 	void setLastVisitResult(Expression *result);
 	
