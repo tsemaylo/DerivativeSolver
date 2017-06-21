@@ -14,7 +14,6 @@
 #include <string>
 #include <memory>
 #include "Expression.h"
-#include "Constant.h"
 #include "Token.h"
 #include "Rule.h"
 #include "ParsingException.h"
@@ -86,7 +85,7 @@ protected:
 	* @param [in]	end Iterator for last token.
 	* @param [in/out]	Stack of parsed non-terminals.
 	*/
-	void doParseTokens(list<Token>::const_iterator start, list<Token>::const_iterator end, vector<unique_ptr<Expression>> &stack) const;
+	void doParseTokens(list<Token>::const_iterator start, list<Token>::const_iterator end, vector<unique_ptr<Expression>> &stack) const throw(ParsingException);
 	
 	/**
 	 * Reduce the currant stack of non terminals.
@@ -97,6 +96,8 @@ protected:
 	 * @return false	If the stack was not reduced.
      */
 	bool doReduce(vector<unique_ptr<Expression>> &stack) const;
+	
+	unique_ptr<Expression> getInitialExpression(const Token &token) const throw(ParsingException);
 	
 public:
 

@@ -10,7 +10,7 @@
 #include "Function.h"
 #include "Visitor.h"
 
-Function::Function(string name) : Expression(name){ }
+Function::Function(string name) : Expression(name, EFunction){ }
 
 const Expression *Function::getArgument(const int i) {
 	return this->arguments[i];

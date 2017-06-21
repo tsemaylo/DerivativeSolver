@@ -20,8 +20,6 @@
 class ParserTest: public Parser {
 public:
 
-	// expose tokens for test purposes
-
 	unique_ptr<list<Token>> getTokens(const string &strExpr) const {
 		return Parser::getTokens(strExpr);
 	}
@@ -44,6 +42,10 @@ public:
 
 	bool isWhitespace(char c) const {
 		return Parser::isWhitespace(c);
+	}
+	
+	unique_ptr<Expression> getInitialExpression(const Token &token) const throw(ParsingException){
+		return Parser::getInitialExpression(token);
 	}
 };
 
@@ -102,6 +104,33 @@ TEST_F(FX_Parser, isWhitespace_SpaceSymbol_true) {
 TEST_F(FX_Parser, isWhitespace_tabSymbol_true) {
 	ParserTest parser;
 	ASSERT_TRUE(parser.isWhitespace('	'));
+}
+
+TEST_F(FX_Parser, getInitialExpression_NumericToken_ConstantExpression) {
+	ParserTest parser;
+	Token tkn("42", TNumeric);
+	
+	unique_ptr<Expression> expr = parser.getInitialExpression(tkn);
+	EXPECT_EQ(EConstant, expr->getType());
+	EXPECT_STREQ("42", expr->getName().c_str());
+}
+
+TEST_F(FX_Parser, getInitialExpression_AlphaNumericToken_VariableExpression) {
+	ParserTest parser;
+	Token tkn("X", TAlphaNumeric);
+	
+	unique_ptr<Expression> expr = parser.getInitialExpression(tkn);
+	EXPECT_EQ(EVariable, expr->getType());
+	EXPECT_STREQ("X", expr->getName().c_str());
+}
+
+TEST_F(FX_Parser, getInitialExpression_OperationToken_FunctionExpression) {
+	ParserTest parser;
+	Token tkn("+", TOperation);
+	
+	unique_ptr<Expression> expr = parser.getInitialExpression(tkn);
+	EXPECT_EQ(EFunction, expr->getType());
+	EXPECT_STREQ("+", expr->getName().c_str());
 }
 
 //TEST_F(FX_Parser, isWhitespace_AlphaSymbol_false) {

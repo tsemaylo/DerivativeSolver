@@ -8,7 +8,7 @@
 #include "Constant.h"
 #include "Visitor.h"
 
-Constant::Constant(string name) : Expression(name){}
+Constant::Constant(string name) : Expression(name, EConstant){}
 
 void Constant::traverse(Visitor &visitor) const throw(TraverseException) {
 	visitor.visit(*this);

@@ -10,7 +10,7 @@
 #include "Variable.h"
 #include "Visitor.h"
 
-Variable::Variable(string name) : Expression(name) {}
+Variable::Variable(string name) : Expression(name, EVariable) {}
 
  void Variable::traverse(Visitor &visitor) const throw(TraverseException) {
 	visitor.visit(*this);

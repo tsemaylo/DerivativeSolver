@@ -9,10 +9,14 @@
 
 #include "Expression.h"
 
-Expression::Expression(string name) : name(name) {
+Expression::Expression(string name, ExpressionType type) : name(name), type(type){
 }
 
 string Expression::getName() const
 {
 	return this->name;
+}
+
+ExpressionType Expression::getType() const {
+	return this->type;
 }

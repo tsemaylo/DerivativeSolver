@@ -9,6 +9,8 @@
 
 #include "ParsingException.h"
 
+ParsingException::ParsingException(string message) : message(message) {}
+
 const char* ParsingException::what() const noexcept{
 	return this->message.c_str();
 }

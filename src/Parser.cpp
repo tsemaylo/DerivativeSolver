@@ -9,6 +9,10 @@
 
 #include "Parser.h"
 
+#include "Constant.h"
+#include "Variable.h"
+#include "Function.h"
+
 bool Parser::isAlpha(char c) const
 {
 	// assuming ASCII
@@ -81,7 +85,7 @@ unique_ptr<list<Token>> Parser::getTokens(const string &strExpr) const {
 			// ignore
 			continue;
 		}else{
-			throw ParsingException();
+			throw ParsingException("Unknown token");
 		}
 
 		if (tokenType != tokenTypeOfSymbol) {
@@ -128,7 +132,27 @@ bool Parser::doReduce(vector<unique_ptr<Expression>> &stack) const {
 	return false;
 }
 
-void Parser::doParseTokens(list<Token>::const_iterator start, list<Token>::const_iterator end, vector<unique_ptr<Expression>> &stack) const {
+unique_ptr<Expression> Parser::getInitialExpression(const Token &token) const throw(ParsingException){
+	
+	switch(token.getType()){
+		case TNumeric:
+			return make_unique<Constant>(token.getValue());
+		case TOperation:
+			return make_unique<Function>(token.getValue());
+		case TAlphaNumeric:
+			// assuming that it is variable 
+			return make_unique<Variable>(token.getValue());
+		case TGroupBracket:
+			// Parenting bracket
+			// @TODO so far no expression for this type
+			// what about to introduce BracketedExpression? which should be eventually eliminated froom AST?
+			return make_unique<Function>(token.getValue());
+		default:
+			throw ParsingException("Unknown type of token");
+	}
+}
+
+void Parser::doParseTokens(list<Token>::const_iterator start, list<Token>::const_iterator end, vector<unique_ptr<Expression>> &stack) const throw(ParsingException){
 	// opened question: can this function to be called recursively
 	
 	// LR parsing => shift-reduce method (bottom-up)
@@ -139,20 +163,8 @@ void Parser::doParseTokens(list<Token>::const_iterator start, list<Token>::const
 		// shift
 		
 		// fill up the stack with initial assumption regarding the non-terminal
-		// @TODO refactor it. Extract initiaization of stack into separate method
-		if(start->getType() == TNumeric){
-			stack.push_back(make_unique<Constant>(start->getValue()));
-		}else if(start->getType() == TOperation){
-			stack.push_back(make_unique<Function>(start->getValue()));
-		}else if(start->fetType() == TAlphaNumeric){
-			// assuming that it is variable 
-			stack.push_back(make_unique<Function>(start->getValue()));
-		}else if(start->fetType() == TGroupBracket){
-			// Parenting bracket
-			// @TODO so far no expression for this type
-			// what about to introduce BracketedExpression? which should be eventually eliminated froom AST?
-		}
-		
+		stack.push_back(this->getInitialExpression(*start));
+				
 		// reduce the stack untill no other posibility to reduce is available
 		while(this->doReduce(stack)){
 			// ???
@@ -168,7 +180,7 @@ void Parser::doParseTokens(list<Token>::const_iterator start, list<Token>::const
 		// then probably grammar is not complete
 		// or the syntax of the provided expression is incorrect
 
-		throw ParsingException();
+		throw ParsingException("The specified expression is ambiguous. Not able to complitely reduce syntax tree.");
 	}
 }
 
