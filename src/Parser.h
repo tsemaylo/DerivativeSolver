@@ -26,10 +26,10 @@ using namespace std;
  * Class is aimed to parse the given expression string into expression tree, which is intended to be analyzed later.
  */
 class Parser {
-
+private:
+	array<unique_ptr<Rule>, 2> grammar;
+	
 protected:
-	list<unique_ptr<Rule>> grammar;
-
 	/**
 	 * @brief Split the input string into tokens.
 	 *
@@ -85,7 +85,7 @@ protected:
 	* @param [in]	end Iterator for last token.
 	* @param [in/out]	Stack of parsed non-terminals.
 	*/
-	void doParseTokens(list<Token>::const_iterator start, list<Token>::const_iterator end, vector<unique_ptr<Expression>> &stack) const throw(ParsingException);
+	void doParseTokens(list<Token>::const_iterator start, list<Token>::const_iterator end, list<unique_ptr<Expression>> &stack) const throw(ParsingException);
 	
 	/**
 	 * Reduce the currant stack of non terminals.
@@ -95,12 +95,14 @@ protected:
      * @return true		If the stack was reduced.
 	 * @return false	If the stack was not reduced.
      */
-	bool doReduce(vector<unique_ptr<Expression>> &stack) const;
+	bool doReduce(list<unique_ptr<Expression>> &stack) const;
 	
 	unique_ptr<Expression> getInitialExpression(const Token &token) const throw(ParsingException);
 	
 public:
 
+	Parser();
+	
 	/**
 	 * Parse the expression string.
 	 *

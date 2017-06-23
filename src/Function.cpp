@@ -10,14 +10,12 @@
 #include "Function.h"
 #include "Visitor.h"
 
+using namespace std;
+
 Function::Function(string name) : Expression(name, EFunction){ }
 
-const Expression *Function::getArgument(const int i) {
-	return this->arguments[i];
-}
-
-void Function::addArgument(const Expression *expression){
-	this->arguments.push_back(expression);
+void Function::addArgument(unique_ptr<Expression> &&expression){
+	this->arguments.push_back(move(expression));
 }
 
 void Function::traverse(Visitor &visitor) const throw(TraverseException) {

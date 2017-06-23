@@ -133,6 +133,14 @@ TEST_F(FX_Parser, getInitialExpression_OperationToken_FunctionExpression) {
 	EXPECT_STREQ("+", expr->getName().c_str());
 }
 
+TEST_F(FX_Parser, parse_SimpleSummation_FunctionWithTwoArgs) {
+	ParserTest parser;
+	const string strExpr="a+b";
+	
+	unique_ptr<Expression> expr = parser.parse(strExpr);
+	ASSERT_EQ(expr->getType(), EFunction);
+}
+
 //TEST_F(FX_Parser, isWhitespace_AlphaSymbol_false) {
 //	ParserTest parser;
 //

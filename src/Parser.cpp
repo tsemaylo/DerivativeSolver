@@ -6,12 +6,29 @@
  * @since 25.03.2016
  * @Author: agor
  */
+#include <memory>
 
 #include "Parser.h"
 
 #include "Constant.h"
 #include "Variable.h"
 #include "Function.h"
+#include "RuleSumLV.h"
+#include "RuleSumRV.h"
+
+Parser::Parser() {
+	// initialize grammar
+	
+	/**
+	 * some basic grammar to parse expressions with summation operation
+     */
+	
+	// Expression Function(+) -> Function(L+)
+	this->grammar[0]=move(make_unique<RuleSumLV>());
+	// Function(L+) Expression -> Function(L+R)
+	this->grammar[1]=move(make_unique<RuleSumRV>());
+}
+
 
 bool Parser::isAlpha(char c) const
 {
@@ -114,10 +131,10 @@ unique_ptr<list<Token>> Parser::getTokens(const string &strExpr) const {
 }
 
 
-bool Parser::doReduce(vector<unique_ptr<Expression>> &stack) const {
+bool Parser::doReduce(list<unique_ptr<Expression>> &stack) const {
 	// go through the list of rules and check if it is applicable to the provided stack
-	list<unique_ptr<Rule>>::const_iterator rule = this->grammar.begin();
-	list<unique_ptr<Rule>>::const_iterator lastRule = this->grammar.end();
+	array<unique_ptr<Rule>, 2>::const_iterator rule = this->grammar.begin();
+	array<unique_ptr<Rule>, 2>::const_iterator lastRule = this->grammar.end();
 	
 	while(rule!=lastRule){
 		// try to apply the rule to reduce the stack
@@ -152,7 +169,7 @@ unique_ptr<Expression> Parser::getInitialExpression(const Token &token) const th
 	}
 }
 
-void Parser::doParseTokens(list<Token>::const_iterator start, list<Token>::const_iterator end, vector<unique_ptr<Expression>> &stack) const throw(ParsingException){
+void Parser::doParseTokens(list<Token>::const_iterator start, list<Token>::const_iterator end, list<unique_ptr<Expression>> &stack) const throw(ParsingException){
 	// opened question: can this function to be called recursively
 	
 	// LR parsing => shift-reduce method (bottom-up)
@@ -185,9 +202,9 @@ void Parser::doParseTokens(list<Token>::const_iterator start, list<Token>::const
 }
 
 unique_ptr<Expression> Parser::parseTokens(const unique_ptr<list<Token>> tokens) const {
-	vector<unique_ptr<Expression>> stack;
+	list<unique_ptr<Expression>> stack;
 	this->doParseTokens(tokens->begin(), tokens->end(), stack);
-	return move(stack[0]); // @TODO what is happening here?
+	return move(stack.front()); // @TODO what is happening here?
 }
 
 unique_ptr<Expression> Parser::parse(const string &strExpr) const throw(ParsingException) {

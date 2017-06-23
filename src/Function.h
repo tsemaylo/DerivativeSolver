@@ -12,6 +12,7 @@
 
 #include <vector>
 #include <string>
+#include <memory>
 
 #include "Expression.h"
 
@@ -21,15 +22,14 @@ using namespace std;
 
 class Function: public Expression {
 private:
-	vector<const Expression *> arguments;
+	vector<unique_ptr<Expression>> arguments;
 
 public:
 	Function(string name);
 
-	const Expression *getArgument(const int i);
-	void addArgument(const Expression *expression);
+	void addArgument(unique_ptr<Expression> &&expr);
 	
-	void traverse(Visitor & ) const throw(TraverseException) final;
+	void traverse(Visitor &) const throw(TraverseException) final;
 };
 
 #endif /* SRC_FUNCTION_H_ */

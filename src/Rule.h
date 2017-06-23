@@ -10,20 +10,19 @@
 #ifndef RULE_H
 #define	RULE_H
 
-#include <vector>
+#include <list>
 #include <memory>
+#include "Expression.h"
 #include "ParsingException.h"
 
 using namespace std;
-
-class Expression;
 
 /**
  * Represents the interface for any possible parsing rule.
  */
 class Rule{
 public:
-	virtual bool apply(vector<unique_ptr<Expression>> &stack) const throw(ParsingException) = 0;
+	virtual bool apply(list<unique_ptr<Expression>> &stack) const throw(ParsingException) = 0;
 };
 
 #endif	/* RULE_H */
