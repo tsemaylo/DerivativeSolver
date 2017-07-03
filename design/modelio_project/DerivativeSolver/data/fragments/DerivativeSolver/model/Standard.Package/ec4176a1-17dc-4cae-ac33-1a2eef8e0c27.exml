@@ -21,7 +21,6 @@
         <COMPID name="Differentiator" mc="Standard.Class" uid="6bfd4aff-d9a3-4118-b001-584d7ce37dcd"/>
         <COMPID name="Constant" mc="Standard.Class" uid="98d9d58a-eac9-4116-b29a-e344e39415f4"/>
         <COMPID name="Variable" mc="Standard.Class" uid="bda6dd15-efc0-4e5b-a8ce-42a1fa9734c7"/>
-        <COMPID name="Function" mc="Standard.Class" uid="23123878-7cfa-48fa-984a-76b3b11ccecc"/>
         <COMPID name="Sum" mc="Standard.Class" uid="21b6b4d9-2c88-497b-b586-af470e382d84"/>
         <COMPID name="Sub" mc="Standard.Class" uid="7364e88e-5c8f-467b-ae74-8269a68d2269"/>
         <COMPID name="Div" mc="Standard.Class" uid="a9b22878-a0e6-4e85-9d8e-7788021977de"/>

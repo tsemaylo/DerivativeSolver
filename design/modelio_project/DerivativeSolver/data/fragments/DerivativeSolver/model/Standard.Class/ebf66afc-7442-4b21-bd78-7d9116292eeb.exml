@@ -25,7 +25,7 @@
           </ATTRIBUTES>
           <DEPENDENCIES>
             <LINK relation="SuperType">
-              <ID name="Function" mc="Standard.Class" uid="23123878-7cfa-48fa-984a-76b3b11ccecc"/>
+              <ID name="Expression" mc="Standard.Class" uid="f287b197-4ac2-477a-8e52-4af3f1e330f3"/>
             </LINK>
           </DEPENDENCIES>
         </OBJECT>
