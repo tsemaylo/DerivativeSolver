@@ -21,9 +21,12 @@ private:
 public:	
 	void visit(const Constant& expr) throw(TraverseException) final;
 
-	void visit(const Function& expr) throw(TraverseException) final;
-
 	void visit(const Variable& expr) throw(TraverseException) final;
+	
+	void visit(const Sum& expr) throw(TraverseException) final;
+	void visit(const Sub& expr) throw(TraverseException) final;
+	void visit(const Div& expr) throw(TraverseException) final;
+	void visit(const Mult& expr) throw(TraverseException) final;
 	
 	void setLastVisitResult(string result);
 	

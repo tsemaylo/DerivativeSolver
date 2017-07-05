@@ -32,21 +32,19 @@ using namespace std;
 enum ExpressionType {
 	EConstant = 0, ///< Expression is an instance of Constant
 	EVariable = 1, ///< Expression is an instance of Variable
-	EFunction = 2 ///< Expression is an instance of Function
+	ESum = 2, ///< Expression is an instance of Summation operator
+	ESub = 3, ///< Expression is an instance of Subtraction operator
+	EDiv = 4, ///< Expression is an instance of Division operator
+	EMult = 5 ///< Expression is an instance of Multiplication operator
 };
 
 
-class Expression {
-private:
-	string name;
-	ExpressionType type;
-	
+class Expression {	
 protected:
-	Expression(string name, ExpressionType type);	
+	Expression(ExpressionType type);	
 	
 public:
-	string getName() const;
-	ExpressionType getType() const;
+	const ExpressionType type;
 
 	void virtual traverse(Visitor & ) const throw(TraverseException) = 0;
 };

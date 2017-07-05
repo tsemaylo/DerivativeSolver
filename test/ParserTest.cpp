@@ -15,7 +15,7 @@
 #include "Expression.h"
 #include "Constant.h"
 #include "Variable.h"
-#include "Function.h"
+#include "Sum.h"
 
 class ParserTest: public Parser {
 public:
@@ -45,7 +45,7 @@ public:
 	}
 	
 	unique_ptr<Expression> getInitialExpression(const Token &token) const throw(ParsingException){
-		return Parser::getInitialExpression(token);
+		return Parser::createExpression(token);
 	}
 };
 
@@ -111,8 +111,8 @@ TEST_F(FX_Parser, getInitialExpression_NumericToken_ConstantExpression) {
 	Token tkn("42", TNumeric);
 	
 	unique_ptr<Expression> expr = parser.getInitialExpression(tkn);
-	EXPECT_EQ(EConstant, expr->getType());
-	EXPECT_STREQ("42", expr->getName().c_str());
+	EXPECT_EQ(EConstant, expr->type);
+	EXPECT_STREQ("42", ((Constant *)(expr.get()))->value.c_str());
 }
 
 TEST_F(FX_Parser, getInitialExpression_AlphaNumericToken_VariableExpression) {
@@ -120,8 +120,8 @@ TEST_F(FX_Parser, getInitialExpression_AlphaNumericToken_VariableExpression) {
 	Token tkn("X", TAlphaNumeric);
 	
 	unique_ptr<Expression> expr = parser.getInitialExpression(tkn);
-	EXPECT_EQ(EVariable, expr->getType());
-	EXPECT_STREQ("X", expr->getName().c_str());
+	EXPECT_EQ(EVariable, expr->type);
+	EXPECT_STREQ("X", ((Variable *)(expr.get()))->name.c_str());
 }
 
 TEST_F(FX_Parser, getInitialExpression_OperationToken_FunctionExpression) {
@@ -129,8 +129,7 @@ TEST_F(FX_Parser, getInitialExpression_OperationToken_FunctionExpression) {
 	Token tkn("+", TOperation);
 	
 	unique_ptr<Expression> expr = parser.getInitialExpression(tkn);
-	EXPECT_EQ(EFunction, expr->getType());
-	EXPECT_STREQ("+", expr->getName().c_str());
+	EXPECT_EQ(ESum, expr->type);
 }
 
 TEST_F(FX_Parser, parse_SimpleSummation_FunctionWithTwoArgs) {
@@ -138,7 +137,7 @@ TEST_F(FX_Parser, parse_SimpleSummation_FunctionWithTwoArgs) {
 	const string strExpr="a+b";
 	
 	unique_ptr<Expression> expr = parser.parse(strExpr);
-	ASSERT_EQ(expr->getType(), EFunction);
+	ASSERT_EQ(expr->type, ESum);
 }
 
 //TEST_F(FX_Parser, isWhitespace_AlphaSymbol_false) {

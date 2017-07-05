@@ -12,7 +12,10 @@
 
 #include "Constant.h"
 #include "Variable.h"
-#include "Function.h"
+#include "Sum.h"
+#include "Sub.h"
+#include "Div.h"
+#include "Mult.h"
 #include "RuleSumLV.h"
 #include "RuleSumRV.h"
 
@@ -63,7 +66,7 @@ bool Parser::isGroupBracket(char c) const
 
 bool Parser::isArithOperation(char c) const
 {
-	return (c=='+' || c=='-' || c=='*' || c=='/' || c=='^');
+	return (c=='+' || c=='-' || c=='*' || c=='/'|| c=='\\' || c=='^');
 }
 
 bool Parser::isWhitespace(char c) const
@@ -149,13 +152,30 @@ bool Parser::doReduce(list<unique_ptr<Expression>> &stack) const {
 	return false;
 }
 
-unique_ptr<Expression> Parser::getInitialExpression(const Token &token) const throw(ParsingException){
+unique_ptr<Expression> Parser::createOperation(const string opSymbol) const throw(ParsingException){
+	if(opSymbol=="+"){
+		return make_unique<Sum>();
+	}
+	if(opSymbol=="-"){
+		return make_unique<Sub>();
+	}
+	if(opSymbol=="*"){
+		return make_unique<Mult>();
+	}
+	if(opSymbol=="/" || opSymbol=="\\"){
+		return make_unique<Div>();
+	}
+	
+	throw ParsingException("Unknown type of token (operation is not supported).");
+}
+
+unique_ptr<Expression> Parser::createExpression(const Token &token) const throw(ParsingException){
 	
 	switch(token.getType()){
 		case TNumeric:
 			return make_unique<Constant>(token.getValue());
 		case TOperation:
-			return make_unique<Function>(token.getValue());
+			return move(createOperation(token.getValue()));
 		case TAlphaNumeric:
 			// assuming that it is variable 
 			return make_unique<Variable>(token.getValue());
@@ -163,7 +183,8 @@ unique_ptr<Expression> Parser::getInitialExpression(const Token &token) const th
 			// Parenting bracket
 			// @TODO so far no expression for this type
 			// what about to introduce BracketedExpression? which should be eventually eliminated froom AST?
-			return make_unique<Function>(token.getValue());
+			// return make_unique<Function>(token.getValue());
+			throw ParsingException("TGroupBracket is NYI");
 		default:
 			throw ParsingException("Unknown type of token");
 	}
@@ -180,7 +201,7 @@ void Parser::doParseTokens(list<Token>::const_iterator start, list<Token>::const
 		// shift
 		
 		// fill up the stack with initial assumption regarding the non-terminal
-		stack.push_back(this->getInitialExpression(*start));
+		stack.push_back(this->createExpression(*start));
 				
 		// reduce the stack untill no other posibility to reduce is available
 		while(this->doReduce(stack)){

@@ -11,9 +11,6 @@
 #define SRC_DIFFERENTIATOR_H_
 
 #include "Expression.h"
-#include "Constant.h"
-#include "Variable.h"
-#include "Function.h"
 #include "Visitor.h"
 #include "TraverseException.h"
 
@@ -38,9 +35,25 @@ public:
 	void visit(const Variable &expr) throw(TraverseException) final;
 
 	/**
-	 * @brief Differentiate function.
+	 * @brief Differentiate summation operation.
 	 */
-	void visit(const Function &expr) throw(TraverseException) final;
+	void visit(const Sum &expr) throw(TraverseException) final;
+	
+	/**
+	 * @brief Differentiate subtraction operation.
+	 */
+	void visit(const Sub &expr) throw(TraverseException) final;
+	
+	/**
+	 * @brief Differentiate multiplication operation.
+	 */
+	void visit(const Mult &expr) throw(TraverseException) final;
+	
+	
+	/**
+	 * @brief Differentiate division operation.
+	 */
+	void visit(const Div &expr) throw(TraverseException) final;
 	
 	void setLastVisitResult(Expression *result);
 	

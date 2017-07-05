@@ -96,8 +96,8 @@ protected:
 	 * @return false	If the stack was not reduced.
      */
 	bool doReduce(list<unique_ptr<Expression>> &stack) const;
-	
-	unique_ptr<Expression> getInitialExpression(const Token &token) const throw(ParsingException);
+	unique_ptr<Expression> createOperation(const string opSymbol) const throw(ParsingException);
+	unique_ptr<Expression> createExpression(const Token &token) const throw(ParsingException);
 	
 public:
 

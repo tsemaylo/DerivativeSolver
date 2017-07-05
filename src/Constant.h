@@ -17,7 +17,9 @@ using namespace std;
 class Constant: public Expression
 {
 public:
-	Constant(string name);
+	const string value;
+	
+	Constant(string value);
 
 	void traverse(Visitor & ) const throw(TraverseException) final;
 };

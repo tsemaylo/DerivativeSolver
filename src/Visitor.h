@@ -12,7 +12,10 @@
 
 #include "Constant.h"
 #include "Variable.h"
-#include "Function.h"
+#include "Sum.h"
+#include "Sub.h"
+#include "Div.h"
+#include "Mult.h"
 #include "TraverseException.h"
 
 /**
@@ -23,7 +26,10 @@ class Visitor
 public:	
 	virtual void visit(const Constant &expr) throw(TraverseException) = 0;
 	virtual void visit(const Variable &expr) throw(TraverseException) = 0;
-	virtual void visit(const Function &expr) throw(TraverseException) = 0;
+	virtual void visit(const Sum &expr) throw(TraverseException) = 0;
+	virtual void visit(const Sub &expr) throw(TraverseException) = 0;
+	virtual void visit(const Div &expr) throw(TraverseException) = 0;
+	virtual void visit(const Mult &expr) throw(TraverseException) = 0;
 };
 
 #endif	/* VISITOR_H */

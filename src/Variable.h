@@ -18,6 +18,8 @@ using namespace std;
 
 class Variable: public Expression {
 public:
+	const string name;
+	
 	Variable(string name);
 	
 	void traverse(Visitor & ) const throw(TraverseException) final;

@@ -8,7 +8,7 @@
  */
 
 #include "RuleSumLV.h"
-#include "Function.h"
+#include "Sum.h"
 
 using namespace std;
 
@@ -23,19 +23,18 @@ bool RuleSumLV::apply(list<unique_ptr<Expression>> &stack) const throw(ParsingEx
 		list<unique_ptr<Expression>>::iterator nextItem=item;
 		++nextItem;
 		
-		if((*nextItem)->getType() == EFunction && (*nextItem)->getName()=="+"){
+		if((*nextItem)->type == ESum){
 			// ok we found "+" opeartor
 			// then the left operand comes to + operationand item is removed from the stack
-			if((*item)->getType() == EFunction){ 
-				// if operation of the left side is incomplete then 
-				// throw a parsing exception
-			}
+			
+			// @TODO  if operation of the left side is incomplete then 
+			// throw a parsing exception
 			
 			// @TODO check also brackets
 			
 			// the expression on the left side is correct
 			// initialize l-side argument
-			dynamic_cast<Function *>((*nextItem).get())->addArgument(move(*item));
+			dynamic_cast<Sum *>((*nextItem).get())->lArg=move(*item);
 			// reduce the stack
 			stack.erase(item);
 			

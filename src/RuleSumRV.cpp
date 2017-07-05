@@ -8,7 +8,7 @@
  */
 
 #include "RuleSumRV.h"
-#include "Function.h"
+#include "Sum.h"
 
 bool RuleSumRV::apply(list<unique_ptr<Expression>> &stack) const throw(ParsingException) {
 	// search for the patterns
@@ -21,19 +21,17 @@ bool RuleSumRV::apply(list<unique_ptr<Expression>> &stack) const throw(ParsingEx
 		list<unique_ptr<Expression>>::iterator nextItem=item;
 		++nextItem;
 		
-		if((*item)->getType() == EFunction && (*item)->getName()=="+"){
+		if((*item)->type == ESum){
 			// ok we found "+" opeartor
 			
-			if((*nextItem)->getType() == EFunction){ 
-				// if operation on the right side is incomplete then 
-				// throw a parsing exception
-			}
+			// @TODO if operation on the right side is incomplete then 
+			// throw a parsing exception
 			
 			// @TODO check also brackets
 			
 			// the expression on the left side is correct
 			// initialize l-side argument
-			dynamic_cast<Function *>((*item).get())->addArgument(move(*nextItem));
+			dynamic_cast<Sum *>((*item).get())->rArg = move(*nextItem);
 			// reduce the stack
 			stack.erase(nextItem);
 			
