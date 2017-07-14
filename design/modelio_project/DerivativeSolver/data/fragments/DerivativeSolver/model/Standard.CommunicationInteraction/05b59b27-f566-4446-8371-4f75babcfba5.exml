@@ -1,0 +1,310 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="Communication Interaction" version="4">
+  <OBJECT>
+    <ID name="Communication Interaction" mc="Standard.CommunicationInteraction" uid="05b59b27-f566-4446-8371-4f75babcfba5"/>
+    <PID name="derivativesolver" mc="Standard.Package" uid="ec4176a1-17dc-4cae-ac33-1a2eef8e0c27"/>
+    <ATTRIBUTES>
+      <ATT name="IsReentrant">false</ATT>
+      <ATT name="Name"><![CDATA[Communication Interaction]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES>
+      <COMP relation="Owned">
+        <OBJECT>
+          <ID name="main" mc="Standard.CommunicationNode" uid="8f3c5590-c316-4b53-a8e6-7917099618ea"/>
+          <ATTRIBUTES>
+            <ATT name="Selector"></ATT>
+            <ATT name="Name"><![CDATA[main]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES>
+            <COMP relation="Started">
+              <OBJECT>
+                <ID name="" mc="Standard.CommunicationChannel" uid="d4aa0e50-4f80-436c-92e4-de45e04ff653"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="StartToEndMessage">
+                    <OBJECT>
+                      <ID name="Applifcation(string_expression, variable)" mc="Standard.CommunicationMessage" uid="a272f2f8-d42e-4a83-895b-bad028bde7f9"/>
+                      <ATTRIBUTES>
+                        <ATT name="Argument"></ATT>
+                        <ATT name="Sequence"><![CDATA[1]]></ATT>
+                        <ATT name="SortOfMessage">SyncCall</ATT>
+                        <ATT name="Name"><![CDATA[Applifcation(string_expression, variable)]]></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES></DEPENDENCIES>
+                    </OBJECT>
+                    <OBJECT>
+                      <ID name="run()" mc="Standard.CommunicationMessage" uid="f82d582b-f53e-4e57-8905-7d6193e96f69"/>
+                      <ATTRIBUTES>
+                        <ATT name="Argument"></ATT>
+                        <ATT name="Sequence"><![CDATA[2]]></ATT>
+                        <ATT name="SortOfMessage">SyncCall</ATT>
+                        <ATT name="Name"><![CDATA[run()]]></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES></DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                  <LINK relation="End">
+                    <REFOBJ>
+                      <ID name="Application" mc="Standard.CommunicationNode" uid="fe558b54-b1fd-48ef-9640-ad4aa82bc3b1"/>
+                    </REFOBJ>
+                  </LINK>
+                </DEPENDENCIES>
+              </OBJECT>
+            </COMP>
+          </DEPENDENCIES>
+        </OBJECT>
+        <OBJECT>
+          <ID name="Application" mc="Standard.CommunicationNode" uid="fe558b54-b1fd-48ef-9640-ad4aa82bc3b1"/>
+          <ATTRIBUTES>
+            <ATT name="Selector"></ATT>
+            <ATT name="Name"><![CDATA[Application]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES>
+            <COMP relation="Started">
+              <OBJECT>
+                <ID name="" mc="Standard.CommunicationChannel" uid="38e97406-0799-4bb7-8fbe-9b01ca570b8d"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="StartToEndMessage">
+                    <OBJECT>
+                      <ID name="Parser(string_axpression)" mc="Standard.CommunicationMessage" uid="722bd482-39bf-46b3-bd9b-9ecfafdb8aa7"/>
+                      <ATTRIBUTES>
+                        <ATT name="Argument"></ATT>
+                        <ATT name="Sequence"><![CDATA[3]]></ATT>
+                        <ATT name="SortOfMessage">SyncCall</ATT>
+                        <ATT name="Name"><![CDATA[Parser(string_axpression)]]></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES></DEPENDENCIES>
+                    </OBJECT>
+                    <OBJECT>
+                      <ID name="parse" mc="Standard.CommunicationMessage" uid="27ef6596-cae2-4036-a620-dfd21ca84b09"/>
+                      <ATTRIBUTES>
+                        <ATT name="Argument"></ATT>
+                        <ATT name="Sequence"><![CDATA[4]]></ATT>
+                        <ATT name="SortOfMessage">SyncCall</ATT>
+                        <ATT name="Name"><![CDATA[parse]]></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES></DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                  <COMP relation="EndToStartMessage">
+                    <OBJECT>
+                      <ID name="Expression" mc="Standard.CommunicationMessage" uid="cdd16b08-426f-4521-b393-b43778e322e8"/>
+                      <ATTRIBUTES>
+                        <ATT name="Argument"></ATT>
+                        <ATT name="Sequence"><![CDATA[6]]></ATT>
+                        <ATT name="SortOfMessage">SyncCall</ATT>
+                        <ATT name="Name"><![CDATA[Expression]]></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES></DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                  <LINK relation="End">
+                    <REFOBJ>
+                      <ID name="Parser" mc="Standard.CommunicationNode" uid="06c685dd-5419-4efc-81d0-55d43123c3bb"/>
+                    </REFOBJ>
+                  </LINK>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="" mc="Standard.CommunicationChannel" uid="de93ce25-4c4b-4fb1-9a70-728b010041f1"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="StartToEndMessage">
+                    <OBJECT>
+                      <ID name="Differentiator(variable)" mc="Standard.CommunicationMessage" uid="5e66ea54-3bb2-49e0-8eec-2a9f6973fae1"/>
+                      <ATTRIBUTES>
+                        <ATT name="Argument"></ATT>
+                        <ATT name="Sequence"><![CDATA[7]]></ATT>
+                        <ATT name="SortOfMessage">SyncCall</ATT>
+                        <ATT name="Name"><![CDATA[Differentiator(variable)]]></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES></DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                  <COMP relation="EndToStartMessage">
+                    <OBJECT>
+                      <ID name="Expression" mc="Standard.CommunicationMessage" uid="49d1bab5-5f72-4cf3-9c49-c01ed4664a5e"/>
+                      <ATTRIBUTES>
+                        <ATT name="Argument"></ATT>
+                        <ATT name="Sequence"><![CDATA[10]]></ATT>
+                        <ATT name="SortOfMessage">SyncCall</ATT>
+                        <ATT name="Name"><![CDATA[Expression]]></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES></DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                  <LINK relation="End">
+                    <REFOBJ>
+                      <ID name="Differentiator" mc="Standard.CommunicationNode" uid="37f66025-d2b7-4cdc-9e73-2424c38f9bab"/>
+                    </REFOBJ>
+                  </LINK>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="" mc="Standard.CommunicationChannel" uid="caf83155-0aaa-46b6-b4d7-625ada229e22"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="EndToStartMessage">
+                    <OBJECT>
+                      <ID name="traverse(Differentiator)" mc="Standard.CommunicationMessage" uid="2eb3b82b-76fc-4f31-b33d-7a8feb8b4867"/>
+                      <ATTRIBUTES>
+                        <ATT name="Argument"></ATT>
+                        <ATT name="Sequence"><![CDATA[8]]></ATT>
+                        <ATT name="SortOfMessage">SyncCall</ATT>
+                        <ATT name="Name"><![CDATA[traverse(Differentiator)]]></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES></DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                  <LINK relation="End">
+                    <REFOBJ>
+                      <ID name="Expresson" mc="Standard.CommunicationNode" uid="3840dfed-0f19-4dd8-8be4-18c5cdac2fb0"/>
+                    </REFOBJ>
+                  </LINK>
+                </DEPENDENCIES>
+              </OBJECT>
+            </COMP>
+          </DEPENDENCIES>
+        </OBJECT>
+        <OBJECT>
+          <ID name="Parser" mc="Standard.CommunicationNode" uid="06c685dd-5419-4efc-81d0-55d43123c3bb"/>
+          <ATTRIBUTES>
+            <ATT name="Selector"></ATT>
+            <ATT name="Name"><![CDATA[Parser]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES>
+            <COMP relation="Started">
+              <OBJECT>
+                <ID name="" mc="Standard.CommunicationChannel" uid="1cad1df1-0391-4db6-8afc-e6d81eb4f69e"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="StartToEndMessage">
+                    <OBJECT>
+                      <ID name="apply(Expression[])" mc="Standard.CommunicationMessage" uid="4dab790b-a976-47f2-ae8a-43f8707c3ed8"/>
+                      <ATTRIBUTES>
+                        <ATT name="Argument"></ATT>
+                        <ATT name="Sequence"><![CDATA[5]]></ATT>
+                        <ATT name="SortOfMessage">SyncCall</ATT>
+                        <ATT name="Name"><![CDATA[apply(Expression[])]]></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES></DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                  <LINK relation="End">
+                    <REFOBJ>
+                      <ID name="Rule" mc="Standard.CommunicationNode" uid="05a92d92-972b-459b-affe-88c5dbcebe8b"/>
+                    </REFOBJ>
+                  </LINK>
+                </DEPENDENCIES>
+              </OBJECT>
+            </COMP>
+          </DEPENDENCIES>
+        </OBJECT>
+        <OBJECT>
+          <ID name="Differentiator" mc="Standard.CommunicationNode" uid="37f66025-d2b7-4cdc-9e73-2424c38f9bab"/>
+          <ATTRIBUTES>
+            <ATT name="Selector"></ATT>
+            <ATT name="Name"><![CDATA[Differentiator]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES></DEPENDENCIES>
+        </OBJECT>
+        <OBJECT>
+          <ID name="Rule" mc="Standard.CommunicationNode" uid="05a92d92-972b-459b-affe-88c5dbcebe8b"/>
+          <ATTRIBUTES>
+            <ATT name="Selector"></ATT>
+            <ATT name="Name"><![CDATA[Rule]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES></DEPENDENCIES>
+        </OBJECT>
+        <OBJECT>
+          <ID name="Expresson" mc="Standard.CommunicationNode" uid="3840dfed-0f19-4dd8-8be4-18c5cdac2fb0"/>
+          <ATTRIBUTES>
+            <ATT name="Selector"></ATT>
+            <ATT name="Name"><![CDATA[Expresson]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES>
+            <COMP relation="Started">
+              <OBJECT>
+                <ID name="" mc="Standard.CommunicationChannel" uid="15edae00-fa02-4a13-a90d-50341d709342"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <COMP relation="StartToEndMessage">
+                    <OBJECT>
+                      <ID name="visit(Expression)" mc="Standard.CommunicationMessage" uid="e7106f5d-6506-4358-b255-90a043be266f"/>
+                      <ATTRIBUTES>
+                        <ATT name="Argument"></ATT>
+                        <ATT name="Sequence"><![CDATA[9]]></ATT>
+                        <ATT name="SortOfMessage">SyncCall</ATT>
+                        <ATT name="Name"><![CDATA[visit(Expression)]]></ATT>
+                        <ATT name="status">1970354901745664</ATT>
+                      </ATTRIBUTES>
+                      <DEPENDENCIES></DEPENDENCIES>
+                    </OBJECT>
+                  </COMP>
+                  <LINK relation="End">
+                    <REFOBJ>
+                      <ID name="Differentiator" mc="Standard.CommunicationNode" uid="37f66025-d2b7-4cdc-9e73-2424c38f9bab"/>
+                    </REFOBJ>
+                  </LINK>
+                </DEPENDENCIES>
+              </OBJECT>
+            </COMP>
+          </DEPENDENCIES>
+        </OBJECT>
+      </COMP>
+      <COMP relation="OwnedCollaboration">
+        <OBJECT>
+          <ID name="locals" mc="Standard.Collaboration" uid="71e97128-fe7d-4686-8ca1-19507943a243"/>
+          <ATTRIBUTES>
+            <ATT name="IsConcurrent">false</ATT>
+            <ATT name="IsAbstract">false</ATT>
+            <ATT name="IsLeaf">false</ATT>
+            <ATT name="IsRoot">false</ATT>
+            <ATT name="Visibility">Public</ATT>
+            <ATT name="Name"><![CDATA[locals]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES></DEPENDENCIES>
+        </OBJECT>
+      </COMP>
+      <COMP relation="Product">
+        <COMPID name="Communication Interaction Communication diagram" mc="Standard.CommunicationDiagram" uid="4aeebaf3-5295-4d6f-b3cc-937211d1cca5"/>
+      </COMP>
+    </DEPENDENCIES>
+  </OBJECT>
+</EXT>

@@ -13,6 +13,9 @@
       <ATT name="status">1970354901745664</ATT>
     </ATTRIBUTES>
     <DEPENDENCIES>
+      <COMP relation="OwnedBehavior">
+        <COMPID name="Communication Interaction" mc="Standard.CommunicationInteraction" uid="05b59b27-f566-4446-8371-4f75babcfba5"/>
+      </COMP>
       <COMP relation="OwnedElement">
         <COMPID name="main" mc="Standard.Class" uid="b010c90a-0952-44b2-8e4a-8f2cace82201"/>
         <COMPID name="Application" mc="Standard.Class" uid="f7396419-c344-4ff1-8808-8e27b7bbbbdc"/>
