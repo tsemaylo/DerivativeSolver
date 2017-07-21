@@ -236,7 +236,25 @@
             <ATT name="Name"><![CDATA[Differentiator]]></ATT>
             <ATT name="status">1970354901745664</ATT>
           </ATTRIBUTES>
-          <DEPENDENCIES></DEPENDENCIES>
+          <DEPENDENCIES>
+            <COMP relation="Descriptor">
+              <OBJECT>
+                <ID name="Note" mc="Infrastructure.Note" uid="3e0edff9-59e6-4ab4-81a1-b3fd6301f3a5"/>
+                <ATTRIBUTES>
+                  <ATT name="Content"><![CDATA[<p>Some stuff is omitted becouse this diagram is intended to model and analyze dataflow between object and their ownership.</p>
+]]></ATT>
+                  <ATT name="MimeType"></ATT>
+                  <ATT name="Name"><![CDATA[Note]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <LINK relation="Model">
+                    <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                  </LINK>
+                </DEPENDENCIES>
+              </OBJECT>
+            </COMP>
+          </DEPENDENCIES>
         </OBJECT>
         <OBJECT>
           <ID name="Rule" mc="Standard.CommunicationNode" uid="05a92d92-972b-459b-affe-88c5dbcebe8b"/>
@@ -280,6 +298,31 @@
                     <REFOBJ>
                       <ID name="Differentiator" mc="Standard.CommunicationNode" uid="37f66025-d2b7-4cdc-9e73-2424c38f9bab"/>
                     </REFOBJ>
+                  </LINK>
+                </DEPENDENCIES>
+              </OBJECT>
+            </COMP>
+            <COMP relation="Descriptor">
+              <OBJECT>
+                <ID name="Note" mc="Infrastructure.Note" uid="d57750a0-2072-4ed4-8e14-0a45ff93c71e"/>
+                <ATTRIBUTES>
+                  <ATT name="Content"><![CDATA[<p>The question is: How to play with Expresysion instances?</p><p>It is clear that the Expression is a base for the whole hierarchy representing AST.</p><p>Technical problem is how to handle references to child object. Particularly how to reference childs and satisfy memory consistency and avoid leaks.</p>
+
+<ol>
+	<li>row pointers - it is neccessary to implement proper desctruction of object and tangled pointers. But the programming can be simple.</li>
+	<li>unique pointers - the problem that expression instances are used by more than one unit.</li>
+	<li>shared_ptr - looks resonable, provides some sort of garbage colection, but implies additional efforts in implementation of clients.</li>
+</ol>
+
+<p>Will go for 3rd option because it provides more safety and follows RAII, despite of additional implementation &quot;efforts&quot;.</p>
+]]></ATT>
+                  <ATT name="MimeType"></ATT>
+                  <ATT name="Name"><![CDATA[Note]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <LINK relation="Model">
+                    <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
                   </LINK>
                 </DEPENDENCIES>
               </OBJECT>
