@@ -20,7 +20,7 @@
 class ParserTest: public Parser {
 public:
 
-	unique_ptr<list<Token>> getTokens(const string &strExpr) const {
+	list<Token> getTokens(const string &strExpr) const {
 		return Parser::getTokens(strExpr);
 	}
 
@@ -44,7 +44,7 @@ public:
 		return Parser::isWhitespace(c);
 	}
 	
-	unique_ptr<Expression> getInitialExpression(const Token &token) const throw(ParsingException){
+	shared_ptr<Expression> getInitialExpression(const Token &token) const throw(ParsingException){
 		return Parser::createExpression(token);
 	}
 };
@@ -60,11 +60,11 @@ protected:
 
 TEST_F(FX_Parser, getTokens_AllSymbolsExpression_ok) {
 	ParserTest parser;
-	unique_ptr<list<Token>> tknList = parser.getTokens("3*sin^2(x + a)/c");
+	list<Token> tknList = parser.getTokens("3*sin^2(x + a)/c");
 
-	list<Token>::const_iterator tkn = tknList->begin();
+	list<Token>::const_iterator tkn = tknList.begin();
 
-	ASSERT_EQ(12, tknList->size());
+	ASSERT_EQ(12, tknList.size());
 
 	EXPECT_STREQ("3", tkn->getValue().c_str());
 	EXPECT_EQ(TNumeric, tkn->getType());
@@ -110,7 +110,7 @@ TEST_F(FX_Parser, getInitialExpression_NumericToken_ConstantExpression) {
 	ParserTest parser;
 	Token tkn("42", TNumeric);
 	
-	unique_ptr<Expression> expr = parser.getInitialExpression(tkn);
+	shared_ptr<Expression> expr = parser.getInitialExpression(tkn);
 	EXPECT_EQ(EConstant, expr->type);
 	EXPECT_STREQ("42", ((Constant *)(expr.get()))->value.c_str());
 }
@@ -119,7 +119,7 @@ TEST_F(FX_Parser, getInitialExpression_AlphaNumericToken_VariableExpression) {
 	ParserTest parser;
 	Token tkn("X", TAlphaNumeric);
 	
-	unique_ptr<Expression> expr = parser.getInitialExpression(tkn);
+	shared_ptr<Expression> expr = parser.getInitialExpression(tkn);
 	EXPECT_EQ(EVariable, expr->type);
 	EXPECT_STREQ("X", ((Variable *)(expr.get()))->name.c_str());
 }
@@ -128,7 +128,7 @@ TEST_F(FX_Parser, getInitialExpression_OperationToken_FunctionExpression) {
 	ParserTest parser;
 	Token tkn("+", TOperation);
 	
-	unique_ptr<Expression> expr = parser.getInitialExpression(tkn);
+	shared_ptr<Expression> expr = parser.getInitialExpression(tkn);
 	EXPECT_EQ(ESum, expr->type);
 }
 
@@ -136,7 +136,7 @@ TEST_F(FX_Parser, parse_SimpleSummation_FunctionWithTwoArgs) {
 	ParserTest parser;
 	const string strExpr="a+b";
 	
-	unique_ptr<Expression> expr = parser.parse(strExpr);
+	shared_ptr<Expression> expr = parser.parse(strExpr);
 	ASSERT_EQ(expr->type, ESum);
 }
 

@@ -16,8 +16,8 @@
 class Sub : public Expression
 {
 public:
-	unique_ptr<Expression> lArg;
-	unique_ptr<Expression> rArg;
+	shared_ptr<Expression> lArg;
+	shared_ptr<Expression> rArg;
 
 	Sub();
 	

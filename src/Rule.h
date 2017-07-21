@@ -22,7 +22,7 @@ using namespace std;
  */
 class Rule{
 public:
-	virtual bool apply(list<unique_ptr<Expression>> &stack) const throw(ParsingException) = 0;
+	virtual bool apply(list<shared_ptr<Expression>> &stack) const throw(ParsingException) = 0;
 };
 
 #endif	/* RULE_H */

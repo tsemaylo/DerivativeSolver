@@ -24,12 +24,12 @@
 class Visitor
 {
 public:	
-	virtual void visit(const Constant &expr) throw(TraverseException) = 0;
-	virtual void visit(const Variable &expr) throw(TraverseException) = 0;
-	virtual void visit(const Sum &expr) throw(TraverseException) = 0;
-	virtual void visit(const Sub &expr) throw(TraverseException) = 0;
-	virtual void visit(const Div &expr) throw(TraverseException) = 0;
-	virtual void visit(const Mult &expr) throw(TraverseException) = 0;
+	virtual void visit(const shared_ptr<const Constant> &expr) throw(TraverseException) = 0;
+	virtual void visit(const shared_ptr<const Variable> &expr) throw(TraverseException) = 0;
+	virtual void visit(const shared_ptr<const Sum> &expr) throw(TraverseException) = 0;
+	virtual void visit(const shared_ptr<const Sub> &expr) throw(TraverseException) = 0;
+	virtual void visit(const shared_ptr<const Div> &expr) throw(TraverseException) = 0;
+	virtual void visit(const shared_ptr<const Mult> &expr) throw(TraverseException) = 0;
 };
 
 #endif	/* VISITOR_H */

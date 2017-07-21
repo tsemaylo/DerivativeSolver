@@ -13,5 +13,5 @@
 Sub::Sub() : Expression(ESub) {}
 
 void Sub::traverse(Visitor &visitor) const throw(TraverseException) {
-	visitor.visit(*this);
+	visitor.visit(shared_ptr<const Sub>(this));
 }

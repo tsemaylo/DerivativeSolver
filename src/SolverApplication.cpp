@@ -48,7 +48,7 @@ int SolverApplication::run()
 {
 	Parser parser;
 	try{
-		unique_ptr<Expression> expr = parser.parse(this->strExpression);
+		shared_ptr<Expression> expr = parser.parse(this->strExpression);
 
 		Differentiator differentiator=Differentiator(this->strVariable);
 		expr->traverse(differentiator);

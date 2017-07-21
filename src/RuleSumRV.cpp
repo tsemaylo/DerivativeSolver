@@ -10,15 +10,15 @@
 #include "RuleSumRV.h"
 #include "Sum.h"
 
-bool RuleSumRV::apply(list<unique_ptr<Expression>> &stack) const throw(ParsingException) {
+bool RuleSumRV::apply(list<shared_ptr<Expression>> &stack) const throw(ParsingException) {
 	// search for the patterns
 	
 	// Function(L+) Expression -> Function(L+R)
-	list<unique_ptr<Expression>>::iterator item=stack.begin();
-	list<unique_ptr<Expression>>::iterator end=stack.end();
+	list<shared_ptr<Expression>>::iterator item=stack.begin();
+	list<shared_ptr<Expression>>::iterator end=stack.end();
 	
 	while(item!=end){
-		list<unique_ptr<Expression>>::iterator nextItem=item;
+		list<shared_ptr<Expression>>::iterator nextItem=item;
 		++nextItem;
 		
 		if((*item)->type == ESum){
@@ -31,7 +31,7 @@ bool RuleSumRV::apply(list<unique_ptr<Expression>> &stack) const throw(ParsingEx
 			
 			// the expression on the left side is correct
 			// initialize l-side argument
-			dynamic_cast<Sum *>((*item).get())->rArg = move(*nextItem);
+			dynamic_cast<Sum *>((*item).get())->rArg = *nextItem;
 			// reduce the stack
 			stack.erase(nextItem);
 			

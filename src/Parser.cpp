@@ -74,8 +74,9 @@ bool Parser::isWhitespace(char c) const
 	return (c==' ' || c=='\t');
 }
 
-unique_ptr<list<Token>> Parser::getTokens(const string &strExpr) const {
-	auto tokens=std::make_unique<list<Token>>();
+list<Token> Parser::getTokens(const string &strExpr) const {
+	list<Token> tokens;
+			
 	/**
 	 * traverse the string and split it into valid tokens.
 	 * The token is
@@ -114,7 +115,7 @@ unique_ptr<list<Token>> Parser::getTokens(const string &strExpr) const {
 			// save old token
 			if (!tokenValue.empty()) {
 				Token token(tokenValue, tokenType);
-				tokens->push_back(token);
+				tokens.push_back(token);
 			}
 			// prepare a new token
 			tokenValue.clear();
@@ -127,58 +128,52 @@ unique_ptr<list<Token>> Parser::getTokens(const string &strExpr) const {
 	// put the last token into list
 	if (!tokenValue.empty()) {
 		Token token(tokenValue, tokenType);
-		tokens->push_back(token);
+		tokens.push_back(token);
 	}
 	
 	return tokens;
 }
 
 
-bool Parser::doReduce(list<unique_ptr<Expression>> &stack) const {
+bool Parser::doReduce(list<shared_ptr<Expression>> &stack) const {
 	// go through the list of rules and check if it is applicable to the provided stack
-	array<unique_ptr<Rule>, 2>::const_iterator rule = this->grammar.begin();
-	array<unique_ptr<Rule>, 2>::const_iterator lastRule = this->grammar.end();
-	
-	while(rule!=lastRule){
+	for(auto &rule : this->grammar){
 		// try to apply the rule to reduce the stack
-		if((*rule)->apply(stack)){
+		if(rule->apply(stack)){
 			return true;
-		}else{
-			// rule is not applicable try next one
-			rule++;
 		}
 	}
 	
 	return false;
 }
 
-unique_ptr<Expression> Parser::createOperation(const string opSymbol) const throw(ParsingException){
+shared_ptr<Expression> Parser::createOperation(const string opSymbol) const throw(ParsingException){
 	if(opSymbol=="+"){
-		return make_unique<Sum>();
+		return make_shared<Sum>();
 	}
 	if(opSymbol=="-"){
-		return make_unique<Sub>();
+		return make_shared<Sub>();
 	}
 	if(opSymbol=="*"){
-		return make_unique<Mult>();
+		return make_shared<Mult>();
 	}
 	if(opSymbol=="/" || opSymbol=="\\"){
-		return make_unique<Div>();
+		return make_shared<Div>();
 	}
 	
 	throw ParsingException("Unknown type of token (operation is not supported).");
 }
 
-unique_ptr<Expression> Parser::createExpression(const Token &token) const throw(ParsingException){
+shared_ptr<Expression> Parser::createExpression(const Token &token) const throw(ParsingException){
 	
 	switch(token.getType()){
 		case TNumeric:
-			return make_unique<Constant>(token.getValue());
+			return make_shared<Constant>(token.getValue());
 		case TOperation:
-			return move(createOperation(token.getValue()));
+			return createOperation(token.getValue());
 		case TAlphaNumeric:
 			// assuming that it is variable 
-			return make_unique<Variable>(token.getValue());
+			return make_shared<Variable>(token.getValue());
 		case TGroupBracket:
 			// Parenting bracket
 			// @TODO so far no expression for this type
@@ -190,7 +185,7 @@ unique_ptr<Expression> Parser::createExpression(const Token &token) const throw(
 	}
 }
 
-void Parser::doParseTokens(list<Token>::const_iterator start, list<Token>::const_iterator end, list<unique_ptr<Expression>> &stack) const throw(ParsingException){
+void Parser::doParseTokens(list<Token>::const_iterator start, list<Token>::const_iterator end, list<shared_ptr<Expression>> &stack) const throw(ParsingException){
 	// opened question: can this function to be called recursively
 	
 	// LR parsing => shift-reduce method (bottom-up)
@@ -222,13 +217,15 @@ void Parser::doParseTokens(list<Token>::const_iterator start, list<Token>::const
 	}
 }
 
-unique_ptr<Expression> Parser::parseTokens(const unique_ptr<list<Token>> tokens) const {
-	list<unique_ptr<Expression>> stack;
-	this->doParseTokens(tokens->begin(), tokens->end(), stack);
-	return move(stack.front()); // @TODO what is happening here?
+shared_ptr<Expression> Parser::parseTokens(const list<Token> &tokens) const {
+	list<shared_ptr<Expression>> stack;
+	this->doParseTokens(tokens.begin(), tokens.end(), stack);
+	return stack.front();
 }
 
-unique_ptr<Expression> Parser::parse(const string &strExpr) const throw(ParsingException) {
+const shared_ptr<Expression> Parser::parse(const string &strExpr) const throw(ParsingException) {
+	//list<Token> tokensList=;
+	///@TODO tokensList.swap(this->getTokens(strExpr));
 	return this->parseTokens(this->getTokens(strExpr));
 }
 

@@ -14,7 +14,7 @@
 
 class RuleSumRV : public Rule
 {
-	bool apply(list<unique_ptr<Expression>> &stack) const throw(ParsingException) final;
+	bool apply(list<shared_ptr<Expression>> &stack) const throw(ParsingException) final;
 };
 
 #endif	/* RULESUMRV_H */

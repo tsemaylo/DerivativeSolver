@@ -11,5 +11,5 @@
 Constant::Constant(string value) : Expression(EConstant), value(value){}
 
 void Constant::traverse(Visitor &visitor) const throw(TraverseException) {
-	visitor.visit(*this);
+	visitor.visit(shared_ptr<const Constant>(this));
 }

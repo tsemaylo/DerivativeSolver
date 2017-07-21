@@ -12,18 +12,18 @@
 
 using namespace std;
 
-bool RuleSumLV::apply(list<unique_ptr<Expression>> &stack) const throw(ParsingException) {
+bool RuleSumLV::apply(list<shared_ptr<Expression>> &stack) const throw(ParsingException) {
 	// search for the patterns
 	
-	// Expression Function(+) -> Function(L+)
-	list<unique_ptr<Expression>>::iterator item=stack.begin();
-	list<unique_ptr<Expression>>::iterator end=stack.end();
+	// Expression Function(+) -> Function(L+)	
+	list<shared_ptr<Expression>>::iterator item=stack.begin();
+	list<shared_ptr<Expression>>::iterator end=stack.end();
 	
 	while(item!=end){
-		list<unique_ptr<Expression>>::iterator nextItem=item;
-		++nextItem;
+		list<shared_ptr<Expression>>::iterator prevItem=item;
+		++item;
 		
-		if((*nextItem)->type == ESum){
+		if((*item)->type == ESum){
 			// ok we found "+" opeartor
 			// then the left operand comes to + operationand item is removed from the stack
 			
@@ -34,14 +34,12 @@ bool RuleSumLV::apply(list<unique_ptr<Expression>> &stack) const throw(ParsingEx
 			
 			// the expression on the left side is correct
 			// initialize l-side argument
-			dynamic_cast<Sum *>((*nextItem).get())->lArg=move(*item);
+			dynamic_cast<Sum *>((*item).get())->lArg=(*prevItem);
 			// reduce the stack
-			stack.erase(item);
+			stack.erase(prevItem);
 			
 			return true;
 		}
-		
-		++item;
 	}
 
 	return false;

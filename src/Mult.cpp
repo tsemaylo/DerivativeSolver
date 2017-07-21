@@ -13,5 +13,5 @@
 Mult::Mult() : Expression(EMult) {}
 
 void Mult::traverse(Visitor &visitor) const throw(TraverseException) {
-	visitor.visit(*this);
+	visitor.visit(shared_ptr<const Mult>(this));
 }

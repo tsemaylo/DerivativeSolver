@@ -9,49 +9,49 @@
 
 #include "StringGenerator.h"
 
-void StringGenerator::visit(const Constant& expr) throw(TraverseException) {
-	this->result=expr.value;
+void StringGenerator::visit(const shared_ptr<const Constant>& expr) throw(TraverseException) {
+	this->result=expr->value;
 }
 
-void StringGenerator::visit(const Variable& expr) throw(TraverseException) {
-	this->result=expr.name;
+void StringGenerator::visit(const shared_ptr<const Variable>& expr) throw(TraverseException) {
+	this->result=expr->name;
 }
 
-void StringGenerator::visit(const Sum& expr) throw(TraverseException) {
-	expr.lArg->traverse(*this);
+void StringGenerator::visit(const shared_ptr<const Sum>& expr) throw(TraverseException) {
+	expr->lArg->traverse(*this);
 	string strLArg=this->getLastVisitResult();
 	
-	expr.rArg->traverse(*this);
+	expr->rArg->traverse(*this);
 	string strRArg=this->getLastVisitResult();
 	
 	this->setLastVisitResult(strLArg + "+" + strRArg);
 }
 
-void StringGenerator::visit(const Sub& expr) throw(TraverseException) {
-	expr.lArg->traverse(*this);
+void StringGenerator::visit(const shared_ptr<const Sub>& expr) throw(TraverseException) {
+	expr->lArg->traverse(*this);
 	string strLArg=this->getLastVisitResult();
 	
-	expr.rArg->traverse(*this);
+	expr->rArg->traverse(*this);
 	string strRArg=this->getLastVisitResult();
 	
 	this->setLastVisitResult(strLArg + "-" + strRArg);
 }
 
-void StringGenerator::visit(const Mult& expr) throw(TraverseException) {
-	expr.lArg->traverse(*this);
+void StringGenerator::visit(const shared_ptr<const Mult>& expr) throw(TraverseException) {
+	expr->lArg->traverse(*this);
 	string strLArg=this->getLastVisitResult();
 	
-	expr.rArg->traverse(*this);
+	expr->rArg->traverse(*this);
 	string strRArg=this->getLastVisitResult();
 	
 	this->setLastVisitResult(strLArg + "*" + strRArg);
 }
 
-void StringGenerator::visit(const Div& expr) throw(TraverseException) {
-	expr.lArg->traverse(*this);
+void StringGenerator::visit(const shared_ptr<const Div>& expr) throw(TraverseException) {
+	expr->lArg->traverse(*this);
 	string strLArg=this->getLastVisitResult();
 	
-	expr.rArg->traverse(*this);
+	expr->rArg->traverse(*this);
 	string strRArg=this->getLastVisitResult();
 	
 	this->setLastVisitResult(strLArg + "/" + strRArg);

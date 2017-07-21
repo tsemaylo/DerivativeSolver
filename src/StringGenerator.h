@@ -19,14 +19,14 @@ class StringGenerator : public Visitor{
 private:
 	string result;
 public:	
-	void visit(const Constant& expr) throw(TraverseException) final;
+	void visit(const shared_ptr<const Constant>& expr) throw(TraverseException) final;
 
-	void visit(const Variable& expr) throw(TraverseException) final;
+	void visit(const shared_ptr<const Variable>& expr) throw(TraverseException) final;
 	
-	void visit(const Sum& expr) throw(TraverseException) final;
-	void visit(const Sub& expr) throw(TraverseException) final;
-	void visit(const Div& expr) throw(TraverseException) final;
-	void visit(const Mult& expr) throw(TraverseException) final;
+	void visit(const shared_ptr<const Sum>& expr) throw(TraverseException) final;
+	void visit(const shared_ptr<const Sub>& expr) throw(TraverseException) final;
+	void visit(const shared_ptr<const Div>& expr) throw(TraverseException) final;
+	void visit(const shared_ptr<const Mult>& expr) throw(TraverseException) final;
 	
 	void setLastVisitResult(string result);
 	

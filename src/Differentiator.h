@@ -18,7 +18,7 @@ using namespace std;
 
 class Differentiator : public Visitor{
 private:
-	Expression *result; // @TODO what about cleaning?
+	shared_ptr<Expression> result; 
 	string variable;
 	
 public:
@@ -27,37 +27,37 @@ public:
 	/**
 	 * @brief Differentiate constant.
 	 */
-	void visit(const Constant &expr) throw(TraverseException) final;
+	void visit(const shared_ptr<const Constant> &expr) throw(TraverseException) final;
 
 	/**
 	 * @brief Differentiate variable.
 	 */
-	void visit(const Variable &expr) throw(TraverseException) final;
+	void visit(const shared_ptr<const Variable> &expr) throw(TraverseException) final;
 
 	/**
 	 * @brief Differentiate summation operation.
 	 */
-	void visit(const Sum &expr) throw(TraverseException) final;
+	void visit(const shared_ptr<const Sum> &expr) throw(TraverseException) final;
 	
 	/**
 	 * @brief Differentiate subtraction operation.
 	 */
-	void visit(const Sub &expr) throw(TraverseException) final;
+	void visit(const shared_ptr<const Sub> &expr) throw(TraverseException) final;
 	
 	/**
 	 * @brief Differentiate multiplication operation.
 	 */
-	void visit(const Mult &expr) throw(TraverseException) final;
+	void visit(const shared_ptr<const Mult> &expr) throw(TraverseException) final;
 	
 	
 	/**
 	 * @brief Differentiate division operation.
 	 */
-	void visit(const Div &expr) throw(TraverseException) final;
+	void visit(const shared_ptr<const Div> &expr) throw(TraverseException) final;
 	
-	void setLastVisitResult(Expression *result);
+	void setLastVisitResult(const shared_ptr<Expression> result);
 	
-	Expression *getLastVisitResult() const;
+	shared_ptr<Expression> getLastVisitResult() const;
 
 };
 
