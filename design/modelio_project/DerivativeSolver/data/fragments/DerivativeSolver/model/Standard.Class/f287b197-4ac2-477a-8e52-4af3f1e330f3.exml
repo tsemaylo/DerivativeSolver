@@ -202,7 +202,7 @@
         <OBJECT>
           <ID name="Note" mc="Infrastructure.Note" uid="0ff2f3b5-8259-4588-bc36-0de07021ff77"/>
           <ATTRIBUTES>
-            <ATT name="Content"><![CDATA[<p>here and for all children I strive for simplicity and prefer to direct access to data members avoiding nummerous seters and getters. Also considering exclusive ownership of the resources (application of unique_ptr).&nbsp;</p><p>Where required the values areset during the construction and limited with const qualifier.&nbsp;</p>
+            <ATT name="Content"><![CDATA[<p>here and for all children I strive for simplicity and prefer to direct access to data members avoiding nummerous seters and getters. Also considering exclusive ownership of the resources (application of unique_ptr).&nbsp;</p><p>UPDATE 21.07.2017: exclusive ownership is hard to achieve because the Expression structures shall be traversed by Visitor obects, reorganized during the parsing which does not really go along with the concept of unique_ptr.&nbsp;</p><p>Where required the values areset during the construction and limited with const qualifier.&nbsp;</p>
 ]]></ATT>
             <ATT name="MimeType"></ATT>
             <ATT name="Name"><![CDATA[Note]]></ATT>
