@@ -15,12 +15,10 @@ bool RuleSumRV::apply(list<shared_ptr<Expression>> &stack) const throw(ParsingEx
 	
 	// Function(L+) Expression -> Function(L+R)
 	list<shared_ptr<Expression>>::iterator item=stack.begin();
-	list<shared_ptr<Expression>>::iterator end=stack.end();
+	list<shared_ptr<Expression>>::iterator nextItem=stack.begin();
+	++nextItem;
 	
-	while(item!=end){
-		list<shared_ptr<Expression>>::iterator nextItem=item;
-		++nextItem;
-		
+	for(;nextItem!=stack.end();++item, ++nextItem){
 		if((*item)->type == ESum){
 			// ok we found "+" opeartor
 			
@@ -37,8 +35,6 @@ bool RuleSumRV::apply(list<shared_ptr<Expression>> &stack) const throw(ParsingEx
 			
 			return true;
 		}
-		
-		++item;
 	}
 	
 	return false;

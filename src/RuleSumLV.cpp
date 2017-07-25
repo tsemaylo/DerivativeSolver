@@ -17,13 +17,12 @@ bool RuleSumLV::apply(list<shared_ptr<Expression>> &stack) const throw(ParsingEx
 	
 	// Expression Function(+) -> Function(L+)	
 	list<shared_ptr<Expression>>::iterator item=stack.begin();
-	list<shared_ptr<Expression>>::iterator end=stack.end();
+	list<shared_ptr<Expression>>::iterator nextItem=stack.begin();
+	++nextItem;
 	
-	while(item!=end){
-		list<shared_ptr<Expression>>::iterator prevItem=item;
-		++item;
-		
-		if((*item)->type == ESum){
+	// iterating through the "frame" of two items
+	for( ;nextItem!=stack.end(); ++item, ++nextItem){		
+		if((*nextItem)->type == ESum){
 			// ok we found "+" opeartor
 			// then the left operand comes to + operationand item is removed from the stack
 			
@@ -34,9 +33,9 @@ bool RuleSumLV::apply(list<shared_ptr<Expression>> &stack) const throw(ParsingEx
 			
 			// the expression on the left side is correct
 			// initialize l-side argument
-			dynamic_cast<Sum *>((*item).get())->lArg=(*prevItem);
+			dynamic_cast<Sum *>((*nextItem).get())->lArg=(*item);
 			// reduce the stack
-			stack.erase(prevItem);
+			stack.erase(item);
 			
 			return true;
 		}
