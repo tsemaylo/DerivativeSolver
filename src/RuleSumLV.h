@@ -16,6 +16,7 @@ using namespace std;
 
 class RuleSumLV : public Rule
 {
+public:
 	bool apply(list<shared_ptr<Expression>> &stack) const throw(ParsingException) final;
 };
 

@@ -135,7 +135,7 @@ list<Token> Parser::getTokens(const string &strExpr) const {
 }
 
 
-bool Parser::doReduce(list<shared_ptr<Expression>> &stack) const {
+bool Parser::doReduce(ParserStack &stack) const {
 	// go through the list of rules and check if it is applicable to the provided stack
 	for(auto &rule : this->grammar){
 		// try to apply the rule to reduce the stack
@@ -185,7 +185,7 @@ shared_ptr<Expression> Parser::createExpression(const Token &token) const throw(
 	}
 }
 
-void Parser::doParseTokens(list<Token>::const_iterator start, list<Token>::const_iterator end, list<shared_ptr<Expression>> &stack) const throw(ParsingException){
+void Parser::doParseTokens(list<Token>::const_iterator start, list<Token>::const_iterator end, ParserStack &stack) const throw(ParsingException){
 	// opened question: can this function to be called recursively
 	
 	// LR parsing => shift-reduce method (bottom-up)
@@ -218,7 +218,7 @@ void Parser::doParseTokens(list<Token>::const_iterator start, list<Token>::const
 }
 
 shared_ptr<Expression> Parser::parseTokens(const list<Token> &tokens) const {
-	list<shared_ptr<Expression>> stack;
+	ParserStack stack;
 	this->doParseTokens(tokens.begin(), tokens.end(), stack);
 	return stack.front();
 }

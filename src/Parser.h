@@ -17,6 +17,7 @@
 #include "Token.h"
 #include "Rule.h"
 #include "ParsingException.h"
+#include "ParserStack.h"
 
 using namespace std;
 
@@ -87,7 +88,7 @@ protected:
 	* @param [in]	end Iterator for last token.
 	* @param [in/out]	Stack of parsed non-terminals.
 	*/
-	void doParseTokens(list<Token>::const_iterator start, list<Token>::const_iterator end, list<shared_ptr<Expression>> &stack) const throw(ParsingException);
+	void doParseTokens(list<Token>::const_iterator start, list<Token>::const_iterator end, ParserStack &stack) const throw(ParsingException);
 	
 	/**
 	 * Reduce the currant stack of non terminals.
@@ -97,7 +98,7 @@ protected:
      * @return true		If the stack was reduced.
 	 * @return false	If the stack was not reduced.
      */
-	bool doReduce(list<shared_ptr<Expression>> &stack) const;
+	bool doReduce(ParserStack &stack) const;
 	
 	shared_ptr<Expression> createOperation(const string opSymbol) const throw(ParsingException);
 	
