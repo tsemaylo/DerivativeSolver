@@ -1,165 +1,67 @@
 /**
- * @file Tests for parser class.
+ * @file Tests for RuleSumRV (process expression on the right sde of summation op).
  *
- * @since 24.04.2016
+ * @since 26.07.2016
  * @author agor
  */
 
 #include <gtest/gtest.h>
-#include <string>
 #include <list>
-#include <vector>
+#include <string>
 #include <memory>
 
-#include "Parser.h"
-#include "Expression.h"
-#include "Constant.h"
+#include "RuleSumRV.h"
 #include "Variable.h"
 #include "Sum.h"
 
-class ParserTest: public Parser {
-public:
 
-	list<Token> getTokens(const string &strExpr) const {
-		return Parser::getTokens(strExpr);
-	}
-
-	bool isAlpha(char c) const {
-		return Parser::isAlpha(c);
-	}
-
-	bool isNumeric(char c) const {
-		return Parser::isNumeric(c);
-	}
-
-	bool isGroupBracket(char c) const {
-		return Parser::isGroupBracket(c);
-	}
-
-	bool isArithOperation(char c) const {
-		return Parser::isArithOperation(c);
-	}
-
-	bool isWhitespace(char c) const {
-		return Parser::isWhitespace(c);
-	}
-	
-	shared_ptr<Expression> getInitialExpression(const Token &token) const throw(ParsingException){
-		return Parser::createExpression(token);
-	}
-};
-
-class FX_Parser: public testing::Test {
+class FX_RuleSumRV: public testing::Test {
 protected:
 	virtual void SetUp() {
 	}
-
+	
 	virtual void TearDown() {
+	}
+	
+	shared_ptr<Expression> createVariable(const string name) const{
+		return make_shared<Variable>(name);
+	}
+	shared_ptr<Expression> createSum() const{
+		return make_shared<Sum>();
 	}
 };
 
-TEST_F(FX_Parser, getTokens_AllSymbolsExpression_ok) {
-	ParserTest parser;
-	list<Token> tknList = parser.getTokens("3*sin^2(x + a)/c");
-
-	list<Token>::const_iterator tkn = tknList.begin();
-
-	ASSERT_EQ(12, tknList.size());
-
-	EXPECT_STREQ("3", tkn->getValue().c_str());
-	EXPECT_EQ(TNumeric, tkn->getType());
-	tkn++;
+TEST_F(FX_RuleSumRV, apply_SimpleSummation_Reducable) {
 	
-	EXPECT_STREQ("*", tkn->getValue().c_str());
-	EXPECT_EQ(TOperation, tkn->getType());
-	tkn++;
-
-	ASSERT_STREQ("sin", tkn->getValue().c_str());
-	tkn++;
-	ASSERT_STREQ("^", tkn->getValue().c_str());
-	tkn++;
-	ASSERT_STREQ("2", tkn->getValue().c_str());
-	tkn++;
-	ASSERT_STREQ("(", tkn->getValue().c_str());
-	tkn++;
-	ASSERT_STREQ("x", tkn->getValue().c_str());
-	tkn++;
-	ASSERT_STREQ("+", tkn->getValue().c_str());
-	tkn++;
-	ASSERT_STREQ("a", tkn->getValue().c_str());
-	tkn++;
-	ASSERT_STREQ(")", tkn->getValue().c_str());
-	tkn++;
-	ASSERT_STREQ("/", tkn->getValue().c_str());
-	tkn++;
-	ASSERT_STREQ("c", tkn->getValue().c_str());
-	tkn++;
-}
-
-TEST_F(FX_Parser, isWhitespace_SpaceSymbol_true) {
-	ParserTest parser;
-	ASSERT_TRUE(parser.isWhitespace(' '));
-}
-
-TEST_F(FX_Parser, isWhitespace_tabSymbol_true) {
-	ParserTest parser;
-	ASSERT_TRUE(parser.isWhitespace('	'));
-}
-
-TEST_F(FX_Parser, getInitialExpression_NumericToken_ConstantExpression) {
-	ParserTest parser;
-	Token tkn("42", TNumeric);
+	ParserStack stack;
+	stack.push_back(createSum());
+	stack.push_back(createVariable("a"));
 	
-	shared_ptr<Expression> expr = parser.getInitialExpression(tkn);
-	EXPECT_EQ(EConstant, expr->type);
-	EXPECT_STREQ("42", ((Constant *)(expr.get()))->value.c_str());
-}
-
-TEST_F(FX_Parser, getInitialExpression_AlphaNumericToken_VariableExpression) {
-	ParserTest parser;
-	Token tkn("X", TAlphaNumeric);
+	RuleSumRV ruleSumRV;
+	ASSERT_TRUE(ruleSumRV.apply(stack));
 	
-	shared_ptr<Expression> expr = parser.getInitialExpression(tkn);
-	EXPECT_EQ(EVariable, expr->type);
-	EXPECT_STREQ("X", ((Variable *)(expr.get()))->name.c_str());
-}
-
-TEST_F(FX_Parser, getInitialExpression_OperationToken_FunctionExpression) {
-	ParserTest parser;
-	Token tkn("+", TOperation);
+	ParserStack::const_iterator i=stack.begin();
 	
-	shared_ptr<Expression> expr = parser.getInitialExpression(tkn);
-	EXPECT_EQ(ESum, expr->type);
-}
-
-TEST_F(FX_Parser, parse_SimpleSummation_FunctionWithTwoArgs) {
-	ParserTest parser;
-	const string strExpr="a+b";
+	shared_ptr<Sum> sum=dynamic_pointer_cast<Sum>(*i);
+	ASSERT_EQ(ESum ,sum->type);
 	
-	shared_ptr<Expression> expr = parser.parse(strExpr);
-	ASSERT_EQ(expr->type, ESum);
+	shared_ptr<Variable> sumRArg= dynamic_pointer_cast<Variable>(sum->rArg);
+	ASSERT_EQ(EVariable ,sumRArg->type);
+	ASSERT_STREQ("a" ,sumRArg->name.c_str());
 }
 
-//TEST_F(FX_Parser, isWhitespace_AlphaSymbol_false) {
-//	ParserTest parser;
-//
-//	// check the parsing tree for expresson a+2
-//	list<Token> *tokensList=parser._getTokens();
-//	tokensList->push_back(Token("a", TAlphaNumeric));
-//	tokensList->push_back(Token("+", TOperation));
-//	tokensList->push_back(Token("a", TNumeric));
-//
-//
-//	Expression *expr=parser.parseTokens();
-//	ASSERT_FALSE(NULL == expr);
-//
-//	Function *eRoot=(Function*) expr;
-//	ASSERT_STREQ("+", eRoot->getName().c_str());
-//
-//	const Variable *varA=(const Variable *)eRoot->getArgument(0);
-//	ASSERT_STREQ("a", varA->getName().c_str());
-//
-//	const Constant *const2=(const Constant *)eRoot->getArgument(1);
-//	ASSERT_STREQ("2", const2->getName().c_str());
-//}
-
+TEST_F(FX_RuleSumRV, apply_SimpleSummation_NotReducable) {
+	ParserStack stack;
+	stack.push_back(createVariable("a"));
+	stack.push_back(createSum());
+	
+	RuleSumRV ruleSumRV;
+	ASSERT_FALSE(ruleSumRV.apply(stack));
+	
+	ASSERT_EQ(2, stack.size());
+	
+	ParserStack::const_iterator i=stack.begin();
+	ASSERT_EQ(EVariable ,dynamic_pointer_cast<Variable>(*i)->type);
+	++i;
+	ASSERT_EQ(ESum ,dynamic_pointer_cast<Sum>(*i)->type);
+}

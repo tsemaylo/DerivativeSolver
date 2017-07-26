@@ -1,6 +1,6 @@
 include ../config
 
-UNITS= Parser
+UNITS= Parser RuleSumLV RuleSumRV
 
 .PHONY: all gtest buildDir testCases clean $(UNITS)
 
@@ -18,6 +18,15 @@ buildDir:
 Parser: 
 	$(CXX) $(CXXFLAGS) -isystem=$(GTEST)/include -I ../$(SRC) -c $@Test.cpp -o $@Test.o ;\
 	$(CXX) $(CXXFLAGS)  $(addprefix ../$(SRC)/, RuleSumLV.o RuleSumRV.o TraverseException.o ParsingException.o Parser.o Token.o Variable.o Sum.o Sub.o Mult.o Div.o Constant.o Expression.o StringGenerator.o Differentiator.o) $@Test.o gtest-all.o gtest_main.o -lpthread  -o ../$(BUILD_DIR)/tests/$@Test 
+
+RuleSumLV: 
+	$(CXX) $(CXXFLAGS) -isystem=$(GTEST)/include -I ../$(SRC) -c $@Test.cpp -o $@Test.o ;\
+	$(CXX) $(CXXFLAGS)  $(addprefix ../$(SRC)/, RuleSumLV.o TraverseException.o ParsingException.o Variable.o Sum.o Expression.o) $@Test.o gtest-all.o gtest_main.o -lpthread  -o ../$(BUILD_DIR)/tests/$@Test 
 	
+RuleSumRV: 
+	$(CXX) $(CXXFLAGS) -isystem=$(GTEST)/include -I ../$(SRC) -c $@Test.cpp -o $@Test.o ;\
+	$(CXX) $(CXXFLAGS)  $(addprefix ../$(SRC)/, RuleSumRV.o TraverseException.o ParsingException.o Variable.o Sum.o Expression.o) $@Test.o gtest-all.o gtest_main.o -lpthread  -o ../$(BUILD_DIR)/tests/$@Test 
+
+
 clean:
 	rm -f *.o 
