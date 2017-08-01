@@ -1,31 +1,37 @@
-# DerrivativeSolver
-Command line tool to calculate the dericative of given expression. Project is created solely to train C++ skills and pursues only academic purposes.
+# What is it?
 
-# Content
-[General](#general)
+This is a small command line programm which calculates a derivative of given mathematical expression. 
+Project is created solely to train C++ skills and pursues only academic purposes.
+This should explain why I have to develope a wheal, instead of using a large variety of existing tools.
 
-[Building](#building) 
+# How to use it?
+First of all, you need to [buid it](#build) before you can use it.
 
-[Testing](#testing)
+The usage is simple
 
-[Usage](#usage)
+solver <expression> <variable>
 
-## General <a name="general"></a>
-TBD
+Couple of examples:
+```
+$ solver "2*x + x^2" x
+$ 2 + 2*x
+```
 
-## Building <a name="building"></a>
-TBD.
+```
+$ solver "a + b" x
+$ 0
+```
 
-## Testing <a name="testing"></a>
-TBD.
+```
+$ solver sin(x^2) x
+$ cos(x^2)*2x
+```
 
-### Unit testing
-Yep, there are some test cases.
+# Building <a name="build"></a>
 
-_Details will be defined later_.
+The build procedure is standard :
+make clean all test
 
-The project incorporates [Google's C++ Test Framework](https://github.com/google/googletest "Google Test").
+# Developing 
+The information regarding the design of application is available in [design notes](docs/notes.md).
 
-
-## Usage <a name="usage"></a>
-TBD

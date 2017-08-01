@@ -2,9 +2,9 @@ include ../config
 
 UNITS= Parser RuleSumLV RuleSumRV
 
-.PHONY: all gtest buildDir testCases clean $(UNITS)
+.PHONY: all gtest buildDir testCases clean run $(UNITS)
 
-all: gtest testCases
+all: gtest testCases run
 
 gtest:
 	$(CXX) $(CXXFLAGS) -isystem=$(GTEST)/include -isystem=$(GTEST) -c $(GTEST)/src/gtest-all.cc -o gtest-all.o
@@ -28,5 +28,10 @@ RuleSumRV:
 	$(CXX) $(CXXFLAGS)  $(addprefix ../$(SRC)/, RuleSumRV.o TraverseException.o ParsingException.o Variable.o Sum.o Expression.o) $@Test.o gtest-all.o gtest_main.o -lpthread  -o ../$(BUILD_DIR)/tests/$@Test 
 
 
+run:
+	@for f in ../$(BUILD_DIR)/tests/*; do\
+		$$f || exit 1;\
+	done
+	
 clean:
 	rm -f *.o 
