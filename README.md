@@ -33,5 +33,5 @@ The build procedure is standard :
 make clean all test
 
 # Developing 
-The information regarding the design of application is available in [design notes](docs/notes.md).
+The information regarding the design of application is available in [design notes](design/docs/notes.md).
 
