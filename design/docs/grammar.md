@@ -3,8 +3,8 @@ The basic grammar of math expressions for parser.
 The order of rule application defines the priority of opperation.
 
 No.	|Stack pattern					| Reduced to		| Implmented in | Additional notes
-----|-------------------------------|-------------------|---------------|---------
-1.	|'a..Z'							| Variable			| 'Shift' operation in **Parser** |
+----|-------------------------------|-------------------|---------------|------------------
+1.	|'a..Z'							| Variable			| 'Shift' operation in **Parser** | 
 2.	|'0..1' Constant				| Constant			| s.a. |
 3.	|'('							| BracketO			| s.a.  | Should a new Expression type **Bracket** be introduced? How opening and closing brackets can be distincted?
 4.	|')'							| BracketC			| s.a.  |
