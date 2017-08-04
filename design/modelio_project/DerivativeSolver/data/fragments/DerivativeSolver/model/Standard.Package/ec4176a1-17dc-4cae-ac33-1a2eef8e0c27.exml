@@ -36,9 +36,29 @@
         <COMPID name="ParsingException" mc="Standard.Class" uid="17dcc329-dc13-4848-8f84-e994154eee3a"/>
         <COMPID name="TraverseException" mc="Standard.Class" uid="4a09998f-6926-4f6c-9daa-364c4b0c74ba"/>
         <COMPID name="std::exception" mc="Standard.Class" uid="62d77f1e-15dd-4ac7-8840-85b9db4b53cc"/>
+        <COMPID name="Sin" mc="Standard.Class" uid="e4f15675-7f7f-4e70-b9cd-67ab36bbf2b1"/>
+        <COMPID name="Cos" mc="Standard.Class" uid="b8749c44-43a7-43cd-9183-b7728c983cb6"/>
+        <COMPID name="Tan" mc="Standard.Class" uid="dcbcedf7-5c84-4ca3-a56a-d9fa4838428c"/>
+        <COMPID name="Ctan" mc="Standard.Class" uid="3f7528b6-fd76-4a52-9d65-d3296943aea9"/>
+        <COMPID name="Ln" mc="Standard.Class" uid="9fb9a57e-50c5-485c-bc38-73962fc6032b"/>
+        <COMPID name="Exp" mc="Standard.Class" uid="a46427f9-7cc5-4d9e-8a6a-dcc9a4768ce8"/>
+        <COMPID name="Pow" mc="Standard.Class" uid="d98ab4b9-f458-4306-8764-35c66773ef89"/>
+        <COMPID name="RuleFunction" mc="Standard.Class" uid="293ad1f3-a9f8-4746-8eca-390dc1e337fa"/>
+        <COMPID name="RulePowLV" mc="Standard.Class" uid="8b05db10-5e71-40c4-9184-8519db74804d"/>
+        <COMPID name="RulePowRV" mc="Standard.Class" uid="2bc9af93-0cc6-41f5-9aa5-0569c7f94b5a"/>
+        <COMPID name="RuleMultLV" mc="Standard.Class" uid="339bf458-5deb-4254-b4e5-e323ff0264ab"/>
+        <COMPID name="RuleMultRV" mc="Standard.Class" uid="451498fd-9d93-45e0-9191-cf3468e46035"/>
+        <COMPID name="RuleDivLV" mc="Standard.Class" uid="3666e311-8b18-4dc4-9584-82151d9eb23e"/>
+        <COMPID name="RuleDivRV" mc="Standard.Class" uid="6da3501e-1576-4544-bcbf-8cf7b6cf7ff5"/>
+        <COMPID name="RuleSumLV" mc="Standard.Class" uid="bffdada9-6fa9-4ae9-a343-ea34faa00896"/>
+        <COMPID name="RuleSumRV" mc="Standard.Class" uid="0dbf59d8-4055-4557-9cec-34fcaca3f6d9"/>
+        <COMPID name="RuleSubLV" mc="Standard.Class" uid="190945b6-0ca1-4a06-9e66-60e250a61710"/>
+        <COMPID name="RuleSubRV" mc="Standard.Class" uid="3ee4c8e2-8a54-42fb-a591-02e2cac88eb3"/>
       </COMP>
       <COMP relation="Product">
-        <COMPID name="derivativesolver Class diagram" mc="Standard.ClassDiagram" uid="051e4aeb-64d7-49b9-b747-33b32c225604"/>
+        <COMPID name="General structure" mc="Standard.ClassDiagram" uid="051e4aeb-64d7-49b9-b747-33b32c225604"/>
+        <COMPID name="Syntax tree" mc="Standard.ClassDiagram" uid="d42220d1-7736-468e-8d35-0d402c3ee73b"/>
+        <COMPID name="Rules" mc="Standard.ClassDiagram" uid="089445b2-1661-4f69-94d9-3193d5bb5060"/>
       </COMP>
     </DEPENDENCIES>
   </OBJECT>

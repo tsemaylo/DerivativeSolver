@@ -127,6 +127,21 @@
             </LINK>
           </DEPENDENCIES>
         </OBJECT>
+        <OBJECT>
+          <ID name="Note1" mc="Infrastructure.Note" uid="34218beb-819b-4db0-b23f-ddd9d6222df2"/>
+          <ATTRIBUTES>
+            <ATT name="Content"><![CDATA[<p><strong>Info from 04.08.2017</strong></p><p>Looks like lots of duplication. Is it possible to minimize the number of rules? - Depends on implementation of particular rules. So far it is not foreseeable. It might be overkill to elaborate this here.</p><p>Later refactoring has to be considered.</p>
+]]></ATT>
+            <ATT name="MimeType"></ATT>
+            <ATT name="Name"><![CDATA[Note1]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES>
+            <LINK relation="Model">
+              <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+            </LINK>
+          </DEPENDENCIES>
+        </OBJECT>
       </COMP>
     </DEPENDENCIES>
   </OBJECT>

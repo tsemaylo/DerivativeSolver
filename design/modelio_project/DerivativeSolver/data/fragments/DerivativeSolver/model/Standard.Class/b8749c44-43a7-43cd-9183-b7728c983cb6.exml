@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
-<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="Sub" version="4">
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="Cos" version="4">
   <OBJECT>
-    <ID name="Sub" mc="Standard.Class" uid="7364e88e-5c8f-467b-ae74-8269a68d2269"/>
+    <ID name="Cos" mc="Standard.Class" uid="b8749c44-43a7-43cd-9183-b7728c983cb6"/>
     <PID name="derivativesolver" mc="Standard.Package" uid="ec4176a1-17dc-4cae-ac33-1a2eef8e0c27"/>
     <ATTRIBUTES>
       <ATT name="IsActive">false</ATT>
@@ -11,13 +11,13 @@
       <ATT name="IsLeaf">false</ATT>
       <ATT name="IsRoot">false</ATT>
       <ATT name="Visibility">Public</ATT>
-      <ATT name="Name"><![CDATA[Sub]]></ATT>
+      <ATT name="Name"><![CDATA[Cos]]></ATT>
       <ATT name="status">1970354901745664</ATT>
     </ATTRIBUTES>
     <DEPENDENCIES>
       <COMP relation="Parent">
         <OBJECT>
-          <ID name="Generalization" mc="Standard.Generalization" uid="3ca8882c-fdc6-4c3a-9cc7-2ede9062b800"/>
+          <ID name="Generalization" mc="Standard.Generalization" uid="38210a46-d2c6-4275-b392-07d6ebd659a9"/>
           <ATTRIBUTES>
             <ATT name="Discriminator"></ATT>
             <ATT name="Name"><![CDATA[Generalization]]></ATT>
@@ -32,27 +32,12 @@
       </COMP>
       <COMP relation="Descriptor">
         <OBJECT>
-          <ID name="Note" mc="Infrastructure.Note" uid="3f1b9947-69f8-4071-b6a5-5ba997a421ba"/>
+          <ID name="Note" mc="Infrastructure.Note" uid="874a72f7-4d61-4491-83e6-d4b03ae488e2"/>
           <ATTRIBUTES>
-            <ATT name="Content"><![CDATA[<p>Being are&nbsp;arithmetical operations, Sub, Div, Mult are organized in the same way as Sum.</p>
+            <ATT name="Content"><![CDATA[<p><strong>Level of details:</strong></p><p>The calsses Cos, Tan, Ctan, Ln and&nbsp;Exp are just a math functions of one argument and therefore are having the same structure (see Sin).&nbsp;</p>
 ]]></ATT>
             <ATT name="MimeType"></ATT>
             <ATT name="Name"><![CDATA[Note]]></ATT>
-            <ATT name="status">1970354901745664</ATT>
-          </ATTRIBUTES>
-          <DEPENDENCIES>
-            <LINK relation="Model">
-              <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
-            </LINK>
-          </DEPENDENCIES>
-        </OBJECT>
-        <OBJECT>
-          <ID name="Note1" mc="Infrastructure.Note" uid="8c9e83cc-1b7e-442a-9afe-cd56a0da449c"/>
-          <ATTRIBUTES>
-            <ATT name="Content"><![CDATA[<p><strong>Level of details:</strong></p><p>Being arithmetical opeartions and having two argument (left and right)&nbsp;classes Sub, Div, Mult and Pow are organized similarly as Sum.</p>
-]]></ATT>
-            <ATT name="MimeType"></ATT>
-            <ATT name="Name"><![CDATA[Note1]]></ATT>
             <ATT name="status">1970354901745664</ATT>
           </ATTRIBUTES>
           <DEPENDENCIES>

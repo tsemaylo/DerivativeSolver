@@ -7,6 +7,10 @@ Basically the application consists of the following basic blocks:
 * **Syntax tree** - the hierarchical data structure representing the parsed expression. 
 * **Visitors** are tools to perform operations over syntax tree: like differentiation or output in user-readable form.
 
+## Design goals and priorities
+- Taste of c++ and get the experience
+- Keep design as clean as possible
+
 ## Basic considerations
 
 * using c++14
@@ -23,7 +27,9 @@ The diagramm below depicts the more detailed model of the application.
 As we can see the derived **Expression** types represent syntax tree elements.
 
 The **Parser** implement parsing logic and operates with a grammar. The grammar is built of 
-**Rule**s which are implementing certain [grammar](grammar.md) rules.
+**Rule**s which are implementing certain [grammar](grammar.md) rules. The parser implements the 
+"Shift-Reduce" method, at least some sort of it, because of simplicita of implementation. 
+With this approach the high performance can't be anticipated, it is not a priority anyway.  
 
 There are so far two **Visitor**s:
 * **Differentiator** - actual differentiation of the expression, produces new instance of **Expresson**.
@@ -31,7 +37,14 @@ There are so far two **Visitor**s:
 
 We also have **Application** object which handles interaction with user, provides entry point and performs error handling.
 
-![Class diagram](img/class_diagram.png)
+General class decomposition and relationships
+![Class diagram](img/general_structure.png)
+
+The datails on syntax tree
+![Class diagram](img/syntax_tree.png)
+
+The list of grammar rules
+![Class diagram](img/rules.png)
 
 ### Exception handling
 
@@ -51,9 +64,20 @@ The project incorporates [Google's C++ Test Framework](https://github.com/google
 ## What TO-be-DOne
 - [x] Basic design
 - [x] Implement basic design elements in code
-- [ ] Clarifying and verifying the grammar (IN PROGRESS)
-- [ ] Identify rules to be implemented
-- [ ] Implementation of rules
+- [x] Clarifying and verifying the grammar 
+- [x] Identify rules to be implemented
+      Implementation of rules
+- [ ] RuleSumLV
+- [ ] RuleSumRV
+- [ ] RuleSubLV
+- [ ] RuleSubRV
+- [ ] RuleMultLV
+- [ ] RuleMultRV
+- [ ] RuleDivLV
+- [ ] RuleDivRV
+- [ ] RulePowLV
+- [ ] RulePowRV
+- [ ] RuleFunction
 - [ ] Implementation of Differentiator
 - [ ] Implementation of StringGenerator
 - [ ] Testing scripts fro whole application
