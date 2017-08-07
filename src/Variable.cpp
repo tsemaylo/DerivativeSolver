@@ -15,3 +15,7 @@ Variable::Variable(string name) : Expression(EVariable), name(name) {}
  void Variable::traverse(Visitor &visitor) const throw(TraverseException) {
 	visitor.visit(shared_ptr<const Variable>(this));
 }
+
+ bool Variable::isComplete() const{
+	return true;
+}

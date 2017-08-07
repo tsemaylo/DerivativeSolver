@@ -22,6 +22,8 @@ public:
 	Sub();
 	
 	void traverse(Visitor & ) const throw(TraverseException) final;
+	
+	bool isComplete() const final;
 };
 
 #endif	/* SUB_H */

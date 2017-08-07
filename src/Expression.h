@@ -45,6 +45,7 @@ protected:
 	
 public:
 	const ExpressionType type;
+	bool virtual isComplete() const = 0;
 
 	void virtual traverse(Visitor & ) const throw(TraverseException) = 0;
 };

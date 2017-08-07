@@ -64,3 +64,16 @@ TEST_F(FX_RuleSumLV, apply_SimpleSummation_NotReducable) {
 	++i;
 	ASSERT_EQ(EVariable ,dynamic_pointer_cast<Variable>(*i)->type);
 }
+
+
+TEST_F(FX_RuleSumLV, apply_SummationOperatirWithoutArgument_ParsingException) {
+	ParserStack stack;
+	
+	// ++a
+	stack.push_back(createSum());
+	stack.push_back(createSum());
+	stack.push_back(createVariable("a"));
+	
+	RuleSumLV ruleSumLV;
+	ASSERT_THROW(ruleSumLV.apply(stack), ParsingException);
+}

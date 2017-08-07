@@ -22,6 +22,7 @@ public:
 	Constant(string value);
 
 	void traverse(Visitor & ) const throw(TraverseException) final;
+	bool isComplete() const final;
 };
 
 #endif /* SRC_CONSTANT_H_ */

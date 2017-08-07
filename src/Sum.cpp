@@ -15,3 +15,7 @@ Sum::Sum() : Expression(ESum) {}
 void Sum::traverse(Visitor &visitor) const throw(TraverseException) {
 	visitor.visit(shared_ptr<const Sum>(this));
 }
+
+bool Sum::isComplete() const{
+	return (this->lArg!=nullptr && this->rArg!=nullptr);
+}

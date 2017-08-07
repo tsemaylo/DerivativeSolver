@@ -15,3 +15,7 @@ Mult::Mult() : Expression(EMult) {}
 void Mult::traverse(Visitor &visitor) const throw(TraverseException) {
 	visitor.visit(shared_ptr<const Mult>(this));
 }
+
+bool Mult::isComplete() const{
+	return (this->lArg!=nullptr && this->rArg!=nullptr);
+}

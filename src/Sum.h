@@ -22,6 +22,8 @@ public:
 	Sum();
 	
 	void traverse(Visitor & ) const throw(TraverseException) final;
+	
+	bool isComplete() const final;
 };
 
 #endif	/* SUM_H */

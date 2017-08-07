@@ -22,6 +22,8 @@ public:
 	Div();
 	
 	void traverse(Visitor & ) const throw(TraverseException) final;
+	
+	bool isComplete() const final;
 };
 
 #endif	/* DIV_H */

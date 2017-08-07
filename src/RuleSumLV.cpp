@@ -22,23 +22,27 @@ bool RuleSumLV::apply(list<shared_ptr<Expression>> &stack) const throw(ParsingEx
 	
 	// iterating through the "frame" of two items
 	for( ;nextItem!=stack.end(); ++item, ++nextItem){		
-		if((*nextItem)->type == ESum){
-			// ok we found "+" opeartor
-			// then the left operand comes to + operationand item is removed from the stack
-			
-			// @TODO  if operation of the left side is incomplete then 
-			// throw a parsing exception
-			
-			// @TODO check also brackets
-			
-			// the expression on the left side is correct
-			// initialize l-side argument
-			dynamic_cast<Sum *>((*nextItem).get())->lArg=(*item);
-			// reduce the stack
-			stack.erase(item);
-			
-			return true;
+		if((*nextItem)->type != ESum){
+			continue;
 		}
+		// ok we found "+" opeartor
+		// then the left operand comes to + operationand item is removed from the stack
+			
+		// if operation of the left side is incomplete then 
+		// throw a parsing exception
+		if(!(*item)->isComplete())
+		{
+			/// @TODO it would be nice to give some context in the exception
+			throw ParsingException("Incomplete expression on the left side of '+'.");
+		}
+				
+		// the expression on the left side is correct
+		// initialize l-side argument
+		dynamic_cast<Sum *>((*nextItem).get())->lArg=(*item);
+		// reduce the stack
+		stack.erase(item);
+			
+		return true;
 	}
 
 	return false;

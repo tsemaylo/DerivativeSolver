@@ -22,6 +22,8 @@ public:
 	Mult();
 	
 	void traverse(Visitor & ) const throw(TraverseException) final;
+	
+	bool isComplete() const final;
 };
 
 #endif	/* MULT_H */

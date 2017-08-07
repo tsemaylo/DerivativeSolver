@@ -23,6 +23,8 @@ public:
 	Variable(string name);
 	
 	void traverse(Visitor & ) const throw(TraverseException) final;
+	
+	bool isComplete() const final;
 };
 
 #endif /* SRC_VARIABLE_H_ */
