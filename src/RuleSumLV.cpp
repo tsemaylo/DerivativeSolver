@@ -38,7 +38,8 @@ bool RuleSumLV::apply(list<shared_ptr<Expression>> &stack) const throw(ParsingEx
 				
 		// the expression on the left side is correct
 		// initialize l-side argument
-		dynamic_cast<Sum *>((*nextItem).get())->lArg=(*item);
+		// see Grammar rule #29
+		dynamic_pointer_cast<Sum>(*nextItem)->lArg=(*item);
 		// reduce the stack
 		stack.erase(item);
 			

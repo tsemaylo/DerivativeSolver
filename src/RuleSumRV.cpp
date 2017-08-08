@@ -10,7 +10,7 @@
 #include "RuleSumRV.h"
 #include "Sum.h"
 
-bool RuleSumRV::apply(list<shared_ptr<Expression>> &stack) const throw(ParsingException) {
+bool RuleSumRV::apply(ParserStack &stack) const throw(ParsingException) {
 	// search for the patterns
 	
 	// Function(L+) Expression -> Function(L+R)
@@ -19,22 +19,34 @@ bool RuleSumRV::apply(list<shared_ptr<Expression>> &stack) const throw(ParsingEx
 	++nextItem;
 	
 	for(;nextItem!=stack.end();++item, ++nextItem){
-		if((*item)->type == ESum){
-			// ok we found "+" opeartor
+		if((*item)->type != ESum){
+			continue;
+		}
+		
+		// ok we found "+" opeartor
 			
-			// @TODO if operation on the right side is incomplete then 
-			// throw a parsing exception
-			
-			// @TODO check also brackets
-			
-			// the expression on the left side is correct
-			// initialize l-side argument
-			dynamic_cast<Sum *>((*item).get())->rArg = *nextItem;
-			// reduce the stack
-			stack.erase(nextItem);
-			
+		// if operation on the right side is incomplete then 
+		// throw a parsing exception
+		if(!(*nextItem)->isComplete()){
+			// @TODO it would be nice to give some context in the exception
+			throw ParsingException("Incomplete expression on the right side of '+'.");
+		}
+		
+		// if the left side is empty 
+		// see Grammar rule #31
+		if(dynamic_pointer_cast<Sum>(*item)->lArg==nullptr){
+			// remove summation and left complete expression on the right side as is
+			stack.erase(item);
 			return true;
 		}
+		
+		// the expression on the left side is correct
+		// initialize r-side argument
+		// see Grammar rule #30
+		dynamic_pointer_cast<Sum>(*item)->rArg = *nextItem;
+		// reduce the stack
+		stack.erase(nextItem);
+		return true;
 	}
 	
 	return false;
