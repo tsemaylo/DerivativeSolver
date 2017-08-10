@@ -7,17 +7,17 @@
  * @author agor
  */
 
+#include "bootstrap.h"
 #include "RuleSumLV.h"
 #include "Sum.h"
 
 using namespace std;
 
-bool RuleSumLV::apply(list<shared_ptr<Expression>> &stack) const throw(ParsingException) {
+bool RuleSumLV::apply(ParserStack &stack) const throw(ParsingException) {
 	// search for the patterns
 	
-	// Expression Function(+) -> Function(L+)	
-	list<shared_ptr<Expression>>::iterator item=stack.begin();
-	list<shared_ptr<Expression>>::iterator nextItem=stack.begin();
+	ParserStack::iterator item=stack.begin();
+	ParserStack::iterator nextItem=stack.begin();
 	++nextItem;
 	
 	// iterating through the "frame" of two items
@@ -32,8 +32,7 @@ bool RuleSumLV::apply(list<shared_ptr<Expression>> &stack) const throw(ParsingEx
 		// throw a parsing exception
 		if(!(*item)->isComplete())
 		{
-			/// @TODO it would be nice to give some context in the exception
-			throw ParsingException("Incomplete expression on the left side of '+'.");
+			THROW(ParsingException, "Incomplete expression on the left side of '+'.", to_string(stack));
 		}
 				
 		// the expression on the left side is correct

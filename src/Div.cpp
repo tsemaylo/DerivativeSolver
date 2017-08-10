@@ -13,7 +13,7 @@
 Div::Div() : Expression(EDiv) {}
 
 void Div::traverse(Visitor &visitor) const throw(TraverseException) {
-	visitor.visit(shared_ptr<const Div>(this));
+	visitor.visit(shared_from_this());
 }
 
 bool Div::isComplete() const{

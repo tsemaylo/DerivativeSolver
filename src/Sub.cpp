@@ -13,7 +13,7 @@
 Sub::Sub() : Expression(ESub) {}
 
 void Sub::traverse(Visitor &visitor) const throw(TraverseException) {
-	visitor.visit(shared_ptr<const Sub>(this));
+	visitor.visit(shared_from_this());
 }
 
 bool Sub::isComplete() const{

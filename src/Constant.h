@@ -10,11 +10,12 @@
 #ifndef SRC_CONSTANT_H_
 #define SRC_CONSTANT_H_
 
+#include <memory>
 #include "Expression.h"
 
 using namespace std;
 
-class Constant: public Expression
+class Constant: public Expression, public enable_shared_from_this<Constant> 
 {
 public:
 	const string value;

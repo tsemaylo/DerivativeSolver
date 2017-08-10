@@ -13,7 +13,7 @@
 #include <memory>
 #include "Expression.h"
 
-class Mult : public Expression
+class Mult : public Expression, public enable_shared_from_this<Mult> 
 {
 public:
 	shared_ptr<Expression> lArg;

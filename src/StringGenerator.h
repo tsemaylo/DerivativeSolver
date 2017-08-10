@@ -18,15 +18,21 @@ using namespace std;
 class StringGenerator : public Visitor{
 private:
 	string result;
-public:	
-	void visit(const shared_ptr<const Constant>& expr) throw(TraverseException) final;
-
-	void visit(const shared_ptr<const Variable>& expr) throw(TraverseException) final;
 	
-	void visit(const shared_ptr<const Sum>& expr) throw(TraverseException) final;
-	void visit(const shared_ptr<const Sub>& expr) throw(TraverseException) final;
-	void visit(const shared_ptr<const Div>& expr) throw(TraverseException) final;
-	void visit(const shared_ptr<const Mult>& expr) throw(TraverseException) final;
+	string getArgString(const shared_ptr<const Expression> argExpr) throw(TraverseException);
+	
+	template <typename OpClass>
+	void visitArythmeticalOp(const shared_ptr<const OpClass> expr, string op) throw(TraverseException);
+	
+public:	
+	void visit(const shared_ptr<const Constant> expr) throw(TraverseException) final;
+
+	void visit(const shared_ptr<const Variable> expr) throw(TraverseException) final;
+	
+	void visit(const shared_ptr<const Sum> expr) throw(TraverseException) final;
+	void visit(const shared_ptr<const Sub> expr) throw(TraverseException) final;
+	void visit(const shared_ptr<const Div> expr) throw(TraverseException) final;
+	void visit(const shared_ptr<const Mult> expr) throw(TraverseException) final;
 	
 	void setLastVisitResult(string result);
 	

@@ -20,7 +20,7 @@ class ParsingException : public exception
 private:
 	string message;
 public:
-	ParsingException(string message);
+	ParsingException(string basicMessage, string stackContent);
 	virtual const char* what() const noexcept;
 };
 

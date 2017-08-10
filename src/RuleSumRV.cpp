@@ -7,15 +7,15 @@
  * @author agor
  */
 
+#include "bootstrap.h"
 #include "RuleSumRV.h"
 #include "Sum.h"
 
 bool RuleSumRV::apply(ParserStack &stack) const throw(ParsingException) {
 	// search for the patterns
 	
-	// Function(L+) Expression -> Function(L+R)
-	list<shared_ptr<Expression>>::iterator item=stack.begin();
-	list<shared_ptr<Expression>>::iterator nextItem=stack.begin();
+	ParserStack::iterator item=stack.begin();
+	ParserStack::iterator nextItem=stack.begin();
 	++nextItem;
 	
 	for(;nextItem!=stack.end();++item, ++nextItem){
@@ -28,8 +28,7 @@ bool RuleSumRV::apply(ParserStack &stack) const throw(ParsingException) {
 		// if operation on the right side is incomplete then 
 		// throw a parsing exception
 		if(!(*nextItem)->isComplete()){
-			// @TODO it would be nice to give some context in the exception
-			throw ParsingException("Incomplete expression on the right side of '+'.");
+			THROW(ParsingException, "Incomplete expression on the right side of '+'.", to_string(stack));
 		}
 		
 		// if the left side is empty 

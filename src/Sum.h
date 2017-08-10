@@ -13,7 +13,7 @@
 #include <memory>
 #include "Expression.h"
 
-class Sum : public Expression
+class Sum : public Expression, public enable_shared_from_this<Sum>
 {
 public:
 	shared_ptr<Expression> lArg;

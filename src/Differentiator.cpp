@@ -12,7 +12,7 @@
 Differentiator::Differentiator(string var) : variable(var){
 }
 
-void Differentiator::visit(const shared_ptr<const Constant> &expr) throw(TraverseException)
+void Differentiator::visit(const shared_ptr<const Constant> expr) throw(TraverseException)
 {
 	if(expr->value.empty())
 	{
@@ -23,7 +23,7 @@ void Differentiator::visit(const shared_ptr<const Constant> &expr) throw(Travers
 	this->setLastVisitResult(make_shared<Constant>("0"));
 }
 
-void Differentiator::visit(const shared_ptr<const Variable> &expr)  throw(TraverseException)
+void Differentiator::visit(const shared_ptr<const Variable> expr)  throw(TraverseException)
 {
 	if(expr->name == this->variable)
 	{
@@ -33,7 +33,7 @@ void Differentiator::visit(const shared_ptr<const Variable> &expr)  throw(Traver
 	this->setLastVisitResult(make_shared<Constant>("0"));
 }
 
-void Differentiator::visit(const shared_ptr<const Sum> &expr)  throw(TraverseException)
+void Differentiator::visit(const shared_ptr<const Sum> expr)  throw(TraverseException)
 {
 	shared_ptr<Sum> difSummation=make_shared<Sum>();
 
@@ -48,7 +48,7 @@ void Differentiator::visit(const shared_ptr<const Sum> &expr)  throw(TraverseExc
 	this->setLastVisitResult(difSummation);
 }
 
-void Differentiator::visit(const shared_ptr<const Sub> &expr)  throw(TraverseException)
+void Differentiator::visit(const shared_ptr<const Sub> expr)  throw(TraverseException)
 {
 	shared_ptr<Sub> difSubtraction=make_shared<Sub>();
 
@@ -63,14 +63,14 @@ void Differentiator::visit(const shared_ptr<const Sub> &expr)  throw(TraverseExc
 	this->setLastVisitResult(difSubtraction);
 }
 
-void Differentiator::visit(const shared_ptr<const Div> &expr)  throw(TraverseException)
+void Differentiator::visit(const shared_ptr<const Div> expr)  throw(TraverseException)
 {
 	/// @TODO s.a.
 	/// @TODO NYI
 	this->setLastVisitResult(make_shared<Constant>(to_string(expr->type)));
 }
 
-void Differentiator::visit(const shared_ptr<const Mult> &expr)  throw(TraverseException)
+void Differentiator::visit(const shared_ptr<const Mult> expr)  throw(TraverseException)
 {
 	/// @TODO s.a.
 	/// @TODO NYI

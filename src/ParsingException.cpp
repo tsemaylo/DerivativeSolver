@@ -9,7 +9,7 @@
 
 #include "ParsingException.h"
 
-ParsingException::ParsingException(string message) : message(message) {}
+ParsingException::ParsingException(string basicMessage, string stackContent) : message(basicMessage + " Context: " + stackContent) {}
 
 const char* ParsingException::what() const noexcept{
 	return this->message.c_str();

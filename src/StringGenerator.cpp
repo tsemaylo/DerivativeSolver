@@ -9,52 +9,47 @@
 
 #include "StringGenerator.h"
 
-void StringGenerator::visit(const shared_ptr<const Constant>& expr) throw(TraverseException) {
-	this->result=expr->value;
+#include <iostream>
+
+void StringGenerator::visit(const shared_ptr<const Constant> expr) throw(TraverseException) {
+	this->setLastVisitResult(expr->value);
 }
 
-void StringGenerator::visit(const shared_ptr<const Variable>& expr) throw(TraverseException) {
-	this->result=expr->name;
+void StringGenerator::visit(const shared_ptr<const Variable> expr) throw(TraverseException) {
+	this->setLastVisitResult(expr->name);
 }
 
-void StringGenerator::visit(const shared_ptr<const Sum>& expr) throw(TraverseException) {
-	expr->lArg->traverse(*this);
-	string strLArg=this->getLastVisitResult();
+
+string StringGenerator::getArgString(const shared_ptr<const Expression> argExpr) throw(TraverseException) {
+	if(argExpr == nullptr){
+		return "?";
+	}
 	
-	expr->rArg->traverse(*this);
-	string strRArg=this->getLastVisitResult();
-	
-	this->setLastVisitResult(strLArg + "+" + strRArg);
+	argExpr->traverse(*this);
+	return this->getLastVisitResult();
 }
 
-void StringGenerator::visit(const shared_ptr<const Sub>& expr) throw(TraverseException) {
-	expr->lArg->traverse(*this);
-	string strLArg=this->getLastVisitResult();
-	
-	expr->rArg->traverse(*this);
-	string strRArg=this->getLastVisitResult();
-	
-	this->setLastVisitResult(strLArg + "-" + strRArg);
+template <typename OpClass>
+void StringGenerator::visitArythmeticalOp(const shared_ptr<const OpClass> expr, string op) throw(TraverseException) {
+	string strLArg=this->getArgString(expr->lArg);
+	string strRArg=this->getArgString(expr->rArg);
+	this->setLastVisitResult(strLArg + op + strRArg);
 }
 
-void StringGenerator::visit(const shared_ptr<const Mult>& expr) throw(TraverseException) {
-	expr->lArg->traverse(*this);
-	string strLArg=this->getLastVisitResult();
-	
-	expr->rArg->traverse(*this);
-	string strRArg=this->getLastVisitResult();
-	
-	this->setLastVisitResult(strLArg + "*" + strRArg);
+void StringGenerator::visit(const shared_ptr<const Sum> expr) throw(TraverseException) {
+	visitArythmeticalOp<Sum>(expr, "+");
 }
 
-void StringGenerator::visit(const shared_ptr<const Div>& expr) throw(TraverseException) {
-	expr->lArg->traverse(*this);
-	string strLArg=this->getLastVisitResult();
-	
-	expr->rArg->traverse(*this);
-	string strRArg=this->getLastVisitResult();
-	
-	this->setLastVisitResult(strLArg + "/" + strRArg);
+void StringGenerator::visit(const shared_ptr<const Sub> expr) throw(TraverseException) {
+	visitArythmeticalOp<Sub>(expr, "-");
+}
+
+void StringGenerator::visit(const shared_ptr<const Mult> expr) throw(TraverseException) {
+	visitArythmeticalOp<Mult>(expr, "*");
+}
+
+void StringGenerator::visit(const shared_ptr<const Div> expr) throw(TraverseException) {
+	visitArythmeticalOp<Div>(expr, "/");
 }
 
 string StringGenerator::getLastVisitResult() const {

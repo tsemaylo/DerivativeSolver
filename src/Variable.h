@@ -11,12 +11,13 @@
 #define SRC_VARIABLE_H_
 
 #include <string>
+#include <memory>
 
 #include "Expression.h"
 
 using namespace std;
 
-class Variable: public Expression {
+class Variable: public Expression, public enable_shared_from_this<Variable> {
 public:
 	const string name;
 	

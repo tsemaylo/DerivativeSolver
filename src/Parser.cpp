@@ -8,8 +8,8 @@
  */
 #include <memory>
 
+#include "bootstrap.h"
 #include "Parser.h"
-
 #include "Constant.h"
 #include "Variable.h"
 #include "Sum.h"
@@ -106,7 +106,7 @@ list<Token> Parser::getTokens(const string &strExpr) const {
 			// ignore
 			continue;
 		}else{
-			throw ParsingException("Unknown token");
+			THROW(ParsingException, "Unknown character.", "'" + to_string(c) + "'");
 		}
 
 		if (tokenType != tokenTypeOfSymbol) {
@@ -161,7 +161,7 @@ shared_ptr<Expression> Parser::createOperation(const string opSymbol) const thro
 		return make_shared<Div>();
 	}
 	
-	throw ParsingException("Unknown type of token (operation is not supported).");
+	THROW(ParsingException, "Unknown type of token (operation is not supported).", opSymbol);
 }
 
 shared_ptr<Expression> Parser::createExpression(const Token &token) const throw(ParsingException){
@@ -179,9 +179,9 @@ shared_ptr<Expression> Parser::createExpression(const Token &token) const throw(
 			// @TODO so far no expression for this type
 			// what about to introduce BracketedExpression? which should be eventually eliminated froom AST?
 			// return make_unique<Function>(token.getValue());
-			throw ParsingException("TGroupBracket is NYI");
+			THROW(ParsingException, "TGroupBracket is NYI", "NA");
 		default:
-			throw ParsingException("Unknown type of token");
+			THROW(ParsingException, "Unknown type of token", "Token(" + token.getValue() + ")");
 	}
 }
 
@@ -213,7 +213,7 @@ void Parser::doParseTokens(list<Token>::const_iterator start, list<Token>::const
 		// then probably grammar is not complete
 		// or the syntax of the provided expression is incorrect
 
-		throw ParsingException("The specified expression is ambiguous. Not able to complitely reduce syntax tree.");
+		THROW(ParsingException, "The specified expression is ambiguous. Not able to complitely reduce syntax tree.", to_string(stack));
 	}
 }
 

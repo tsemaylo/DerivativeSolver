@@ -13,7 +13,7 @@
 Variable::Variable(string name) : Expression(EVariable), name(name) {}
 
  void Variable::traverse(Visitor &visitor) const throw(TraverseException) {
-	visitor.visit(shared_ptr<const Variable>(this));
+	visitor.visit(shared_from_this());
 }
 
  bool Variable::isComplete() const{
