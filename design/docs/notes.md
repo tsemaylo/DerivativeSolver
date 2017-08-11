@@ -66,19 +66,20 @@ The project incorporates [Google's C++ Test Framework](https://github.com/google
 - [x] Implement basic design elements in code
 - [x] Clarifying and verifying the grammar 
 - [x] Identify rules to be implemented
-- [ ] Implementation of Parser (IN PROGRESS)
+- [ ] Implementation of Parser (IN PROGRESS)<br/>
       Implementation of rules
-- [ ] RuleSumLV (IN PROGRESS)
-- [ ] RuleSumRV (IN PROGRESS)
-- [ ] RuleSubLV 
-- [ ] RuleSubRV 
-- [ ] RuleMultLV
-- [ ] RuleMultRV
+- [x] RuleSumLV 
+- [x] RuleSumRV
+- [x] RuleSubLV 
+- [x] RuleSubRV 
+- [ ] RuleMultLV (IN PROGRESS)
+- [ ] RuleMultRV (IN PROGRESS)
+- [ ] Refactoring of **Rule**s
 - [ ] RuleDivLV
 - [ ] RuleDivRV
 - [ ] RulePowLV
 - [ ] RulePowRV
 - [ ] RuleFunction
 - [ ] Implementation of Differentiator
-- [ ] Implementation of StringGenerator
+- [x] Implementation of StringGenerator
 - [ ] Testing scripts fro whole application
