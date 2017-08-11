@@ -34,7 +34,14 @@ bool RuleSumLV::apply(ParserStack &stack) const throw(ParsingException) {
 		{
 			THROW(ParsingException, "Incomplete expression on the left side of '+'.", to_string(stack));
 		}
-				
+		
+		if((*nextItem)->isComplete()){
+			// the operation on this position is already completed
+			// for instance in case -(a+b) we will have stack "SubE Sum"
+			// just skip it
+			continue;
+		}
+		
 		// the expression on the left side is correct
 		// initialize l-side argument
 		// see Grammar rule #29

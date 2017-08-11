@@ -40,16 +40,16 @@ TEST_F(FX_RuleSumRV, apply_SimpleSummation_Reducable) {
 	stack.push_back(createVariable("a"));
 	
 	RuleSumRV ruleSumRV;
-	ASSERT_TRUE(ruleSumRV.apply(stack));
+	EXPECT_TRUE(ruleSumRV.apply(stack));
 	
 	ParserStack::const_iterator i=stack.begin();
 	
 	shared_ptr<Sum> sum=dynamic_pointer_cast<Sum>(*i);
-	ASSERT_EQ(ESum ,sum->type);
+	EXPECT_EQ(ESum ,sum->type);
 	
 	shared_ptr<Variable> sumRArg= dynamic_pointer_cast<Variable>(sum->rArg);
-	ASSERT_EQ(EVariable ,sumRArg->type);
-	ASSERT_STREQ("a" ,sumRArg->name.c_str());
+	EXPECT_EQ(EVariable ,sumRArg->type);
+	EXPECT_STREQ("a" ,sumRArg->name.c_str());
 }
 
 TEST_F(FX_RuleSumRV, apply_SummationWithoutLeftArgument_Reducable) {
@@ -59,13 +59,13 @@ TEST_F(FX_RuleSumRV, apply_SummationWithoutLeftArgument_Reducable) {
 	stack.push_back(createVariable("a"));
 	
 	RuleSumRV ruleSumRV;
-	ASSERT_TRUE(ruleSumRV.apply(stack));
+	EXPECT_TRUE(ruleSumRV.apply(stack));
 	
 	ParserStack::const_iterator i=stack.begin();
 	
 	shared_ptr<Variable> varA=dynamic_pointer_cast<Variable>(*i);
-	ASSERT_EQ(EVariable ,varA->type);
-	ASSERT_STREQ("a" ,varA->name.c_str());
+	EXPECT_EQ(EVariable ,varA->type);
+	EXPECT_STREQ("a" ,varA->name.c_str());
 }
 
 TEST_F(FX_RuleSumRV, apply_SimpleSummation_NotReducable) {
@@ -74,14 +74,14 @@ TEST_F(FX_RuleSumRV, apply_SimpleSummation_NotReducable) {
 	stack.push_back(createSum());
 	
 	RuleSumRV ruleSumRV;
-	ASSERT_FALSE(ruleSumRV.apply(stack));
+	EXPECT_FALSE(ruleSumRV.apply(stack));
 	
-	ASSERT_EQ(2, stack.size());
+	EXPECT_EQ(2, stack.size());
 	
 	ParserStack::const_iterator i=stack.begin();
-	ASSERT_EQ(EVariable ,dynamic_pointer_cast<Variable>(*i)->type);
+	EXPECT_EQ(EVariable ,dynamic_pointer_cast<Variable>(*i)->type);
 	++i;
-	ASSERT_EQ(ESum ,dynamic_pointer_cast<Sum>(*i)->type);
+	EXPECT_EQ(ESum ,dynamic_pointer_cast<Sum>(*i)->type);
 }
 
 TEST_F(FX_RuleSumRV, apply_IncompleteExpressionOnTheRight_ParsingException) {
@@ -93,5 +93,5 @@ TEST_F(FX_RuleSumRV, apply_IncompleteExpressionOnTheRight_ParsingException) {
 	stack.push_back(createSum());
 	
 	RuleSumRV ruleSumRV;
-	ASSERT_THROW(ruleSumRV.apply(stack), ParsingException);
+	EXPECT_THROW(ruleSumRV.apply(stack), ParsingException);
 }

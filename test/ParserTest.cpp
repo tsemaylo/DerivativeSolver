@@ -16,6 +16,8 @@
 #include "Constant.h"
 #include "Variable.h"
 #include "Sum.h"
+#include "Sub.h"
+#include "Mult.h"
 
 class ParserTest: public Parser {
 public:
@@ -169,6 +171,44 @@ TEST_F(FX_Parser, parse_SummationWithParentness_SumWithTwoArgs) {
 	shared_ptr<Variable> varA=dynamic_pointer_cast<Variable>(sumL->lArg);
 	EXPECT_EQ("a", varA->name);
 	shared_ptr<Variable> varB=dynamic_pointer_cast<Variable>(sumL->rArg);
+	EXPECT_EQ("b", varB->name);
+}
+
+TEST_F(FX_Parser, parse_MixedExpression_SumWithTwoArgs) {
+	ParserTest parser;
+	const string strExpr="a-b+c";
+	
+	shared_ptr<Expression> expr = parser.parse(strExpr);
+	EXPECT_EQ(expr->type, ESum);
+	
+	shared_ptr<Sum> sum=dynamic_pointer_cast<Sum>(expr);
+	shared_ptr<Variable> varC=dynamic_pointer_cast<Variable>(sum->rArg);
+	EXPECT_EQ("c", varC->name);
+	shared_ptr<Sub> subL=dynamic_pointer_cast<Sub>(sum->lArg);
+	shared_ptr<Variable> varA=dynamic_pointer_cast<Variable>(subL->lArg);
+	EXPECT_EQ("a", varA->name);
+	shared_ptr<Variable> varB=dynamic_pointer_cast<Variable>(subL->rArg);
+	EXPECT_EQ("b", varB->name);
+}
+
+TEST_F(FX_Parser, parse_MixedExpressionWithParentness_SumWithTwoArgs) {
+	ParserTest parser;
+	const string strExpr="-(a-b)+c";
+	
+	shared_ptr<Expression> expr = parser.parse(strExpr);
+	EXPECT_EQ(expr->type, ESum);
+	
+	shared_ptr<Sum> sum=dynamic_pointer_cast<Sum>(expr);
+	shared_ptr<Variable> varC=dynamic_pointer_cast<Variable>(sum->rArg);
+	EXPECT_EQ("c", varC->name);
+	
+	shared_ptr<Mult> multL=dynamic_pointer_cast<Mult>(sum->lArg);
+	shared_ptr<Constant> constN1=dynamic_pointer_cast<Constant>(multL->lArg);
+	EXPECT_EQ("-1", constN1->value);
+	shared_ptr<Sub> subL=dynamic_pointer_cast<Sub>(multL->rArg);
+	shared_ptr<Variable> varA=dynamic_pointer_cast<Variable>(subL->lArg);
+	EXPECT_EQ("a", varA->name);
+	shared_ptr<Variable> varB=dynamic_pointer_cast<Variable>(subL->rArg);
 	EXPECT_EQ("b", varB->name);
 }
 

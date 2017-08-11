@@ -18,6 +18,8 @@
 #include "Mult.h"
 #include "RuleSumLV.h"
 #include "RuleSumRV.h"
+#include "RuleSubLV.h"
+#include "RuleSubRV.h"
 
 Parser::Parser() {
 	// initialize grammar
@@ -26,10 +28,14 @@ Parser::Parser() {
 	 * some basic grammar to parse expressions with summation operation
      */
 	
-	// Expression Function(+) -> Function(L+)
+	// Rule #29
 	this->grammar[0]=move(make_unique<RuleSumLV>());
-	// Function(L+) Expression -> Function(L+R)
+	// Rule #30 #31
 	this->grammar[1]=move(make_unique<RuleSumRV>());
+	// Rule #32
+	this->grammar[2]=move(make_unique<RuleSubLV>());
+	// Rule #33 #34
+	this->grammar[3]=move(make_unique<RuleSubRV>());
 }
 
 

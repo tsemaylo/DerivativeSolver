@@ -38,16 +38,16 @@ TEST_F(FX_RuleSumLV, apply_SimpleSummation_Reducable) {
 	stack.push_back(createSum());
 	
 	RuleSumLV ruleSumLV;
-	ASSERT_TRUE(ruleSumLV.apply(stack));
+	EXPECT_TRUE(ruleSumLV.apply(stack));
 	
 	ParserStack::const_iterator i=stack.begin();
 	
 	shared_ptr<Sum> sum=dynamic_pointer_cast<Sum>(*i);
-	ASSERT_EQ(ESum ,sum->type);
+	EXPECT_EQ(ESum ,sum->type);
 	
 	shared_ptr<Variable> sumLArg= dynamic_pointer_cast<Variable>(sum->lArg);
-	ASSERT_EQ(EVariable ,sumLArg->type);
-	ASSERT_STREQ("a" ,sumLArg->name.c_str());
+	EXPECT_EQ(EVariable ,sumLArg->type);
+	EXPECT_STREQ("a" ,sumLArg->name.c_str());
 }
 
 TEST_F(FX_RuleSumLV, apply_SimpleSummation_NotReducable) {
@@ -57,12 +57,12 @@ TEST_F(FX_RuleSumLV, apply_SimpleSummation_NotReducable) {
 	stack.push_back(createVariable("a"));
 	
 	RuleSumLV ruleSumLV;
-	ASSERT_FALSE(ruleSumLV.apply(stack));
+	EXPECT_FALSE(ruleSumLV.apply(stack));
 	
 	ParserStack::const_iterator i=stack.begin();
-	ASSERT_EQ(ESum ,dynamic_pointer_cast<Sum>(*i)->type);
+	EXPECT_EQ(ESum ,dynamic_pointer_cast<Sum>(*i)->type);
 	++i;
-	ASSERT_EQ(EVariable ,dynamic_pointer_cast<Variable>(*i)->type);
+	EXPECT_EQ(EVariable ,dynamic_pointer_cast<Variable>(*i)->type);
 }
 
 
@@ -75,5 +75,5 @@ TEST_F(FX_RuleSumLV, apply_SummationOperatirWithoutArgument_ParsingException) {
 	stack.push_back(createVariable("a"));
 	
 	RuleSumLV ruleSumLV;
-	ASSERT_THROW(ruleSumLV.apply(stack), ParsingException);
+	EXPECT_THROW(ruleSumLV.apply(stack), ParsingException);
 }
