@@ -109,7 +109,7 @@ list<Token> Parser::getTokens(const string &strExpr) const {
 			THROW(ParsingException, "Unknown character.", "'" + to_string(c) + "'");
 		}
 
-		if (tokenType != tokenTypeOfSymbol) {
+		if (tokenType != tokenTypeOfSymbol || tokenType == TGroupBracket) {
 			// new token
 
 			// save old token
@@ -174,15 +174,42 @@ shared_ptr<Expression> Parser::createExpression(const Token &token) const throw(
 		case TAlphaNumeric:
 			// assuming that it is variable 
 			return make_shared<Variable>(token.getValue());
-		case TGroupBracket:
-			// Parenting bracket
-			// @TODO so far no expression for this type
-			// what about to introduce BracketedExpression? which should be eventually eliminated froom AST?
-			// return make_unique<Function>(token.getValue());
-			THROW(ParsingException, "TGroupBracket is NYI", "NA");
 		default:
 			THROW(ParsingException, "Unknown type of token", "Token(" + token.getValue() + ")");
 	}
+}
+
+list<Token>::const_iterator Parser::findEndOfParentheses(list<Token>::const_iterator start, list<Token>::const_iterator end) const throw(ParsingException){
+	int openingBrackets=1; // we already have so far one oppening bracket
+	int closingBrackets=0; // ...and it is not yet closed
+	string trace="";
+	
+	while(start!=end){
+		trace+=start->getValue();
+		
+		if(start->getType() != TGroupBracket){
+			++start;
+			continue;
+		}
+		
+		if(start->getValue() == "("){
+			openingBrackets++;
+		}
+		
+		if(start->getValue() == ")"){
+			closingBrackets++;
+		}
+		
+		if(openingBrackets == closingBrackets){
+			// fount it
+			return start;
+		}
+			
+		++start;
+	}
+	
+	// ops, brackets are not closed
+	THROW(ParsingException, "No closing bracket has been found.", trace);
 }
 
 void Parser::doParseTokens(list<Token>::const_iterator start, list<Token>::const_iterator end, ParserStack &stack) const throw(ParsingException){
@@ -196,14 +223,30 @@ void Parser::doParseTokens(list<Token>::const_iterator start, list<Token>::const
 		// shift
 		
 		// fill up the stack with initial assumption regarding the non-terminal
-		stack.push_back(this->createExpression(*start));
-				
+		if(start->getType() == TGroupBracket){
+			// is it an open bracket?
+			
+			// it must be an opening bracket
+			if(start->getValue() == ")"){
+				THROW(ParsingException, "Unexpected closing bracket ')'.", to_string(stack));
+			}
+			
+			ParserStack subStack;
+			++start; // this one is bracket - take the next one
+			list<Token>::const_iterator endParentheses=findEndOfParentheses(start, end);
+			this->doParseTokens(start, endParentheses, subStack);
+			stack.push_back(subStack.front());
+			start=endParentheses;
+		}else{	
+			stack.push_back(this->createExpression(*start));
+		}
+		
 		// reduce the stack untill no other posibility to reduce is available
 		while(this->doReduce(stack)){
 			// ???
 		}
 		
-		start++; 
+		++start;
 	}
 	
 	// at the end we should have only one element in the stack that means

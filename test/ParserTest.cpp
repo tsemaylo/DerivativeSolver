@@ -44,8 +44,12 @@ public:
 		return Parser::isWhitespace(c);
 	}
 	
-	shared_ptr<Expression> getInitialExpression(const Token &token) const throw(ParsingException){
+	shared_ptr<Expression> createExpression(const Token &token) const throw(ParsingException){
 		return Parser::createExpression(token);
+	}
+	
+	list<Token>::const_iterator findEndOfParentheses(list<Token>::const_iterator start, list<Token>::const_iterator end) const throw(ParsingException){
+		return Parser::findEndOfParentheses(start, end);
 	}
 };
 
@@ -96,6 +100,17 @@ TEST_F(FX_Parser, getTokens_AllSymbolsExpression_ok) {
 	tkn++;
 }
 
+TEST_F(FX_Parser, getTokens_MultipleParenting_ok) {
+	ParserTest parser;
+	list<Token> tknList = parser.getTokens("((()())())");
+
+	ASSERT_EQ(10, tknList.size());
+
+	for(auto tkn : tknList){
+		EXPECT_EQ(TGroupBracket, tkn.getType());
+	}
+}
+
 TEST_F(FX_Parser, isWhitespace_SpaceSymbol_true) {
 	ParserTest parser;
 	ASSERT_TRUE(parser.isWhitespace(' '));
@@ -106,29 +121,29 @@ TEST_F(FX_Parser, isWhitespace_tabSymbol_true) {
 	ASSERT_TRUE(parser.isWhitespace('	'));
 }
 
-TEST_F(FX_Parser, getInitialExpression_NumericToken_ConstantExpression) {
+TEST_F(FX_Parser, createExpression_NumericToken_ConstantExpression) {
 	ParserTest parser;
 	Token tkn("42", TNumeric);
 	
-	shared_ptr<Expression> expr = parser.getInitialExpression(tkn);
+	shared_ptr<Expression> expr = parser.createExpression(tkn);
 	EXPECT_EQ(EConstant, expr->type);
 	EXPECT_STREQ("42", ((Constant *)(expr.get()))->value.c_str());
 }
 
-TEST_F(FX_Parser, getInitialExpression_AlphaNumericToken_VariableExpression) {
+TEST_F(FX_Parser, createExpression_AlphaNumericToken_VariableExpression) {
 	ParserTest parser;
 	Token tkn("X", TAlphaNumeric);
 	
-	shared_ptr<Expression> expr = parser.getInitialExpression(tkn);
+	shared_ptr<Expression> expr = parser.createExpression(tkn);
 	EXPECT_EQ(EVariable, expr->type);
 	EXPECT_STREQ("X", ((Variable *)(expr.get()))->name.c_str());
 }
 
-TEST_F(FX_Parser, getInitialExpression_OperationToken_FunctionExpression) {
+TEST_F(FX_Parser, createExpression_OperationToken_FunctionExpression) {
 	ParserTest parser;
 	Token tkn("+", TOperation);
 	
-	shared_ptr<Expression> expr = parser.getInitialExpression(tkn);
+	shared_ptr<Expression> expr = parser.createExpression(tkn);
 	EXPECT_EQ(ESum, expr->type);
 }
 
@@ -140,26 +155,62 @@ TEST_F(FX_Parser, parse_SimpleSummation_FunctionWithTwoArgs) {
 	ASSERT_EQ(expr->type, ESum);
 }
 
-//TEST_F(FX_Parser, isWhitespace_AlphaSymbol_false) {
-//	ParserTest parser;
-//
-//	// check the parsing tree for expresson a+2
-//	list<Token> *tokensList=parser._getTokens();
-//	tokensList->push_back(Token("a", TAlphaNumeric));
-//	tokensList->push_back(Token("+", TOperation));
-//	tokensList->push_back(Token("a", TNumeric));
-//
-//
-//	Expression *expr=parser.parseTokens();
-//	ASSERT_FALSE(NULL == expr);
-//
-//	Function *eRoot=(Function*) expr;
-//	ASSERT_STREQ("+", eRoot->getName().c_str());
-//
-//	const Variable *varA=(const Variable *)eRoot->getArgument(0);
-//	ASSERT_STREQ("a", varA->getName().c_str());
-//
-//	const Constant *const2=(const Constant *)eRoot->getArgument(1);
-//	ASSERT_STREQ("2", const2->getName().c_str());
-//}
+TEST_F(FX_Parser, parse_SummationWithParentness_SumWithTwoArgs) {
+	ParserTest parser;
+	const string strExpr="(a+b)+c";
+	
+	shared_ptr<Expression> expr = parser.parse(strExpr);
+	EXPECT_EQ(expr->type, ESum);
+	
+	shared_ptr<Sum> sum=dynamic_pointer_cast<Sum>(expr);
+	shared_ptr<Variable> varC=dynamic_pointer_cast<Variable>(sum->rArg);
+	EXPECT_EQ("c", varC->name);
+	shared_ptr<Sum> sumL=dynamic_pointer_cast<Sum>(sum->lArg);
+	shared_ptr<Variable> varA=dynamic_pointer_cast<Variable>(sumL->lArg);
+	EXPECT_EQ("a", varA->name);
+	shared_ptr<Variable> varB=dynamic_pointer_cast<Variable>(sumL->rArg);
+	EXPECT_EQ("b", varB->name);
+}
 
+TEST_F(FX_Parser, findEndOfParentheses_NormalCase_ok) {
+	ParserTest parser;
+	list<Token> tknList = parser.getTokens("a+(b+c)+(d+e)");
+	list<Token>::const_iterator tkn = tknList.begin(); // 'a'
+	++tkn; // '+'
+	++tkn; // '('
+	++tkn; // 'b'
+	list<Token>::const_iterator end=parser.findEndOfParentheses(tkn, tknList.end());
+	EXPECT_STREQ(")", end->getValue().c_str());
+	
+	EXPECT_STREQ("b", tkn->getValue().c_str());
+	
+	tkn=end;
+	++tkn; // ')'
+	++tkn; // '+'
+	++tkn; // '('
+	++tkn; // 'd'
+	
+	end=parser.findEndOfParentheses(tkn, tknList.end());
+	EXPECT_STREQ(")", end->getValue().c_str());
+}
+
+TEST_F(FX_Parser, findEndOfParentheses_MultipleParentness_ok) {
+	ParserTest parser;
+	list<Token> tknList = parser.getTokens("a+(b+(c+(d+e))+k)");
+	list<Token>::const_iterator tkn = tknList.begin(); // 'a'
+	++tkn; // '+'
+	++tkn; // '('
+	++tkn; // 'b'
+	list<Token>::const_iterator end=parser.findEndOfParentheses(tkn, tknList.end());
+	EXPECT_STREQ(")", end->getValue().c_str());
+}
+
+TEST_F(FX_Parser, findEndOfParentheses_FailedParentness_ParsingException) {
+	ParserTest parser;
+	list<Token> tknList = parser.getTokens("a+(b+(c+(d+e)+k)");
+	list<Token>::const_iterator tkn = tknList.begin(); // 'a'
+	++tkn; // '+'
+	++tkn; // '('
+	++tkn; // 'b'
+	ASSERT_THROW(parser.findEndOfParentheses(tkn, tknList.end()), ParsingException);
+}

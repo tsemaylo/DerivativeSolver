@@ -82,6 +82,18 @@ protected:
 	// @TODO very very private area... do something with it
 	
 	/**
+	 * Search for the closing bracket in the list of Tokens 
+	 * 
+	 * Method traverses the list of tokent starting from the first one after the opening bracket until it will find the closing bracket
+	 * 
+	 * @param [in]	start Iterator for starting token - next token after the opening bracket.
+	 * @param [in]	end Iterator for last available token in the list.
+	 * 
+	 * @return const_iterator pointing to the corresponding closing bracket.
+	 */
+	list<Token>::const_iterator findEndOfParentheses(list<Token>::const_iterator start, list<Token>::const_iterator end) const throw(ParsingException);
+			
+	/**
 	* Parse some part of the tokens.
 	* 
 	* @param [in]	start Iterator for starting token
