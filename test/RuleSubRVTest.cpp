@@ -30,6 +30,10 @@ protected:
 	shared_ptr<Expression> createSub() const{
 		return make_shared<Sub>();
 	}
+
+	Token lookAheadToken(){
+		return Token("NA", TNoToken);
+	}
 };
 
 TEST_F(FX_RuleSubRV, apply_SimpleSubtraction_Reducable) {
@@ -41,7 +45,7 @@ TEST_F(FX_RuleSubRV, apply_SimpleSubtraction_Reducable) {
 	stack.push_back(createVariable("a"));
 	
 	RuleSubRV ruleSubRV;
-	EXPECT_TRUE(ruleSubRV.apply(stack));
+	EXPECT_TRUE(ruleSubRV.apply(stack, lookAheadToken()));
 	
 	ParserStack::const_iterator i=stack.begin();
 	
@@ -60,7 +64,7 @@ TEST_F(FX_RuleSubRV, apply_SubtractionWithoutLeftArgument_Reducable) {
 	stack.push_back(createVariable("a"));
 	
 	RuleSubRV ruleSubRV;
-	EXPECT_TRUE(ruleSubRV.apply(stack));
+	EXPECT_TRUE(ruleSubRV.apply(stack, lookAheadToken()));
 	
 	ParserStack::const_iterator i=stack.begin();
 	
@@ -77,7 +81,7 @@ TEST_F(FX_RuleSubRV, apply_SimpleSummation_NotReducable) {
 	stack.push_back(createSub());
 	
 	RuleSubRV ruleSubRV;
-	EXPECT_FALSE(ruleSubRV.apply(stack));
+	EXPECT_FALSE(ruleSubRV.apply(stack, lookAheadToken()));
 	
 	EXPECT_EQ(2, stack.size());
 	
@@ -96,5 +100,5 @@ TEST_F(FX_RuleSubRV, apply_IncompleteExpressionOnTheRight_ParsingException) {
 	stack.push_back(createSub());
 	
 	RuleSubRV ruleSubRV;
-	EXPECT_THROW(ruleSubRV.apply(stack), ParsingException);
+	EXPECT_THROW(ruleSubRV.apply(stack, lookAheadToken()), ParsingException);
 }

@@ -54,7 +54,6 @@ int SolverApplication::run()
 		expr->traverse(differentiator);
 
 		StringGenerator stringGenerator;
-		// @TODO hie must be result expression
 		differentiator.getLastVisitResult()->traverse(stringGenerator);
 
 		cout << stringGenerator.getLastVisitResult() << endl;

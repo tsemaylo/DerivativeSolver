@@ -17,7 +17,7 @@ using namespace std;
 class RuleSumLV : public Rule
 {
 public:
-	bool apply(ParserStack &stack) const throw(ParsingException) final;
+	bool apply(ParserStack &stack, const Token &lookAheadToken) const throw(ParsingException) final;
 };
 
 #endif	/* RULESUMLV_H */

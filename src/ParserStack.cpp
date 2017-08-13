@@ -13,10 +13,14 @@
 #include <string>
 
 string to_string(const ParserStack &stack){
+	return to_string(stack.begin(), stack.end());
+}
+
+string to_string(ParserStack::const_iterator start, ParserStack::const_iterator end){
 	string out="";
-	for(auto item : stack){
+	for(;start!=end;++start){
 		StringGenerator stringGenerator;
-		item->traverse(stringGenerator);
+		(*start)->traverse(stringGenerator);
 		out+=stringGenerator.getLastVisitResult();
 	}
 	return out;

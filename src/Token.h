@@ -24,13 +24,11 @@ enum TokenType {
 
 class Token
 {
-private:
-	string value;
-	TokenType type;
 public:
+	const string value;
+	const TokenType type;
+
 	Token(string _value, TokenType _type);
-	string getValue() const;
-	TokenType getType() const;
 };
 
 #endif	/* TOKEN_H */

@@ -40,7 +40,7 @@ TEST_F(FX_RuleSumRV, apply_SimpleSummation_Reducable) {
 	stack.push_back(createVariable("a"));
 	
 	RuleSumRV ruleSumRV;
-	EXPECT_TRUE(ruleSumRV.apply(stack));
+	EXPECT_TRUE(ruleSumRV.apply(stack, Token("NA", TNoToken)));
 	
 	ParserStack::const_iterator i=stack.begin();
 	
@@ -59,7 +59,7 @@ TEST_F(FX_RuleSumRV, apply_SummationWithoutLeftArgument_Reducable) {
 	stack.push_back(createVariable("a"));
 	
 	RuleSumRV ruleSumRV;
-	EXPECT_TRUE(ruleSumRV.apply(stack));
+	EXPECT_TRUE(ruleSumRV.apply(stack, Token("NA", TNoToken)));
 	
 	ParserStack::const_iterator i=stack.begin();
 	
@@ -74,7 +74,7 @@ TEST_F(FX_RuleSumRV, apply_SimpleSummation_NotReducable) {
 	stack.push_back(createSum());
 	
 	RuleSumRV ruleSumRV;
-	EXPECT_FALSE(ruleSumRV.apply(stack));
+	EXPECT_FALSE(ruleSumRV.apply(stack, Token("NA", TNoToken)));
 	
 	EXPECT_EQ(2, stack.size());
 	
@@ -93,5 +93,5 @@ TEST_F(FX_RuleSumRV, apply_IncompleteExpressionOnTheRight_ParsingException) {
 	stack.push_back(createSum());
 	
 	RuleSumRV ruleSumRV;
-	EXPECT_THROW(ruleSumRV.apply(stack), ParsingException);
+	EXPECT_THROW(ruleSumRV.apply(stack, Token("NA", TNoToken)), ParsingException);
 }

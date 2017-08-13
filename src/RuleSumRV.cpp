@@ -11,7 +11,7 @@
 #include "RuleSumRV.h"
 #include "Sum.h"
 
-bool RuleSumRV::apply(ParserStack &stack) const throw(ParsingException) {
+bool RuleSumRV::apply(ParserStack &stack, const Token &lookAheadToken) const throw(ParsingException) {
 	// search for the patterns
 	
 	ParserStack::iterator item=stack.begin();
@@ -28,7 +28,7 @@ bool RuleSumRV::apply(ParserStack &stack) const throw(ParsingException) {
 		// if operation on the right side is incomplete then 
 		// throw a parsing exception
 		if(!(*nextItem)->isComplete()){
-			THROW(ParsingException, "Incomplete expression on the right side of '+'.", to_string(stack));
+			THROW(ParsingException, "Incomplete expression on the right side of '+'.", to_string(stack)+ "; at symbol '" + lookAheadToken.value + "'");
 		}
 		
 		// if the left side is empty 

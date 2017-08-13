@@ -13,7 +13,7 @@
 
 using namespace std;
 
-bool RuleSumLV::apply(ParserStack &stack) const throw(ParsingException) {
+bool RuleSumLV::apply(ParserStack &stack, const Token &lookAheadToken) const throw(ParsingException) {
 	// search for the patterns
 	
 	ParserStack::iterator item=stack.begin();
@@ -32,7 +32,7 @@ bool RuleSumLV::apply(ParserStack &stack) const throw(ParsingException) {
 		// throw a parsing exception
 		if(!(*item)->isComplete())
 		{
-			THROW(ParsingException, "Incomplete expression on the left side of '+'.", to_string(stack));
+			THROW(ParsingException, "Incomplete expression on the left side of '+'.", to_string(stack) + "; at symbol '" + lookAheadToken.value + "'");
 		}
 		
 		if((*nextItem)->isComplete()){

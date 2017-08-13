@@ -21,19 +21,19 @@ Parser:
 
 RuleSumLV: 
 	$(CXX) $(CXXFLAGS) -isystem=$(GTEST)/include -I ../$(SRC) -c $@Test.cpp -o $@Test.o ;\
-	$(CXX) $(CXXFLAGS)  $(addprefix ../$(SRC)/, RuleSumLV.o ParserStack.o StringGenerator.o TraverseException.o ParsingException.o Variable.o Sum.o Expression.o) $@Test.o gtest-all.o gtest_main.o -lpthread  -o ../$(BUILD_DIR)/tests/$@Test 
+	$(CXX) $(CXXFLAGS)  $(addprefix ../$(SRC)/, RuleSumLV.o ParserStack.o StringGenerator.o TraverseException.o ParsingException.o Token.o Variable.o Sum.o Expression.o) $@Test.o gtest-all.o gtest_main.o -lpthread  -o ../$(BUILD_DIR)/tests/$@Test 
 	
 RuleSumRV: 
 	$(CXX) $(CXXFLAGS) -isystem=$(GTEST)/include -I ../$(SRC) -c $@Test.cpp -o $@Test.o ;\
-	$(CXX) $(CXXFLAGS)  $(addprefix ../$(SRC)/, RuleSumRV.o ParserStack.o StringGenerator.o TraverseException.o ParsingException.o Variable.o Sum.o Expression.o) $@Test.o gtest-all.o gtest_main.o -lpthread  -o ../$(BUILD_DIR)/tests/$@Test 
+	$(CXX) $(CXXFLAGS)  $(addprefix ../$(SRC)/, RuleSumRV.o ParserStack.o StringGenerator.o TraverseException.o ParsingException.o Token.o Variable.o Sum.o Expression.o) $@Test.o gtest-all.o gtest_main.o -lpthread  -o ../$(BUILD_DIR)/tests/$@Test 
 
 RuleSubLV: 
 	$(CXX) $(CXXFLAGS) -isystem=$(GTEST)/include -I ../$(SRC) -c $@Test.cpp -o $@Test.o ;\
-	$(CXX) $(CXXFLAGS)  $(addprefix ../$(SRC)/, RuleSubLV.o ParserStack.o StringGenerator.o TraverseException.o ParsingException.o Variable.o Sub.o Expression.o) $@Test.o gtest-all.o gtest_main.o -lpthread  -o ../$(BUILD_DIR)/tests/$@Test 
+	$(CXX) $(CXXFLAGS)  $(addprefix ../$(SRC)/, RuleSubLV.o ParserStack.o StringGenerator.o TraverseException.o ParsingException.o Token.o Variable.o Sub.o Expression.o) $@Test.o gtest-all.o gtest_main.o -lpthread  -o ../$(BUILD_DIR)/tests/$@Test 
 	
 RuleSubRV: 
 	$(CXX) $(CXXFLAGS) -isystem=$(GTEST)/include -I ../$(SRC) -c $@Test.cpp -o $@Test.o ;\
-	$(CXX) $(CXXFLAGS)  $(addprefix ../$(SRC)/, RuleSubRV.o ParserStack.o StringGenerator.o TraverseException.o ParsingException.o Variable.o Constant.o Mult.o Sub.o Expression.o) $@Test.o gtest-all.o gtest_main.o -lpthread  -o ../$(BUILD_DIR)/tests/$@Test 
+	$(CXX) $(CXXFLAGS)  $(addprefix ../$(SRC)/, RuleSubRV.o ParserStack.o StringGenerator.o TraverseException.o ParsingException.o Token.o Variable.o Constant.o Mult.o Sub.o Expression.o) $@Test.o gtest-all.o gtest_main.o -lpthread  -o ../$(BUILD_DIR)/tests/$@Test 
 	
 StringGenerator: 
 	$(CXX) $(CXXFLAGS) -isystem=$(GTEST)/include -I ../$(SRC) -c $@Test.cpp -o $@Test.o ;\

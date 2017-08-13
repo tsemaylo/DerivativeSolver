@@ -110,11 +110,22 @@ protected:
      * @return true		If the stack was reduced.
 	 * @return false	If the stack was not reduced.
      */
-	bool doReduce(ParserStack &stack) const;
+	bool doReduce(ParserStack &stack, const Token &lookAheadToken) const;
 	
+	Token getLookAheadToken(list<Token>::const_iterator current, list<Token>::const_iterator end) const;
+
 	shared_ptr<Expression> createOperation(const string opSymbol) const throw(ParsingException);
 	
-	shared_ptr<Expression> createExpression(const Token &token) const throw(ParsingException);
+        /**
+         * Scan the next token in the list of tokens and put the first assumtion about corresponding Expression to the stack.
+         * 
+         * @param [in] current Current (staerting) position in the list of tokens.
+         * @param [in] end The end position in the list of tokent.
+         * @param [out] stack The stack of parser to be extended,.
+         * 
+         * @return New iterator position in the list of tokens.
+         */
+        list<Token>::const_iterator shiftToStack(list<Token>::const_iterator current, list<Token>::const_iterator end, ParserStack &stack) const throw(ParsingException);
 	
 public:
 

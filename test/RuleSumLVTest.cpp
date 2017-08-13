@@ -38,7 +38,7 @@ TEST_F(FX_RuleSumLV, apply_SimpleSummation_Reducable) {
 	stack.push_back(createSum());
 	
 	RuleSumLV ruleSumLV;
-	EXPECT_TRUE(ruleSumLV.apply(stack));
+	EXPECT_TRUE(ruleSumLV.apply(stack, Token("NA", TNoToken)));
 	
 	ParserStack::const_iterator i=stack.begin();
 	
@@ -57,7 +57,7 @@ TEST_F(FX_RuleSumLV, apply_SimpleSummation_NotReducable) {
 	stack.push_back(createVariable("a"));
 	
 	RuleSumLV ruleSumLV;
-	EXPECT_FALSE(ruleSumLV.apply(stack));
+	EXPECT_FALSE(ruleSumLV.apply(stack, Token("NA", TNoToken)));
 	
 	ParserStack::const_iterator i=stack.begin();
 	EXPECT_EQ(ESum ,dynamic_pointer_cast<Sum>(*i)->type);
@@ -75,5 +75,5 @@ TEST_F(FX_RuleSumLV, apply_SummationOperatirWithoutArgument_ParsingException) {
 	stack.push_back(createVariable("a"));
 	
 	RuleSumLV ruleSumLV;
-	EXPECT_THROW(ruleSumLV.apply(stack), ParsingException);
+	EXPECT_THROW(ruleSumLV.apply(stack, Token("NA", TNoToken)), ParsingException);
 }

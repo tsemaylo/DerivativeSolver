@@ -13,7 +13,7 @@
 
 using namespace std;
 
-bool RuleSubLV::apply(ParserStack &stack) const throw(ParsingException) {
+bool RuleSubLV::apply(ParserStack &stack, const Token &lookAheadToken) const throw(ParsingException) {
 	ParserStack::iterator item=stack.begin();
 	ParserStack::iterator nextItem=stack.begin();
 	++nextItem;
@@ -30,7 +30,7 @@ bool RuleSubLV::apply(ParserStack &stack) const throw(ParsingException) {
 		
 		if(!(*item)->isComplete())
 		{
-			THROW(ParsingException, "Incomplete expression on the left side of '-'.", to_string(stack));
+			THROW(ParsingException, "Incomplete expression on the left side of '-'.", to_string(stack)+ "; at symbol '" + lookAheadToken.value + "'");
 		}
 				
 		// see Grammar rule #32

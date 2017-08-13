@@ -19,7 +19,7 @@ typedef	list<shared_ptr<Expression>> ParserStack;
 
 
 string to_string(const ParserStack &val);
-
+string to_string(ParserStack::const_iterator start, ParserStack::const_iterator end);
 
 #endif	/* PARSERSTACK_H */
 

@@ -22,20 +22,20 @@
 #include "RuleSubRV.h"
 
 Parser::Parser() {
-	// initialize grammar
-	
-	/**
-	 * some basic grammar to parse expressions with summation operation
+    // initialize grammar
+
+    /**
+     * some basic grammar to parse expressions with summation operation
      */
-	
-	// Rule #29
-	this->grammar[0]=move(make_unique<RuleSumLV>());
-	// Rule #30 #31
-	this->grammar[1]=move(make_unique<RuleSumRV>());
-	// Rule #32
-	this->grammar[2]=move(make_unique<RuleSubLV>());
-	// Rule #33 #34
-	this->grammar[3]=move(make_unique<RuleSubRV>());
+
+    // Rule #29
+    this->grammar[0]=move(make_unique<RuleSumLV>());
+    // Rule #30 #31
+    this->grammar[1]=move(make_unique<RuleSumRV>());
+    // Rule #32
+    this->grammar[2]=move(make_unique<RuleSubLV>());
+    // Rule #33 #34
+    this->grammar[3]=move(make_unique<RuleSubRV>());
 }
 
 
@@ -141,11 +141,11 @@ list<Token> Parser::getTokens(const string &strExpr) const {
 }
 
 
-bool Parser::doReduce(ParserStack &stack) const {
+bool Parser::doReduce(ParserStack &stack, const Token &lookAheadToken) const {
 	// go through the list of rules and check if it is applicable to the provided stack
 	for(auto &rule : this->grammar){
 		// try to apply the rule to reduce the stack
-		if(rule->apply(stack)){
+		if(rule->apply(stack, lookAheadToken)){
 			return true;
 		}
 	}
@@ -170,39 +170,24 @@ shared_ptr<Expression> Parser::createOperation(const string opSymbol) const thro
 	THROW(ParsingException, "Unknown type of token (operation is not supported).", opSymbol);
 }
 
-shared_ptr<Expression> Parser::createExpression(const Token &token) const throw(ParsingException){
-	
-	switch(token.getType()){
-		case TNumeric:
-			return make_shared<Constant>(token.getValue());
-		case TOperation:
-			return createOperation(token.getValue());
-		case TAlphaNumeric:
-			// assuming that it is variable 
-			return make_shared<Variable>(token.getValue());
-		default:
-			THROW(ParsingException, "Unknown type of token", "Token(" + token.getValue() + ")");
-	}
-}
-
 list<Token>::const_iterator Parser::findEndOfParentheses(list<Token>::const_iterator start, list<Token>::const_iterator end) const throw(ParsingException){
 	int openingBrackets=1; // we already have so far one oppening bracket
 	int closingBrackets=0; // ...and it is not yet closed
 	string trace="";
 	
 	while(start!=end){
-		trace+=start->getValue();
+		trace+=start->value;
 		
-		if(start->getType() != TGroupBracket){
+		if(start->type != TGroupBracket){
 			++start;
 			continue;
 		}
 		
-		if(start->getValue() == "("){
+		if(start->value == "("){
 			openingBrackets++;
 		}
 		
-		if(start->getValue() == ")"){
+		if(start->value == ")"){
 			closingBrackets++;
 		}
 		
@@ -218,52 +203,91 @@ list<Token>::const_iterator Parser::findEndOfParentheses(list<Token>::const_iter
 	THROW(ParsingException, "No closing bracket has been found.", trace);
 }
 
-void Parser::doParseTokens(list<Token>::const_iterator start, list<Token>::const_iterator end, ParserStack &stack) const throw(ParsingException){
-	// opened question: can this function to be called recursively
-	
-	// LR parsing => shift-reduce method (bottom-up)
-	// the method is chosen since it considers only forward scanning of tokens 
-	// withoun backing up... it looks like easier to implement
-	
-	while(start!=end){
-		// shift
-		
-		// fill up the stack with initial assumption regarding the non-terminal
-		if(start->getType() == TGroupBracket){
-			// is it an open bracket?
-			
-			// it must be an opening bracket
-			if(start->getValue() == ")"){
-				THROW(ParsingException, "Unexpected closing bracket ')'.", to_string(stack));
-			}
-			
-			ParserStack subStack;
-			++start; // this one is bracket - take the next one
-			list<Token>::const_iterator endParentheses=findEndOfParentheses(start, end);
-			this->doParseTokens(start, endParentheses, subStack);
-			stack.push_back(subStack.front());
-			start=endParentheses;
-		}else{	
-			stack.push_back(this->createExpression(*start));
-		}
-		
-		// reduce the stack untill no other posibility to reduce is available
-		while(this->doReduce(stack)){
-			// ???
-		}
-		
-		++start;
-	}
-	
-	// at the end we should have only one element in the stack that means
-	// everything is reduced and parsed
-	if(stack.size()!=1){
-		// if the stack is not completely reduced 
-		// then probably grammar is not complete
-		// or the syntax of the provided expression is incorrect
+list<Token>::const_iterator Parser::shiftToStack(list<Token>::const_iterator current, list<Token>::const_iterator end, ParserStack &stack) const throw(ParsingException){
+    Token token=*current;
 
-		THROW(ParsingException, "The specified expression is ambiguous. Not able to complitely reduce syntax tree.", to_string(stack));
-	}
+    shared_ptr<Expression> stackExpression;
+    switch(token.type){
+        case TNumeric:
+        {
+            stackExpression = make_shared<Constant>(token.value);
+            break;
+        }
+        case TOperation:
+        {
+            stackExpression = createOperation(token.value);
+            break;
+        }
+        case TAlphaNumeric:
+        {
+            // assuming that it is variable
+            // @TODO it can be a function as well
+            stackExpression = make_shared<Variable>(token.value);
+            break;
+        }
+        case TGroupBracket:
+        {
+            // it must be an opening bracket
+            if(current->value == ")"){
+                THROW(ParsingException, "Unexpected closing bracket ')'.", "N.A.");
+            }
+            ParserStack subStack;
+            ++current; // this one is bracket - take the next one
+            if(current==end){
+                THROW(ParsingException, "Unexpect end of the expression.", "No closing bracket at the end of the string.");
+            }
+            list<Token>::const_iterator endParentheses=findEndOfParentheses(current, end);
+            this->doParseTokens(current, endParentheses, subStack);
+            stackExpression = subStack.front();
+            current=endParentheses;
+            break;
+        }
+        case TNoToken:
+        default:
+            THROW(ParsingException, "Unknown type of token", "Token(" + token.value + ")");
+    }
+    
+    stack.push_back(stackExpression);
+    
+    // go to the next iten in the token list
+    ++current;
+    
+    return current;
+}
+Token Parser::getLookAheadToken(list<Token>::const_iterator current, list<Token>::const_iterator end) const {
+    if (current != end) {
+        return (*current);
+    }
+
+    return Token("eof", TNoToken);
+}
+
+void Parser::doParseTokens(list<Token>::const_iterator start, list<Token>::const_iterator end, ParserStack &stack) const throw (ParsingException) {
+    // opened question: can this function to be called recursively
+
+    // LR parsing => shift-reduce method (bottom-up)
+    // the method is chosen since it considers only forward scanning of tokens 
+
+    while (start != end) {
+        start = shiftToStack(start, end, stack);
+
+        Token lookAheadToken = getLookAheadToken(start, end);
+
+        // reduce the stack untill no other posibility to reduce is available
+        while (this->doReduce(stack, lookAheadToken)) {
+            // ???
+        }
+    }
+
+    // at the end we should have only one element in the stack that means
+    // everything is reduced and parsed
+    if (stack.size() != 1) {
+        // if the stack is not completely reduced 
+        // then probably grammar is not complete
+        // or the syntax of the provided expression is incorrect
+
+        THROW(ParsingException, "The specified expression is ambiguous. Not able to completely reduce syntax tree.", to_string(stack));
+    }
 }
 
 shared_ptr<Expression> Parser::parseTokens(const list<Token> &tokens) const {
