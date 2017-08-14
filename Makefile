@@ -5,7 +5,7 @@ include config
 all: obj test app
 
 obj:
-	(cd src; make obj;)
+	(cd src; make obj;) || exit 1;
 
 test:
 	(cd test; make clean all;)
