@@ -11,6 +11,8 @@
 #include "RuleMultLV.h"
 #include "Mult.h"
 
+#include "iostream"
+
 using namespace std;
 
 bool RuleMultLV::apply(ParserStack &stack, const Token &lookAheadToken) const throw (ParsingException) {
@@ -24,7 +26,11 @@ bool RuleMultLV::apply(ParserStack &stack, const Token &lookAheadToken) const th
         }
 
         if (!(*item)->isComplete()) {
-            THROW(ParsingException, "Incomplete expression on the left side of '*'.", to_string(stack) + "; at symbol '" + lookAheadToken.value + "'");
+            // @TODO has to be decided how to be with uncertainity in arguments
+            cout << lookAheadToken.value;
+            continue;
+            
+//            THROW(ParsingException, "Incomplete expression on the left side of '*'.", to_string(stack) + "; at symbol '" + lookAheadToken.value + "'");
         }
 
         if ((*nextItem)->isComplete()) {

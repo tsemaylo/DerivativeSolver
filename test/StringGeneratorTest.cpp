@@ -60,7 +60,7 @@ protected:
 };
 
 TEST_F(FX_StringGenerator, visit_SimpleCase_ok) {
-	// a+5*b-c/2
+	// a+5*b-c/2 == ((a+(5*b))-(c/2))
 	
 	shared_ptr<Expression> varB=createVariable("b");
 	shared_ptr<Expression> const5=createConstant("5");
@@ -77,5 +77,5 @@ TEST_F(FX_StringGenerator, visit_SimpleCase_ok) {
 	
 	StringGenerator strGen;
 	sub->traverse(strGen);
-	ASSERT_STREQ("a+5*b-c/2", strGen.getLastVisitResult().c_str());
+	ASSERT_STREQ("((a+(5*b))-(c/2))", strGen.getLastVisitResult().c_str());
 }

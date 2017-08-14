@@ -8,28 +8,30 @@
  */
 
 #ifndef TOKEN_H
-#define	TOKEN_H
+#define TOKEN_H
 
 #include <string>
 
 using namespace std;
 
 enum TokenType {
-	TNoToken = 0,
-	TAlphaNumeric = 1,
-	TGroupBracket = 2,
-	TOperation = 3,
-	TNumeric = 4
+    TNoToken = 0,
+    TAlphaNumeric = 1,
+    TGroupBracket = 2,
+    TOperation = 3,
+    TNumeric = 4
 };
 
-class Token
-{
+class Token {
 public:
-	const string value;
-	const TokenType type;
+    const string value;
+    const TokenType type;
 
-	Token(string _value, TokenType _type);
+    Token(string _value, TokenType _type);
+    
+    bool isFunction() const;
+
 };
 
-#endif	/* TOKEN_H */
+#endif /* TOKEN_H */
 
