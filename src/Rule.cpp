@@ -11,9 +11,11 @@
 
 bool hasPriority(const ExpressionType exprType, const Token &lookAheadToken) {
     if(exprType == ESum || exprType == ESub){
+        if (lookAheadToken.type == TAlphaNumeric) {
+            return lookAheadToken.isFunction();
+        }
         if(lookAheadToken.type == TOperation){
-            return (lookAheadToken.isFunction() || 
-                    lookAheadToken.value == "*" || 
+            return (lookAheadToken.value == "*" || 
                     lookAheadToken.value == "/" || 
                     lookAheadToken.value == "\\" || 
                     lookAheadToken.value == "^");
@@ -21,6 +23,9 @@ bool hasPriority(const ExpressionType exprType, const Token &lookAheadToken) {
     }
     
     if(exprType == EMult || exprType == EDiv){
+        if (lookAheadToken.type == TAlphaNumeric) {
+            return lookAheadToken.isFunction();
+        }
         if(lookAheadToken.type == TOperation){
             return (lookAheadToken.isFunction() || lookAheadToken.value == "^");
         }

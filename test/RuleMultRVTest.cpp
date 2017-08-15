@@ -13,6 +13,7 @@
 #include "RuleMultRV.h"
 #include "Variable.h"
 #include "Mult.h"
+#include "Sub.h"
 
 class FX_RuleMultRV : public testing::Test {
 protected:
@@ -42,6 +43,12 @@ protected:
         return mult;
     }
 
+    shared_ptr<Expression> createSub(shared_ptr<Expression> lArg, shared_ptr<Expression> rArg) const {
+        shared_ptr<Sub> sub = make_shared<Sub>();
+        sub->lArg = lArg;
+        sub->rArg = rArg;
+        return sub;
+    }
 };
 
 TEST_F(FX_RuleMultRV, apply_NormalRightValueForMultiplication_Reducable) {
@@ -71,18 +78,18 @@ TEST_F(FX_RuleMultRV, apply_RuleIsNotAppliable_NotReducable) {
     EXPECT_FALSE(ruleMultRV.apply(stack, lookAheadToken()));
 }
 
-TEST_F(FX_RuleMultRV, apply_RightSideArgumentIsIncomplete_ParsingException) {
+TEST_F(FX_RuleMultRV, apply_RightSideArgumentIsIncomplete_NotReducable) {
     ParserStack stack;
 
-    // a**
+    // a*-b
     stack.push_back(createMult(createVariable("a"), nullptr));
-    stack.push_back(createMult());
+    stack.push_back(createSub(nullptr, createVariable("b")));
 
     RuleMultRV ruleMultRV;
-    EXPECT_THROW(ruleMultRV.apply(stack, lookAheadToken()), ParsingException);
+    EXPECT_FALSE(ruleMultRV.apply(stack, lookAheadToken()));
 }
 
-TEST_F(FX_RuleMultRV, apply_MultiplicatioWithoutLeftArgument_PArsingException) {
+TEST_F(FX_RuleMultRV, apply_MultiplicatioWithoutLeftArgument_ParsingException) {
     ParserStack stack;
 
     // *a

@@ -8,15 +8,14 @@
  */
 
 #ifndef RULESUBRV_H
-#define	RULESUBRV_H
+#define RULESUBRV_H
 
 #include "Rule.h"
 
-class RuleSubRV : public Rule
-{
+class RuleSubRV : public Rule {
 public:
-	bool apply(ParserStack &stack, const Token &lookAheadToken) const throw(ParsingException) final;
+    bool apply(ParserStack &stack, const Token &lookAheadToken) const throw (ParsingException) final;
 };
 
-#endif	/* RULESUBRV_H */
+#endif /* RULESUBRV_H */
 

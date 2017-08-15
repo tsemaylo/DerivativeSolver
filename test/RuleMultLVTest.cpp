@@ -27,6 +27,10 @@ protected:
     Token lookAheadToken() const {
         return Token("NA", TNoToken);
     }
+    
+    Token lookAheadToken(string value, TokenType type) const {
+        return Token(value, type);
+    }
 
     shared_ptr<Expression> createVariable(const string name) const {
         return make_shared<Variable>(name);
@@ -96,14 +100,14 @@ TEST_F(FX_RuleMultLV, apply_MultiplicationIsAlreadyComplete_NotReducable) {
     EXPECT_FALSE(ruleMultLV.apply(stack, lookAheadToken()));
 }
 
-TEST_F(FX_RuleMultLV, apply_LeftHandArgumentIsNotComplete_ParsingException) {
+TEST_F(FX_RuleMultLV, apply_LeftHandArgumentIsNotComplete_NotReducable) {
     ParserStack stack;
 
-    // a+*
-    shared_ptr<Expression> varA = createVariable("a");
-    stack.push_back(createSum(varA, nullptr));
+    // +a*b
+    stack.push_back(createSum(nullptr, createVariable("a")));
     stack.push_back(createMult());
+    stack.push_back(createVariable("b"));
 
     RuleMultLV ruleMultLV;
-    EXPECT_THROW(ruleMultLV.apply(stack, lookAheadToken()), ParsingException);
+    EXPECT_FALSE(ruleMultLV.apply(stack, lookAheadToken("b", TAlphaNumeric)));
 }

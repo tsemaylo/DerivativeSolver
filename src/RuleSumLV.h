@@ -8,17 +8,16 @@
  */
 
 #ifndef RULESUMLV_H
-#define	RULESUMLV_H
+#define RULESUMLV_H
 
 #include "Rule.h"
 
 using namespace std;
 
-class RuleSumLV : public Rule
-{
+class RuleSumLV : public Rule {
 public:
-	bool apply(ParserStack &stack, const Token &lookAheadToken) const throw(ParsingException) final;
+    bool apply(ParserStack &stack, const Token &lookAheadToken) const throw (ParsingException) final;
 };
 
-#endif	/* RULESUMLV_H */
+#endif /* RULESUMLV_H */
 

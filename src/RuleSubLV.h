@@ -8,17 +8,16 @@
  */
 
 #ifndef RULESUBLV_H
-#define	RULESUBLV_H
+#define RULESUBLV_H
 
 #include "Rule.h"
 
 using namespace std;
 
-class RuleSubLV : public Rule
-{
+class RuleSubLV : public Rule {
 public:
-	bool apply(ParserStack &stack, const Token &lookAheadToken) const throw(ParsingException) final;
+    bool apply(ParserStack &stack, const Token &lookAheadToken) const throw (ParsingException) final;
 };
 
-#endif	/* RULESUBLV_H */
+#endif /* RULESUBLV_H */
 

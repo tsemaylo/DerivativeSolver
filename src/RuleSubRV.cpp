@@ -29,9 +29,12 @@ bool RuleSubRV::apply(ParserStack &stack, const Token &lookAheadToken) const thr
             continue;
         }
         
+        if ((*item)->isComplete()) {
+            continue;
+        }
+        
         if (!(*nextItem)->isComplete()) {
             continue;
-            // THROW(ParsingException, "Incomplete expression on the right side of '-'.", to_string(stack) + "; at symbol '" + lookAheadToken.value + "'");
         }
 
         // if the left side is empty 

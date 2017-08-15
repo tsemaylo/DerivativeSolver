@@ -31,7 +31,7 @@ TEST_F(FX_Rule, hasPriority_AdditionsVSOtherOperations_OtherOpersHavePriority) {
 
 TEST_F(FX_Rule, hasPriority_MultiplicationsVSPower_PowerHasPriority) {
     EXPECT_TRUE(hasPriority(EMult, Token("^", TOperation)));
-    EXPECT_TRUE(hasPriority(EDiv, Token("/", TOperation)));
+    EXPECT_TRUE(hasPriority(EDiv, Token("^", TOperation)));
 }
 
 TEST_F(FX_Rule, hasPriority_ArythmeticsVSFunctions_FunctionsHavePriority) {
@@ -47,10 +47,10 @@ TEST_F(FX_Rule, hasPriority_ArythmeticsVSFunctions_FunctionsHavePriority) {
 }
 
 TEST_F(FX_Rule, hasPriority_AdditionsVSVarsAndConst_AdditionsHavePriority) {
-    EXPECT_TRUE(hasPriority(ESum, Token("a", TAlphaNumeric)));
-    EXPECT_TRUE(hasPriority(ESum, Token("1", TNumeric)));
-    EXPECT_TRUE(hasPriority(ESub, Token("a", TAlphaNumeric)));
-    EXPECT_TRUE(hasPriority(ESub, Token("1", TNumeric)));
+    EXPECT_FALSE(hasPriority(ESum, Token("a", TAlphaNumeric)));
+    EXPECT_FALSE(hasPriority(ESum, Token("1", TNumeric)));
+    EXPECT_FALSE(hasPriority(ESub, Token("a", TAlphaNumeric)));
+    EXPECT_FALSE(hasPriority(ESub, Token("1", TNumeric)));
 }
 
 TEST_F(FX_Rule, hasPriority_SameOperationOnBothSides_StillValid) {

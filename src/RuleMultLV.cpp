@@ -25,12 +25,12 @@ bool RuleMultLV::apply(ParserStack &stack, const Token &lookAheadToken) const th
             continue;
         }
 
-        if (!(*item)->isComplete()) {
-            // @TODO has to be decided how to be with uncertainity in arguments
-            cout << lookAheadToken.value;
+        if( next(nextItem) == stack.end() && hasPriority(EMult, lookAheadToken)){
             continue;
-            
-//            THROW(ParsingException, "Incomplete expression on the left side of '*'.", to_string(stack) + "; at symbol '" + lookAheadToken.value + "'");
+        }
+        
+        if (!(*item)->isComplete()) {
+            continue;
         }
 
         if ((*nextItem)->isComplete()) {

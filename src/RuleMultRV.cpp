@@ -21,10 +21,16 @@ bool RuleMultRV::apply(ParserStack &stack, const Token &lookAheadToken) const th
             continue;
         }
 
+        if( next(nextItem) == stack.end() && hasPriority(EMult, lookAheadToken)){
+            continue;
+        }
+        
+        if ((*item)->isComplete()) {
+            continue;
+        }
+        
         if (!(*nextItem)->isComplete()) {
             continue;
-            // @TODO check whether it is appropriate to consider this case as exception
-            //THROW(ParsingException, "Incomplete expression on the right side of '*'.", to_string(stack) + "; at symbol '" + lookAheadToken.value + "'");
         }
 
         // if the left side is empty 
