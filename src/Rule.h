@@ -8,7 +8,7 @@
  */
 
 #ifndef RULE_H
-#define	RULE_H
+#define RULE_H
 
 #include <list>
 #include <memory>
@@ -22,9 +22,9 @@ using namespace std;
 /**
  * Represents the interface for any possible parsing rule.
  */
-class Rule{
+class Rule {
 public:
-	virtual bool apply(ParserStack &stack, const Token &lookAheadToken) const throw(ParsingException) = 0;
+    virtual bool apply(ParserStack &stack, const Token &lookAheadToken) const throw (ParsingException) = 0;
 };
 
 /**
@@ -35,8 +35,8 @@ public:
  * 
  * @return true if the operation with high priority comes next, otherwise false.
  */
-bool hasPriority(const ExpressionType exprType, const Token &lookAheadToken) ;
+bool hasPriority(const ExpressionType exprType, const Token &lookAheadToken);
 
 
-#endif	/* RULE_H */
+#endif /* RULE_H */
 

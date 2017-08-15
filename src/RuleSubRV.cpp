@@ -13,50 +13,26 @@
 #include "Mult.h"
 #include "Constant.h"
 
-bool RuleSubRV::apply(ParserStack &stack, const Token &lookAheadToken) const throw (ParsingException) {
-    // search for the patterns
+RuleSubRV::RuleSubRV() : RuleOperations(true, ESub) {}
 
-    ParserStack::iterator item = stack.begin();
-    ParserStack::iterator nextItem = stack.begin();
-    ++nextItem;
-
-    for (; nextItem != stack.end(); ++item, ++nextItem) {
-        if ((*item)->type != ESub) {
-            continue;
-        }
-
-        if( next(nextItem) == stack.end() && hasPriority(ESub, lookAheadToken)){
-            continue;
-        }
-        
-        if ((*item)->isComplete()) {
-            continue;
-        }
-        
-        if (!(*nextItem)->isComplete()) {
-            continue;
-        }
-
+bool RuleSubRV::applyRule(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack& stack) const throw(ParsingException) {
         // if the left side is empty 
         // see Grammar rule #34
-        if (dynamic_pointer_cast<Sub>(*item)->lArg == nullptr) {
+        if (dynamic_pointer_cast<Sub>(*op)->lArg == nullptr) {
             // assuming the negation instead of subtraction 
             // replacing subtraction with multiplication with -1
             shared_ptr<Mult> mult = make_shared<Mult>();
             mult->lArg = make_shared<Constant>("-1");
-            mult->rArg = *nextItem;
+            mult->rArg = *arg;
 
-            stack.insert(item, mult);
-            stack.erase(item);
-            stack.erase(nextItem);
+            stack.insert(op, mult);
+            stack.erase(op);
+            stack.erase(arg);
             return true;
         }
 
         // see Grammar rule #33
-        dynamic_pointer_cast<Sub>(*item)->rArg = *nextItem;
-        stack.erase(nextItem);
+        dynamic_pointer_cast<Sub>(*op)->rArg = *arg;
+        stack.erase(arg);
         return true;
-    }
-
-    return false;
 }

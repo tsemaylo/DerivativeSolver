@@ -10,13 +10,15 @@
 #ifndef RULESUMLV_H
 #define RULESUMLV_H
 
-#include "Rule.h"
+#include "RuleOperations.h"
 
 using namespace std;
 
-class RuleSumLV : public Rule {
+class RuleSumLV : public RuleOperations {
 public:
-    bool apply(ParserStack &stack, const Token &lookAheadToken) const throw (ParsingException) final;
+    RuleSumLV();
+private:
+    bool applyRule(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack& stack) const throw(ParsingException) final;
 };
 
 #endif /* RULESUMLV_H */

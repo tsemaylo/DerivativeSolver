@@ -13,34 +13,12 @@
 
 using namespace std;
 
-bool RuleSubLV::apply(ParserStack &stack, const Token &lookAheadToken) const throw (ParsingException) {
-    ParserStack::iterator item = stack.begin();
-    ParserStack::iterator nextItem = stack.begin();
-    ++nextItem;
+RuleSubLV::RuleSubLV() : RuleOperations(false, ESub) {}
 
-    for (; nextItem != stack.end(); ++item, ++nextItem) {
-        if ((*nextItem)->type != ESub) {
-            continue;
-        }
+bool RuleSubLV::applyRule(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack& stack) const throw(ParsingException) {
+    // see Grammar rule #32
+    dynamic_pointer_cast<Sub>(*op)->lArg = (*arg);
+    stack.erase(arg);
 
-        if(next(nextItem) == stack.end() && hasPriority(ESub, lookAheadToken)){
-            continue;
-        }
-        
-        if ((*nextItem)->isComplete()) {
-            continue;
-        }
-
-        if (!(*item)->isComplete()) {
-            continue;
-        }
-
-        // see Grammar rule #32
-        dynamic_pointer_cast<Sub>(*nextItem)->lArg = (*item);
-        stack.erase(item);
-
-        return true;
-    }
-
-    return false;
+    return true;
 }

@@ -15,34 +15,14 @@
 
 using namespace std;
 
-bool RuleMultLV::apply(ParserStack &stack, const Token &lookAheadToken) const throw (ParsingException) {
-    ParserStack::iterator item = stack.begin();
-    ParserStack::iterator nextItem = stack.begin();
-    ++nextItem;
+RuleMultLV::RuleMultLV() : RuleOperations(false, EMult){}
 
-    for (; nextItem != stack.end(); ++item, ++nextItem) {
-        if ((*nextItem)->type != EMult) {
-            continue;
-        }
+bool RuleMultLV::applyRule(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack &stack) const throw (ParsingException) {
+    // Grammar rule #25
+    dynamic_pointer_cast<Mult>(*op)->lArg = *arg;
+    stack.erase(arg);
 
-        if( next(nextItem) == stack.end() && hasPriority(EMult, lookAheadToken)){
-            continue;
-        }
-        
-        if (!(*item)->isComplete()) {
-            continue;
-        }
-
-        if ((*nextItem)->isComplete()) {
-            continue;
-        }
-
-        // Grammar rule #25
-        dynamic_pointer_cast<Mult>(*nextItem)->lArg = (*item);
-        stack.erase(item);
-
-        return true;
-    }
-
-    return false;
+    return true;
 }
+
+

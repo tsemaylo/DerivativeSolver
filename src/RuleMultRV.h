@@ -10,11 +10,14 @@
 #ifndef RULEMULTRV_H
 #define RULEMULTRV_H
 
-#include "Rule.h"
+#include "RuleOperations.h"
 
-class RuleMultRV : public Rule {
+class RuleMultRV : public RuleOperations {
 public:
-    bool apply(ParserStack &stack, const Token &lookAheadToken) const throw (ParsingException) final;
+    RuleMultRV();
+    
+private:
+    bool applyRule(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack &stack) const throw (ParsingException) final;
 };
 
 #endif /* RULEMULTRV_H */

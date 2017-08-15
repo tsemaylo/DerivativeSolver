@@ -10,33 +10,33 @@
 #include "Rule.h"
 
 bool hasPriority(const ExpressionType exprType, const Token &lookAheadToken) {
-    if(exprType == ESum || exprType == ESub){
+    if (exprType == ESum || exprType == ESub) {
         if (lookAheadToken.type == TAlphaNumeric) {
             return lookAheadToken.isFunction();
         }
-        if(lookAheadToken.type == TOperation){
-            return (lookAheadToken.value == "*" || 
-                    lookAheadToken.value == "/" || 
-                    lookAheadToken.value == "\\" || 
+        if (lookAheadToken.type == TOperation) {
+            return (lookAheadToken.value == "*" ||
+                    lookAheadToken.value == "/" ||
+                    lookAheadToken.value == "\\" ||
                     lookAheadToken.value == "^");
         }
     }
-    
-    if(exprType == EMult || exprType == EDiv){
+
+    if (exprType == EMult || exprType == EDiv) {
         if (lookAheadToken.type == TAlphaNumeric) {
             return lookAheadToken.isFunction();
         }
-        if(lookAheadToken.type == TOperation){
+        if (lookAheadToken.type == TOperation) {
             return (lookAheadToken.isFunction() || lookAheadToken.value == "^");
         }
     }
-    
+
     // @TODO Uncomment when it will be implemented
-//    if(exprType == EPow ){
-//        if(lookAheadToken.isFunction()){
-//            return true;
-//        }
-//    }
-    
+    //    if(exprType == EPow ){
+    //        if(lookAheadToken.isFunction()){
+    //            return true;
+    //        }
+    //    }
+
     return false;
 }

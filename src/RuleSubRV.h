@@ -10,11 +10,14 @@
 #ifndef RULESUBRV_H
 #define RULESUBRV_H
 
-#include "Rule.h"
+#include "RuleOperations.h"
 
-class RuleSubRV : public Rule {
+class RuleSubRV : public RuleOperations {
 public:
-    bool apply(ParserStack &stack, const Token &lookAheadToken) const throw (ParsingException) final;
+    RuleSubRV();
+    
+private:
+    bool applyRule(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack& stack) const throw(ParsingException) final;
 };
 
 #endif /* RULESUBRV_H */

@@ -10,11 +10,14 @@
 #ifndef RULESUMRV_H
 #define RULESUMRV_H
 
-#include "Rule.h"
+#include "RuleOperations.h"
 
-class RuleSumRV : public Rule {
+class RuleSumRV : public RuleOperations {
 public:
-    bool apply(ParserStack &stack, const Token &lookAheadToken) const throw (ParsingException) final;
+    RuleSumRV();
+    
+private:
+    bool applyRule(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack& stack) const throw(ParsingException) final;
 };
 
 #endif /* RULESUMRV_H */

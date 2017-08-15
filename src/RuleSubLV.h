@@ -10,13 +10,15 @@
 #ifndef RULESUBLV_H
 #define RULESUBLV_H
 
-#include "Rule.h"
+#include "RuleOperations.h"
 
 using namespace std;
 
-class RuleSubLV : public Rule {
+class RuleSubLV : public RuleOperations {
 public:
-    bool apply(ParserStack &stack, const Token &lookAheadToken) const throw (ParsingException) final;
+    RuleSubLV();
+private:
+    bool applyRule(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack& stack) const throw(ParsingException) final;
 };
 
 #endif /* RULESUBLV_H */
