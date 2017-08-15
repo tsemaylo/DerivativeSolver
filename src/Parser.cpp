@@ -18,6 +18,8 @@
 #include "Mult.h"
 #include "RuleMultLV.h"
 #include "RuleMultRV.h"
+#include "RuleDivLV.h"
+#include "RuleDivRV.h"
 #include "RuleSumLV.h"
 #include "RuleSumRV.h"
 #include "RuleSubLV.h"
@@ -30,14 +32,18 @@ Parser::Parser() {
     this->grammar[0]=move(make_unique<RuleMultLV>());
     // Rule #26
     this->grammar[1]=move(make_unique<RuleMultRV>());
+    // Rule #27
+    this->grammar[2]=move(make_unique<RuleDivLV>());
+    // Rule #28
+    this->grammar[3]=move(make_unique<RuleDivRV>());
     // Rule #29
-    this->grammar[2]=move(make_unique<RuleSumLV>());
+    this->grammar[4]=move(make_unique<RuleSumLV>());
     // Rule #30 #31
-    this->grammar[3]=move(make_unique<RuleSumRV>());
+    this->grammar[5]=move(make_unique<RuleSumRV>());
     // Rule #32
-    this->grammar[4]=move(make_unique<RuleSubLV>());
+    this->grammar[6]=move(make_unique<RuleSubLV>());
     // Rule #33 #34
-    this->grammar[5]=move(make_unique<RuleSubRV>());
+    this->grammar[7]=move(make_unique<RuleSubRV>());
 }
 
 

@@ -18,6 +18,7 @@
 #include "Sum.h"
 #include "Sub.h"
 #include "Mult.h"
+#include "Div.h"
 
 class ParserTest : public Parser {
 public:
@@ -307,14 +308,17 @@ TEST_F(FX_Parser, parse_MixedExpression_SubWithTwoArgs) {
 
 TEST_F(FX_Parser, parse_MixedExpressionWithParentness_SumWithTwoArgs) {
     ParserTest parser;
-    const string strExpr = "-(a*b)+c";
+    const string strExpr = "-(a*b)+c/2";
 
     shared_ptr<Expression> expr = parser.parse(strExpr);
     ASSERT_EQ(expr->type, ESum);
 
     shared_ptr<Sum> sum = dynamic_pointer_cast<Sum>(expr);
-    shared_ptr<Variable> varC = dynamic_pointer_cast<Variable>(sum->rArg);
+    shared_ptr<Div> divCD = dynamic_pointer_cast<Div>(sum->rArg);
+    shared_ptr<Variable> varC = dynamic_pointer_cast<Variable>(divCD->lArg);
     EXPECT_EQ("c", varC->name);
+    shared_ptr<Constant> const2 = dynamic_pointer_cast<Constant>(divCD->rArg);
+    EXPECT_EQ("2", const2->value);
 
     shared_ptr<Mult> multL = dynamic_pointer_cast<Mult>(sum->lArg);
     shared_ptr<Constant> constN1 = dynamic_pointer_cast<Constant>(multL->lArg);

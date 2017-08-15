@@ -1,5 +1,5 @@
 /**
- * @file Tests for RuleSubLV (lft value summation rule).
+ * @file Tests for RuleSubLV (lft value subtraction rule).
  *
  * @since 26.07.2016
  * @author agor

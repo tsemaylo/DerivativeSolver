@@ -1,5 +1,5 @@
 /**
- * @file Test cases for RuleMultLV (left value summation rule).
+ * @file Test cases for RuleMultLV (left value division rule).
  *
  * @since 14.08.2016
  * @author agor

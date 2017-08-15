@@ -1,6 +1,6 @@
 include ../config
 
-UNITS= Parser RuleMultRV Rule RuleMultLV RuleSumLV RuleSumRV RuleSubLV RuleSubRV StringGenerator
+UNITS= Parser Rule RuleMultRV RuleMultLV RuleDivRV RuleDivLV RuleSumLV RuleSumRV RuleSubLV RuleSubRV StringGenerator
 
 .PHONY: all gtest buildDir testCases clean run $(UNITS)
 
@@ -30,6 +30,14 @@ RuleMultLV:
 	$(CXX) $(CXXFLAGS) $(OBJFILES) $@Test.o gtest-all.o gtest_main.o -lpthread -o ../$(BUILD_DIR)/tests/$@Test 
 
 RuleMultRV: 
+	$(CXX) $(CXXFLAGS) -isystem=$(GTEST)/include -I ../$(SRC) -c $@Test.cpp -o $@Test.o ;\
+	$(CXX) $(CXXFLAGS) $(OBJFILES) $@Test.o gtest-all.o gtest_main.o -lpthread -o ../$(BUILD_DIR)/tests/$@Test 
+
+RuleDivLV: 
+	$(CXX) $(CXXFLAGS) -isystem=$(GTEST)/include -I ../$(SRC) -c $@Test.cpp -o $@Test.o ;\
+	$(CXX) $(CXXFLAGS) $(OBJFILES) $@Test.o gtest-all.o gtest_main.o -lpthread -o ../$(BUILD_DIR)/tests/$@Test 
+
+RuleDivRV: 
 	$(CXX) $(CXXFLAGS) -isystem=$(GTEST)/include -I ../$(SRC) -c $@Test.cpp -o $@Test.o ;\
 	$(CXX) $(CXXFLAGS) $(OBJFILES) $@Test.o gtest-all.o gtest_main.o -lpthread -o ../$(BUILD_DIR)/tests/$@Test 
 	
