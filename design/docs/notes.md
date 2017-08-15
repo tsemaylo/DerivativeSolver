@@ -72,14 +72,15 @@ The project incorporates [Google's C++ Test Framework](https://github.com/google
 - [x] RuleSumRV
 - [x] RuleSubLV 
 - [x] RuleSubRV 
-- [ ] RuleMultLV (IN PROGRESS)
-- [ ] RuleMultRV (IN PROGRESS)
-- [ ] Refactoring of **Rule**s
-- [ ] RuleDivLV
-- [ ] RuleDivRV
-- [ ] RulePowLV
-- [ ] RulePowRV
+- [x] RuleMultLV 
+- [x] RuleMultRV 
+- [x] Refactoring of **Rule**s
+- [x] RuleDivLV
+- [x] RuleDivRV
+- [ ] RulePowLV (IN PROGRESS)
+- [ ] RulePowRV (IN PROGRESS)
+- [ ] Update design docs (IN PROGRESS)
 - [ ] RuleFunction
 - [ ] Implementation of Differentiator
 - [x] Implementation of StringGenerator
-- [ ] Testing scripts fro whole application
+- [ ] Testing scripts for whole application
