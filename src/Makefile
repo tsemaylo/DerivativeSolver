@@ -6,7 +6,9 @@ all: obj app
 
 obj : $(wildcard *.cpp)
 	@for f in $^; do\
+		echo "Building $$f..." ;\
 		$(CXX) $(CXXFLAGS) -c $$f || exit 1;\
+		echo " done." ;\
 	done
 
 app : $(wildcard *.o)
