@@ -55,6 +55,11 @@ public:
 	 */
 	void visit(const shared_ptr<const Div> expr) throw(TraverseException) final;
 	
+        /**
+	 * @brief Differentiate exponentation operation.
+	 */
+	void visit(const shared_ptr<const Pow> expr) throw(TraverseException) final;
+        
 	void setLastVisitResult(const shared_ptr<Expression> result);
 	
 	shared_ptr<Expression> getLastVisitResult() const;

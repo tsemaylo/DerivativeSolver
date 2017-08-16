@@ -16,6 +16,7 @@
 #include "Sub.h"
 #include "Div.h"
 #include "Mult.h"
+#include "Pow.h"
 #include "TraverseException.h"
 
 /**
@@ -30,6 +31,7 @@ public:
 	virtual void visit(const shared_ptr<const Sub> expr) throw(TraverseException) = 0;
 	virtual void visit(const shared_ptr<const Div> expr) throw(TraverseException) = 0;
 	virtual void visit(const shared_ptr<const Mult> expr) throw(TraverseException) = 0;
+        virtual void visit(const shared_ptr<const Pow> expr) throw(TraverseException) = 0;
 };
 
 #endif	/* VISITOR_H */

@@ -51,6 +51,10 @@ void StringGenerator::visit(const shared_ptr<const Div> expr) throw (TraverseExc
     visitArythmeticalOp<Div>(expr, "/");
 }
 
+void StringGenerator::visit(const shared_ptr<const Pow> expr) throw (TraverseException) {
+    visitArythmeticalOp<Pow>(expr, "^");
+}
+
 string StringGenerator::getLastVisitResult() const {
     return this->result;
 }

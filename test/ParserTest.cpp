@@ -19,6 +19,8 @@
 #include "Sub.h"
 #include "Mult.h"
 #include "Div.h"
+#include "Pow.h"
+#include "StringGenerator.h"
 
 class ParserTest : public Parser {
 public:
@@ -308,27 +310,52 @@ TEST_F(FX_Parser, parse_MixedExpression_SubWithTwoArgs) {
 
 TEST_F(FX_Parser, parse_MixedExpressionWithParentness_SumWithTwoArgs) {
     ParserTest parser;
-    const string strExpr = "-(a*b)+c/2";
+    const string strExpr = "-(a*b)^n+c/2";
 
     shared_ptr<Expression> expr = parser.parse(strExpr);
-    ASSERT_EQ(expr->type, ESum);
-
+    
+    StringGenerator stringGenerator;
+    expr->traverse(stringGenerator);
+    
+    // expecting Sum: lArg= -(a*b)^n     rArg=c/2
+    ASSERT_EQ(ESum, expr->type) << stringGenerator.getLastVisitResult();
     shared_ptr<Sum> sum = dynamic_pointer_cast<Sum>(expr);
-    shared_ptr<Div> divCD = dynamic_pointer_cast<Div>(sum->rArg);
-    shared_ptr<Variable> varC = dynamic_pointer_cast<Variable>(divCD->lArg);
+    
+    // expecting Div: lArg=c    rArg=2
+    ASSERT_NE(nullptr, sum->rArg);
+    ASSERT_EQ(EDiv, sum->rArg->type) << stringGenerator.getLastVisitResult();
+    shared_ptr<Div> divC2 = dynamic_pointer_cast<Div>(sum->rArg);
+    
+    shared_ptr<Variable> varC = dynamic_pointer_cast<Variable>(divC2->lArg);
     EXPECT_EQ("c", varC->name);
-    shared_ptr<Constant> const2 = dynamic_pointer_cast<Constant>(divCD->rArg);
+    shared_ptr<Constant> const2 = dynamic_pointer_cast<Constant>(divC2->rArg);
     EXPECT_EQ("2", const2->value);
 
+    // expecting Mult: lArg=-1    rArg=(a*b)^n
+    ASSERT_NE(nullptr, sum->lArg);
+    ASSERT_EQ(EMult, sum->lArg->type) << stringGenerator.getLastVisitResult();
     shared_ptr<Mult> multL = dynamic_pointer_cast<Mult>(sum->lArg);
+    
     shared_ptr<Constant> constN1 = dynamic_pointer_cast<Constant>(multL->lArg);
     EXPECT_EQ("-1", constN1->value);
     
-    shared_ptr<Mult> multR = dynamic_pointer_cast<Mult>(multL->rArg);
-    shared_ptr<Variable> varA = dynamic_pointer_cast<Variable>(multR->lArg);
+    // expecting Pow: lArg=a*b      rArg=n
+    ASSERT_NE(nullptr, multL->rArg);
+    ASSERT_EQ(EPow, multL->rArg->type) << stringGenerator.getLastVisitResult();
+    shared_ptr<Pow> powN = dynamic_pointer_cast<Pow>(multL->rArg);
+    
+    // expecting Mult. lArg=a     rArg=b
+    ASSERT_NE(nullptr, powN->lArg);
+    ASSERT_EQ(EMult, powN->lArg->type) << stringGenerator.getLastVisitResult();
+    shared_ptr<Mult> multAB = dynamic_pointer_cast<Mult>(powN->lArg);
+    shared_ptr<Variable> varA = dynamic_pointer_cast<Variable>(multAB->lArg);
     EXPECT_EQ("a", varA->name);
-    shared_ptr<Variable> varB = dynamic_pointer_cast<Variable>(multR->rArg);
+    shared_ptr<Variable> varB = dynamic_pointer_cast<Variable>(multAB->rArg);
     EXPECT_EQ("b", varB->name);
+    
+    // expecting Variable
+    shared_ptr<Variable> varN = dynamic_pointer_cast<Variable>(powN->rArg);
+    EXPECT_EQ("n", varN->name);
 }
 
 TEST_F(FX_Parser, findEndOfParentheses_NormalCase_ok) {

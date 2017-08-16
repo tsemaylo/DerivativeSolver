@@ -1,7 +1,7 @@
 /**
- * @file Tests for RuleDivRV. Handling of right hand argument of division operation.
+ * @file Tests for RulePowRV. Handling of right hand argument of exponentation operation.
  *
- * @since 15.08.2016
+ * @since 16.08.2016
  * @author agor
  */
 
@@ -10,12 +10,12 @@
 #include <string>
 #include <memory>
 
-#include "RuleDivRV.h"
+#include "RulePowRV.h"
 #include "Variable.h"
-#include "Div.h"
+#include "Pow.h"
 #include "Sub.h"
 
-class FX_RuleDivRV : public testing::Test {
+class FX_RulePowRV : public testing::Test {
 protected:
 
     virtual void SetUp() {
@@ -32,15 +32,15 @@ protected:
         return make_shared<Variable>(name);
     }
 
-    shared_ptr<Expression> createDiv() const {
-        return make_shared<Div>();
+    shared_ptr<Expression> createPow() const {
+        return make_shared<Pow>();
     }
 
-    shared_ptr<Expression> createDiv(shared_ptr<Expression> lArg, shared_ptr<Expression> rArg) const {
-        shared_ptr<Div> div = make_shared<Div>();
-        div->lArg = lArg;
-        div->rArg = rArg;
-        return div;
+    shared_ptr<Expression> createPow(shared_ptr<Expression> lArg, shared_ptr<Expression> rArg) const {
+        shared_ptr<Pow> pow = make_shared<Pow>();
+        pow->lArg = lArg;
+        pow->rArg = rArg;
+        return pow;
     }
 
     shared_ptr<Expression> createSub(shared_ptr<Expression> lArg, shared_ptr<Expression> rArg) const {
@@ -51,51 +51,51 @@ protected:
     }
 };
 
-TEST_F(FX_RuleDivRV, apply_NormalRightValueForDivision_Reducable) {
+TEST_F(FX_RulePowRV, apply_NormalRightValueForExponentationOperation_Reducable) {
     ParserStack stack;
-    stack.push_back(createDiv(createVariable("a"), nullptr));
+    stack.push_back(createPow(createVariable("a"), nullptr));
     stack.push_back(createVariable("b"));
 
-    RuleDivRV ruleDivRV;
-    EXPECT_TRUE(ruleDivRV.apply(stack, lookAheadToken()));
+    RulePowRV rulePowRV;
+    EXPECT_TRUE(rulePowRV.apply(stack, lookAheadToken()));
 
     ParserStack::const_iterator i = stack.begin();
 
-    shared_ptr<Div> div = dynamic_pointer_cast<Div>(*i);
-    EXPECT_EQ(EDiv, div->type);
+    shared_ptr<Pow> pow = dynamic_pointer_cast<Pow>(*i);
+    EXPECT_EQ(EPow, pow->type);
 
-    shared_ptr<Variable> divRArg = dynamic_pointer_cast<Variable>(div->rArg);
-    EXPECT_EQ(EVariable, divRArg->type);
-    EXPECT_STREQ("b", divRArg->name.c_str());
+    shared_ptr<Variable> powRArg = dynamic_pointer_cast<Variable>(pow->rArg);
+    EXPECT_EQ(EVariable, powRArg->type);
+    EXPECT_STREQ("b", powRArg->name.c_str());
 }
 
-TEST_F(FX_RuleDivRV, apply_RuleIsNotAppliable_NotReducable) {
+TEST_F(FX_RulePowRV, apply_RuleIsNotAppliable_NotReducable) {
     ParserStack stack;
     stack.push_back(createVariable("b"));
-    stack.push_back(createDiv());
+    stack.push_back(createPow());
     
-    RuleDivRV ruleDivRV;
-    EXPECT_FALSE(ruleDivRV.apply(stack, lookAheadToken()));
+    RulePowRV rulePowRV;
+    EXPECT_FALSE(rulePowRV.apply(stack, lookAheadToken()));
 }
 
-TEST_F(FX_RuleDivRV, apply_RightSideArgumentIsIncomplete_NotReducable) {
+TEST_F(FX_RulePowRV, apply_RightSideArgumentIsIncomplete_NotReducable) {
     ParserStack stack;
 
-    // a/-b
-    stack.push_back(createDiv(createVariable("a"), nullptr));
+    // a^-b
+    stack.push_back(createPow(createVariable("a"), nullptr));
     stack.push_back(createSub(nullptr, createVariable("b")));
 
-    RuleDivRV ruleDivRV;
-    EXPECT_FALSE(ruleDivRV.apply(stack, lookAheadToken()));
+    RulePowRV rulePowRV;
+    EXPECT_FALSE(rulePowRV.apply(stack, lookAheadToken()));
 }
 
-TEST_F(FX_RuleDivRV, apply_DivisionWithoutLeftArgument_ParsingException) {
+TEST_F(FX_RulePowRV, apply_ExponentationOperationWithoutLeftArgument_ParsingException) {
     ParserStack stack;
 
-    // /a
-    stack.push_back(createDiv());
+    // ^a
+    stack.push_back(createPow());
     stack.push_back(createVariable("a"));
     
-    RuleDivRV ruleDivRV;
-    EXPECT_THROW(ruleDivRV.apply(stack, lookAheadToken()), ParsingException);
+    RulePowRV rulePowRV;
+    EXPECT_THROW(rulePowRV.apply(stack, lookAheadToken()), ParsingException);
 }

@@ -1,7 +1,7 @@
 /**
- * @file Test cases for RuleDivLV (left value division rule).
+ * @file Test cases for RulePowLV (left value of exponentation rule).
  *
- * @since 15.08.2016
+ * @since 16.08.2016
  * @author agor
  */
 
@@ -10,12 +10,12 @@
 #include <string>
 #include <memory>
 
-#include "RuleDivLV.h"
+#include "RulePowLV.h"
 #include "Variable.h"
 #include "Sum.h"
-#include "Div.h"
+#include "Pow.h"
 
-class FX_RuleDivLV : public testing::Test {
+class FX_RulePowLV : public testing::Test {
 protected:
 
     virtual void SetUp() {
@@ -36,15 +36,15 @@ protected:
         return make_shared<Variable>(name);
     }
 
-    shared_ptr<Expression> createDiv() const {
-        return make_shared<Div>();
+    shared_ptr<Expression> createPow() const {
+        return make_shared<Pow>();
     }
     
-    shared_ptr<Expression> createDiv(shared_ptr<Expression> lArg, shared_ptr<Expression> rArg) const {
-        shared_ptr<Div> div = make_shared<Div>();
-        div->lArg = lArg;
-        div->rArg = rArg;
-        return div;
+    shared_ptr<Expression> createPow(shared_ptr<Expression> lArg, shared_ptr<Expression> rArg) const {
+        shared_ptr<Pow> pow = make_shared<Pow>();
+        pow->lArg = lArg;
+        pow->rArg = rArg;
+        return pow;
     }
     
     shared_ptr<Expression> createSum(shared_ptr<Expression> lArg, shared_ptr<Expression> rArg) const {
@@ -55,59 +55,59 @@ protected:
     }
 };
 
-TEST_F(FX_RuleDivLV, apply_LeftValueDivision_Reducable) {
+TEST_F(FX_RulePowLV, apply_LeftValueOfExponentation_Reducable) {
 
     ParserStack stack;
     stack.push_back(createVariable("a"));
-    stack.push_back(createDiv());
+    stack.push_back(createPow());
 
-    RuleDivLV ruleDivLV;
-    EXPECT_TRUE(ruleDivLV.apply(stack, lookAheadToken()));
+    RulePowLV rulePowLV;
+    EXPECT_TRUE(rulePowLV.apply(stack, lookAheadToken()));
 
     ParserStack::const_iterator i = stack.begin();
 
-    shared_ptr<Div> div = dynamic_pointer_cast<Div>(*i);
-    EXPECT_EQ(EDiv, div->type);
+    shared_ptr<Pow> pow = dynamic_pointer_cast<Pow>(*i);
+    EXPECT_EQ(EPow, pow->type);
 
-    shared_ptr<Variable> divLArg = dynamic_pointer_cast<Variable>(div->lArg);
-    EXPECT_EQ(EVariable, divLArg->type);
-    EXPECT_STREQ("a", divLArg->name.c_str());
+    shared_ptr<Variable> powLArg = dynamic_pointer_cast<Variable>(pow->lArg);
+    EXPECT_EQ(EVariable, powLArg->type);
+    EXPECT_STREQ("a", powLArg->name.c_str());
 }
 
-TEST_F(FX_RuleDivLV, apply_RuleIsNotAppliable_NotReducable) {
+TEST_F(FX_RulePowLV, apply_RuleIsNotAppliable_NotReducable) {
     ParserStack stack;
 
-    stack.push_back(createDiv());
+    stack.push_back(createPow());
     stack.push_back(createVariable("a"));
 
-    RuleDivLV ruleDivLV;
-    EXPECT_FALSE(ruleDivLV.apply(stack, lookAheadToken()));
+    RulePowLV rulePowLV;
+    EXPECT_FALSE(rulePowLV.apply(stack, lookAheadToken()));
 
     ParserStack::const_iterator i = stack.begin();
-    EXPECT_EQ(EDiv, dynamic_pointer_cast<Div>(*i)->type);
+    EXPECT_EQ(EPow, dynamic_pointer_cast<Pow>(*i)->type);
     ++i;
     EXPECT_EQ(EVariable, dynamic_pointer_cast<Variable>(*i)->type);
 }
 
-TEST_F(FX_RuleDivLV, apply_DivisionIsAlreadyComplete_NotReducable) {
+TEST_F(FX_RulePowLV, apply_ExponentationOperationIsAlreadyComplete_NotReducable) {
     ParserStack stack;
 
-    // a(b/c)
+    // a(b^c)
     stack.push_back(createVariable("a"));
-    stack.push_back(createDiv(createVariable("b"), createVariable("c")));
+    stack.push_back(createPow(createVariable("b"), createVariable("c")));
 
-    RuleDivLV ruleDivLV;
-    EXPECT_FALSE(ruleDivLV.apply(stack, lookAheadToken()));
+    RulePowLV rulePowLV;
+    EXPECT_FALSE(rulePowLV.apply(stack, lookAheadToken()));
 }
 
-TEST_F(FX_RuleDivLV, apply_LeftHandArgumentIsNotComplete_NotReducable) {
+TEST_F(FX_RulePowLV, apply_LeftHandArgumentIsNotComplete_NotReducable) {
     ParserStack stack;
 
-    // +a/b
+    // +a^b
     stack.push_back(createSum(nullptr, createVariable("a")));
-    stack.push_back(createDiv());
+    stack.push_back(createPow());
     stack.push_back(createVariable("b"));
 
-    RuleDivLV ruleDivLV;
-    EXPECT_FALSE(ruleDivLV.apply(stack, lookAheadToken("b", TAlphaNumeric)));
+    RulePowLV rulePowLV;
+    EXPECT_FALSE(rulePowLV.apply(stack, lookAheadToken("b", TAlphaNumeric)));
 }

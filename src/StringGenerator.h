@@ -33,6 +33,7 @@ public:
 	void visit(const shared_ptr<const Sub> expr) throw(TraverseException) final;
 	void visit(const shared_ptr<const Div> expr) throw(TraverseException) final;
 	void visit(const shared_ptr<const Mult> expr) throw(TraverseException) final;
+        void visit(const shared_ptr<const Pow> expr) throw(TraverseException) final;
 	
 	void setLastVisitResult(string result);
 	

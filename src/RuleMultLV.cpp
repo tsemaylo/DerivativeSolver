@@ -11,8 +11,6 @@
 #include "RuleMultLV.h"
 #include "Mult.h"
 
-#include "iostream"
-
 using namespace std;
 
 RuleMultLV::RuleMultLV() : RuleOperations(false, EMult){}

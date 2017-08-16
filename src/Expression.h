@@ -35,7 +35,8 @@ enum ExpressionType {
 	ESum = 2, ///< Expression is an instance of Summation operator
 	ESub = 3, ///< Expression is an instance of Subtraction operator
 	EDiv = 4, ///< Expression is an instance of Division operator
-	EMult = 5 ///< Expression is an instance of Multiplication operator
+	EMult = 5, ///< Expression is an instance of Multiplication operator
+        EPow = 6 ///< Expression is an instance of exponentation operator (rising to the n-th power)
 };
 
 

@@ -31,12 +31,11 @@ bool hasPriority(const ExpressionType exprType, const Token &lookAheadToken) {
         }
     }
 
-    // @TODO Uncomment when it will be implemented
-    //    if(exprType == EPow ){
-    //        if(lookAheadToken.isFunction()){
-    //            return true;
-    //        }
-    //    }
+    if (exprType == EPow) {
+        if (lookAheadToken.type == TAlphaNumeric && lookAheadToken.isFunction()) {
+            return true;
+        }
+    }
 
     return false;
 }
