@@ -59,6 +59,11 @@ public:
 	 * @brief Differentiate exponentation operation.
 	 */
 	void visit(const shared_ptr<const Pow> expr) throw(TraverseException) final;
+
+        /**
+	 * @brief Differentiate a sinus function.
+	 */
+	void visit(const shared_ptr<const Sin> expr) throw(TraverseException) final;
         
 	void setLastVisitResult(const shared_ptr<Expression> result);
 	

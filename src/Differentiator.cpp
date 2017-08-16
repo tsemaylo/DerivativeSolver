@@ -84,6 +84,13 @@ void Differentiator::visit(const shared_ptr<const Pow> expr)  throw(TraverseExce
 	this->setLastVisitResult(make_shared<Constant>(to_string(expr->type)));
 }
 
+void Differentiator::visit(const shared_ptr<const Sin> expr)  throw(TraverseException)
+{
+	/// @TODO s.a.
+	/// @TODO NYI
+	this->setLastVisitResult(make_shared<Constant>(to_string(expr->type)));
+}
+
 shared_ptr<Expression> Differentiator::getLastVisitResult() const {
 	return this->result;
 }

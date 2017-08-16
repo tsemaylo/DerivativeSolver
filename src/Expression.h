@@ -30,25 +30,30 @@ using namespace std;
  * of non-terminals by applying of a grammatical rule.
  */
 enum ExpressionType {
-	EConstant = 0, ///< Expression is an instance of Constant
-	EVariable = 1, ///< Expression is an instance of Variable
-	ESum = 2, ///< Expression is an instance of Summation operator
-	ESub = 3, ///< Expression is an instance of Subtraction operator
-	EDiv = 4, ///< Expression is an instance of Division operator
-	EMult = 5, ///< Expression is an instance of Multiplication operator
-        EPow = 6 ///< Expression is an instance of exponentation operator (rising to the n-th power)
+    EConstant = 0, ///< Expression is an instance of Constant
+    EVariable = 1, ///< Expression is an instance of Variable
+    ESum = 2, ///< Expression is an instance of Summation operator
+    ESub = 3, ///< Expression is an instance of Subtraction operator
+    EDiv = 4, ///< Expression is an instance of Division operator
+    EMult = 5, ///< Expression is an instance of Multiplication operator
+    EPow = 6, ///< Expression is an instance of exponentation operator (rising to the n-th power)
+    ESin = 7,
+    ECos = 8,
+    ETan = 9,
+    ECtan = 10,
+    ELn = 11,
+    EExp = 12
 };
 
-
-class Expression {	
+class Expression {
 protected:
-	Expression(ExpressionType type);	
-	
-public:
-	const ExpressionType type;
-	bool virtual isComplete() const = 0;
+    Expression(ExpressionType type);
 
-	void virtual traverse(Visitor & ) const throw(TraverseException) = 0;
+public:
+    const ExpressionType type;
+    bool virtual isComplete() const = 0;
+
+    void virtual traverse(Visitor &) const throw (TraverseException) = 0;
 };
 
 #endif /* SRC_EXPRESSION_H_ */

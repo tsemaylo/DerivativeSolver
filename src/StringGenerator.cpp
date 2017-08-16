@@ -55,6 +55,14 @@ void StringGenerator::visit(const shared_ptr<const Pow> expr) throw (TraverseExc
     visitArythmeticalOp<Pow>(expr, "^");
 }
 
+void StringGenerator::visit(const shared_ptr<const Sin> expr) throw (TraverseException) {
+    string strArg = this->getArgString(expr->arg);
+    if (strArg.find('(', 0) != 0) {
+        strArg = "(" + strArg + ")";
+    }
+    this->setLastVisitResult("sin" + strArg);
+}
+
 string StringGenerator::getLastVisitResult() const {
     return this->result;
 }
