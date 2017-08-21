@@ -30,19 +30,19 @@ using namespace std;
  * of non-terminals by applying of a grammatical rule.
  */
 enum ExpressionType {
-    EConstant = 0, ///< Expression is an instance of Constant
-    EVariable = 1, ///< Expression is an instance of Variable
-    ESum = 2, ///< Expression is an instance of Summation operator
-    ESub = 3, ///< Expression is an instance of Subtraction operator
-    EDiv = 4, ///< Expression is an instance of Division operator
-    EMult = 5, ///< Expression is an instance of Multiplication operator
-    EPow = 6, ///< Expression is an instance of exponentation operator (rising to the n-th power)
-    ESin = 7,
-    ECos = 8,
-    ETan = 9,
-    ECtan = 10,
-    ELn = 11,
-    EExp = 12
+    EConstant = 0, ///< Expression is an instance of Constant.
+    EVariable = 1, ///< Expression is an instance of Variable.
+    ESum = 2, ///< Expression is an instance of Summation operator.
+    ESub = 3, ///< Expression is an instance of Subtraction operator.
+    EDiv = 4, ///< Expression is an instance of Division operator.
+    EMult = 5, ///< Expression is an instance of Multiplication operator.
+    EPow = 6, ///< Expression is an instance of exponentation operator (rising to the n-th power).
+    ESin = 7, ///< Expression for sine functions.
+    ECos = 8,  ///< Expression for cosine functions.
+    ETan = 9, ///< Expression for tangent functions.
+    ECtan = 10,  ///< Expression for cotangent functions.
+    ELn = 11,  ///< Expression for natural logarithm functions.
+    EExp = 12 ///< Expression for exponential function of basis e.
 };
 
 class Expression {
@@ -52,7 +52,7 @@ protected:
 public:
     const ExpressionType type;
     bool virtual isComplete() const = 0;
-
+    bool isFunctionType() const;
     void virtual traverse(Visitor &) const throw (TraverseException) = 0;
 };
 
