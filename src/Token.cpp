@@ -16,27 +16,29 @@ bool Token::isFunction() const {
         return false;
     }
     
-    if(this->value.find("sin", 0) == 0){
+    // @TODO case irrelevant check
+    
+    if(this->value == "sin" ){
         return true;
     }
     
-    if(this->value.find("cos", 0) == 0){
+    if(this->value == "cos"){
         return true;
     }
     
-    if(this->value.find("tan", 0) == 0){
+    if(this->value == "tan"){
         return true;
     }
     
-    if(this->value.find("ctan", 0) == 0){
+    if(this->value == "ctan"){
         return true;
     }
     
-    if(this->value.find("ln", 0) == 0){
+    if(this->value == "ln"){
         return true;
     }
     
-    if(this->value.find("exp", 0) == 0){
+    if(this->value == "exp"){
         return true;
     }
     

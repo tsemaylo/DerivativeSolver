@@ -17,6 +17,7 @@
 #include "Div.h"
 #include "Mult.h"
 #include "Pow.h"
+#include "Sin.h"
 #include "RulePowLV.h"
 #include "RulePowRV.h"
 #include "RuleMultLV.h"
@@ -180,6 +181,31 @@ shared_ptr<Expression> Parser::createOperation(const string opSymbol) const thro
     THROW(ParsingException, "Unknown type of token (operation is not supported).", opSymbol);
 }
 
+shared_ptr<Expression> Parser::createFunction(const string opSymbol) const throw (ParsingException) {
+    // @TODO make it case insensitive
+    if (opSymbol == "sin") {
+        return make_shared<Sin>();
+    }
+    //@TODO uncomment when corresponding expression types will be implemented
+//    if (opSymbol == "cos") {
+//        return make_shared<Cos>();
+//    }
+//    if (opSymbol == "tan") {
+//        return make_shared<Tan>();
+//    }
+//    if (opSymbol == "ctan") {
+//        return make_shared<Ctan>();
+//    }
+//    if (opSymbol == "ln") {
+//        return make_shared<Ln>();
+//    }
+//    if (opSymbol == "exp") {
+//        return make_shared<Exp>();
+//    }
+
+    THROW(ParsingException, "Unknown type of token (operation is not supported).", opSymbol);
+}
+
 list<Token>::const_iterator Parser::findEndOfParentheses(list<Token>::const_iterator start, list<Token>::const_iterator end) const throw (ParsingException) {
     int openingBrackets = 1; // we already have so far one oppening bracket
     int closingBrackets = 0; // ...and it is not yet closed
@@ -230,9 +256,14 @@ list<Token>::const_iterator Parser::shiftToStack(list<Token>::const_iterator cur
         }
         case TAlphaNumeric:
         {
-            // assuming that it is variable
-            // @TODO it can be a function as well
-            stackExpression = make_shared<Variable>(token.value);
+            // check if the token represents function
+            if(token.isFunction()){
+                stackExpression = createFunction(token.value);
+            }else{
+                // assuming it is a variable
+                stackExpression = make_shared<Variable>(token.value);
+            }
+            
             break;
         }
         case TGroupBracket:

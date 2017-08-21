@@ -114,6 +114,8 @@ protected:
 
     Token getLookAheadToken(list<Token>::const_iterator current, list<Token>::const_iterator end) const;
 
+    shared_ptr<Expression> createFunction(const string opSymbol) const throw (ParsingException);
+            
     shared_ptr<Expression> createOperation(const string opSymbol) const throw (ParsingException);
 
     /**

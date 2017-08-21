@@ -227,6 +227,26 @@ TEST_F(FX_Parser, shiftToStack_OpenedBracketInTheEnd_ParsingException) {
     EXPECT_THROW(parser.shiftToStack(start, end, stack), ParsingException);
 }
 
+TEST_F(FX_Parser, shiftToStack_SinFunction_SinInStack) {
+    list<Token> tokens;
+    tokens.push_back(Token("sin", TAlphaNumeric));
+    tokens.push_back(Token("Test", TNoToken));
+            
+    list<Token>::const_iterator start=tokens.begin();
+    list<Token>::const_iterator end=tokens.end();
+    
+    ParserStack stack;
+    
+    ParserTest parser;
+    start = parser.shiftToStack(start, end, stack);
+    
+    EXPECT_EQ("Test", start->value);
+    
+    ParserStack::const_iterator exprIt=stack.begin();
+    shared_ptr<Expression> expr=*exprIt;
+    EXPECT_EQ(ESin, expr->type);
+}
+
 TEST_F(FX_Parser, parse_SimpleSummation_FunctionWithTwoArgs) {
     ParserTest parser;
     const string strExpr = "a+b";
