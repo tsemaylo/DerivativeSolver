@@ -18,6 +18,11 @@
 #include "Mult.h"
 #include "Pow.h"
 #include "Sin.h"
+#include "Cos.h"
+#include "Tan.h"
+#include "Ctan.h"
+#include "Ln.h"
+#include "Exp.h"
 #include "RulePowLV.h"
 #include "RulePowRV.h"
 #include "RuleMultLV.h"
@@ -34,26 +39,36 @@ Parser::Parser() {
     // initialize grammar
     // Rule #17
     this->grammar[0] = move(make_unique<RuleFunction<Sin>>());
+    // Rule #18
+    this->grammar[1] = move(make_unique<RuleFunction<Cos>>());
+    // Rule #19
+    this->grammar[2] = move(make_unique<RuleFunction<Tan>>());
+    // Rule #20
+    this->grammar[3] = move(make_unique<RuleFunction<Ctan>>());
+    // Rule #21
+    this->grammar[4] = move(make_unique<RuleFunction<Ln>>());
+    // Rule #22
+    this->grammar[5] = move(make_unique<RuleFunction<Exp>>());
     // Rule #23
-    this->grammar[1] = move(make_unique<RulePowLV>());
+    this->grammar[6] = move(make_unique<RulePowLV>());
     // Rule #24
-    this->grammar[2] = move(make_unique<RulePowRV>());
+    this->grammar[7] = move(make_unique<RulePowRV>());
     // Rule #25
-    this->grammar[3] = move(make_unique<RuleMultLV>());
+    this->grammar[8] = move(make_unique<RuleMultLV>());
     // Rule #26
-    this->grammar[4] = move(make_unique<RuleMultRV>());
+    this->grammar[9] = move(make_unique<RuleMultRV>());
     // Rule #27
-    this->grammar[5] = move(make_unique<RuleDivLV>());
+    this->grammar[10] = move(make_unique<RuleDivLV>());
     // Rule #28
-    this->grammar[6] = move(make_unique<RuleDivRV>());
+    this->grammar[11] = move(make_unique<RuleDivRV>());
     // Rule #29
-    this->grammar[7] = move(make_unique<RuleSumLV>());
+    this->grammar[12] = move(make_unique<RuleSumLV>());
     // Rule #30 #31
-    this->grammar[8] = move(make_unique<RuleSumRV>());
+    this->grammar[13] = move(make_unique<RuleSumRV>());
     // Rule #32
-    this->grammar[9] = move(make_unique<RuleSubLV>());
+    this->grammar[14] = move(make_unique<RuleSubLV>());
     // Rule #33 #34
-    this->grammar[10] = move(make_unique<RuleSubRV>());
+    this->grammar[15] = move(make_unique<RuleSubRV>());
 }
 
 bool Parser::isAlpha(char c) const {
@@ -189,22 +204,22 @@ shared_ptr<Expression> Parser::createFunction(const string opSymbol) const throw
     if (opSymbol == "sin") {
         return make_shared<Sin>();
     }
-    //@TODO uncomment when corresponding expression types will be implemented
-//    if (opSymbol == "cos") {
-//        return make_shared<Cos>();
-//    }
-//    if (opSymbol == "tan") {
-//        return make_shared<Tan>();
-//    }
-//    if (opSymbol == "ctan") {
-//        return make_shared<Ctan>();
-//    }
-//    if (opSymbol == "ln") {
-//        return make_shared<Ln>();
-//    }
-//    if (opSymbol == "exp") {
-//        return make_shared<Exp>();
-//    }
+
+    if (opSymbol == "cos") {
+        return make_shared<Cos>();
+    }
+    if (opSymbol == "tan") {
+        return make_shared<Tan>();
+    }
+    if (opSymbol == "ctan") {
+        return make_shared<Ctan>();
+    }
+    if (opSymbol == "ln") {
+        return make_shared<Ln>();
+    }
+    if (opSymbol == "exp") {
+        return make_shared<Exp>();
+    }
 
     THROW(ParsingException, "Unknown type of function (operation is not supported).", opSymbol);
 }

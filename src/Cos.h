@@ -1,14 +1,14 @@
 /**
- * @file    Sin.h
+ * @file    Cos.h
  * 
- * Definition of Sin class.
+ * Definition of Cos class.
  * 
  * @author  agor
- * @since   16.08.2017
+ * @since   22.08.2017
  */
 
-#ifndef SIN_H
-#define SIN_H
+#ifndef COS_H
+#define COS_H
 
 #include <memory>
 #include "Expression.h"
@@ -16,15 +16,15 @@
 /**
  * The derivative of Expression class representing the cosine function.
  */
-class Sin : public Expression, public enable_shared_from_this<Sin>{
+class Cos : public Expression, public enable_shared_from_this<Cos>{
 public:
     shared_ptr<Expression> arg;
     
-    Sin();
+    Cos();
     
     bool isComplete() const final;
     void traverse(Visitor&) const throw(TraverseException) final;
 };
 
-#endif /* SIN_H */
+#endif /* COS_H */
 

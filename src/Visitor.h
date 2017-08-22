@@ -18,6 +18,11 @@
 #include "Mult.h"
 #include "Pow.h"
 #include "Sin.h"
+#include "Cos.h"
+#include "Tan.h"
+#include "Ctan.h"
+#include "Ln.h"
+#include "Exp.h"
 #include "TraverseException.h"
 
 /**
@@ -34,6 +39,11 @@ public:
 	virtual void visit(const shared_ptr<const Mult> expr) throw(TraverseException) = 0;
         virtual void visit(const shared_ptr<const Pow> expr) throw(TraverseException) = 0;
         virtual void visit(const shared_ptr<const Sin> expr) throw(TraverseException) = 0;
+        virtual void visit(const shared_ptr<const Cos> expr) throw(TraverseException) = 0;
+        virtual void visit(const shared_ptr<const Tan> expr) throw(TraverseException) = 0;
+        virtual void visit(const shared_ptr<const Ctan> expr) throw(TraverseException) = 0;
+        virtual void visit(const shared_ptr<const Ln> expr) throw(TraverseException) = 0;
+        virtual void visit(const shared_ptr<const Exp> expr) throw(TraverseException) = 0;
 };
 
 #endif	/* VISITOR_H */

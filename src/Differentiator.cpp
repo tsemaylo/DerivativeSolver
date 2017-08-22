@@ -91,6 +91,41 @@ void Differentiator::visit(const shared_ptr<const Sin> expr)  throw(TraverseExce
 	this->setLastVisitResult(make_shared<Constant>(to_string(expr->type)));
 }
 
+void Differentiator::visit(const shared_ptr<const Cos> expr)  throw(TraverseException)
+{
+	/// @TODO s.a.
+	/// @TODO NYI
+	this->setLastVisitResult(make_shared<Constant>(to_string(expr->type)));
+}
+
+void Differentiator::visit(const shared_ptr<const Tan> expr)  throw(TraverseException)
+{
+	/// @TODO s.a.
+	/// @TODO NYI
+	this->setLastVisitResult(make_shared<Constant>(to_string(expr->type)));
+}
+
+void Differentiator::visit(const shared_ptr<const Ctan> expr)  throw(TraverseException)
+{
+	/// @TODO s.a.
+	/// @TODO NYI
+	this->setLastVisitResult(make_shared<Constant>(to_string(expr->type)));
+}
+
+void Differentiator::visit(const shared_ptr<const Ln> expr)  throw(TraverseException)
+{
+	/// @TODO s.a.
+	/// @TODO NYI
+	this->setLastVisitResult(make_shared<Constant>(to_string(expr->type)));
+}
+
+void Differentiator::visit(const shared_ptr<const Exp> expr)  throw(TraverseException)
+{
+	/// @TODO s.a.
+	/// @TODO NYI
+	this->setLastVisitResult(make_shared<Constant>(to_string(expr->type)));
+}
+
 shared_ptr<Expression> Differentiator::getLastVisitResult() const {
 	return this->result;
 }

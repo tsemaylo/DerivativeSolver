@@ -23,47 +23,20 @@ private:
 	
 public:
 	Differentiator(string var);
-	
-	/**
-	 * @brief Differentiate constant.
-	 */
+
 	void visit(const shared_ptr<const Constant> expr) throw(TraverseException) final;
-
-	/**
-	 * @brief Differentiate variable.
-	 */
 	void visit(const shared_ptr<const Variable> expr) throw(TraverseException) final;
-
-	/**
-	 * @brief Differentiate summation operation.
-	 */
 	void visit(const shared_ptr<const Sum> expr) throw(TraverseException) final;
-	
-	/**
-	 * @brief Differentiate subtraction operation.
-	 */
 	void visit(const shared_ptr<const Sub> expr) throw(TraverseException) final;
-	
-	/**
-	 * @brief Differentiate multiplication operation.
-	 */
 	void visit(const shared_ptr<const Mult> expr) throw(TraverseException) final;
-	
-	
-	/**
-	 * @brief Differentiate division operation.
-	 */
 	void visit(const shared_ptr<const Div> expr) throw(TraverseException) final;
-	
-        /**
-	 * @brief Differentiate exponentation operation.
-	 */
 	void visit(const shared_ptr<const Pow> expr) throw(TraverseException) final;
-
-        /**
-	 * @brief Differentiate a sinus function.
-	 */
 	void visit(const shared_ptr<const Sin> expr) throw(TraverseException) final;
+	void visit(const shared_ptr<const Cos> expr) throw(TraverseException) final;
+	void visit(const shared_ptr<const Tan> expr) throw(TraverseException) final;
+	void visit(const shared_ptr<const Ctan> expr) throw(TraverseException) final;
+	void visit(const shared_ptr<const Ln> expr) throw(TraverseException) final;
+	void visit(const shared_ptr<const Exp> expr) throw(TraverseException) final;
         
 	void setLastVisitResult(const shared_ptr<Expression> result);
 	

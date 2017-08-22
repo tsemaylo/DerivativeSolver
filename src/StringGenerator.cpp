@@ -35,32 +35,47 @@ void StringGenerator::visitArythmeticalOp(const shared_ptr<const OpClass> expr, 
     this->setLastVisitResult("(" + strLArg + op + strRArg + ")");
 }
 
-void StringGenerator::visit(const shared_ptr<const Sum> expr) throw (TraverseException) {
-    visitArythmeticalOp<Sum>(expr, "+");
-}
-
-void StringGenerator::visit(const shared_ptr<const Sub> expr) throw (TraverseException) {
-    visitArythmeticalOp<Sub>(expr, "-");
-}
-
-void StringGenerator::visit(const shared_ptr<const Mult> expr) throw (TraverseException) {
-    visitArythmeticalOp<Mult>(expr, "*");
-}
-
-void StringGenerator::visit(const shared_ptr<const Div> expr) throw (TraverseException) {
-    visitArythmeticalOp<Div>(expr, "/");
-}
-
-void StringGenerator::visit(const shared_ptr<const Pow> expr) throw (TraverseException) {
-    visitArythmeticalOp<Pow>(expr, "^");
-}
-
-void StringGenerator::visit(const shared_ptr<const Sin> expr) throw (TraverseException) {
+template <typename OpClass>
+void StringGenerator::visitFunction(const shared_ptr<const OpClass> expr, string fname) throw (TraverseException) {
     string strArg = this->getArgString(expr->arg);
     if (strArg.find('(', 0) != 0) {
         strArg = "(" + strArg + ")";
     }
-    this->setLastVisitResult("sin" + strArg);
+    this->setLastVisitResult(fname + strArg);
+}
+
+void StringGenerator::visit(const shared_ptr<const Sum> expr) throw (TraverseException) {
+    visitArythmeticalOp<Sum>(expr, "+");
+}
+void StringGenerator::visit(const shared_ptr<const Sub> expr) throw (TraverseException) {
+    visitArythmeticalOp<Sub>(expr, "-");
+}
+void StringGenerator::visit(const shared_ptr<const Mult> expr) throw (TraverseException) {
+    visitArythmeticalOp<Mult>(expr, "*");
+}
+void StringGenerator::visit(const shared_ptr<const Div> expr) throw (TraverseException) {
+    visitArythmeticalOp<Div>(expr, "/");
+}
+void StringGenerator::visit(const shared_ptr<const Pow> expr) throw (TraverseException) {
+    visitArythmeticalOp<Pow>(expr, "^");
+}
+void StringGenerator::visit(const shared_ptr<const Sin> expr) throw (TraverseException) {
+    this->visitFunction<Sin>(expr, "sin");
+}
+void StringGenerator::visit(const shared_ptr<const Cos> expr) throw (TraverseException) {
+    this->visitFunction<Cos>(expr, "cos");
+}
+void StringGenerator::visit(const shared_ptr<const Tan> expr) throw (TraverseException) {
+    this->visitFunction<Tan>(expr, "tan");
+}
+void StringGenerator::visit(const shared_ptr<const Ctan> expr) throw (TraverseException) {
+    this->visitFunction<Ctan>(expr, "ctan");
+}
+void StringGenerator::visit(const shared_ptr<const Ln> expr) throw (TraverseException) {
+    this->visitFunction<Ln>(expr, "ln");
+}
+void StringGenerator::visit(const shared_ptr<const Exp> expr) throw (TraverseException) {
+    this->visitFunction<Exp>(expr, "exp");
 }
 
 string StringGenerator::getLastVisitResult() const {
