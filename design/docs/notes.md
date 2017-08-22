@@ -74,12 +74,12 @@ The project incorporates [Google's C++ Test Framework](https://github.com/google
 - [x] RuleSubRV 
 - [x] RuleMultLV 
 - [x] RuleMultRV 
-- [x] Refactoring of **Rule**s
+- [ ] Refactoring of **Rule**s and **Parser** (IN PROGRESS, REOPENED)
 - [x] RuleDivLV
 - [x] RuleDivRV
 - [x] RulePowLV 
 - [x] RulePowRV 
-- [ ] RuleFunction (IN PROGRESS)
+- [x] RuleFunction 
 - [ ] Update design docs (IN PROGRESS)
   - [ ] also describe how to name test cases
 - [ ] Implementation of Differentiator
