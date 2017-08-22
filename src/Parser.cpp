@@ -28,29 +28,32 @@
 #include "RuleSumRV.h"
 #include "RuleSubLV.h"
 #include "RuleSubRV.h"
+#include "RuleFunction.h"
 
 Parser::Parser() {
     // initialize grammar
+    // Rule #17
+    this->grammar[0] = move(make_unique<RuleFunction<Sin>>());
     // Rule #23
-    this->grammar[0] = move(make_unique<RulePowLV>());
+    this->grammar[1] = move(make_unique<RulePowLV>());
     // Rule #24
-    this->grammar[1] = move(make_unique<RulePowRV>());
+    this->grammar[2] = move(make_unique<RulePowRV>());
     // Rule #25
-    this->grammar[2] = move(make_unique<RuleMultLV>());
+    this->grammar[3] = move(make_unique<RuleMultLV>());
     // Rule #26
-    this->grammar[3] = move(make_unique<RuleMultRV>());
+    this->grammar[4] = move(make_unique<RuleMultRV>());
     // Rule #27
-    this->grammar[4] = move(make_unique<RuleDivLV>());
+    this->grammar[5] = move(make_unique<RuleDivLV>());
     // Rule #28
-    this->grammar[5] = move(make_unique<RuleDivRV>());
+    this->grammar[6] = move(make_unique<RuleDivRV>());
     // Rule #29
-    this->grammar[6] = move(make_unique<RuleSumLV>());
+    this->grammar[7] = move(make_unique<RuleSumLV>());
     // Rule #30 #31
-    this->grammar[7] = move(make_unique<RuleSumRV>());
+    this->grammar[8] = move(make_unique<RuleSumRV>());
     // Rule #32
-    this->grammar[8] = move(make_unique<RuleSubLV>());
+    this->grammar[9] = move(make_unique<RuleSubLV>());
     // Rule #33 #34
-    this->grammar[9] = move(make_unique<RuleSubRV>());
+    this->grammar[10] = move(make_unique<RuleSubRV>());
 }
 
 bool Parser::isAlpha(char c) const {
@@ -203,7 +206,7 @@ shared_ptr<Expression> Parser::createFunction(const string opSymbol) const throw
 //        return make_shared<Exp>();
 //    }
 
-    THROW(ParsingException, "Unknown type of token (operation is not supported).", opSymbol);
+    THROW(ParsingException, "Unknown type of function (operation is not supported).", opSymbol);
 }
 
 list<Token>::const_iterator Parser::findEndOfParentheses(list<Token>::const_iterator start, list<Token>::const_iterator end) const throw (ParsingException) {

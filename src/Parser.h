@@ -28,7 +28,7 @@ using namespace std;
  */
 class Parser {
 private:
-    array<unique_ptr<Rule>, 10> grammar;
+    array<unique_ptr<Rule>, 11> grammar;
 
 protected:
     /**

@@ -378,6 +378,22 @@ TEST_F(FX_Parser, parse_MixedExpressionWithParentness_SumWithTwoArgs) {
     EXPECT_EQ("n", varN->name);
 }
 
+TEST_F(FX_Parser, parse_ExpressionWithFunctions_Function) {
+    ParserTest parser;
+    const string strExpr = "sin(x+2)";
+
+    shared_ptr<Expression> expr = parser.parse(strExpr);
+    ASSERT_EQ(expr->type, ESin);
+
+    shared_ptr<Sin> sin = dynamic_pointer_cast<Sin>(expr);
+    shared_ptr<Sum> sum = dynamic_pointer_cast<Sum>(sin->arg);
+    
+    shared_ptr<Variable> varX = dynamic_pointer_cast<Variable>(sum->lArg);
+    EXPECT_EQ("x", varX->name);
+    shared_ptr<Constant> constTwo = dynamic_pointer_cast<Constant>(sum->rArg);
+    EXPECT_EQ("2", constTwo->value);
+}
+
 TEST_F(FX_Parser, findEndOfParentheses_NormalCase_ok) {
     ParserTest parser;
     list<Token> tknList = parser.getTokens("a+(b+c)+(d+e)");

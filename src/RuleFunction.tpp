@@ -1,5 +1,5 @@
 /**
- * @file RuleFunction.cpp
+ * @file RuleFunction.tpp
  * 
  * The implementation of RuleFunction.
  * 
@@ -8,10 +8,12 @@
  */
 
 
+#include "bootstrap.h"
 #include "RuleFunction.h"
+#include "Sum.h"
 
-template<class Function>
-bool RuleFunction<Function>::apply(ParserStack& stack, const Token& lookAheadToken) const throw(ParsingException){
+template <class Function>
+bool RuleFunction<Function>::apply(ParserStack& stack, const Token& ) const throw(ParsingException){
     ParserStack::iterator funcIt = stack.begin();
     ParserStack::iterator argIt = stack.begin();
     ++argIt;
@@ -42,7 +44,3 @@ bool RuleFunction<Function>::apply(ParserStack& stack, const Token& lookAheadTok
 
     return false;
 }
-
-
-
-
