@@ -204,7 +204,6 @@ shared_ptr<Expression> Parser::createFunction(const string opSymbol) const throw
     if (opSymbol == "sin") {
         return make_shared<Sin>();
     }
-
     if (opSymbol == "cos") {
         return make_shared<Cos>();
     }

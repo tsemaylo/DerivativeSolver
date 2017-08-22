@@ -15,7 +15,7 @@
 /**
  * Rule to handle the parsing of elemantary functions of one argument.
  * 
- * It is a templated class (see .tpp for the implementation.
+ * It is a templated class (see .tpp for the implementation).
  * 
  * @param Function The class of Expression for the particular function (Sin, Cos, Ln, etc.).
  */

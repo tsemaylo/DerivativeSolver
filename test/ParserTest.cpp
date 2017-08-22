@@ -394,6 +394,163 @@ TEST_F(FX_Parser, parse_ExpressionWithFunctions_Function) {
     EXPECT_EQ("2", constTwo->value);
 }
 
+TEST_F(FX_Parser, parse_ExpressionWithFunctions_ExpressionTree) {
+    ParserTest parser;
+    const string strExpr = "cos(x^2)*sin(x+2)-ln(tan(x/2))+exp(ctan(-x)+x)";
+
+    shared_ptr<Expression> expr = parser.parse(strExpr);
+    
+    StringGenerator stringGenerator;
+    expr->traverse(stringGenerator);
+    
+    ASSERT_EQ(expr->type, ESum) << stringGenerator.getLastVisitResult();
+    shared_ptr<Sum> sum = dynamic_pointer_cast<Sum>(expr);
+    
+    // cos(x^2)*sin(x+2)-ln(tan(x/2))
+    ASSERT_NE(nullptr, sum->lArg) << stringGenerator.getLastVisitResult();
+    ASSERT_EQ(ESub, sum->lArg->type) << stringGenerator.getLastVisitResult();
+    shared_ptr<Sub> subL = dynamic_pointer_cast<Sub>(sum->lArg);
+    
+    // cos(x^2)*sin(x+2)
+    ASSERT_NE(nullptr, subL->lArg) << stringGenerator.getLastVisitResult();
+    ASSERT_EQ(EMult, subL->lArg->type) << stringGenerator.getLastVisitResult();
+    shared_ptr<Mult> multSinCos = dynamic_pointer_cast<Mult>(subL->lArg);
+    
+    // cos(x^2)
+    ASSERT_NE(nullptr, multSinCos->lArg) << stringGenerator.getLastVisitResult();
+    ASSERT_EQ(ECos, multSinCos->lArg->type) << stringGenerator.getLastVisitResult();
+    shared_ptr<Cos> cos = dynamic_pointer_cast<Cos>(multSinCos->lArg);
+    
+    // x^2
+    ASSERT_NE(nullptr, cos->arg) << stringGenerator.getLastVisitResult();
+    ASSERT_EQ(EPow, cos->arg->type) << stringGenerator.getLastVisitResult();
+    shared_ptr<Pow> powX2 = dynamic_pointer_cast<Pow>(cos->arg);
+    ASSERT_NE(nullptr, powX2->lArg) << stringGenerator.getLastVisitResult();
+    ASSERT_EQ(EVariable, powX2->lArg->type) << stringGenerator.getLastVisitResult();
+    shared_ptr<Variable> varX_1 = dynamic_pointer_cast<Variable>(powX2->lArg);
+    ASSERT_EQ(EConstant, powX2->rArg->type) << stringGenerator.getLastVisitResult();
+    shared_ptr<Constant> const2_1 = dynamic_pointer_cast<Constant>(powX2->rArg);
+    ASSERT_STREQ("x", varX_1->name.c_str());
+    ASSERT_STREQ("2", const2_1->value.c_str());
+    
+    // sin(x+2)
+    ASSERT_NE(nullptr, multSinCos->rArg) << stringGenerator.getLastVisitResult();
+    ASSERT_EQ(ESin, multSinCos->rArg->type) << stringGenerator.getLastVisitResult();
+    shared_ptr<Sin> sin = dynamic_pointer_cast<Sin>(multSinCos->rArg);
+    
+    // x+2
+    ASSERT_NE(nullptr, sin->arg) << stringGenerator.getLastVisitResult();
+    ASSERT_EQ(ESum, sin->arg->type) << stringGenerator.getLastVisitResult();
+    shared_ptr<Sum> sumX2 = dynamic_pointer_cast<Sum>(sin->arg);
+    ASSERT_NE(nullptr, sumX2->lArg) << stringGenerator.getLastVisitResult();
+    ASSERT_EQ(EVariable, sumX2->lArg->type) << stringGenerator.getLastVisitResult();
+    shared_ptr<Variable> varX_2 = dynamic_pointer_cast<Variable>(sumX2->lArg);
+    ASSERT_EQ(EConstant, sumX2->rArg->type) << stringGenerator.getLastVisitResult();
+    shared_ptr<Constant> const2_2 = dynamic_pointer_cast<Constant>(sumX2->rArg);
+    ASSERT_STREQ("x", varX_2->name.c_str());
+    ASSERT_STREQ("2", const2_2->value.c_str());
+    
+    // ln(tan(x/2))
+    ASSERT_NE(nullptr, subL->rArg) << stringGenerator.getLastVisitResult();
+    ASSERT_EQ(ELn, subL->rArg->type) << stringGenerator.getLastVisitResult();
+    shared_ptr<Ln> lnTan = dynamic_pointer_cast<Ln>(subL->rArg);
+    
+    // tan(x/2)
+    ASSERT_NE(nullptr, lnTan->arg) << stringGenerator.getLastVisitResult();
+    ASSERT_EQ(ETan, lnTan->arg->type) << stringGenerator.getLastVisitResult();
+    shared_ptr<Tan> tan = dynamic_pointer_cast<Tan>(lnTan->arg);
+    
+    // x/2
+    ASSERT_NE(nullptr, tan->arg) << stringGenerator.getLastVisitResult();
+    ASSERT_EQ(EDiv, tan->arg->type) << stringGenerator.getLastVisitResult();
+    shared_ptr<Div> divX2 = dynamic_pointer_cast<Div>(tan->arg);
+    ASSERT_NE(nullptr, divX2->lArg) << stringGenerator.getLastVisitResult();
+    ASSERT_EQ(EVariable, divX2->lArg->type) << stringGenerator.getLastVisitResult();
+    shared_ptr<Variable> varX_3 = dynamic_pointer_cast<Variable>(divX2->lArg);
+    ASSERT_EQ(EConstant, divX2->rArg->type) << stringGenerator.getLastVisitResult();
+    shared_ptr<Constant> const2_3 = dynamic_pointer_cast<Constant>(divX2->rArg);
+    ASSERT_STREQ("x", varX_3->name.c_str());
+    ASSERT_STREQ("2", const2_3->value.c_str());
+    
+    // exp(ctan(-x)+x)
+    ASSERT_NE(nullptr, sum->rArg) << stringGenerator.getLastVisitResult();
+    ASSERT_EQ(EExp, sum->rArg->type) << stringGenerator.getLastVisitResult();
+    shared_ptr<Exp> expR = dynamic_pointer_cast<Exp>(sum->rArg);
+    
+    // ctan(-x)+x
+    ASSERT_NE(nullptr, expR->arg) << stringGenerator.getLastVisitResult();
+    ASSERT_EQ(ESum, expR->arg->type) << stringGenerator.getLastVisitResult();
+    shared_ptr<Sum> sumR = dynamic_pointer_cast<Sum>(expR->arg);
+    
+    // ctan(-x)
+    ASSERT_NE(nullptr, sumR->lArg) << stringGenerator.getLastVisitResult();
+    ASSERT_EQ(ECtan, sumR->lArg->type) << stringGenerator.getLastVisitResult();
+    shared_ptr<Ctan> ctan = dynamic_pointer_cast<Ctan>(sumR->lArg);
+    
+    // -x
+    ASSERT_NE(nullptr, ctan->arg) << stringGenerator.getLastVisitResult();
+    ASSERT_EQ(EMult, ctan->arg->type) << stringGenerator.getLastVisitResult();
+    shared_ptr<Mult> multNeg = dynamic_pointer_cast<Mult>(ctan->arg);
+    ASSERT_NE(nullptr, multNeg->lArg) << stringGenerator.getLastVisitResult();
+    ASSERT_EQ(EConstant, multNeg->lArg->type) << stringGenerator.getLastVisitResult();
+    shared_ptr<Constant> constNeg = dynamic_pointer_cast<Constant>(multNeg->lArg);
+    ASSERT_STREQ("-1", constNeg->value.c_str());
+    ASSERT_NE(nullptr, multNeg->rArg) << stringGenerator.getLastVisitResult();
+    ASSERT_EQ(EVariable, multNeg->rArg->type) << stringGenerator.getLastVisitResult();
+    shared_ptr<Variable> varX_4 = dynamic_pointer_cast<Variable>(multNeg->rArg);
+    ASSERT_STREQ("x", varX_4->name.c_str());
+    
+    // x
+    ASSERT_NE(nullptr, sumR->rArg) << stringGenerator.getLastVisitResult();
+    ASSERT_EQ(EVariable, sumR->rArg->type) << stringGenerator.getLastVisitResult();
+    shared_ptr<Variable> varX_5 = dynamic_pointer_cast<Variable>(sumR->rArg);
+    ASSERT_STREQ("x", varX_5->name.c_str());
+}
+
+TEST_F(FX_Parser, parse_ExpressionWithFunctions2_ExpressionTree) {
+    ParserTest parser;
+    const string strExpr = "-cos(x)^(n+3)";
+
+    shared_ptr<Expression> expr = parser.parse(strExpr);
+    
+    StringGenerator stringGenerator;
+    expr->traverse(stringGenerator);
+    
+    ASSERT_EQ(expr->type, EMult) << stringGenerator.getLastVisitResult();
+    shared_ptr<Mult> mult = dynamic_pointer_cast<Mult>(expr);
+    
+    ASSERT_NE(nullptr, mult->lArg) << stringGenerator.getLastVisitResult();
+    ASSERT_EQ(EConstant, mult->lArg->type) << stringGenerator.getLastVisitResult();
+    shared_ptr<Constant> constNeg = dynamic_pointer_cast<Constant>(mult->lArg);
+    ASSERT_STREQ("-1", constNeg->value.c_str());
+    
+    // cos(x)^(n+3)
+    ASSERT_NE(nullptr, mult->rArg) << stringGenerator.getLastVisitResult();
+    ASSERT_EQ(EPow, mult->rArg->type) << stringGenerator.getLastVisitResult();
+    shared_ptr<Pow> pow = dynamic_pointer_cast<Pow>(mult->rArg);
+    
+    // cos(x)
+    ASSERT_NE(nullptr, pow->lArg) << stringGenerator.getLastVisitResult();
+    ASSERT_EQ(ECos, pow->lArg->type) << stringGenerator.getLastVisitResult();
+    shared_ptr<Cos> cos = dynamic_pointer_cast<Cos>(pow->lArg);
+    ASSERT_NE(nullptr, cos->arg) << stringGenerator.getLastVisitResult();
+    ASSERT_EQ(EVariable, cos->arg->type) << stringGenerator.getLastVisitResult();
+    shared_ptr<Variable> varX = dynamic_pointer_cast<Variable>(cos->arg);
+    ASSERT_STREQ("x", varX->name.c_str());
+    
+    // (n+3)
+    ASSERT_NE(nullptr, pow->rArg) << stringGenerator.getLastVisitResult();
+    ASSERT_EQ(ESum, pow->rArg->type) << stringGenerator.getLastVisitResult();
+    shared_ptr<Sum> sum = dynamic_pointer_cast<Sum>(pow->rArg);
+    ASSERT_NE(nullptr, sum->lArg) << stringGenerator.getLastVisitResult();
+    ASSERT_EQ(EVariable, sum->lArg->type) << stringGenerator.getLastVisitResult();
+    shared_ptr<Variable> varN = dynamic_pointer_cast<Variable>(sum->lArg);
+    ASSERT_EQ(EConstant, sum->rArg->type) << stringGenerator.getLastVisitResult();
+    shared_ptr<Constant> const2 = dynamic_pointer_cast<Constant>(sum->rArg);
+    ASSERT_STREQ("n", varN->name.c_str());
+    ASSERT_STREQ("3", const2->value.c_str());
+}
+
 TEST_F(FX_Parser, findEndOfParentheses_NormalCase_ok) {
     ParserTest parser;
     list<Token> tknList = parser.getTokens("a+(b+c)+(d+e)");
