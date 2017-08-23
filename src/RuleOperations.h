@@ -31,7 +31,9 @@ protected:
     RuleOperations(bool isRightHand, ExpressionType operationType);
     
     /**
-     * The private virtual interface for specific rule logic.
+     * Appy the rule and reduce the stack.
+     * 
+     * Represents the private virtual interface for specific rule logic.
      * 
      * @param op The iterator of parsing stack pointing to considered operation.
      * @param arg The iterator of parsing stack pointing to the assumed argument of considered operation.
@@ -46,7 +48,7 @@ private:
     ExpressionType operationType; 
     
     /**
-     * The warpper for concrete applyRule(). Implements general logic to check the operation and its arguments before reducing the stack.
+     * The warpper for concrete applyRule(). Implements general logic to check the consistenmcy operation and its arguments before reducing the stack.
      * 
      * @param op The iterator of parsing stack pointing to considered operation.
      * @param arg The iterator of parsing stack pointing to the assumed argument of considered operation.
@@ -57,14 +59,17 @@ private:
     bool applyRuleWrapper(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack &stack) const throw (ParsingException);
     
     /**
-     * The method iterates through the stack and invokes the application of rule.
+     * The method iterates through the stack and invokes the application of rule for relevant stack items.
+     * 
+     * Relevant stack items are the ones which correspond to the operation and 
+     * this operation has a priority against the forecoming symbol (lookAheadToken).
      * 
      * @param stack The parsing stack.
      * @param lookAheadToken The next token in the row, to determine the priority of operation.
      * 
      * @return true if the stack has been reduced.
      */
-    bool execute(ParserStack &stack, const Token &lookAheadToken) const throw (ParsingException) ;
+    bool iterateStack(ParserStack &stack, const Token &lookAheadToken) const throw (ParsingException) ;
 };
 
 #endif /* RULEOPERATIONS_H */

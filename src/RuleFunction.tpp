@@ -18,11 +18,9 @@ bool RuleFunction<Function>::apply(ParserStack& stack, const Token& ) const thro
     ParserStack::iterator argIt = stack.begin();
     ++argIt;
 
-    Function dummyFunction;
     for (; argIt != stack.end(); ++funcIt, ++argIt) {
-
         // search only the given funtion
-        if((*funcIt)->type != dummyFunction.type){
+        if(!expressionTypeOf<Function>((*funcIt))){
             continue;
         }
         

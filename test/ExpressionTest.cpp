@@ -25,16 +25,16 @@ protected:
     }
 };
 
-TEST_F(FX_Expression, isFunctionType_ElementaryFunctions_True) {
-    EXPECT_TRUE(Sin().isFunctionType());
-}
-
-TEST_F(FX_Expression, isFunctionType_OperationsVariablesAndConstants_False) {
-    EXPECT_FALSE(Variable("a").isFunctionType());
-    EXPECT_FALSE(Constant("42").isFunctionType());
-    EXPECT_FALSE(Sum().isFunctionType());
-    EXPECT_FALSE(Sub().isFunctionType());
-    EXPECT_FALSE(Mult().isFunctionType());
-    EXPECT_FALSE(Div().isFunctionType());
-    EXPECT_FALSE(Pow().isFunctionType());
-}
+//TEST_F(FX_Expression, DISABLED_isFunctionType_ElementaryFunctions_True) {
+//    EXPECT_TRUE(Sin().isFunctionType());
+//}
+//
+//TEST_F(FX_Expression, DISABLED_isFunctionType_OperationsVariablesAndConstants_False) {
+//    EXPECT_FALSE(Variable("a").isFunctionType());
+//    EXPECT_FALSE(Constant("42").isFunctionType());
+//    EXPECT_FALSE(Sum().isFunctionType());
+//    EXPECT_FALSE(Sub().isFunctionType());
+//    EXPECT_FALSE(Mult().isFunctionType());
+//    EXPECT_FALSE(Div().isFunctionType());
+//    EXPECT_FALSE(Pow().isFunctionType());
+//}

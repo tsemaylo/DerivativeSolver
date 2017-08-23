@@ -13,14 +13,10 @@ RuleOperations::RuleOperations(bool isRightHand, ExpressionType operationType) :
 
 
 bool RuleOperations::apply(ParserStack& stack, const Token& lookAheadToken) const throw (ParsingException) {
-    return execute(stack, lookAheadToken);
+    return iterateStack(stack, lookAheadToken);
 }
 
 bool RuleOperations::applyRuleWrapper(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack &stack) const throw (ParsingException) {
-    if((*op)->type != this->operationType){
-        return false;
-    }
-    
     // don't apply rule if operation of the left side is incomplete 
     if (!(*arg)->isComplete()) {
         return false;
@@ -36,26 +32,32 @@ bool RuleOperations::applyRuleWrapper(const ParserStack::const_iterator op, cons
     return (this->applyRule(op, arg, stack));
 }
 
-bool RuleOperations::execute(ParserStack &stack, const Token &lookAheadToken) const throw (ParsingException) {
+bool RuleOperations::iterateStack(ParserStack &stack, const Token &lookAheadToken) const throw (ParsingException) {
     ParserStack::iterator item = stack.begin();
     ParserStack::iterator nextItem = stack.begin();
     ++nextItem;
 
     for (; nextItem != stack.end(); ++item, ++nextItem) {
+        ParserStack::iterator op=nextItem;
+        ParserStack::iterator arg=item;
+        if(this->isRightHand) {
+            op=item;
+            arg=nextItem;
+        }
+        
+        // proceed only with elemants of the considered type 
+        // (for example process only Sum expressions if it is summation rule)
+        if ((*op)->type != this->operationType) {
+            continue;
+        }
+        
         // check the priority of operation if priority is low, then skip rule
-        // @TODO it is actually not a proper place for this check. At lest it should be done for the right expression (for the expected operation).
         if (next(nextItem) == stack.end() && hasPriority(this->operationType, lookAheadToken)) {
             continue;
         }
-
-        if (this->isRightHand) {
-            if (applyRuleWrapper(item, nextItem, stack)) {
-                return true;
-            }
-        } else {
-            if (applyRuleWrapper(nextItem, item, stack)) {
-                return true;
-            }
+        
+        if (applyRuleWrapper(op, arg, stack)) {
+            return true;
         }
     }
 

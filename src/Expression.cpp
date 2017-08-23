@@ -11,14 +11,3 @@
 
 Expression::Expression(ExpressionType type) : type(type){
 }
-
-bool Expression::isFunctionType() const {
-    return (
-            (type == ESin) ||
-            (type == ECos) ||
-            (type == ETan) ||
-            (type == ECtan) ||
-            (type == ELn) ||
-            (type == EExp)
-    );
-}

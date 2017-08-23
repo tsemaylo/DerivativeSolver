@@ -11,6 +11,7 @@
 #define SRC_EXPRESSION_H_
 
 #include <string>
+#include <memory>
 #include "TraverseException.h"
 
 class Visitor;
@@ -52,8 +53,13 @@ protected:
 public:
     const ExpressionType type;
     bool virtual isComplete() const = 0;
-    bool isFunctionType() const;
     void virtual traverse(Visitor &) const throw (TraverseException) = 0;
 };
+
+template <class ExpressionClass>
+bool expressionTypeOf(shared_ptr<Expression> exprInstance){
+    ExpressionClass dummy;
+    return (dummy.type == exprInstance->type);
+}
 
 #endif /* SRC_EXPRESSION_H_ */
