@@ -34,7 +34,7 @@ The relationships between these items and basic decomposition is provided on the
 
 It is, for sure, a very coarse representation of the application structure. 
 
-The relatuinship "uses" represents the point where the "breakable" dependency between items appear. 
+The relationship "uses" represents the point where the "breakable" dependency between items appear. 
 Making a sophisticated design as application grows may consider a usage of "serious" dependency 
 breaking techniques, say IoC, to improve testability and modulatization. 
 
