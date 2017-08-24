@@ -67,10 +67,10 @@ TEST_F(FX_RulePowLV, apply_LeftValueOfExponentation_Reducable) {
     ParserStack::const_iterator i = stack.begin();
 
     shared_ptr<Pow> pow = dynamic_pointer_cast<Pow>(*i);
-    EXPECT_EQ(EPow, pow->type);
+    EXPECT_TRUE(isTypeOf<Pow>(pow));
 
     shared_ptr<Variable> powLArg = dynamic_pointer_cast<Variable>(pow->lArg);
-    EXPECT_EQ(EVariable, powLArg->type);
+    EXPECT_TRUE(isTypeOf<Variable>(powLArg));
     EXPECT_STREQ("a", powLArg->name.c_str());
 }
 
@@ -84,9 +84,9 @@ TEST_F(FX_RulePowLV, apply_RuleIsNotAppliable_NotReducable) {
     EXPECT_FALSE(rulePowLV.apply(stack, lookAheadToken()));
 
     ParserStack::const_iterator i = stack.begin();
-    EXPECT_EQ(EPow, dynamic_pointer_cast<Pow>(*i)->type);
+    EXPECT_TRUE(isTypeOf<Pow>(*i));
     ++i;
-    EXPECT_EQ(EVariable, dynamic_pointer_cast<Variable>(*i)->type);
+    EXPECT_TRUE(isTypeOf<Variable>(*i));
 }
 
 TEST_F(FX_RulePowLV, apply_ExponentationOperationIsAlreadyComplete_NotReducable) {

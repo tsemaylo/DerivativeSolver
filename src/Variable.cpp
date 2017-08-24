@@ -10,6 +10,11 @@
 #include "Variable.h"
 #include "Visitor.h"
 
+
+Variable::Variable() : Expression(EVariable) {
+}
+
+
 Variable::Variable(string name) : Expression(EVariable), name(name) {}
 
  void Variable::traverse(Visitor &visitor) const throw(TraverseException) {
@@ -19,3 +24,8 @@ Variable::Variable(string name) : Expression(EVariable), name(name) {}
  bool Variable::isComplete() const{
 	return true;
 }
+ 
+//template <>
+//bool expressionTypeOf<Variable>(shared_ptr<Expression> exprInstance){
+//    return (exprInstance->type == EVariable);
+//}

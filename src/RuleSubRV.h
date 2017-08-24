@@ -11,11 +11,9 @@
 #define RULESUBRV_H
 
 #include "RuleOperations.h"
+#include "Sub.h"
 
-class RuleSubRV : public RuleOperations {
-public:
-    RuleSubRV();
-    
+class RuleSubRV : public RuleOperations<Sub, true> {
 private:
     bool applyRule(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack& stack) const throw(ParsingException) final;
 };

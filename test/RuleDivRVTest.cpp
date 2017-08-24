@@ -62,10 +62,10 @@ TEST_F(FX_RuleDivRV, apply_NormalRightValueForDivision_Reducable) {
     ParserStack::const_iterator i = stack.begin();
 
     shared_ptr<Div> div = dynamic_pointer_cast<Div>(*i);
-    EXPECT_EQ(EDiv, div->type);
+    EXPECT_TRUE(isTypeOf<Div>(div));
 
     shared_ptr<Variable> divRArg = dynamic_pointer_cast<Variable>(div->rArg);
-    EXPECT_EQ(EVariable, divRArg->type);
+    EXPECT_TRUE(isTypeOf<Variable>(divRArg));
     EXPECT_STREQ("b", divRArg->name.c_str());
 }
 

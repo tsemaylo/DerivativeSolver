@@ -55,10 +55,10 @@ TEST_F(FX_RuleSubLV, apply_SimpleSubtraction_Reducable) {
     ParserStack::const_iterator i = stack.begin();
 
     shared_ptr<Sub> sub = dynamic_pointer_cast<Sub>(*i);
-    EXPECT_EQ(ESub, sub->type);
+    EXPECT_TRUE(isTypeOf<Sub>(sub));
 
     shared_ptr<Variable> subLArg = dynamic_pointer_cast<Variable>(sub->lArg);
-    EXPECT_EQ(EVariable, subLArg->type);
+    EXPECT_TRUE(isTypeOf<Variable>(subLArg));
     EXPECT_STREQ("a", subLArg->name.c_str());
 }
 
@@ -72,9 +72,9 @@ TEST_F(FX_RuleSubLV, apply_SimpleSubtraction_NotReducable) {
     EXPECT_FALSE(ruleSubLV.apply(stack, lookAheadToken()));
 
     ParserStack::const_iterator i = stack.begin();
-    EXPECT_EQ(ESub, dynamic_pointer_cast<Sub>(*i)->type);
+    EXPECT_TRUE(isTypeOf<Sub>(*i));
     ++i;
-    EXPECT_EQ(EVariable, dynamic_pointer_cast<Variable>(*i)->type);
+    EXPECT_TRUE(isTypeOf<Variable>(*i));
 }
 
 TEST_F(FX_RuleSubLV, apply_SubtractionOperationWithIncompleteLeftArgument_NotReduced) {

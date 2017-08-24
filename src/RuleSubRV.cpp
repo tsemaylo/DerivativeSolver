@@ -9,11 +9,8 @@
 
 #include "bootstrap.h"
 #include "RuleSubRV.h"
-#include "Sub.h"
 #include "Mult.h"
 #include "Constant.h"
-
-RuleSubRV::RuleSubRV() : RuleOperations(true, ESub) {}
 
 bool RuleSubRV::applyRule(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack& stack) const throw(ParsingException) {
         // if the left side is empty 

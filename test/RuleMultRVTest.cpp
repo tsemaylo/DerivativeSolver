@@ -62,10 +62,10 @@ TEST_F(FX_RuleMultRV, apply_NormalRightValueForMultiplication_Reducable) {
     ParserStack::const_iterator i = stack.begin();
 
     shared_ptr<Mult> mult = dynamic_pointer_cast<Mult>(*i);
-    EXPECT_EQ(EMult, mult->type);
+    EXPECT_TRUE(isTypeOf<Mult>(mult));
 
     shared_ptr<Variable> multRArg = dynamic_pointer_cast<Variable>(mult->rArg);
-    EXPECT_EQ(EVariable, multRArg->type);
+    EXPECT_TRUE(isTypeOf<Variable>(multRArg));
     EXPECT_STREQ("b", multRArg->name.c_str());
 }
 

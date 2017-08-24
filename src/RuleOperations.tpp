@@ -9,14 +9,13 @@
 
 #include "RuleOperations.h"
 
-RuleOperations::RuleOperations(bool isRightHand, ExpressionType operationType) : isRightHand(isRightHand), operationType(operationType) {}
-
-
-bool RuleOperations::apply(ParserStack& stack, const Token& lookAheadToken) const throw (ParsingException) {
+template <class OperationClass, bool isRightHand>
+bool RuleOperations<OperationClass, isRightHand>::apply(ParserStack& stack, const Token& lookAheadToken) const throw (ParsingException) {
     return iterateStack(stack, lookAheadToken);
 }
 
-bool RuleOperations::applyRuleWrapper(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack &stack) const throw (ParsingException) {
+template <class OperationClass, bool isRightHand>
+bool RuleOperations<OperationClass, isRightHand>::applyRuleWrapper(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack &stack) const throw (ParsingException) {
     // don't apply rule if operation of the left side is incomplete 
     if (!(*arg)->isComplete()) {
         return false;
@@ -32,30 +31,31 @@ bool RuleOperations::applyRuleWrapper(const ParserStack::const_iterator op, cons
     return (this->applyRule(op, arg, stack));
 }
 
-bool RuleOperations::iterateStack(ParserStack &stack, const Token &lookAheadToken) const throw (ParsingException) {
+template<class OperationClass, bool isRightHand>
+bool RuleOperations<OperationClass, isRightHand>::iterateStack(ParserStack& stack, const Token& lookAheadToken) const throw (ParsingException) {
     ParserStack::iterator item = stack.begin();
     ParserStack::iterator nextItem = stack.begin();
     ++nextItem;
 
     for (; nextItem != stack.end(); ++item, ++nextItem) {
-        ParserStack::iterator op=nextItem;
-        ParserStack::iterator arg=item;
-        if(this->isRightHand) {
-            op=item;
-            arg=nextItem;
+        ParserStack::iterator op = nextItem;
+        ParserStack::iterator arg = item;
+        if (isRightHand) {
+            op = item;
+            arg = nextItem;
         }
-        
-        // proceed only with elemants of the considered type 
+
+        // proceed only with elements of the considered type 
         // (for example process only Sum expressions if it is summation rule)
-        if ((*op)->type != this->operationType) {
+        if (!isTypeOf<OperationClass>(*op)) {
             continue;
         }
-        
+
         // check the priority of operation if priority is low, then skip rule
-        if (next(nextItem) == stack.end() && hasPriority(this->operationType, lookAheadToken)) {
+        if (next(nextItem) == stack.end() && hasPriority<OperationClass>(lookAheadToken)) {
             continue;
         }
-        
+
         if (applyRuleWrapper(op, arg, stack)) {
             return true;
         }

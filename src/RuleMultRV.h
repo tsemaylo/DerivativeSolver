@@ -11,11 +11,9 @@
 #define RULEMULTRV_H
 
 #include "RuleOperations.h"
+#include "Mult.h"
 
-class RuleMultRV : public RuleOperations {
-public:
-    RuleMultRV();
-    
+class RuleMultRV : public RuleOperations<Mult, true> {
 private:
     bool applyRule(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack &stack) const throw (ParsingException) final;
 };

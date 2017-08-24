@@ -61,10 +61,10 @@ TEST_F(FX_RuleFunction, apply_SinNormalArgumentAssignment_Reducable) {
     ParserStack::const_iterator i = stack.begin();
 
     shared_ptr<Sin> sin = dynamic_pointer_cast<Sin>(*i);
-    EXPECT_EQ(ESin, sin->type);
+    EXPECT_TRUE(isTypeOf<Sin>(sin));
 
     shared_ptr<Variable> sinArg = dynamic_pointer_cast<Variable>(sin->arg);
-    EXPECT_EQ(EVariable, sinArg->type);
+    EXPECT_TRUE(isTypeOf<Variable>(sinArg));
     EXPECT_STREQ("x", sinArg->name.c_str());
 }
 

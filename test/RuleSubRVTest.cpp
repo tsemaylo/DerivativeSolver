@@ -11,6 +11,7 @@
 #include <memory>
 
 #include "RuleSubRV.h"
+#include "Constant.h"
 #include "Variable.h"
 #include "Sub.h"
 #include "Mult.h"
@@ -69,10 +70,10 @@ TEST_F(FX_RuleSubRV, apply_SimpleSubtraction_Reducable) {
     ParserStack::const_iterator i = stack.begin();
 
     shared_ptr<Sub> sub = dynamic_pointer_cast<Sub>(*i);
-    EXPECT_EQ(ESub, sub->type);
+    EXPECT_TRUE(isTypeOf<Sub>(sub));
 
     shared_ptr<Variable> subRArg = dynamic_pointer_cast<Variable>(sub->rArg);
-    EXPECT_EQ(EVariable, subRArg->type);
+    EXPECT_TRUE(isTypeOf<Variable>(subRArg));
     EXPECT_STREQ("a", subRArg->name.c_str());
 }
 
@@ -87,11 +88,11 @@ TEST_F(FX_RuleSubRV, apply_SubtractionWithoutLeftArgument_Reducable) {
 
     ParserStack::const_iterator i = stack.begin();
 
-    EXPECT_EQ(EMult, (*i)->type);
+    EXPECT_TRUE(isTypeOf<Mult>((*i)));
 
     shared_ptr<Mult> mult = dynamic_pointer_cast<Mult>(*i);
-    EXPECT_EQ(EConstant, mult->lArg->type);
-    EXPECT_EQ(EVariable, mult->rArg->type);
+    EXPECT_TRUE(isTypeOf<Constant>(mult->lArg));
+    EXPECT_TRUE(isTypeOf<Variable>(mult->rArg));
 }
 
 TEST_F(FX_RuleSubRV, apply_SimpleSummation_NotReducable) {
@@ -105,9 +106,9 @@ TEST_F(FX_RuleSubRV, apply_SimpleSummation_NotReducable) {
     EXPECT_EQ(2, stack.size());
 
     ParserStack::const_iterator i = stack.begin();
-    EXPECT_EQ(EVariable, dynamic_pointer_cast<Variable>(*i)->type);
+    EXPECT_TRUE(isTypeOf<Variable>(*i));
     ++i;
-    EXPECT_EQ(ESub, (*i)->type);
+    EXPECT_TRUE(isTypeOf<Sub>(*i));
 }
 
 TEST_F(FX_RuleSubRV, apply_IncompleteExpressionOnTheRight_NotReduced) {

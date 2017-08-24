@@ -15,6 +15,8 @@
 #include "TraverseException.h"
 
 class Visitor;
+class Variable;
+class Constant;
 
 using namespace std;
 
@@ -26,6 +28,7 @@ using namespace std;
  * his exceptions, 
  * or another one visitor and so on,
  * or even in bilt-in std::visit() from c++17.
+ * or typeid which seems to be not so portable.
  * 
  * The type of Expression must be known, for instance, during reduction of a stack
  * of non-terminals by applying of a grammatical rule.
@@ -47,19 +50,36 @@ enum ExpressionType {
 };
 
 class Expression {
+private:
+    const ExpressionType type;
+    
 protected:
     Expression(ExpressionType type);
 
 public:
-    const ExpressionType type;
     bool virtual isComplete() const = 0;
     void virtual traverse(Visitor &) const throw (TraverseException) = 0;
+    
+    template <class ExpressionClass>
+    friend bool isTypeOf(shared_ptr<Expression> exprInstance);
 };
 
+/**
+ * Check the concrete type of an instance of given Expression .
+ * 
+ * The template function isTypeOf used to ensure the proper type of the Expeession.
+ * Unfortunately its implementation looks also not so clean. 
+ * The further refactoring is cosidered (especially regardingb the usage of private constructors and friend functions).
+ * 
+ * @param ExpressionClass The assumed type of the Expression.
+ * @param exprInstance The instance of Expression.
+ * 
+ * @return true if exprInstance is ExpressionClass type, otherweis - false. 
+ */
 template <class ExpressionClass>
-bool expressionTypeOf(shared_ptr<Expression> exprInstance){
+bool isTypeOf(shared_ptr<Expression> exprInstance){
     ExpressionClass dummy;
-    return (dummy.type == exprInstance->type);
+    return (exprInstance->type == dummy.type);
 }
 
 #endif /* SRC_EXPRESSION_H_ */

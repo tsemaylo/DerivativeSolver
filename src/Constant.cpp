@@ -8,12 +8,16 @@
 #include "Constant.h"
 #include "Visitor.h"
 
-Constant::Constant(string value) : Expression(EConstant), value(value){}
-
-void Constant::traverse(Visitor &visitor) const throw(TraverseException) {
-	visitor.visit(shared_from_this());
+Constant::Constant() : Expression(EConstant) {
 }
 
-bool Constant::isComplete() const{
-	return true;
+Constant::Constant(string value) : Expression(EConstant), value(value) {
+}
+
+void Constant::traverse(Visitor &visitor) const throw (TraverseException) {
+    visitor.visit(shared_from_this());
+}
+
+bool Constant::isComplete() const {
+    return true;
 }

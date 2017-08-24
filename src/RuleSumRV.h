@@ -11,11 +11,9 @@
 #define RULESUMRV_H
 
 #include "RuleOperations.h"
+#include "Sum.h"
 
-class RuleSumRV : public RuleOperations {
-public:
-    RuleSumRV();
-    
+class RuleSumRV : public RuleOperations<Sum, true> {
 private:
     bool applyRule(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack& stack) const throw(ParsingException) final;
 };

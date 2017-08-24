@@ -9,33 +9,52 @@
 
 #include "Rule.h"
 
-bool hasPriority(const ExpressionType exprType, const Token &lookAheadToken) {
-    if (exprType == ESum || exprType == ESub) {
-        if (lookAheadToken.type == TAlphaNumeric) {
-            return lookAheadToken.isFunction();
-        }
-        if (lookAheadToken.type == TOperation) {
-            return (lookAheadToken.value == "*" ||
-                    lookAheadToken.value == "/" ||
-                    lookAheadToken.value == "\\" ||
-                    lookAheadToken.value == "^");
-        }
-    }
+#include "Sum.h"
+#include "Sub.h"
+#include "Div.h"
+#include "Mult.h"
+#include "Pow.h"
+#include "Sin.h"
 
-    if (exprType == EMult || exprType == EDiv) {
-        if (lookAheadToken.type == TAlphaNumeric) {
-            return lookAheadToken.isFunction();
-        }
-        if (lookAheadToken.type == TOperation) {
-            return (lookAheadToken.isFunction() || lookAheadToken.value == "^");
-        }
+template<>
+bool hasPriority<Sum>(const Token &lookAheadToken) {
+    if (lookAheadToken.type == TAlphaNumeric) {
+        return lookAheadToken.isFunction();
     }
-
-    if (exprType == EPow) {
-        if (lookAheadToken.type == TAlphaNumeric && lookAheadToken.isFunction()) {
-            return true;
-        }
+    if (lookAheadToken.type == TOperation) {
+        return (lookAheadToken.value == "*" ||
+                lookAheadToken.value == "/" ||
+                lookAheadToken.value == "\\" ||
+                lookAheadToken.value == "^");
     }
+    return false;
+}
 
+template<>
+bool hasPriority<Sub>(const Token &lookAheadToken) {
+    return hasPriority<Sum>(lookAheadToken);
+}
+
+template<>
+bool hasPriority<Mult>(const Token &lookAheadToken) {
+    if (lookAheadToken.type == TAlphaNumeric) {
+        return lookAheadToken.isFunction();
+    }
+    if (lookAheadToken.type == TOperation) {
+        return (lookAheadToken.isFunction() || lookAheadToken.value == "^");
+    }
+    return false;
+}
+
+template<>
+bool hasPriority<Div>(const Token &lookAheadToken) {
+    return hasPriority<Mult>(lookAheadToken);
+}
+
+template<>
+bool hasPriority<Pow>(const Token &lookAheadToken) {
+    if (lookAheadToken.type == TAlphaNumeric && lookAheadToken.isFunction()) {
+        return true;
+    }
     return false;
 }

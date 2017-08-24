@@ -15,15 +15,20 @@
 
 using namespace std;
 
-class Constant: public Expression, public enable_shared_from_this<Constant> 
-{
+class Constant : public Expression, public enable_shared_from_this<Constant> {
+private:
+    Constant();
+    
 public:
-	const string value;
-	
-	Constant(string value);
+    const string value;
 
-	void traverse(Visitor & ) const throw(TraverseException) final;
-	bool isComplete() const final;
+    Constant(string value);
+
+    void traverse(Visitor &) const throw (TraverseException) final;
+    bool isComplete() const final;
+    
+    template <class ExpressionClass>
+    friend bool isTypeOf(shared_ptr<Expression> exprInstance);    
 };
 
 #endif /* SRC_CONSTANT_H_ */

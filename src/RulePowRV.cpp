@@ -9,10 +9,6 @@
 
 #include "bootstrap.h"
 #include "RulePowRV.h"
-#include "Pow.h"
-
-RulePowRV::RulePowRV() : RuleOperations(true, EPow) {
-}
 
 bool RulePowRV::applyRule(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack &stack) const throw (ParsingException) {
     if (dynamic_pointer_cast<Pow>(*op)->lArg == nullptr) {

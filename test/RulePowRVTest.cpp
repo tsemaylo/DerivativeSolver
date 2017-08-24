@@ -62,10 +62,10 @@ TEST_F(FX_RulePowRV, apply_NormalRightValueForExponentationOperation_Reducable) 
     ParserStack::const_iterator i = stack.begin();
 
     shared_ptr<Pow> pow = dynamic_pointer_cast<Pow>(*i);
-    EXPECT_EQ(EPow, pow->type);
+    EXPECT_TRUE(isTypeOf<Pow>(pow));
 
     shared_ptr<Variable> powRArg = dynamic_pointer_cast<Variable>(pow->rArg);
-    EXPECT_EQ(EVariable, powRArg->type);
+    EXPECT_TRUE(isTypeOf<Variable>(powRArg));
     EXPECT_STREQ("b", powRArg->name.c_str());
 }
 

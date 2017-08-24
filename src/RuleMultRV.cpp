@@ -9,10 +9,6 @@
 
 #include "bootstrap.h"
 #include "RuleMultRV.h"
-#include "Mult.h"
-
-RuleMultRV::RuleMultRV() : RuleOperations(true, EMult) {
-}
 
 bool RuleMultRV::applyRule(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack &stack) const throw (ParsingException) {
     // if the left side is empty 

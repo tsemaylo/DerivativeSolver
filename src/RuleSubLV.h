@@ -11,12 +11,11 @@
 #define RULESUBLV_H
 
 #include "RuleOperations.h"
+#include "Sub.h"
 
 using namespace std;
 
-class RuleSubLV : public RuleOperations {
-public:
-    RuleSubLV();
+class RuleSubLV : public RuleOperations<Sub, false> {
 private:
     bool applyRule(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack& stack) const throw(ParsingException) final;
 };

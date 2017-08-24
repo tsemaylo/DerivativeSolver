@@ -9,11 +9,8 @@
 
 #include "bootstrap.h"
 #include "RulePowLV.h"
-#include "Pow.h"
 
 using namespace std;
-
-RulePowLV::RulePowLV() : RuleOperations(false, EPow){}
 
 bool RulePowLV::applyRule(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack &stack) const throw (ParsingException) {
     // Grammar rule #23

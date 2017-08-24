@@ -20,7 +20,7 @@ bool RuleFunction<Function>::apply(ParserStack& stack, const Token& ) const thro
 
     for (; argIt != stack.end(); ++funcIt, ++argIt) {
         // search only the given funtion
-        if(!expressionTypeOf<Function>((*funcIt))){
+        if(!isTypeOf<Function>((*funcIt))){
             continue;
         }
         
@@ -36,6 +36,7 @@ bool RuleFunction<Function>::apply(ParserStack& stack, const Token& ) const thro
         }
         
         // assigning the argument and reducing the stack
+        // Grammar rules: #17-22
         dynamic_pointer_cast<Function>(*funcIt)->arg=(*argIt);
         stack.erase(argIt);
         

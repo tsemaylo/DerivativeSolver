@@ -22,13 +22,15 @@
  * since it is generic for all operations. The class is abstract and requires from
  * children (implementation of concrete arithmetical or functional rules) to implement
  * the specific logic of operation in applyRule().
+ * 
+ * @param OperationClass The concrete class of operation which extends the RuleOperations, for instance: Mult, Sum etc.
  */
+template <class OperationClass, bool isRightHand>
 class RuleOperations : public Rule{
 public:
     bool apply(ParserStack &stack, const Token &lookAheadToken) const throw (ParsingException) final;
     
 protected:
-    RuleOperations(bool isRightHand, ExpressionType operationType);
     
     /**
      * Appy the rule and reduce the stack.
@@ -44,8 +46,6 @@ protected:
     virtual bool applyRule(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack &stack) const throw (ParsingException) = 0;
     
 private:
-    bool isRightHand;
-    ExpressionType operationType; 
     
     /**
      * The warpper for concrete applyRule(). Implements general logic to check the consistenmcy operation and its arguments before reducing the stack.
@@ -69,8 +69,11 @@ private:
      * 
      * @return true if the stack has been reduced.
      */
-    bool iterateStack(ParserStack &stack, const Token &lookAheadToken) const throw (ParsingException) ;
+    bool iterateStack(ParserStack &stack, const Token &lookAheadToken) const throw (ParsingException);
 };
+
+
+#include "RuleOperations.tpp"
 
 #endif /* RULEOPERATIONS_H */
 

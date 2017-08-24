@@ -44,10 +44,10 @@ TEST_F(FX_RuleSumLV, apply_SimpleSummation_Reducable) {
     ParserStack::const_iterator i = stack.begin();
 
     shared_ptr<Sum> sum = dynamic_pointer_cast<Sum>(*i);
-    EXPECT_EQ(ESum, sum->type);
+    EXPECT_TRUE(isTypeOf<Sum>(sum));
 
     shared_ptr<Variable> sumLArg = dynamic_pointer_cast<Variable>(sum->lArg);
-    EXPECT_EQ(EVariable, sumLArg->type);
+    EXPECT_TRUE(isTypeOf<Variable>(sumLArg));
     EXPECT_STREQ("a", sumLArg->name.c_str());
 }
 
@@ -61,9 +61,9 @@ TEST_F(FX_RuleSumLV, apply_SimpleSummation_NotReducable) {
     EXPECT_FALSE(ruleSumLV.apply(stack, Token("NA", TNoToken)));
 
     ParserStack::const_iterator i = stack.begin();
-    EXPECT_EQ(ESum, dynamic_pointer_cast<Sum>(*i)->type);
+    EXPECT_TRUE(isTypeOf<Sum>(*i));
     ++i;
-    EXPECT_EQ(EVariable, dynamic_pointer_cast<Variable>(*i)->type);
+    EXPECT_TRUE(isTypeOf<Variable>(*i));
 }
 
 TEST_F(FX_RuleSumLV, apply_SummationOperationWithoutArgument_NotReduced) {

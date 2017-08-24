@@ -63,67 +63,67 @@ void Differentiator::visit(const shared_ptr<const Sub> expr)  throw(TraverseExce
 	this->setLastVisitResult(difSubtraction);
 }
 
-void Differentiator::visit(const shared_ptr<const Div> expr)  throw(TraverseException)
+void Differentiator::visit(const shared_ptr<const Div> )  throw(TraverseException)
 {
 	/// @TODO s.a.
 	/// @TODO NYI
-	this->setLastVisitResult(make_shared<Constant>(to_string(expr->type)));
+	this->setLastVisitResult(make_shared<Constant>("NYI"));
 }
 
-void Differentiator::visit(const shared_ptr<const Mult> expr)  throw(TraverseException)
+void Differentiator::visit(const shared_ptr<const Mult> )  throw(TraverseException)
 {
 	/// @TODO s.a.
 	/// @TODO NYI
-	this->setLastVisitResult(make_shared<Constant>(to_string(expr->type)));
+	this->setLastVisitResult(make_shared<Constant>("NYI"));
 }
 
-void Differentiator::visit(const shared_ptr<const Pow> expr)  throw(TraverseException)
+void Differentiator::visit(const shared_ptr<const Pow> )  throw(TraverseException)
 {
 	/// @TODO s.a.
 	/// @TODO NYI
-	this->setLastVisitResult(make_shared<Constant>(to_string(expr->type)));
+	this->setLastVisitResult(make_shared<Constant>("NYI"));
 }
 
-void Differentiator::visit(const shared_ptr<const Sin> expr)  throw(TraverseException)
+void Differentiator::visit(const shared_ptr<const Sin> )  throw(TraverseException)
 {
 	/// @TODO s.a.
 	/// @TODO NYI
-	this->setLastVisitResult(make_shared<Constant>(to_string(expr->type)));
+	this->setLastVisitResult(make_shared<Constant>("NYI"));
 }
 
-void Differentiator::visit(const shared_ptr<const Cos> expr)  throw(TraverseException)
+void Differentiator::visit(const shared_ptr<const Cos> )  throw(TraverseException)
 {
 	/// @TODO s.a.
 	/// @TODO NYI
-	this->setLastVisitResult(make_shared<Constant>(to_string(expr->type)));
+	this->setLastVisitResult(make_shared<Constant>("NYI"));
 }
 
-void Differentiator::visit(const shared_ptr<const Tan> expr)  throw(TraverseException)
+void Differentiator::visit(const shared_ptr<const Tan> )  throw(TraverseException)
 {
 	/// @TODO s.a.
 	/// @TODO NYI
-	this->setLastVisitResult(make_shared<Constant>(to_string(expr->type)));
+	this->setLastVisitResult(make_shared<Constant>("NYI"));
 }
 
-void Differentiator::visit(const shared_ptr<const Ctan> expr)  throw(TraverseException)
+void Differentiator::visit(const shared_ptr<const Ctan> )  throw(TraverseException)
 {
 	/// @TODO s.a.
 	/// @TODO NYI
-	this->setLastVisitResult(make_shared<Constant>(to_string(expr->type)));
+	this->setLastVisitResult(make_shared<Constant>("NYI"));
 }
 
-void Differentiator::visit(const shared_ptr<const Ln> expr)  throw(TraverseException)
+void Differentiator::visit(const shared_ptr<const Ln> )  throw(TraverseException)
 {
 	/// @TODO s.a.
 	/// @TODO NYI
-	this->setLastVisitResult(make_shared<Constant>(to_string(expr->type)));
+	this->setLastVisitResult(make_shared<Constant>("NYI"));
 }
 
-void Differentiator::visit(const shared_ptr<const Exp> expr)  throw(TraverseException)
+void Differentiator::visit(const shared_ptr<const Exp> )  throw(TraverseException)
 {
 	/// @TODO s.a.
 	/// @TODO NYI
-	this->setLastVisitResult(make_shared<Constant>(to_string(expr->type)));
+	this->setLastVisitResult(make_shared<Constant>("NYI"));
 }
 
 shared_ptr<Expression> Differentiator::getLastVisitResult() const {

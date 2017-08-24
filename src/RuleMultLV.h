@@ -11,13 +11,12 @@
 #define RULEMULTLV_H
 
 #include "RuleOperations.h"
+#include "Mult.h"
 
 using namespace std;
 
-class RuleMultLV : public RuleOperations {
-public:
-    RuleMultLV();
-    
+class RuleMultLV : public RuleOperations<Mult, false> {
+ 
 private:
     bool applyRule(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack &stack) const throw (ParsingException) final;
 };

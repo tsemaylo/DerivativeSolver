@@ -9,10 +9,6 @@
 
 #include "bootstrap.h"
 #include "RuleSumRV.h"
-#include "Sum.h"
-
-RuleSumRV::RuleSumRV() : RuleOperations(true, ESum) {
-}
 
 bool RuleSumRV::applyRule(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack& stack) const throw (ParsingException) {
     // if the left side is empty 

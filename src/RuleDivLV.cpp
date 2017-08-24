@@ -9,11 +9,8 @@
 
 #include "bootstrap.h"
 #include "RuleDivLV.h"
-#include "Div.h"
 
 using namespace std;
-
-RuleDivLV::RuleDivLV() : RuleOperations(false, EDiv){}
 
 bool RuleDivLV::applyRule(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack &stack) const throw (ParsingException) {
     // Grammar rule #27

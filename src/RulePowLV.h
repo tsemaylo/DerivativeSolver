@@ -11,13 +11,11 @@
 #define RULEPOWLV_H
 
 #include "RuleOperations.h"
+#include "Pow.h"
 
 using namespace std;
 
-class RulePowLV : public RuleOperations {
-public:
-    RulePowLV();
-    
+class RulePowLV : public RuleOperations<Pow, false> {
 private:
     bool applyRule(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack &stack) const throw (ParsingException) final;
 };

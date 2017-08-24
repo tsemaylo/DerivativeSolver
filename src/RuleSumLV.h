@@ -11,12 +11,11 @@
 #define RULESUMLV_H
 
 #include "RuleOperations.h"
+#include "Sum.h"
 
 using namespace std;
 
-class RuleSumLV : public RuleOperations {
-public:
-    RuleSumLV();
+class RuleSumLV : public RuleOperations<Sum, false> {
 private:
     bool applyRule(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack& stack) const throw(ParsingException) final;
 };

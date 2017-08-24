@@ -67,10 +67,10 @@ TEST_F(FX_RuleMultLV, apply_LeftValueMultiplication_Reducable) {
     ParserStack::const_iterator i = stack.begin();
 
     shared_ptr<Mult> mult = dynamic_pointer_cast<Mult>(*i);
-    EXPECT_EQ(EMult, mult->type);
+    EXPECT_TRUE(isTypeOf<Mult>(mult));
 
     shared_ptr<Variable> multLArg = dynamic_pointer_cast<Variable>(mult->lArg);
-    EXPECT_EQ(EVariable, multLArg->type);
+    EXPECT_TRUE(isTypeOf<Variable>(multLArg));
     EXPECT_STREQ("a", multLArg->name.c_str());
 }
 
@@ -84,9 +84,9 @@ TEST_F(FX_RuleMultLV, apply_RuleIsNotAppliable_NotReducable) {
     EXPECT_FALSE(ruleMultLV.apply(stack, lookAheadToken()));
 
     ParserStack::const_iterator i = stack.begin();
-    EXPECT_EQ(EMult, dynamic_pointer_cast<Mult>(*i)->type);
+    EXPECT_TRUE(isTypeOf<Mult>(*i));
     ++i;
-    EXPECT_EQ(EVariable, dynamic_pointer_cast<Variable>(*i)->type);
+    EXPECT_TRUE(isTypeOf<Variable>(*i));
 }
 
 TEST_F(FX_RuleMultLV, apply_MultiplicationIsAlreadyComplete_NotReducable) {

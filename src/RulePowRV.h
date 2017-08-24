@@ -11,11 +11,9 @@
 #define RULEPOWRV_H
 
 #include "RuleOperations.h"
+#include "Pow.h"
 
-class RulePowRV : public RuleOperations {
-public:
-    RulePowRV();
-    
+class RulePowRV : public RuleOperations<Pow, true> {
 private:
     bool applyRule(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack &stack) const throw (ParsingException) final;
 };

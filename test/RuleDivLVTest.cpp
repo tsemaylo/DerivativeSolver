@@ -67,10 +67,10 @@ TEST_F(FX_RuleDivLV, apply_LeftValueDivision_Reducable) {
     ParserStack::const_iterator i = stack.begin();
 
     shared_ptr<Div> div = dynamic_pointer_cast<Div>(*i);
-    EXPECT_EQ(EDiv, div->type);
+    EXPECT_TRUE(isTypeOf<Div>(div));
 
     shared_ptr<Variable> divLArg = dynamic_pointer_cast<Variable>(div->lArg);
-    EXPECT_EQ(EVariable, divLArg->type);
+    EXPECT_TRUE(isTypeOf<Variable>(divLArg));
     EXPECT_STREQ("a", divLArg->name.c_str());
 }
 
@@ -84,9 +84,9 @@ TEST_F(FX_RuleDivLV, apply_RuleIsNotAppliable_NotReducable) {
     EXPECT_FALSE(ruleDivLV.apply(stack, lookAheadToken()));
 
     ParserStack::const_iterator i = stack.begin();
-    EXPECT_EQ(EDiv, dynamic_pointer_cast<Div>(*i)->type);
+    EXPECT_TRUE(isTypeOf<Div>(*i));
     ++i;
-    EXPECT_EQ(EVariable, dynamic_pointer_cast<Variable>(*i)->type);
+    EXPECT_TRUE(isTypeOf<Variable>(*i));
 }
 
 TEST_F(FX_RuleDivLV, apply_DivisionIsAlreadyComplete_NotReducable) {

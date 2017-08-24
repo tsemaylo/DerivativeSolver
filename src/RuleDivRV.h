@@ -11,11 +11,9 @@
 #define RULEDIVRV_H
 
 #include "RuleOperations.h"
+#include "Div.h"
 
-class RuleDivRV : public RuleOperations {
-public:
-    RuleDivRV();
-    
+class RuleDivRV : public RuleOperations<Div, true> { 
 private:
     bool applyRule(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack &stack) const throw (ParsingException) final;
 };

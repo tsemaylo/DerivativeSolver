@@ -9,10 +9,6 @@
 
 #include "bootstrap.h"
 #include "RuleDivRV.h"
-#include "Div.h"
-
-RuleDivRV::RuleDivRV() : RuleOperations(true, EDiv) {
-}
 
 bool RuleDivRV::applyRule(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack &stack) const throw (ParsingException) {
     // if the left side is empty 

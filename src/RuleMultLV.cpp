@@ -9,11 +9,8 @@
 
 #include "bootstrap.h"
 #include "RuleMultLV.h"
-#include "Mult.h"
 
 using namespace std;
-
-RuleMultLV::RuleMultLV() : RuleOperations(false, EMult){}
 
 bool RuleMultLV::applyRule(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack &stack) const throw (ParsingException) {
     // Grammar rule #25

@@ -9,11 +9,8 @@
 
 #include "bootstrap.h"
 #include "RuleSubLV.h"
-#include "Sub.h"
 
 using namespace std;
-
-RuleSubLV::RuleSubLV() : RuleOperations(false, ESub) {}
 
 bool RuleSubLV::applyRule(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack& stack) const throw(ParsingException) {
     // see Grammar rule #32

@@ -17,15 +17,21 @@
 
 using namespace std;
 
-class Variable: public Expression, public enable_shared_from_this<Variable> {
+class Variable : public Expression, public enable_shared_from_this<Variable> {
+private:
+    Variable();
+
 public:
-	const string name;
-	
-	Variable(string name);
-	
-	void traverse(Visitor & ) const throw(TraverseException) final;
-	
-	bool isComplete() const final;
+    const string name;
+
+    Variable(string name);
+
+    void traverse(Visitor &) const throw (TraverseException) final;
+
+    bool isComplete() const final;
+    
+    template <class ExpressionClass>
+    friend bool isTypeOf(shared_ptr<Expression> exprInstance);    
 };
 
 #endif /* SRC_VARIABLE_H_ */

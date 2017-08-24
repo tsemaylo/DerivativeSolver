@@ -30,13 +30,13 @@ public:
 /**
  * Look at the token ahead and decide whether the next operation in the stack will have more priority then the current one.
  * 
- * @param exprType The ty of current one 
+ * @param ExpressionClass The class type of current one .
  * @param lookAheadToken The token that is considered to be an upcoming operation.
  * 
  * @return true if the operation with high priority comes next, otherwise false.
  */
-bool hasPriority(const ExpressionType exprType, const Token &lookAheadToken);
-
+template <class ExpressionClass>
+bool hasPriority(const Token &lookAheadToken);
 
 #endif /* RULE_H */
 

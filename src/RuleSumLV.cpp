@@ -9,12 +9,8 @@
 
 #include "bootstrap.h"
 #include "RuleSumLV.h"
-#include "Sum.h"
 
 using namespace std;
-
-RuleSumLV::RuleSumLV() : RuleOperations(false, ESum) {
-}
 
 bool RuleSumLV::applyRule(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack& stack) const throw (ParsingException) {
     // the expression on the left side is correct
