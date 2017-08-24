@@ -15,17 +15,51 @@
       <ATT name="status">1970354901745664</ATT>
     </ATTRIBUTES>
     <DEPENDENCIES>
-      <COMP relation="Parent">
+      <COMP relation="TemplateInstanciation">
         <OBJECT>
-          <ID name="Generalization" mc="Standard.Generalization" uid="01445bc9-2974-4c24-afc7-c43f4cfd9f10"/>
+          <ID name="-&gt;RuleOperations" mc="Standard.TemplateBinding" uid="a090399b-d1ad-4fca-8334-116dae512a71"/>
           <ATTRIBUTES>
-            <ATT name="Discriminator"></ATT>
-            <ATT name="Name"><![CDATA[Generalization]]></ATT>
+            <ATT name="Name"><![CDATA[->RuleOperations]]></ATT>
             <ATT name="status">1970354901745664</ATT>
           </ATTRIBUTES>
           <DEPENDENCIES>
-            <LINK relation="SuperType">
-              <ID name="Rule" mc="Standard.Class" uid="fd678cd4-eb78-457d-9b7b-38fdcec2d948"/>
+            <COMP relation="ParameterSubstitution">
+              <OBJECT>
+                <ID name="OperationClass" mc="Standard.TemplateParameterSubstitution" uid="484076e6-4639-4b8f-9a78-459d73306e7f"/>
+                <ATTRIBUTES>
+                  <ATT name="Value"></ATT>
+                  <ATT name="Name"><![CDATA[OperationClass]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <LINK relation="Actual">
+                    <ID name="Pow" mc="Standard.Class" uid="d98ab4b9-f458-4306-8764-35c66773ef89"/>
+                  </LINK>
+                  <LINK relation="FormalParameter">
+                    <REFOBJ>
+                      <ID name="OperationClass" mc="Standard.TemplateParameter" uid="f0b811a1-8906-410a-a339-30a3bb40c7dc"/>
+                    </REFOBJ>
+                  </LINK>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="isRightHand" mc="Standard.TemplateParameterSubstitution" uid="47550093-c372-402b-9432-0103b2e699aa"/>
+                <ATTRIBUTES>
+                  <ATT name="Value"><![CDATA[false]]></ATT>
+                  <ATT name="Name"><![CDATA[isRightHand]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <LINK relation="FormalParameter">
+                    <REFOBJ>
+                      <ID name="isRightHand" mc="Standard.TemplateParameter" uid="0329d50a-1113-4208-b852-6d5f76b1083e"/>
+                    </REFOBJ>
+                  </LINK>
+                </DEPENDENCIES>
+              </OBJECT>
+            </COMP>
+            <LINK relation="InstanciatedTemplate">
+              <ID name="RuleOperations" mc="Standard.Class" uid="4c401396-1c24-4299-9672-88b1d465409f"/>
             </LINK>
           </DEPENDENCIES>
         </OBJECT>

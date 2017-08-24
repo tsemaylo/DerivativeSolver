@@ -1,6 +1,9 @@
 The basic grammar of math expressions for parser.
 
-The order of rule application defines the priority of opperation.
+The logic of grammar execution:
+1. Iterate through all rules. 
+2. If one rule has reduced the stack then start iteration from the beginning of the list.
+3. The order of the rule in the grammar (No.) defines which rules should be executed first to keep the syntax tree consistent. The grammar from this point of view acts more like sequence of actions. IMPORTANT it doesn't define the priority of arithmetic operations!
 
 The '|' must be understood as OR in terms of multiple options. For instance: "Sum | Sub" means that we are expecting either addition or subtraction operator on this place.
 

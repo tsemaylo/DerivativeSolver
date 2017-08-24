@@ -26,6 +26,16 @@ $ 0
 $ solver sin(x^2) x
 $ cos(x^2)*2x
 ```
+# Features
+
+At the current state of development the following basic features are available:
+* Arythmetical operations: +, -, *, /, exponentiation (^)
+* Basic elementary functions: natural logarithms, trygonometric functions (sine, cosine, tangent and co-tangent), exponent
+* Command line interface
+
+Nice to have options:
+* LaTeX output
+* Plot the graph of calculated functions. 
 
 # Building <a name="build"></a>
 

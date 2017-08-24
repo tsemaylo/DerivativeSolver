@@ -54,6 +54,7 @@
         <COMPID name="RuleSumRV" mc="Standard.Class" uid="0dbf59d8-4055-4557-9cec-34fcaca3f6d9"/>
         <COMPID name="RuleSubLV" mc="Standard.Class" uid="190945b6-0ca1-4a06-9e66-60e250a61710"/>
         <COMPID name="RuleSubRV" mc="Standard.Class" uid="3ee4c8e2-8a54-42fb-a591-02e2cac88eb3"/>
+        <COMPID name="RuleOperations" mc="Standard.Class" uid="4c401396-1c24-4299-9672-88b1d465409f"/>
       </COMP>
       <COMP relation="Product">
         <COMPID name="General structure" mc="Standard.ClassDiagram" uid="051e4aeb-64d7-49b9-b747-33b32c225604"/>

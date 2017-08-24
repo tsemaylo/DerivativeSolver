@@ -34,7 +34,7 @@
         <OBJECT>
           <ID name="Note" mc="Infrastructure.Note" uid="3f1b9947-69f8-4071-b6a5-5ba997a421ba"/>
           <ATTRIBUTES>
-            <ATT name="Content"><![CDATA[<p>Being are&nbsp;arithmetical operations, Sub, Div, Mult are organized in the same way as Sum.</p>
+            <ATT name="Content"><![CDATA[<p>Being are&nbsp;arithmetic operations, Sub, Div, Mult are organized in the same way as Sum.</p>
 ]]></ATT>
             <ATT name="MimeType"></ATT>
             <ATT name="Name"><![CDATA[Note]]></ATT>

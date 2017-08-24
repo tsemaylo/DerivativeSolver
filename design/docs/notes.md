@@ -1,14 +1,14 @@
 # Design notes
 
 ## Overview
-Basically the application consists of the following basic blocks:
+Basically the application consists of the following basic elements:
 
 * **Parser** - accepts string expression and builds syntax tree
 * **Syntax tree** - the hierarchical data structure representing the parsed expression. 
 * **Visitors** are tools to perform operations over syntax tree: like differentiation or output in user-readable form.
 
 ## Design goals and priorities
-- Taste of c++ and get the experience
+- Taste of c++ and get the experience with actual standards
 - Keep design as clean as possible
 
 ## Basic considerations
@@ -21,30 +21,43 @@ Basically the application consists of the following basic blocks:
 * minimize inheretance, nevertheless it can be essential to use polymorphism in some way.
 * exceptions instead of error codes
 
-## The model of the application
-The diagramm below depicts the more detailed model of the application.
+## Design of the application
 
-As we can see the derived **Expression** types represent syntax tree elements.
+The design, as it usually happens, is evolving during the development. 
+The initial model of the application are preserved here: [Initial design](initialDesign.md)
+Here you can find the actual structure of the application. The basic elements of design, as it was
+mentioned above, are: parser, syntax tree and visitors as abstraction for operations.
+
+The relationships between these items and basic decomposition is provided on the picture below.
+
+![General decomposition](img/designItemsRelationships.png)
+
+It is, for sure, a very coarse representation of the application structure. 
+
+The relatuinship "uses" represents the point where the "breakable" dependency between items appear. 
+Making a sophisticated design as application grows may consider a usage of "serious" dependency 
+breaking techniques, say IoC, to improve testability and modulatization. 
+
+The more detailed class decomposition looks as following:
+![Class diagram](img/generalStructure.png)
 
 The **Parser** implement parsing logic and operates with a grammar. The grammar is built of 
-**Rule**s which are implementing certain [grammar](grammar.md) rules. The parser implements the 
-"Shift-Reduce" method, at least some sort of it, because of simplicita of implementation. 
-With this approach the high performance can't be anticipated, it is not a priority anyway.  
+**Rule**s which are implementing certain [grammar rules](grammar.md). The parser implements the 
+"Shift-Reduce" method, at least some sort of it, because of simplicity of implementation. 
+With this approach the high performance can't be anticipateda and it is not a priority so far.  
 
-There are so far two **Visitor**s:
-* **Differentiator** - actual differentiation of the expression, produces new instance of **Expresson**.
-* **StringGenerator** generates the string representation of **Expression** hierarchies.
+The digram below illustrates the "Parser <-> Rule" relationships and the structure of 
+rules based on the [grammar description](grammar.md).
+
+![Parser-Rule](img/parserRule.png)
+
+"Syntax tree" is a data structure which represents the parsed expression. 
+It has **Expression** as a base class and the following element are representing
+syntax tree items.
+
+![Class diagram](img/syntaxTree.png)
 
 We also have **Application** object which handles interaction with user, provides entry point and performs error handling.
-
-General class decomposition and relationships
-![Class diagram](img/general_structure.png)
-
-The datails on syntax tree
-![Class diagram](img/syntax_tree.png)
-
-The list of grammar rules
-![Class diagram](img/rules.png)
 
 ### Exception handling
 
@@ -61,6 +74,8 @@ Say ``` make clean all ``` and available tests will be run automatically during 
 
 The project incorporates [Google's C++ Test Framework](https://github.com/google/googletest "Google Test").
 
+The nameing of test cases is base basically on these ["Naming standards for unit tests"](http://osherove.com/blog/2005/4/3/naming-standards-for-unit-tests.html).
+
 ## What TO-be-DOne
 - [x] Basic design
 - [x] Implement basic design elements in code
@@ -74,14 +89,18 @@ The project incorporates [Google's C++ Test Framework](https://github.com/google
 - [x] RuleSubRV 
 - [x] RuleMultLV 
 - [x] RuleMultRV 
-- [ ] Refactoring of **Rule**s and **Parser** (IN PROGRESS, REOPENED)
+- [x] Refactoring of **Rule**s and **Parser** 
 - [x] RuleDivLV
 - [x] RuleDivRV
 - [x] RulePowLV 
 - [x] RulePowRV 
 - [x] RuleFunction 
-- [ ] Update design docs (IN PROGRESS)
-  - [ ] also describe how to name test cases
+- [ ] Rule for multiplication without sign of multiplication
+- [x] Update design docs 
+  - [x] also describe how to name test cases
 - [ ] Implementation of Differentiator
 - [x] Implementation of StringGenerator
+- [ ] Remove redundant unit test cases from ParserTest
+- [ ] Test runs with Valgrind
 - [ ] Testing scripts for whole application
+- [ ] Check testing coverage 

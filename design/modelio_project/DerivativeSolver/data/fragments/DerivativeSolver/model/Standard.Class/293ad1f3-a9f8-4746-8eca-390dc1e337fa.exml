@@ -30,6 +30,40 @@
           </DEPENDENCIES>
         </OBJECT>
       </COMP>
+      <COMP relation="Template">
+        <OBJECT>
+          <ID name="Function" mc="Standard.TemplateParameter" uid="c97f14b1-8884-41df-8c66-5dc74ac29ad8"/>
+          <ATTRIBUTES>
+            <ATT name="DefaultValue"></ATT>
+            <ATT name="IsValueParameter">false</ATT>
+            <ATT name="IsElementary">false</ATT>
+            <ATT name="IsAbstract">false</ATT>
+            <ATT name="IsLeaf">false</ATT>
+            <ATT name="IsRoot">false</ATT>
+            <ATT name="Visibility">Public</ATT>
+            <ATT name="Name"><![CDATA[Function]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES></DEPENDENCIES>
+        </OBJECT>
+      </COMP>
+      <COMP relation="Descriptor">
+        <OBJECT>
+          <ID name="Note" mc="Infrastructure.Note" uid="560abeb3-c0a3-4d53-8ede-b80ac3302d0e"/>
+          <ATTRIBUTES>
+            <ATT name="Content"><![CDATA[<p>The logic for rules to parse the elementary function of one argument is the same. Encapsulating it in this template class which is later instantiated for <strong>Parser</strong>. The parameters of template are function <strong>Expression</strong>s: <strong>Exp</strong>, <strong>Ln</strong>, <strong>Sin</strong>, <strong>Cos</strong>, <strong>Tan</strong>, <strong>Ctan</strong>.</p>
+]]></ATT>
+            <ATT name="MimeType"></ATT>
+            <ATT name="Name"><![CDATA[Note]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES>
+            <LINK relation="Model">
+              <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+            </LINK>
+          </DEPENDENCIES>
+        </OBJECT>
+      </COMP>
     </DEPENDENCIES>
   </OBJECT>
 </EXT>
