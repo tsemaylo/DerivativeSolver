@@ -98,8 +98,9 @@ The nameing of test cases is base basically on these ["Naming standards for unit
 - [ ] Rule for multiplication without sign of multiplication
 - [x] Update design docs 
   - [x] also describe how to name test cases
-- [ ] Implementation of Differentiator
+- [ ] Implementation of Differentiator  (IN PROGRESS)
 - [x] Implementation of StringGenerator
+- [ ] Review of the design 
 - [ ] Remove redundant unit test cases from ParserTest
 - [ ] Test runs with Valgrind
 - [ ] Testing scripts for whole application
