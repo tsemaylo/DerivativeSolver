@@ -100,6 +100,7 @@ The nameing of test cases is base basically on these ["Naming standards for unit
   - [x] also describe how to name test cases
 - [ ] Implementation of Differentiator  (IN PROGRESS)
 - [x] Implementation of StringGenerator
+- [ ] Implement visitor to simplify the expression 
 - [ ] Review of the design 
 - [ ] Remove redundant unit test cases from ParserTest
 - [ ] Test runs with Valgrind

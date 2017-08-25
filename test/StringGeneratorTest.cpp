@@ -1,7 +1,7 @@
 /**
  * @file Tests for RuleSumLV (lft value summation rule).
  *
- * @since 26.07.2016
+ * @since 26.07.2017
  * @author agor
  */
 

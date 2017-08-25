@@ -9,6 +9,9 @@
 
 #include "TraverseException.h"
 
-const char* TraverseException::what() const noexcept{
-	return this->message.c_str();
+TraverseException::TraverseException(string basicMessage, string context) : message(basicMessage + " Context: " + context) {
+}
+
+const char* TraverseException::what() const noexcept {
+    return this->message.c_str();
 }

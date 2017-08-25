@@ -16,31 +16,30 @@
 
 using namespace std;
 
-class Differentiator : public Visitor{
+class Differentiator : public Visitor {
 private:
-	shared_ptr<Expression> result; 
-	string variable;
-	
+    shared_ptr<Expression> result;
+    string variable;
 public:
-	Differentiator(string var);
+    Differentiator(string var);
 
-	void visit(const shared_ptr<const Constant> expr) throw(TraverseException) final;
-	void visit(const shared_ptr<const Variable> expr) throw(TraverseException) final;
-	void visit(const shared_ptr<const Sum> expr) throw(TraverseException) final;
-	void visit(const shared_ptr<const Sub> expr) throw(TraverseException) final;
-	void visit(const shared_ptr<const Mult> expr) throw(TraverseException) final;
-	void visit(const shared_ptr<const Div> expr) throw(TraverseException) final;
-	void visit(const shared_ptr<const Pow> expr) throw(TraverseException) final;
-	void visit(const shared_ptr<const Sin> expr) throw(TraverseException) final;
-	void visit(const shared_ptr<const Cos> expr) throw(TraverseException) final;
-	void visit(const shared_ptr<const Tan> expr) throw(TraverseException) final;
-	void visit(const shared_ptr<const Ctan> expr) throw(TraverseException) final;
-	void visit(const shared_ptr<const Ln> expr) throw(TraverseException) final;
-	void visit(const shared_ptr<const Exp> expr) throw(TraverseException) final;
-        
-	void setLastVisitResult(const shared_ptr<Expression> result);
-	
-	shared_ptr<Expression> getLastVisitResult() const;
+    void visit(const shared_ptr<const Constant> expr) throw (TraverseException) final;
+    void visit(const shared_ptr<const Variable> expr) throw (TraverseException) final;
+    void visit(const shared_ptr<const Sum> expr) throw (TraverseException) final;
+    void visit(const shared_ptr<const Sub> expr) throw (TraverseException) final;
+    void visit(const shared_ptr<const Mult> expr) throw (TraverseException) final;
+    void visit(const shared_ptr<const Div> expr) throw (TraverseException) final;
+    void visit(const shared_ptr<const Pow> expr) throw (TraverseException) final;
+    void visit(const shared_ptr<const Sin> expr) throw (TraverseException) final;
+    void visit(const shared_ptr<const Cos> expr) throw (TraverseException) final;
+    void visit(const shared_ptr<const Tan> expr) throw (TraverseException) final;
+    void visit(const shared_ptr<const Ctan> expr) throw (TraverseException) final;
+    void visit(const shared_ptr<const Ln> expr) throw (TraverseException) final;
+    void visit(const shared_ptr<const Exp> expr) throw (TraverseException) final;
+
+    void setLastVisitResult(const shared_ptr<Expression> result);
+
+    shared_ptr<Expression> getLastVisitResult() const;
 
 };
 

@@ -8,21 +8,20 @@
  */
 
 #ifndef TRAVERSEEXCEPTION_H
-#define	TRAVERSEEXCEPTION_H
+#define TRAVERSEEXCEPTION_H
 
 #include <exception>
 #include <string>
 
 using namespace std;
 
-class TraverseException : public exception
-{
+class TraverseException : public exception {
 private:
-	string message;
-	
+    string message;
 public:
-	virtual const char* what() const noexcept;
+    TraverseException(string basicMessage, string context);
+    virtual const char* what() const noexcept;
 };
 
-#endif	/* TRAVERSEEXCEPTION_H */
+#endif /* TRAVERSEEXCEPTION_H */
 

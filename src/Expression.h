@@ -82,4 +82,6 @@ bool isTypeOf(shared_ptr<Expression> exprInstance){
     return (exprInstance->type == dummy.type);
 }
 
+string to_string(const shared_ptr<Expression> &expr);
+
 #endif /* SRC_EXPRESSION_H_ */

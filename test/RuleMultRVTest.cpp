@@ -1,7 +1,7 @@
 /**
  * @file Tests for RuleMultRV. Handling of right hand argument of multiplication operation.
  *
- * @since 14.08.2016
+ * @since 14.08.2017
  * @author agor
  */
 

@@ -1,7 +1,7 @@
 /**
  * @file Test cases for RulePowLV (left value of exponentation rule).
  *
- * @since 16.08.2016
+ * @since 16.08.2017
  * @author agor
  */
 
