@@ -69,13 +69,16 @@ and this is the responsibility of **Application**.
 
 ## Testing
 Two types of testing are considered:
+
 **Unit testing**
+
 There are some test cases maintained during development. 
 Say ``` make clean all ``` and available tests will be run automatically during the build process.
 The project incorporates [Google's C++ Test Framework](https://github.com/google/googletest "Google Test").
 The naming of test cases is based on these ["Naming standards for unit tests"](http://osherove.com/blog/2005/4/3/naming-standards-for-unit-tests.html).
 
 **Acceptance tests**
+
 Represented as an automated script which performs testing of application against most relevant input data.
 Performed in the build time.
 
