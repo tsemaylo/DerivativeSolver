@@ -67,21 +67,24 @@ it is decided to to error handling on the level of **Application**.
 The only one reasonable error handling here is just printing an error information to the user,
 and this is the responsibility of **Application**.
 
-## Unit testing
-Yep, there are some test cases maintained during development.
-
+## Testing
+Two types of testing are considered:
+**Unit testing**
+There are some test cases maintained during development. 
 Say ``` make clean all ``` and available tests will be run automatically during the build process.
-
 The project incorporates [Google's C++ Test Framework](https://github.com/google/googletest "Google Test").
+The naming of test cases is based on these ["Naming standards for unit tests"](http://osherove.com/blog/2005/4/3/naming-standards-for-unit-tests.html).
 
-The nameing of test cases is base basically on these ["Naming standards for unit tests"](http://osherove.com/blog/2005/4/3/naming-standards-for-unit-tests.html).
+**Acceptance tests**
+Represented as an automated script which performs testing of application against most relevant input data.
+Performed in the build time.
 
 ## What TO-be-DOne
 - [x] Basic design
 - [x] Implement basic design elements in code
 - [x] Clarifying and verifying the grammar 
 - [x] Identify rules to be implemented
-- [ ] Implementation of Parser (IN PROGRESS)<br/>
+- [x] Implementation of Parser <br/>
       Implementation of rules
 - [x] RuleSumLV 
 - [x] RuleSumRV
@@ -95,7 +98,12 @@ The nameing of test cases is base basically on these ["Naming standards for unit
 - [x] RulePowLV 
 - [x] RulePowRV 
 - [x] RuleFunction 
-- [ ] Rule for multiplication without sign of multiplication
+- [ ] Rule for multiplication without sign of multiplication<br>
+      Parsing Improvement 
+- [ ] Being case-irrelevant
+- [ ] Support floating point numbers
+<br>
+<br>
 - [x] Update design docs 
   - [x] also describe how to name test cases
 - [ ] Implementation of Differentiator  (IN PROGRESS)
