@@ -72,14 +72,16 @@ PPow createPow(PExpression lArg, PExpression rArg) {
     return pow;
 }
 
-PLn createLn() {
-    return make_shared<Ln>();
-}
-
 PLn createLn(PExpression arg) {
-    PLn ln = createLn();
+    PLn ln = make_shared<Ln>();
     ln->arg = arg;
     return ln;
+}
+
+PExp createExp(PExpression arg) {
+    PExp exp = make_shared<Exp>();
+    exp->arg = arg;
+    return exp;
 }
 
 PCos createCos(PExpression arg) {

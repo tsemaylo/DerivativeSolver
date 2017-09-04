@@ -22,7 +22,7 @@
 #include "Tan.h"
 #include "Ctan.h"
 #include "Ln.h"
-
+#include "Exp.h"
 
 PVariable createVariable(const string name);
 PConstant createConstant(const string val);
@@ -36,8 +36,8 @@ PDiv createDiv();
 PDiv createDiv(PExpression lArg, PExpression rArg);
 PPow createPow();
 PPow createPow(PExpression lArg, PExpression rArg);
-PLn createLn();
 PLn createLn(PExpression arg);
+PExp createExp(PExpression arg);
 PCos createCos(PExpression arg);
 PSin createSin(PExpression arg);
 PTan createTan(PExpression arg);

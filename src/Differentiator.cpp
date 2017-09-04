@@ -194,8 +194,7 @@ void Differentiator::visit(const shared_ptr<const Ln> expr) throw (TraverseExcep
     }
 
     // the chain rule is also applied here
-
-    // ctan'(x) = -(1 + (ctan(x))^2)
+    
     expr->arg->traverse(*this);
     this->setLastVisitResult(createMult(
             this->getLastVisitResult(),
@@ -204,10 +203,19 @@ void Differentiator::visit(const shared_ptr<const Ln> expr) throw (TraverseExcep
             );
 }
 
-void Differentiator::visit(const shared_ptr<const Exp>) throw (TraverseException) {
-    /// @TODO s.a.
-    /// @TODO NYI
-    this->setLastVisitResult(createConstant("NYI"));
+void Differentiator::visit(const shared_ptr<const Exp> expr) throw (TraverseException) {
+        if (!expr->isComplete()) {
+        THROW(TraverseException, "Expression is not consistent (cotangent).", "Arg: " + to_string(expr->arg));
+    }
+
+    // the chain rule is also applied here
+
+    expr->arg->traverse(*this);
+    this->setLastVisitResult(createMult(
+            this->getLastVisitResult(),
+            createExp(expr->arg)
+            )
+            );
 }
 
 PExpression Differentiator::getLastVisitResult() const {

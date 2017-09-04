@@ -415,3 +415,29 @@ TEST_F(FX_Differentiator, visit_NaturalLogarithmWithoutArgument_TraverseExceptio
     Differentiator differentiator("x");
     ASSERT_THROW(exp->traverse(differentiator), TraverseException);
 }
+
+TEST_F(FX_Differentiator, visit_ExponentFunction_ChainRulesApplied) {
+    PExp expr = createExp(createVariable("x"));
+    
+    Differentiator differentiator("x");
+    ASSERT_NO_THROW(expr->traverse(differentiator));
+    
+    PExpression difExp = differentiator.getLastVisitResult();
+    ASSERT_TRUE(isTypeOf<Mult>(difExp));    
+    PMult difExpTyped=dynamic_pointer_cast<Mult>(difExp);
+    
+    ASSERT_TRUE(isTypeOf<Constant>(difExpTyped->lArg));
+    ASSERT_STREQ("1", dynamic_pointer_cast<Constant>(difExpTyped->lArg)->value.c_str());
+    
+    ASSERT_TRUE(isTypeOf<Exp>(difExpTyped->rArg));
+    PExp exp=dynamic_pointer_cast<Exp>(difExpTyped->rArg);
+    ASSERT_TRUE(isTypeOf<Variable>(exp->arg));
+    ASSERT_STREQ("x", dynamic_pointer_cast<Variable>(exp->arg)->name.c_str());
+}
+
+TEST_F(FX_Differentiator, visit_ExponentWithoutArgument_TraverseException) {
+    PExp exp = createExp(nullptr);
+    
+    Differentiator differentiator("x");
+    ASSERT_THROW(exp->traverse(differentiator), TraverseException);
+}

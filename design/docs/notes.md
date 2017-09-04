@@ -107,7 +107,7 @@ Performed in the build time.
 - [ ] Support floating point numbers <br><br>
 - [x] Update design docs 
   - [x] also describe how to name test cases
-- [ ] Implementation of Differentiator (IN PROGRESS)
+- [x] Implementation of Differentiator
 - [x] Implementation of StringGenerator
 - [ ] Implement visitor to simplify the expression 
 - [ ] Review of the design 
