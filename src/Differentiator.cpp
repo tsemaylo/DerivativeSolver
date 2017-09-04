@@ -67,29 +67,17 @@ void Differentiator::visit(const shared_ptr<const Div> expr) throw (TraverseExce
     }
     
     // Quotient rule
-    PDiv dif = createDiv();
-    
-    PSub difDividend=createSub();
-    
-    PMult difDividendMLeft=createMult();
+
     expr->lArg->traverse(*this);
-    difDividendMLeft->lArg=this->getLastVisitResult();
-    difDividendMLeft->rArg=expr->rArg;
-            
-    PMult difDividendMRight=createMult();
-    difDividendMRight->lArg=expr->lArg;
+    PMult difDividendMLeft=createMult(this->getLastVisitResult(), expr->rArg);
+    
     expr->rArg->traverse(*this);
-    difDividendMRight->rArg=this->getLastVisitResult();
+    PMult difDividendMRight=createMult(expr->lArg, this->getLastVisitResult());
     
-    difDividend->lArg=difDividendMLeft;
-    difDividend->rArg=difDividendMRight;
-    dif->lArg=difDividend;
-    
+    PSub difDividend=createSub(difDividendMLeft, difDividendMRight);
     PPow difDivisor=createPow(expr->rArg, createConstant("2"));
     
-    dif->rArg=difDivisor;
-    
-    this->setLastVisitResult(dif);
+    this->setLastVisitResult(createDiv(difDividend, difDivisor));
 }
 
 void Differentiator::visit(const shared_ptr<const Mult> expr) throw (TraverseException) {
@@ -97,23 +85,16 @@ void Differentiator::visit(const shared_ptr<const Mult> expr) throw (TraverseExc
         THROW(TraverseException, "Expression is not consistent.", "LArg: " + to_string(expr->lArg) + "RArg:" + to_string(expr->rArg));
 
     }
+    
     // f'g + fg'
-    PSum dif = createSum();
-
-    PMult leftSumTerm = createMult();
+    
     expr->lArg->traverse(*this);
-    leftSumTerm->lArg = this->getLastVisitResult();
-    leftSumTerm->rArg = expr->rArg;
+    PMult leftSumTerm = createMult(this->getLastVisitResult(), expr->rArg);
 
-    PMult rightSumTerm = createMult();
-    rightSumTerm->lArg = expr->lArg;
     expr->rArg->traverse(*this);
-    rightSumTerm->rArg = this->getLastVisitResult();
-
-    dif->lArg = leftSumTerm;
-    dif->rArg = rightSumTerm;
-
-    this->setLastVisitResult(dif);
+    PMult rightSumTerm = createMult(expr->lArg, this->getLastVisitResult());
+    
+    this->setLastVisitResult(createSum(leftSumTerm, rightSumTerm));
 }
 
 void Differentiator::visit(const shared_ptr<const Pow> expr) throw (TraverseException) {
