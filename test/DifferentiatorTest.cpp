@@ -346,3 +346,44 @@ TEST_F(FX_Differentiator, visit_TangentFunctionWithoutArgument_TraverseException
     Differentiator differentiator("x");
     ASSERT_THROW(exp->traverse(differentiator), TraverseException);
 }
+
+TEST_F(FX_Differentiator, visit_CotangentFunction_ChainAndTrigonometricRulesApplied) {
+    PCtan exp = createCtan(createVariable("x"));
+    
+    Differentiator differentiator("x");
+    ASSERT_NO_THROW(exp->traverse(differentiator));
+    
+    PExpression difExp = differentiator.getLastVisitResult();
+    ASSERT_TRUE(isTypeOf<Mult>(difExp));    
+    PMult difExpTyped=dynamic_pointer_cast<Mult>(difExp);
+    
+    ASSERT_TRUE(isTypeOf<Constant>(difExpTyped->lArg));
+    ASSERT_STREQ("1", dynamic_pointer_cast<Constant>(difExpTyped->lArg)->value.c_str());
+    
+    ASSERT_TRUE(isTypeOf<Mult>(difExpTyped->rArg));
+    PMult negated=dynamic_pointer_cast<Mult>(difExpTyped->rArg);
+    ASSERT_TRUE(isTypeOf<Constant>(negated->lArg));
+    ASSERT_STREQ("-1", dynamic_pointer_cast<Constant>(negated->lArg)->value.c_str());
+    
+    ASSERT_TRUE(isTypeOf<Sum>(negated->rArg));
+    PSum cotangentSum=dynamic_pointer_cast<Sum>(negated->rArg);
+    
+    ASSERT_TRUE(isTypeOf<Constant>(cotangentSum->lArg));
+    ASSERT_STREQ("1", dynamic_pointer_cast<Constant>(cotangentSum->lArg)->value.c_str());
+    
+    ASSERT_TRUE(isTypeOf<Pow>(cotangentSum->rArg));
+    PPow pow=dynamic_pointer_cast<Pow>(cotangentSum->rArg);
+    ASSERT_TRUE(isTypeOf<Ctan>(pow->lArg));
+    PCtan ctan=dynamic_pointer_cast<Ctan>(pow->lArg);
+    ASSERT_TRUE(isTypeOf<Variable>(ctan->arg));
+    ASSERT_STREQ("x", dynamic_pointer_cast<Variable>(ctan->arg)->name.c_str());
+    ASSERT_TRUE(isTypeOf<Constant>(pow->rArg));
+    ASSERT_STREQ("2", dynamic_pointer_cast<Constant>(pow->rArg)->value.c_str());
+}
+
+TEST_F(FX_Differentiator, visit_CotangentFunctionWithoutArgument_TraverseException) {
+    PCtan exp = createCtan(nullptr);
+    
+    Differentiator differentiator("x");
+    ASSERT_THROW(exp->traverse(differentiator), TraverseException);
+}

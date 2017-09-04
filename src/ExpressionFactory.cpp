@@ -99,3 +99,9 @@ PTan createTan(PExpression arg) {
     tan->arg = arg;
     return tan;
 }
+
+PCtan createCtan(PExpression arg) {
+    PCtan ctan = make_shared<Ctan>();
+    ctan->arg = arg;
+    return ctan;
+}

@@ -26,5 +26,7 @@ public:
     void traverse(Visitor&) const throw(TraverseException) final;
 };
 
+typedef shared_ptr<Ctan> PCtan;
+
 #endif /* CTAN_H */
 
