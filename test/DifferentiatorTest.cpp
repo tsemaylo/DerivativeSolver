@@ -387,3 +387,31 @@ TEST_F(FX_Differentiator, visit_CotangentFunctionWithoutArgument_TraverseExcepti
     Differentiator differentiator("x");
     ASSERT_THROW(exp->traverse(differentiator), TraverseException);
 }
+
+TEST_F(FX_Differentiator, visit_NaturalLogarithmFunction_ChainAndLogarithmRulesApplied) {
+    PLn exp = createLn(createVariable("x"));
+    
+    Differentiator differentiator("x");
+    ASSERT_NO_THROW(exp->traverse(differentiator));
+    
+    PExpression difExp = differentiator.getLastVisitResult();
+    ASSERT_TRUE(isTypeOf<Mult>(difExp));    
+    PMult difExpTyped=dynamic_pointer_cast<Mult>(difExp);
+    
+    ASSERT_TRUE(isTypeOf<Constant>(difExpTyped->lArg));
+    ASSERT_STREQ("1", dynamic_pointer_cast<Constant>(difExpTyped->lArg)->value.c_str());
+    
+    ASSERT_TRUE(isTypeOf<Div>(difExpTyped->rArg));
+    PDiv div=dynamic_pointer_cast<Div>(difExpTyped->rArg);
+    ASSERT_TRUE(isTypeOf<Constant>(div->lArg));
+    ASSERT_STREQ("1", dynamic_pointer_cast<Constant>(div->lArg)->value.c_str());
+    ASSERT_TRUE(isTypeOf<Variable>(div->rArg));
+    ASSERT_STREQ("x", dynamic_pointer_cast<Variable>(div->rArg)->name.c_str());
+}
+
+TEST_F(FX_Differentiator, visit_NaturalLogarithmWithoutArgument_TraverseException) {
+    PLn exp = createLn(nullptr);
+    
+    Differentiator differentiator("x");
+    ASSERT_THROW(exp->traverse(differentiator), TraverseException);
+}
