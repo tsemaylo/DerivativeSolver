@@ -8,23 +8,24 @@
  */
 
 #ifndef DIV_H
-#define	DIV_H
+#define DIV_H
 
 #include <memory>
 #include "Expression.h"
 
-class Div : public Expression, public enable_shared_from_this<Div> 
-{
+class Div : public Expression, public enable_shared_from_this<Div> {
 public:
-	shared_ptr<Expression> lArg;
-	shared_ptr<Expression> rArg;
+    shared_ptr<Expression> lArg;
+    shared_ptr<Expression> rArg;
 
-	Div();
-	
-	void traverse(Visitor & ) const throw(TraverseException) final;
-	
-	bool isComplete() const final;
+    Div();
+
+    void traverse(Visitor &) const throw (TraverseException) final;
+
+    bool isComplete() const final;
 };
 
-#endif	/* DIV_H */
+typedef shared_ptr<Div> PDiv;
+
+#endif /* DIV_H */
 

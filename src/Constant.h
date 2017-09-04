@@ -31,4 +31,6 @@ public:
     friend bool isTypeOf(shared_ptr<Expression> exprInstance);    
 };
 
+typedef shared_ptr<Constant> PConstant;
+
 #endif /* SRC_CONSTANT_H_ */

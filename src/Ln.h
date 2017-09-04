@@ -26,5 +26,7 @@ public:
     void traverse(Visitor&) const throw(TraverseException) final;
 };
 
+typedef shared_ptr<Ln> PLn;
+
 #endif /* LN_H */
 

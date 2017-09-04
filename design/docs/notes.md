@@ -107,7 +107,7 @@ Performed in the build time.
 - [ ] Support floating point numbers <br><br>
 - [x] Update design docs 
   - [x] also describe how to name test cases
-- [ ] Implementation of Differentiator  (IN PROGRESS)
+- [ ] Implementation of Differentiator (IN PROGRESS)
 - [x] Implementation of StringGenerator
 - [ ] Implement visitor to simplify the expression 
 - [ ] Review of the design 
@@ -115,3 +115,4 @@ Performed in the build time.
 - [ ] Test runs with Valgrind
 - [ ] Testing scripts for whole application
 - [ ] Check testing coverage 
+- [ ] Refactoring of shared_ptr usage (IN PROGRESS)

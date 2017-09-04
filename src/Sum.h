@@ -26,5 +26,7 @@ public:
 	bool isComplete() const final;
 };
 
+typedef shared_ptr<Sum> PSum;
+
 #endif	/* SUM_H */
 

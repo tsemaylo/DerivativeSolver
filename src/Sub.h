@@ -26,5 +26,7 @@ public:
 	bool isComplete() const final;
 };
 
+typedef shared_ptr<Sub> PSub;
+        
 #endif	/* SUB_H */
 

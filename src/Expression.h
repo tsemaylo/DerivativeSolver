@@ -64,6 +64,8 @@ public:
     friend bool isTypeOf(shared_ptr<Expression> exprInstance);
 };
 
+typedef shared_ptr<Expression> PExpression;
+
 /**
  * Check the concrete type of an instance of given Expression .
  * 

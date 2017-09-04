@@ -34,4 +34,6 @@ public:
     friend bool isTypeOf(shared_ptr<Expression> exprInstance);    
 };
 
+typedef shared_ptr<Variable> PVariable;
+
 #endif /* SRC_VARIABLE_H_ */

@@ -9,6 +9,7 @@
 
 #include "bootstrap.h"
 #include "Differentiator.h"
+#include "ExpressionFactory.h"
 
 Differentiator::Differentiator(string var) : variable(var) {
 }
@@ -18,7 +19,7 @@ void Differentiator::visit(const shared_ptr<const Constant> expr) throw (Travers
         // inprobable situation
         THROW(TraverseException, "Constant is empty.", "N.A");
     }
-    this->setLastVisitResult(make_shared<Constant>("0"));
+    this->setLastVisitResult(createConstant("0"));
 }
 
 void Differentiator::visit(const shared_ptr<const Variable> expr) throw (TraverseException) {
@@ -28,28 +29,23 @@ void Differentiator::visit(const shared_ptr<const Variable> expr) throw (Travers
     }
     
     if (expr->name == this->variable) {
-        this->setLastVisitResult(make_shared<Constant>("1"));
+        this->setLastVisitResult(createConstant("1"));
         return;
     }
-    this->setLastVisitResult(make_shared<Constant>("0"));
+    this->setLastVisitResult(createConstant("0"));
 }
 
 void Differentiator::visit(const shared_ptr<const Sum> expr) throw (TraverseException) {
     if (!expr->isComplete()) {
         THROW(TraverseException, "Expression is not consistent.", "LArg: " + to_string(expr->lArg) + "RArg:" + to_string(expr->rArg));
     }
-    
-    shared_ptr<Sum> difSummation = make_shared<Sum>();
 
     expr->lArg->traverse(*this);
-    shared_ptr<Expression> lArg = this->getLastVisitResult();
+    PExpression lArg = this->getLastVisitResult();
     expr->rArg->traverse(*this);
-    shared_ptr<Expression> rArg = this->getLastVisitResult();
+    PExpression rArg = this->getLastVisitResult();
 
-    difSummation->lArg = lArg;
-    difSummation->rArg = rArg;
-
-    this->setLastVisitResult(difSummation);
+    this->setLastVisitResult(createSum(lArg, rArg));
 }
 
 void Differentiator::visit(const shared_ptr<const Sub> expr) throw (TraverseException) {
@@ -57,17 +53,12 @@ void Differentiator::visit(const shared_ptr<const Sub> expr) throw (TraverseExce
         THROW(TraverseException, "Expression is not consistent.", "LArg: " + to_string(expr->lArg) + "RArg:" + to_string(expr->rArg));
     }
     
-    shared_ptr<Sub> difSubtraction = make_shared<Sub>();
-
     expr->lArg->traverse(*this);
-    shared_ptr<Expression> lArg = this->getLastVisitResult();
+    PExpression lArg = this->getLastVisitResult();
     expr->rArg->traverse(*this);
-    shared_ptr<Expression> rArg = this->getLastVisitResult();
+    PExpression rArg = this->getLastVisitResult();
 
-    difSubtraction->lArg = lArg;
-    difSubtraction->rArg = rArg;
-
-    this->setLastVisitResult(difSubtraction);
+    this->setLastVisitResult(createSub(lArg, rArg));
 }
 
 void Differentiator::visit(const shared_ptr<const Div> expr) throw (TraverseException) {
@@ -76,16 +67,16 @@ void Differentiator::visit(const shared_ptr<const Div> expr) throw (TraverseExce
     }
     
     // Quotient rule
-    shared_ptr<Div> dif = make_shared<Div>();
+    PDiv dif = createDiv();
     
-    shared_ptr<Sub> difDividend=make_shared<Sub>();
+    PSub difDividend=createSub();
     
-    shared_ptr<Mult> difDividendMLeft=make_shared<Mult>();
+    PMult difDividendMLeft=createMult();
     expr->lArg->traverse(*this);
     difDividendMLeft->lArg=this->getLastVisitResult();
     difDividendMLeft->rArg=expr->rArg;
             
-    shared_ptr<Mult> difDividendMRight=make_shared<Mult>();
+    PMult difDividendMRight=createMult();
     difDividendMRight->lArg=expr->lArg;
     expr->rArg->traverse(*this);
     difDividendMRight->rArg=this->getLastVisitResult();
@@ -94,10 +85,7 @@ void Differentiator::visit(const shared_ptr<const Div> expr) throw (TraverseExce
     difDividend->rArg=difDividendMRight;
     dif->lArg=difDividend;
     
-    
-    shared_ptr<Pow> difDivisor=make_shared<Pow>();
-    difDivisor->lArg=expr->rArg;
-    difDivisor->rArg=make_shared<Constant>("2");
+    PPow difDivisor=createPow(expr->rArg, createConstant("2"));
     
     dif->rArg=difDivisor;
     
@@ -107,11 +95,25 @@ void Differentiator::visit(const shared_ptr<const Div> expr) throw (TraverseExce
 void Differentiator::visit(const shared_ptr<const Mult> expr) throw (TraverseException) {
     if (!expr->isComplete()) {
         THROW(TraverseException, "Expression is not consistent.", "LArg: " + to_string(expr->lArg) + "RArg:" + to_string(expr->rArg));
+
     }
-    
-    /// @TODO s.a.
-    /// @TODO NYI
-    this->setLastVisitResult(make_shared<Constant>("NYI"));
+    // f'g + fg'
+    PSum dif = createSum();
+
+    PMult leftSumTerm = createMult();
+    expr->lArg->traverse(*this);
+    leftSumTerm->lArg = this->getLastVisitResult();
+    leftSumTerm->rArg = expr->rArg;
+
+    PMult rightSumTerm = createMult();
+    rightSumTerm->lArg = expr->lArg;
+    expr->rArg->traverse(*this);
+    rightSumTerm->rArg = this->getLastVisitResult();
+
+    dif->lArg = leftSumTerm;
+    dif->rArg = rightSumTerm;
+
+    this->setLastVisitResult(dif);
 }
 
 void Differentiator::visit(const shared_ptr<const Pow> expr) throw (TraverseException) {
@@ -119,52 +121,66 @@ void Differentiator::visit(const shared_ptr<const Pow> expr) throw (TraverseExce
         THROW(TraverseException, "Expression is not consistent.", "LArg: " + to_string(expr->lArg) + "RArg:" + to_string(expr->rArg));
     }
     
-    /// @TODO s.a.
-    /// @TODO NYI
-    this->setLastVisitResult(make_shared<Constant>("NYI"));
+    // applying generalized power rule
+    // in form (f^g)' = (f^g)*(f'g/f + g'ln(f))
+    
+    // (f^g)
+    PPow leftMultplier=createPow(expr->lArg, expr->rArg);
+    
+    // (f'g/f + g'ln(f))
+    PSum rightMultplier=createSum();
+    
+    // f'g/f 
+    expr->lArg->traverse(*this);
+    rightMultplier->lArg = createMult(this->getLastVisitResult(), createDiv(expr->rArg, expr->lArg));
+    // g'ln(f)
+    expr->rArg->traverse(*this);
+    rightMultplier->rArg = createMult(this->getLastVisitResult(), createLn(expr->lArg));
+    
+    this->setLastVisitResult(createMult(leftMultplier, rightMultplier));
 }
 
 void Differentiator::visit(const shared_ptr<const Sin>) throw (TraverseException) {
     /// @TODO s.a.
     /// @TODO NYI
-    this->setLastVisitResult(make_shared<Constant>("NYI"));
+    this->setLastVisitResult(createConstant("NYI"));
 }
 
 void Differentiator::visit(const shared_ptr<const Cos>) throw (TraverseException) {
     /// @TODO s.a.
     /// @TODO NYI
-    this->setLastVisitResult(make_shared<Constant>("NYI"));
+    this->setLastVisitResult(createConstant("NYI"));
 }
 
 void Differentiator::visit(const shared_ptr<const Tan>) throw (TraverseException) {
     /// @TODO s.a.
     /// @TODO NYI
-    this->setLastVisitResult(make_shared<Constant>("NYI"));
+    this->setLastVisitResult(createConstant("NYI"));
 }
 
 void Differentiator::visit(const shared_ptr<const Ctan>) throw (TraverseException) {
     /// @TODO s.a.
     /// @TODO NYI
-    this->setLastVisitResult(make_shared<Constant>("NYI"));
+    this->setLastVisitResult(createConstant("NYI"));
 }
 
 void Differentiator::visit(const shared_ptr<const Ln>) throw (TraverseException) {
     /// @TODO s.a.
     /// @TODO NYI
-    this->setLastVisitResult(make_shared<Constant>("NYI"));
+    this->setLastVisitResult(createConstant("NYI"));
 }
 
 void Differentiator::visit(const shared_ptr<const Exp>) throw (TraverseException) {
     /// @TODO s.a.
     /// @TODO NYI
-    this->setLastVisitResult(make_shared<Constant>("NYI"));
+    this->setLastVisitResult(createConstant("NYI"));
 }
 
-shared_ptr<Expression> Differentiator::getLastVisitResult() const {
+PExpression Differentiator::getLastVisitResult() const {
     return this->result;
 }
 
-void Differentiator::setLastVisitResult(shared_ptr<Expression> result) {
+void Differentiator::setLastVisitResult(PExpression result) {
     this->result = result;
 }
 
