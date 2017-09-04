@@ -253,7 +253,7 @@ TEST_F(FX_Differentiator, visit_ExponentiationOperationIsIncoplete_TraverseExcep
     ASSERT_THROW(exp->traverse(differentiator), TraverseException);
 }
 
-TEST_F(FX_Differentiator, visit_SineFunction_ChainAndTrogonomatricRulesApplied) {
+TEST_F(FX_Differentiator, visit_SineFunction_ChainAndTrigonometricRulesApplied) {
     PSin exp = createSin(createVariable("x"));
     
     Differentiator differentiator("x");
@@ -279,7 +279,7 @@ TEST_F(FX_Differentiator, visit_SineFunctionWothoutArgument_TraverseException) {
     ASSERT_THROW(exp->traverse(differentiator), TraverseException);
 }
 
-TEST_F(FX_Differentiator, visit_CosineFunction_ChainAndTrogonomatricRulesApplied) {
+TEST_F(FX_Differentiator, visit_CosineFunction_ChainAndTrigonometricRulesApplied) {
     PCos exp = createCos(createVariable("x"));
     
     Differentiator differentiator("x");
@@ -306,6 +306,42 @@ TEST_F(FX_Differentiator, visit_CosineFunction_ChainAndTrogonomatricRulesApplied
 
 TEST_F(FX_Differentiator, visit_CosineFunctionWothoutArgument_TraverseException) {
     PCos exp = createCos(nullptr);
+    
+    Differentiator differentiator("x");
+    ASSERT_THROW(exp->traverse(differentiator), TraverseException);
+}
+
+TEST_F(FX_Differentiator, visit_TangentFunction_ChainAndTrigonometricRulesApplied) {
+    PTan exp = createTan(createVariable("x"));
+    
+    Differentiator differentiator("x");
+    ASSERT_NO_THROW(exp->traverse(differentiator));
+    
+    PExpression difExp = differentiator.getLastVisitResult();
+    ASSERT_TRUE(isTypeOf<Mult>(difExp));    
+    PMult difExpTyped=dynamic_pointer_cast<Mult>(difExp);
+    
+    ASSERT_TRUE(isTypeOf<Constant>(difExpTyped->lArg));
+    ASSERT_STREQ("1", dynamic_pointer_cast<Constant>(difExpTyped->lArg)->value.c_str());
+    
+    ASSERT_TRUE(isTypeOf<Sum>(difExpTyped->rArg));
+    PSum tangentSum=dynamic_pointer_cast<Sum>(difExpTyped->rArg);
+    
+    ASSERT_TRUE(isTypeOf<Constant>(tangentSum->lArg));
+    ASSERT_STREQ("1", dynamic_pointer_cast<Constant>(tangentSum->lArg)->value.c_str());
+    
+    ASSERT_TRUE(isTypeOf<Pow>(tangentSum->rArg));
+    PPow pow=dynamic_pointer_cast<Pow>(tangentSum->rArg);
+    ASSERT_TRUE(isTypeOf<Tan>(pow->lArg));
+    PTan tan=dynamic_pointer_cast<Tan>(pow->lArg);
+    ASSERT_TRUE(isTypeOf<Variable>(tan->arg));
+    ASSERT_STREQ("x", dynamic_pointer_cast<Variable>(tan->arg)->name.c_str());
+    ASSERT_TRUE(isTypeOf<Constant>(pow->rArg));
+    ASSERT_STREQ("2", dynamic_pointer_cast<Constant>(pow->rArg)->value.c_str());
+}
+
+TEST_F(FX_Differentiator, visit_TangentFunctionWithoutArgument_TraverseException) {
+    PTan exp = createTan(nullptr);
     
     Differentiator differentiator("x");
     ASSERT_THROW(exp->traverse(differentiator), TraverseException);

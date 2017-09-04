@@ -93,3 +93,9 @@ PSin createSin(PExpression arg) {
     sin->arg = arg;
     return sin;
 }
+
+PTan createTan(PExpression arg) {
+    PTan tan = make_shared<Tan>();
+    tan->arg = arg;
+    return tan;
+}

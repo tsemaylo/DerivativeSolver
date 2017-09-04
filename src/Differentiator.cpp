@@ -148,10 +148,23 @@ void Differentiator::visit(const shared_ptr<const Cos> expr) throw (TraverseExce
             );
 }
 
-void Differentiator::visit(const shared_ptr<const Tan>) throw (TraverseException) {
-    /// @TODO s.a.
-    /// @TODO NYI
-    this->setLastVisitResult(createConstant("NYI"));
+void Differentiator::visit(const shared_ptr<const Tan> expr) throw (TraverseException) {
+    if (!expr->isComplete()) {
+        THROW(TraverseException, "Expression is not consistent (tangent).", "Arg: " + to_string(expr->arg));
+    }
+
+    // the chain rule is also applied here
+
+    // tan'(x) = 1 + (tan(x))^2
+    expr->arg->traverse(*this);
+    this->setLastVisitResult(createMult(
+            this->getLastVisitResult(),
+            createSum(
+            createConstant("1"),
+            createPow(createTan(expr->arg), createConstant("2"))
+            )
+            )
+            );
 }
 
 void Differentiator::visit(const shared_ptr<const Ctan>) throw (TraverseException) {

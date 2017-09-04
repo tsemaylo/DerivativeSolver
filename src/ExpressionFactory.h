@@ -19,6 +19,7 @@
 #include "Pow.h"
 #include "Sin.h"
 #include "Cos.h"
+#include "Tan.h"
 #include "Ln.h"
 
 
@@ -38,6 +39,7 @@ PLn createLn();
 PLn createLn(PExpression arg);
 PCos createCos(PExpression arg);
 PSin createSin(PExpression arg);
+PTan createTan(PExpression arg);
 
 #endif /* EXPRESSIONFACTORY_H */
 
