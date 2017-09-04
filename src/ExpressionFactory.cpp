@@ -81,3 +81,15 @@ PLn createLn(PExpression arg) {
     ln->arg = arg;
     return ln;
 }
+
+PCos createCos(PExpression arg) {
+    PCos cos = make_shared<Cos>();
+    cos->arg = arg;
+    return cos;
+}
+
+PSin createSin(PExpression arg) {
+    PSin sin = make_shared<Sin>();
+    sin->arg = arg;
+    return sin;
+}

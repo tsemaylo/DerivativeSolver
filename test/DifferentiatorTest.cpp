@@ -252,3 +252,61 @@ TEST_F(FX_Differentiator, visit_ExponentiationOperationIsIncoplete_TraverseExcep
     Differentiator differentiator("a");
     ASSERT_THROW(exp->traverse(differentiator), TraverseException);
 }
+
+TEST_F(FX_Differentiator, visit_SineFunction_ChainAndTrogonomatricRulesApplied) {
+    PSin exp = createSin(createVariable("x"));
+    
+    Differentiator differentiator("x");
+    ASSERT_NO_THROW(exp->traverse(differentiator));
+    
+    PExpression difExp = differentiator.getLastVisitResult();
+    ASSERT_TRUE(isTypeOf<Mult>(difExp));    
+    PMult difExpTyped=dynamic_pointer_cast<Mult>(difExp);
+    
+    ASSERT_TRUE(isTypeOf<Constant>(difExpTyped->lArg));
+    ASSERT_STREQ("1", dynamic_pointer_cast<Constant>(difExpTyped->lArg)->value.c_str());
+    
+    ASSERT_TRUE(isTypeOf<Cos>(difExpTyped->rArg));
+    PCos cos=dynamic_pointer_cast<Cos>(difExpTyped->rArg);
+    ASSERT_TRUE(isTypeOf<Variable>(cos->arg));
+    ASSERT_STREQ("x", dynamic_pointer_cast<Variable>(cos->arg)->name.c_str());
+}
+
+TEST_F(FX_Differentiator, visit_SineFunctionWothoutArgument_TraverseException) {
+    PSin exp = createSin(nullptr);
+    
+    Differentiator differentiator("x");
+    ASSERT_THROW(exp->traverse(differentiator), TraverseException);
+}
+
+TEST_F(FX_Differentiator, visit_CosineFunction_ChainAndTrogonomatricRulesApplied) {
+    PCos exp = createCos(createVariable("x"));
+    
+    Differentiator differentiator("x");
+    ASSERT_NO_THROW(exp->traverse(differentiator));
+    
+    PExpression difExp = differentiator.getLastVisitResult();
+    ASSERT_TRUE(isTypeOf<Mult>(difExp));    
+    PMult difExpTyped=dynamic_pointer_cast<Mult>(difExp);
+    
+    ASSERT_TRUE(isTypeOf<Constant>(difExpTyped->lArg));
+    ASSERT_STREQ("1", dynamic_pointer_cast<Constant>(difExpTyped->lArg)->value.c_str());
+    
+    ASSERT_TRUE(isTypeOf<Mult>(difExpTyped->rArg));
+    PMult negatedSine=dynamic_pointer_cast<Mult>(difExpTyped->rArg);
+    
+    ASSERT_TRUE(isTypeOf<Constant>(negatedSine->lArg));
+    ASSERT_STREQ("-1", dynamic_pointer_cast<Constant>(negatedSine->lArg)->value.c_str());
+    
+    ASSERT_TRUE(isTypeOf<Sin>(negatedSine->rArg));
+    PSin sin=dynamic_pointer_cast<Sin>(negatedSine->rArg);
+    ASSERT_TRUE(isTypeOf<Variable>(sin->arg));
+    ASSERT_STREQ("x", dynamic_pointer_cast<Variable>(sin->arg)->name.c_str());
+}
+
+TEST_F(FX_Differentiator, visit_CosineFunctionWothoutArgument_TraverseException) {
+    PCos exp = createCos(nullptr);
+    
+    Differentiator differentiator("x");
+    ASSERT_THROW(exp->traverse(differentiator), TraverseException);
+}

@@ -17,7 +17,10 @@
 #include "Mult.h"
 #include "Div.h"
 #include "Pow.h"
+#include "Sin.h"
+#include "Cos.h"
 #include "Ln.h"
+
 
 PVariable createVariable(const string name);
 PConstant createConstant(const string val);
@@ -33,6 +36,8 @@ PPow createPow();
 PPow createPow(PExpression lArg, PExpression rArg);
 PLn createLn();
 PLn createLn(PExpression arg);
+PCos createCos(PExpression arg);
+PSin createSin(PExpression arg);
 
 #endif /* EXPRESSIONFACTORY_H */
 

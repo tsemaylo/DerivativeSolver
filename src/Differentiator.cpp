@@ -121,16 +121,31 @@ void Differentiator::visit(const shared_ptr<const Pow> expr) throw (TraverseExce
     this->setLastVisitResult(createMult(leftMultplier, rightMultplier));
 }
 
-void Differentiator::visit(const shared_ptr<const Sin>) throw (TraverseException) {
-    /// @TODO s.a.
-    /// @TODO NYI
-    this->setLastVisitResult(createConstant("NYI"));
+void Differentiator::visit(const shared_ptr<const Sin> expr) throw (TraverseException) {
+    if (!expr->isComplete()) {
+        THROW(TraverseException, "Expression is not consistent (sine).", "Arg: " + to_string(expr->arg));
+    }
+    
+    // the chain rule can be applied here
+    // f(g(x))' = g' * f'(g)
+    
+    expr->arg->traverse(*this);
+    this->setLastVisitResult(createMult(this->getLastVisitResult(), createCos(expr->arg)));
 }
 
-void Differentiator::visit(const shared_ptr<const Cos>) throw (TraverseException) {
-    /// @TODO s.a.
-    /// @TODO NYI
-    this->setLastVisitResult(createConstant("NYI"));
+void Differentiator::visit(const shared_ptr<const Cos> expr) throw (TraverseException) {
+    if (!expr->isComplete()) {
+        THROW(TraverseException, "Expression is not consistent (cosine).", "Arg: " + to_string(expr->arg));
+    }
+
+    // the chain rule is also applied here
+
+    expr->arg->traverse(*this);
+    this->setLastVisitResult(createMult(
+            this->getLastVisitResult(),
+            createMult(createConstant("-1"), createSin(expr->arg))
+            )
+            );
 }
 
 void Differentiator::visit(const shared_ptr<const Tan>) throw (TraverseException) {
