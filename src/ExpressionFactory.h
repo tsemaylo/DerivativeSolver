@@ -36,11 +36,17 @@ PDiv createDiv();
 PDiv createDiv(PExpression lArg, PExpression rArg);
 PPow createPow();
 PPow createPow(PExpression lArg, PExpression rArg);
+PLn createLn();
 PLn createLn(PExpression arg);
+PExp createExp();
 PExp createExp(PExpression arg);
+PCos createCos();
 PCos createCos(PExpression arg);
+PSin createSin();
 PSin createSin(PExpression arg);
+PTan createTan();
 PTan createTan(PExpression arg);
+PCtan createCtan();
 PCtan createCtan(PExpression arg);
 
 #endif /* EXPRESSIONFACTORY_H */

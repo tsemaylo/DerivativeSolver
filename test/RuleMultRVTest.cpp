@@ -6,14 +6,13 @@
  */
 
 #include <gtest/gtest.h>
-#include <list>
-#include <string>
-#include <memory>
 
 #include "RuleMultRV.h"
 #include "Variable.h"
 #include "Mult.h"
 #include "Sub.h"
+
+#include "ExpressionFactory.h"
 
 class FX_RuleMultRV : public testing::Test {
 protected:
@@ -27,28 +26,6 @@ protected:
     Token lookAheadToken() const {
         return Token("NA", TNoToken);
     }
-
-    shared_ptr<Expression> createVariable(const string name) const {
-        return make_shared<Variable>(name);
-    }
-
-    shared_ptr<Expression> createMult() const {
-        return make_shared<Mult>();
-    }
-
-    shared_ptr<Expression> createMult(shared_ptr<Expression> lArg, shared_ptr<Expression> rArg) const {
-        shared_ptr<Mult> mult = make_shared<Mult>();
-        mult->lArg = lArg;
-        mult->rArg = rArg;
-        return mult;
-    }
-
-    shared_ptr<Expression> createSub(shared_ptr<Expression> lArg, shared_ptr<Expression> rArg) const {
-        shared_ptr<Sub> sub = make_shared<Sub>();
-        sub->lArg = lArg;
-        sub->rArg = rArg;
-        return sub;
-    }
 };
 
 TEST_F(FX_RuleMultRV, apply_NormalRightValueForMultiplication_Reducable) {
@@ -61,10 +38,10 @@ TEST_F(FX_RuleMultRV, apply_NormalRightValueForMultiplication_Reducable) {
 
     ParserStack::const_iterator i = stack.begin();
 
-    shared_ptr<Mult> mult = dynamic_pointer_cast<Mult>(*i);
+    PMult mult = SPointerCast<Mult>(*i);
     EXPECT_TRUE(isTypeOf<Mult>(mult));
 
-    shared_ptr<Variable> multRArg = dynamic_pointer_cast<Variable>(mult->rArg);
+    PVariable multRArg = SPointerCast<Variable>(mult->rArg);
     EXPECT_TRUE(isTypeOf<Variable>(multRArg));
     EXPECT_STREQ("b", multRArg->name.c_str());
 }

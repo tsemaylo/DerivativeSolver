@@ -6,13 +6,12 @@
  */
 
 #include <gtest/gtest.h>
-#include <list>
-#include <string>
-#include <memory>
 
 #include "RuleSumRV.h"
 #include "Variable.h"
 #include "Sum.h"
+
+#include "ExpressionFactory.h"
 
 class FX_RuleSumRV : public testing::Test {
 protected:
@@ -22,20 +21,12 @@ protected:
 
     virtual void TearDown() {
     }
-
-    shared_ptr<Expression> createVariable(const string name) const {
-        return make_shared<Variable>(name);
-    }
-
-    shared_ptr<Expression> createSum() const {
-        return make_shared<Sum>();
-    }
 };
 
 TEST_F(FX_RuleSumRV, apply_SimpleSummation_Reducable) {
 
     ParserStack stack;
-    shared_ptr<Sum> stackSum = dynamic_pointer_cast<Sum>(createSum());
+    PSum stackSum = SPointerCast<Sum>(createSum());
     stackSum->lArg = createVariable("b");
     stack.push_back(stackSum);
     stack.push_back(createVariable("a"));
@@ -45,10 +36,10 @@ TEST_F(FX_RuleSumRV, apply_SimpleSummation_Reducable) {
 
     ParserStack::const_iterator i = stack.begin();
 
-    shared_ptr<Sum> sum = dynamic_pointer_cast<Sum>(*i);
+    PSum sum = SPointerCast<Sum>(*i);
     EXPECT_TRUE(isTypeOf<Sum>(sum));
 
-    shared_ptr<Variable> sumRArg = dynamic_pointer_cast<Variable>(sum->rArg);
+    PVariable sumRArg = SPointerCast<Variable>(sum->rArg);
     EXPECT_TRUE(isTypeOf<Variable>(sumRArg));
     EXPECT_STREQ("a", sumRArg->name.c_str());
 }
@@ -64,7 +55,7 @@ TEST_F(FX_RuleSumRV, apply_SummationWithoutLeftArgument_Reducable) {
 
     ParserStack::const_iterator i = stack.begin();
 
-    shared_ptr<Variable> varA = dynamic_pointer_cast<Variable>(*i);
+    PVariable varA = SPointerCast<Variable>(*i);
     EXPECT_TRUE(isTypeOf<Variable>(varA));
     EXPECT_STREQ("a", varA->name.c_str());
 }

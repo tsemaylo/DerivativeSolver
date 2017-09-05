@@ -11,7 +11,6 @@
 #define SRC_VARIABLE_H_
 
 #include <string>
-#include <memory>
 
 #include "Expression.h"
 
@@ -31,9 +30,11 @@ public:
     bool isComplete() const final;
     
     template <class ExpressionClass>
-    friend bool isTypeOf(shared_ptr<Expression> exprInstance);    
+    friend bool isTypeOf(PExpression exprInstance);    
 };
 
-typedef shared_ptr<Variable> PVariable;
+// shortcuts for pointers
+typedef SPointer<Variable> PVariable;
+typedef SPointer<const Variable> PConstVariable;
 
 #endif /* SRC_VARIABLE_H_ */

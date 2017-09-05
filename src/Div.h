@@ -10,13 +10,12 @@
 #ifndef DIV_H
 #define DIV_H
 
-#include <memory>
 #include "Expression.h"
 
 class Div : public Expression, public enable_shared_from_this<Div> {
 public:
-    shared_ptr<Expression> lArg;
-    shared_ptr<Expression> rArg;
+    PExpression lArg;
+    PExpression rArg;
 
     Div();
 
@@ -25,7 +24,9 @@ public:
     bool isComplete() const final;
 };
 
-typedef shared_ptr<Div> PDiv;
+// shortcuts for pointers
+typedef SPointer<Div> PDiv;
+typedef SPointer<const Div> PConstDiv;
 
 #endif /* DIV_H */
 

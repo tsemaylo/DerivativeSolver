@@ -6,13 +6,12 @@
  */
 
 #include <gtest/gtest.h>
-#include <list>
-#include <string>
-#include <memory>
 
 #include "RuleSumLV.h"
 #include "Variable.h"
 #include "Sum.h"
+
+#include "ExpressionFactory.h"
 
 class FX_RuleSumLV : public testing::Test {
 protected:
@@ -21,14 +20,6 @@ protected:
     }
 
     virtual void TearDown() {
-    }
-
-    shared_ptr<Expression> createVariable(const string name) const {
-        return make_shared<Variable>(name);
-    }
-
-    shared_ptr<Expression> createSum() const {
-        return make_shared<Sum>();
     }
 };
 
@@ -43,10 +34,10 @@ TEST_F(FX_RuleSumLV, apply_SimpleSummation_Reducable) {
 
     ParserStack::const_iterator i = stack.begin();
 
-    shared_ptr<Sum> sum = dynamic_pointer_cast<Sum>(*i);
+    PSum sum = SPointerCast<Sum>(*i);
     EXPECT_TRUE(isTypeOf<Sum>(sum));
 
-    shared_ptr<Variable> sumLArg = dynamic_pointer_cast<Variable>(sum->lArg);
+    PVariable sumLArg = SPointerCast<Variable>(sum->lArg);
     EXPECT_TRUE(isTypeOf<Variable>(sumLArg));
     EXPECT_STREQ("a", sumLArg->name.c_str());
 }

@@ -10,7 +10,6 @@
 #ifndef COS_H
 #define COS_H
 
-#include <memory>
 #include "Expression.h"
 
 /**
@@ -18,7 +17,7 @@
  */
 class Cos : public Expression, public enable_shared_from_this<Cos>{
 public:
-    shared_ptr<Expression> arg;
+    SPointer<Expression> arg;
     
     Cos();
     
@@ -26,7 +25,9 @@ public:
     void traverse(Visitor&) const throw(TraverseException) final;
 };
 
-typedef shared_ptr<Cos> PCos;
+// shortcuts for pointers
+typedef SPointer<Cos> PCos;
+typedef SPointer<const Cos> PConstCos;
 
 #endif /* COS_H */
 

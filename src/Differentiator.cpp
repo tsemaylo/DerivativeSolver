@@ -14,7 +14,7 @@
 Differentiator::Differentiator(string var) : variable(var) {
 }
 
-void Differentiator::visit(const shared_ptr<const Constant> expr) throw (TraverseException) {
+void Differentiator::visit(const PConstConstant expr) throw (TraverseException) {
     if (expr->value.empty()) {
         // inprobable situation
         THROW(TraverseException, "Constant is empty.", "N.A");
@@ -22,7 +22,7 @@ void Differentiator::visit(const shared_ptr<const Constant> expr) throw (Travers
     this->setLastVisitResult(createConstant("0"));
 }
 
-void Differentiator::visit(const shared_ptr<const Variable> expr) throw (TraverseException) {
+void Differentiator::visit(const PConstVariable expr) throw (TraverseException) {
     if (expr->name.empty()) {
         // inprobable situation
         THROW(TraverseException, "No variable name is given.", "N.A");
@@ -35,7 +35,7 @@ void Differentiator::visit(const shared_ptr<const Variable> expr) throw (Travers
     this->setLastVisitResult(createConstant("0"));
 }
 
-void Differentiator::visit(const shared_ptr<const Sum> expr) throw (TraverseException) {
+void Differentiator::visit(const PConstSum expr) throw (TraverseException) {
     if (!expr->isComplete()) {
         THROW(TraverseException, "Expression is not consistent.", "LArg: " + to_string(expr->lArg) + "RArg:" + to_string(expr->rArg));
     }
@@ -48,7 +48,7 @@ void Differentiator::visit(const shared_ptr<const Sum> expr) throw (TraverseExce
     this->setLastVisitResult(createSum(lArg, rArg));
 }
 
-void Differentiator::visit(const shared_ptr<const Sub> expr) throw (TraverseException) {
+void Differentiator::visit(const PConstSub expr) throw (TraverseException) {
     if (!expr->isComplete()) {
         THROW(TraverseException, "Expression is not consistent.", "LArg: " + to_string(expr->lArg) + "RArg:" + to_string(expr->rArg));
     }
@@ -61,7 +61,7 @@ void Differentiator::visit(const shared_ptr<const Sub> expr) throw (TraverseExce
     this->setLastVisitResult(createSub(lArg, rArg));
 }
 
-void Differentiator::visit(const shared_ptr<const Div> expr) throw (TraverseException) {
+void Differentiator::visit(const PConstDiv expr) throw (TraverseException) {
     if (!expr->isComplete()) {
         THROW(TraverseException, "Expression is not consistent.", "LArg: " + to_string(expr->lArg) + "RArg:" + to_string(expr->rArg));
     }
@@ -80,7 +80,7 @@ void Differentiator::visit(const shared_ptr<const Div> expr) throw (TraverseExce
     this->setLastVisitResult(createDiv(difDividend, difDivisor));
 }
 
-void Differentiator::visit(const shared_ptr<const Mult> expr) throw (TraverseException) {
+void Differentiator::visit(const PConstMult expr) throw (TraverseException) {
     if (!expr->isComplete()) {
         THROW(TraverseException, "Expression is not consistent.", "LArg: " + to_string(expr->lArg) + "RArg:" + to_string(expr->rArg));
 
@@ -97,7 +97,7 @@ void Differentiator::visit(const shared_ptr<const Mult> expr) throw (TraverseExc
     this->setLastVisitResult(createSum(leftSumTerm, rightSumTerm));
 }
 
-void Differentiator::visit(const shared_ptr<const Pow> expr) throw (TraverseException) {
+void Differentiator::visit(const PConstPow expr) throw (TraverseException) {
     if (!expr->isComplete()) {
         THROW(TraverseException, "Expression is not consistent.", "LArg: " + to_string(expr->lArg) + "RArg:" + to_string(expr->rArg));
     }
@@ -121,7 +121,7 @@ void Differentiator::visit(const shared_ptr<const Pow> expr) throw (TraverseExce
     this->setLastVisitResult(createMult(leftMultplier, rightMultplier));
 }
 
-void Differentiator::visit(const shared_ptr<const Sin> expr) throw (TraverseException) {
+void Differentiator::visit(const PConstSin expr) throw (TraverseException) {
     if (!expr->isComplete()) {
         THROW(TraverseException, "Expression is not consistent (sine).", "Arg: " + to_string(expr->arg));
     }
@@ -133,7 +133,7 @@ void Differentiator::visit(const shared_ptr<const Sin> expr) throw (TraverseExce
     this->setLastVisitResult(createMult(this->getLastVisitResult(), createCos(expr->arg)));
 }
 
-void Differentiator::visit(const shared_ptr<const Cos> expr) throw (TraverseException) {
+void Differentiator::visit(const PConstCos expr) throw (TraverseException) {
     if (!expr->isComplete()) {
         THROW(TraverseException, "Expression is not consistent (cosine).", "Arg: " + to_string(expr->arg));
     }
@@ -148,7 +148,7 @@ void Differentiator::visit(const shared_ptr<const Cos> expr) throw (TraverseExce
             );
 }
 
-void Differentiator::visit(const shared_ptr<const Tan> expr) throw (TraverseException) {
+void Differentiator::visit(const PConstTan expr) throw (TraverseException) {
     if (!expr->isComplete()) {
         THROW(TraverseException, "Expression is not consistent (tangent).", "Arg: " + to_string(expr->arg));
     }
@@ -167,7 +167,7 @@ void Differentiator::visit(const shared_ptr<const Tan> expr) throw (TraverseExce
             );
 }
 
-void Differentiator::visit(const shared_ptr<const Ctan> expr) throw (TraverseException) {
+void Differentiator::visit(const PConstCtan expr) throw (TraverseException) {
     if (!expr->isComplete()) {
         THROW(TraverseException, "Expression is not consistent (cotangent).", "Arg: " + to_string(expr->arg));
     }
@@ -188,7 +188,7 @@ void Differentiator::visit(const shared_ptr<const Ctan> expr) throw (TraverseExc
             );
 }
 
-void Differentiator::visit(const shared_ptr<const Ln> expr) throw (TraverseException) {
+void Differentiator::visit(const PConstLn expr) throw (TraverseException) {
     if (!expr->isComplete()) {
         THROW(TraverseException, "Expression is not consistent (cotangent).", "Arg: " + to_string(expr->arg));
     }
@@ -203,7 +203,7 @@ void Differentiator::visit(const shared_ptr<const Ln> expr) throw (TraverseExcep
             );
 }
 
-void Differentiator::visit(const shared_ptr<const Exp> expr) throw (TraverseException) {
+void Differentiator::visit(const PConstExp expr) throw (TraverseException) {
         if (!expr->isComplete()) {
         THROW(TraverseException, "Expression is not consistent (cotangent).", "Arg: " + to_string(expr->arg));
     }

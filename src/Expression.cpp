@@ -13,7 +13,7 @@
 Expression::Expression(ExpressionType type) : type(type){
 }
 
-string to_string(const shared_ptr<Expression> &expr){
+string to_string(const PExpression expr){
     if(expr==nullptr){
         return "?";
     }

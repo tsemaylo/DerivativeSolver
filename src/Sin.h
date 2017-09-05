@@ -10,7 +10,6 @@
 #ifndef SIN_H
 #define SIN_H
 
-#include <memory>
 #include "Expression.h"
 
 /**
@@ -18,7 +17,7 @@
  */
 class Sin : public Expression, public enable_shared_from_this<Sin>{
 public:
-    shared_ptr<Expression> arg;
+    PExpression arg;
     
     Sin();
     
@@ -26,7 +25,9 @@ public:
     void traverse(Visitor&) const throw(TraverseException) final;
 };
 
-typedef shared_ptr<Sin> PSin;
+// shortcuts for pointers
+typedef SPointer<Sin> PSin;
+typedef SPointer<const Sin> PConstSin;
 
 #endif /* SIN_H */
 

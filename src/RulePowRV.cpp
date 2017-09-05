@@ -11,12 +11,12 @@
 #include "RulePowRV.h"
 
 bool RulePowRV::applyRule(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack &stack) const throw (ParsingException) {
-    if (dynamic_pointer_cast<Pow>(*op)->lArg == nullptr) {
+    if (SPointerCast<Pow>(*op)->lArg == nullptr) {
         THROW(ParsingException, "No operand on the left side of '^'.", to_string(stack));
     }
 
     // see Grammar rule #24
-    dynamic_pointer_cast<Pow>(*op)->rArg = *arg;
+    SPointerCast<Pow>(*op)->rArg = *arg;
     stack.erase(arg);
 
     return true;

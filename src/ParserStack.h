@@ -11,11 +11,10 @@
 #define	PARSERSTACK_H
 	
 #include <list>
-#include <memory>
 #include <string>
 #include "Expression.h"	
 
-typedef	list<shared_ptr<Expression>> ParserStack;
+typedef	list<PExpression> ParserStack;
 
 
 string to_string(const ParserStack &val);

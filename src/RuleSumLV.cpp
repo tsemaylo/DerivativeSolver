@@ -16,7 +16,7 @@ bool RuleSumLV::applyRule(const ParserStack::const_iterator op, const ParserStac
     // the expression on the left side is correct
     // initialize l-side argument
     // see Grammar rule #29
-    dynamic_pointer_cast<Sum>(*op)->lArg = (*arg);
+    SPointerCast<Sum>(*op)->lArg = (*arg);
     // reduce the stack
     stack.erase(arg);
 

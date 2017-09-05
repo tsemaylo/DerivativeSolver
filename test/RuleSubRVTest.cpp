@@ -6,15 +6,14 @@
  */
 
 #include <gtest/gtest.h>
-#include <list>
-#include <string>
-#include <memory>
 
 #include "RuleSubRV.h"
 #include "Constant.h"
 #include "Variable.h"
 #include "Sub.h"
 #include "Mult.h"
+
+#include "ExpressionFactory.h"
 
 class FX_RuleSubRV : public testing::Test {
 protected:
@@ -23,28 +22,6 @@ protected:
     }
 
     virtual void TearDown() {
-    }
-
-    shared_ptr<Expression> createVariable(const string name) const {
-        return make_shared<Variable>(name);
-    }
-
-    shared_ptr<Expression> createSub() const {
-        return make_shared<Sub>();
-    }
-    
-    shared_ptr<Expression> createSub(shared_ptr<Expression> lArg, shared_ptr<Expression> rArg) const {
-        shared_ptr<Sub> sub = make_shared<Sub>();
-        sub->lArg = lArg;
-        sub->rArg = rArg;
-        return sub;
-    }
-    
-    shared_ptr<Expression> createMult(shared_ptr<Expression> lArg, shared_ptr<Expression> rArg) const {
-        shared_ptr<Mult> mult = make_shared<Mult>();
-        mult->lArg = lArg;
-        mult->rArg = rArg;
-        return mult;
     }
     
     Token lookAheadToken() {
@@ -57,9 +34,8 @@ protected:
 };
 
 TEST_F(FX_RuleSubRV, apply_SimpleSubtraction_Reducable) {
-
     ParserStack stack;
-    shared_ptr<Sub> stackSub = dynamic_pointer_cast<Sub>(createSub());
+    PSub stackSub = SPointerCast<Sub>(createSub());
     stackSub->lArg = createVariable("b");
     stack.push_back(stackSub);
     stack.push_back(createVariable("a"));
@@ -69,10 +45,10 @@ TEST_F(FX_RuleSubRV, apply_SimpleSubtraction_Reducable) {
 
     ParserStack::const_iterator i = stack.begin();
 
-    shared_ptr<Sub> sub = dynamic_pointer_cast<Sub>(*i);
+    PSub sub = SPointerCast<Sub>(*i);
     EXPECT_TRUE(isTypeOf<Sub>(sub));
 
-    shared_ptr<Variable> subRArg = dynamic_pointer_cast<Variable>(sub->rArg);
+    PVariable subRArg = SPointerCast<Variable>(sub->rArg);
     EXPECT_TRUE(isTypeOf<Variable>(subRArg));
     EXPECT_STREQ("a", subRArg->name.c_str());
 }
@@ -90,7 +66,7 @@ TEST_F(FX_RuleSubRV, apply_SubtractionWithoutLeftArgument_Reducable) {
 
     EXPECT_TRUE(isTypeOf<Mult>((*i)));
 
-    shared_ptr<Mult> mult = dynamic_pointer_cast<Mult>(*i);
+    PMult mult = SPointerCast<Mult>(*i);
     EXPECT_TRUE(isTypeOf<Constant>(mult->lArg));
     EXPECT_TRUE(isTypeOf<Variable>(mult->rArg));
 }

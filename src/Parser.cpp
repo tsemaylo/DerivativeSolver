@@ -6,8 +6,6 @@
  * @since 25.03.2016
  * @Author: agor
  */
-#include <memory>
-
 #include "bootstrap.h"
 #include "Parser.h"
 #include "Constant.h"
@@ -34,6 +32,7 @@
 #include "RuleSubLV.h"
 #include "RuleSubRV.h"
 #include "RuleFunction.h"
+#include "ExpressionFactory.h"
 
 Parser::Parser() {
     // initialize grammar
@@ -179,45 +178,45 @@ bool Parser::doReduce(ParserStack &stack, const Token &lookAheadToken) const {
     return false;
 }
 
-shared_ptr<Expression> Parser::createOperation(const string opSymbol) const throw (ParsingException) {
+PExpression Parser::createOperation(const string opSymbol) const throw (ParsingException) {
     if (opSymbol == "+") {
-        return make_shared<Sum>();
+        return createSum();
     }
     if (opSymbol == "-") {
-        return make_shared<Sub>();
+        return createSub();
     }
     if (opSymbol == "*") {
-        return make_shared<Mult>();
+        return createMult();
     }
     if (opSymbol == "/" || opSymbol == "\\") {
-        return make_shared<Div>();
+        return createDiv();
     }
     if (opSymbol == "^") {
-        return make_shared<Pow>();
+        return createPow();
     }
 
     THROW(ParsingException, "Unknown type of token (operation is not supported).", opSymbol);
 }
 
-shared_ptr<Expression> Parser::createFunction(const string opSymbol) const throw (ParsingException) {
+PExpression Parser::createFunction(const string opSymbol) const throw (ParsingException) {
     // @TODO make it case insensitive
     if (opSymbol == "sin") {
-        return make_shared<Sin>();
+        return createSin();
     }
     if (opSymbol == "cos") {
-        return make_shared<Cos>();
+        return createCos();
     }
     if (opSymbol == "tan") {
-        return make_shared<Tan>();
+        return createTan();
     }
     if (opSymbol == "ctan") {
-        return make_shared<Ctan>();
+        return createCtan();
     }
     if (opSymbol == "ln") {
-        return make_shared<Ln>();
+        return createLn();
     }
     if (opSymbol == "exp") {
-        return make_shared<Exp>();
+        return createExp();
     }
 
     THROW(ParsingException, "Unknown type of function (operation is not supported).", opSymbol);
@@ -259,11 +258,11 @@ list<Token>::const_iterator Parser::findEndOfParentheses(list<Token>::const_iter
 list<Token>::const_iterator Parser::shiftToStack(list<Token>::const_iterator current, list<Token>::const_iterator end, ParserStack &stack) const throw (ParsingException) {
     Token token = *current;
 
-    shared_ptr<Expression> stackExpression;
+    PExpression stackExpression;
     switch (token.type) {
         case TNumeric:
         {
-            stackExpression = make_shared<Constant>(token.value);
+            stackExpression = createConstant(token.value);
             break;
         }
         case TOperation:
@@ -278,7 +277,7 @@ list<Token>::const_iterator Parser::shiftToStack(list<Token>::const_iterator cur
                 stackExpression = createFunction(token.value);
             }else{
                 // assuming it is a variable
-                stackExpression = make_shared<Variable>(token.value);
+                stackExpression = createVariable(token.value);
             }
             
             break;
@@ -349,13 +348,13 @@ void Parser::doParseTokens(list<Token>::const_iterator start, list<Token>::const
     }
 }
 
-shared_ptr<Expression> Parser::parseTokens(const list<Token> &tokens) const {
+PExpression Parser::parseTokens(const list<Token> &tokens) const {
     ParserStack stack;
     this->doParseTokens(tokens.begin(), tokens.end(), stack);
     return stack.front();
 }
 
-const shared_ptr<Expression> Parser::parse(const string &strExpr) const throw (ParsingException) {
+const PExpression Parser::parse(const string &strExpr) const throw (ParsingException) {
     //list<Token> tokensList=;
     ///@TODO tokensList.swap(this->getTokens(strExpr));
     return this->parseTokens(this->getTokens(strExpr));

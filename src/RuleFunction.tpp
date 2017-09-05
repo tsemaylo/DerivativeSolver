@@ -37,7 +37,7 @@ bool RuleFunction<Function>::apply(ParserStack& stack, const Token& ) const thro
         
         // assigning the argument and reducing the stack
         // Grammar rules: #17-22
-        dynamic_pointer_cast<Function>(*funcIt)->arg=(*argIt);
+        SPointerCast<Function>(*funcIt)->arg=(*argIt);
         stack.erase(argIt);
         
         return true;

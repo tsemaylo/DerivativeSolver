@@ -8,25 +8,25 @@
  */
 
 #ifndef SUB_H
-#define	SUB_H
+#define SUB_H
 
-#include <memory>
 #include "Expression.h"
 
-class Sub : public Expression, public enable_shared_from_this<Sub> 
-{
+class Sub : public Expression, public enable_shared_from_this<Sub> {
 public:
-	shared_ptr<Expression> lArg;
-	shared_ptr<Expression> rArg;
+    PExpression lArg;
+    PExpression rArg;
 
-	Sub();
-	
-	void traverse(Visitor & ) const throw(TraverseException) final;
-	
-	bool isComplete() const final;
+    Sub();
+
+    void traverse(Visitor &) const throw (TraverseException) final;
+
+    bool isComplete() const final;
 };
 
-typedef shared_ptr<Sub> PSub;
-        
-#endif	/* SUB_H */
+// shortcuts for pointers
+typedef SPointer<Sub> PSub;
+typedef SPointer<const Sub> PConstSub;
+
+#endif /* SUB_H */
 

@@ -10,7 +10,6 @@
 #ifndef EXP_H
 #define EXP_H
 
-#include <memory>
 #include "Expression.h"
 
 /**
@@ -18,7 +17,7 @@
  */
 class Exp : public Expression, public enable_shared_from_this<Exp>{
 public:
-    shared_ptr<Expression> arg;
+    PExpression arg;
     
     Exp();
     
@@ -26,7 +25,9 @@ public:
     void traverse(Visitor&) const throw(TraverseException) final;
 };
 
-typedef shared_ptr<Exp> PExp;
+// shortcuts for pointers
+typedef SPointer<Exp> PExp;
+typedef SPointer<const Exp> PConstExp;
 
 #endif /* EXP_H */
 

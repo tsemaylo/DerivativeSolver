@@ -14,7 +14,7 @@ using namespace std;
 
 bool RuleDivLV::applyRule(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack &stack) const throw (ParsingException) {
     // Grammar rule #27
-    dynamic_pointer_cast<Div>(*op)->lArg = *arg;
+    SPointerCast<Div>(*op)->lArg = *arg;
     stack.erase(arg);
 
     return true;

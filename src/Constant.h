@@ -10,7 +10,6 @@
 #ifndef SRC_CONSTANT_H_
 #define SRC_CONSTANT_H_
 
-#include <memory>
 #include "Expression.h"
 
 using namespace std;
@@ -28,9 +27,11 @@ public:
     bool isComplete() const final;
     
     template <class ExpressionClass>
-    friend bool isTypeOf(shared_ptr<Expression> exprInstance);    
+    friend bool isTypeOf(SPointer<Expression> exprInstance);    
 };
 
-typedef shared_ptr<Constant> PConstant;
+// shortcuts for pointers
+typedef SPointer<Constant> PConstant;
+typedef SPointer<const Constant> PConstConstant;
 
 #endif /* SRC_CONSTANT_H_ */

@@ -6,13 +6,12 @@
  */
 
 #include <gtest/gtest.h>
-#include <list>
-#include <string>
-#include <memory>
 
 #include "RuleFunction.h"
 #include "Variable.h"
 #include "Sin.h"
+
+#include "ExpressionFactory.h"
 
 class FX_RuleFunction : public testing::Test {
 protected:
@@ -26,28 +25,6 @@ protected:
     Token lookAheadToken() const {
         return Token("(", TGroupBracket);
     }
-
-    shared_ptr<Expression> createVariable(const string name) const {
-        return make_shared<Variable>(name);
-    }
-
-    shared_ptr<Expression> createSin() const {
-        return make_shared<Sin>();
-    }
-    
-    shared_ptr<Expression> createSin(shared_ptr<Expression> arg) const {
-        shared_ptr<Sin> sin=make_shared<Sin>();
-        sin->arg=arg;
-        return sin;
-    }
-    
-    shared_ptr<Expression> createSum(shared_ptr<Expression> lArg, shared_ptr<Expression> rArg) const {
-        shared_ptr<Sum> sum = make_shared<Sum>();
-        sum->lArg = lArg;
-        sum->rArg = rArg;
-        return sum;
-    }
-
 };
 
 TEST_F(FX_RuleFunction, apply_SinNormalArgumentAssignment_Reducable) {
@@ -60,10 +37,10 @@ TEST_F(FX_RuleFunction, apply_SinNormalArgumentAssignment_Reducable) {
 
     ParserStack::const_iterator i = stack.begin();
 
-    shared_ptr<Sin> sin = dynamic_pointer_cast<Sin>(*i);
+    PSin sin = SPointerCast<Sin>(*i);
     EXPECT_TRUE(isTypeOf<Sin>(sin));
 
-    shared_ptr<Variable> sinArg = dynamic_pointer_cast<Variable>(sin->arg);
+    PVariable sinArg = SPointerCast<Variable>(sin->arg);
     EXPECT_TRUE(isTypeOf<Variable>(sinArg));
     EXPECT_STREQ("x", sinArg->name.c_str());
 }

@@ -10,13 +10,12 @@
 #ifndef MULT_H
 #define MULT_H
 
-#include <memory>
 #include "Expression.h"
 
 class Mult : public Expression, public enable_shared_from_this<Mult> {
 public:
-    shared_ptr<Expression> lArg;
-    shared_ptr<Expression> rArg;
+    PExpression lArg;
+    PExpression rArg;
 
     Mult();
 
@@ -25,7 +24,9 @@ public:
     bool isComplete() const final;
 };
 
-typedef shared_ptr<Mult> PMult;
+// shortcuts for pointers
+typedef SPointer<Mult> PMult;
+typedef SPointer<const Mult> PConstMult;
 
 #endif /* MULT_H */
 

@@ -14,7 +14,7 @@ using namespace std;
 
 bool RuleMultLV::applyRule(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack &stack) const throw (ParsingException) {
     // Grammar rule #25
-    dynamic_pointer_cast<Mult>(*op)->lArg = *arg;
+    SPointerCast<Mult>(*op)->lArg = *arg;
     stack.erase(arg);
 
     return true;

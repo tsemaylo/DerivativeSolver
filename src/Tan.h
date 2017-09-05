@@ -10,7 +10,6 @@
 #ifndef TAN_H
 #define TAN_H
 
-#include <memory>
 #include "Expression.h"
 
 /**
@@ -18,7 +17,7 @@
  */
 class Tan : public Expression, public enable_shared_from_this<Tan>{
 public:
-    shared_ptr<Expression> arg;
+    PExpression arg;
     
     Tan();
     
@@ -26,7 +25,9 @@ public:
     void traverse(Visitor&) const throw(TraverseException) final;
 };
 
-typedef shared_ptr<Tan> PTan;
+// shortcuts for pointers
+typedef SPointer<Tan> PTan;
+typedef SPointer<const Tan> PConstTan;
 
 #endif /* TAN_H */
 

@@ -12,12 +12,12 @@
 
 bool RuleDivRV::applyRule(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack &stack) const throw (ParsingException) {
     // if the left side is empty 
-    if (dynamic_pointer_cast<Div>(*op)->lArg == nullptr) {
+    if (SPointerCast<Div>(*op)->lArg == nullptr) {
         THROW(ParsingException, "No operand on the left side of '/'.", to_string(stack));
     }
 
     // see Grammar rule #28
-    dynamic_pointer_cast<Div>(*op)->rArg = *arg;
+    SPointerCast<Div>(*op)->rArg = *arg;
     stack.erase(arg);
 
     return true;

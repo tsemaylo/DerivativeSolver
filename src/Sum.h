@@ -8,25 +8,25 @@
  */
 
 #ifndef SUM_H
-#define	SUM_H
+#define SUM_H
 
-#include <memory>
 #include "Expression.h"
 
-class Sum : public Expression, public enable_shared_from_this<Sum>
-{
+class Sum : public Expression, public enable_shared_from_this<Sum> {
 public:
-	shared_ptr<Expression> lArg;
-	shared_ptr<Expression> rArg;
+    PExpression lArg;
+    PExpression rArg;
 
-	Sum();
-	
-	void traverse(Visitor & ) const throw(TraverseException) final;
-	
-	bool isComplete() const final;
+    Sum();
+
+    void traverse(Visitor &) const throw (TraverseException) final;
+
+    bool isComplete() const final;
 };
 
-typedef shared_ptr<Sum> PSum;
+// shortcuts for pointers
+typedef SPointer<Sum> PSum;
+typedef SPointer<const Sum> PConstSum;
 
-#endif	/* SUM_H */
+#endif /* SUM_H */
 

@@ -13,7 +13,7 @@
 bool RuleSumRV::applyRule(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack& stack) const throw (ParsingException) {
     // if the left side is empty 
     // see Grammar rule #31
-    if (dynamic_pointer_cast<Sum>(*op)->lArg == nullptr) {
+    if (SPointerCast<Sum>(*op)->lArg == nullptr) {
         // remove summation and left complete expression on the right side as is
         stack.erase(op);
         return true;
@@ -22,7 +22,7 @@ bool RuleSumRV::applyRule(const ParserStack::const_iterator op, const ParserStac
     // the expression on the left side is correct
     // initialize r-side argument
     // see Grammar rule #30
-    dynamic_pointer_cast<Sum>(*op)->rArg = *arg;
+    SPointerCast<Sum>(*op)->rArg = *arg;
     // reduce the stack
     stack.erase(arg);
     return true;

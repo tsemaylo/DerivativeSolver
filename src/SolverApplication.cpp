@@ -9,7 +9,6 @@
  */
 
 #include <iostream>
-#include <memory>
 #include "SolverApplication.h"
 #include "Expression.h"
 #include "Parser.h"
@@ -24,48 +23,39 @@ SolverApplication::SolverApplication() {
 SolverApplication::~SolverApplication() {
 }
 
-void SolverApplication::setStrExpression(const string strExpression)
-{
-	this->strExpression=strExpression;
+void SolverApplication::setStrExpression(const string strExpression) {
+    this->strExpression = strExpression;
 }
 
-string SolverApplication::getStrExpression() const
-{
-	return this->strExpression;
+string SolverApplication::getStrExpression() const {
+    return this->strExpression;
 }
 
-void SolverApplication::setStrVariable(const string strVariable)
-{
-	this->strVariable=strVariable;
+void SolverApplication::setStrVariable(const string strVariable) {
+    this->strVariable = strVariable;
 }
 
-string SolverApplication::getStrVariable() const
-{
-	return this->strVariable;
+string SolverApplication::getStrVariable() const {
+    return this->strVariable;
 }
 
-int SolverApplication::run()
-{
-	Parser parser;
-	try{
-		shared_ptr<Expression> expr = parser.parse(this->strExpression);
+int SolverApplication::run() {
+    Parser parser;
+    try {
+        PExpression expr = parser.parse(this->strExpression);
 
-		Differentiator differentiator=Differentiator(this->strVariable);
-		expr->traverse(differentiator);
+        Differentiator differentiator = Differentiator(this->strVariable);
+        expr->traverse(differentiator);
 
-		StringGenerator stringGenerator;
-		differentiator.getLastVisitResult()->traverse(stringGenerator);
+        StringGenerator stringGenerator;
+        differentiator.getLastVisitResult()->traverse(stringGenerator);
 
-		cout << stringGenerator.getLastVisitResult() << endl;
-	}
-	
-	catch(ParsingException ex){
-		cout << "ERROR: " << ex.what();
-	}
-	
-	catch(TraverseException ex){
-		cout << "ERROR: " << ex.what();
-	}
-	
-	return 0;
+        cout << stringGenerator.getLastVisitResult() << endl;
+    } catch (ParsingException ex) {
+        cout << "ERROR: " << ex.what();
+    } catch (TraverseException ex) {
+        cout << "ERROR: " << ex.what();
+    }
+
+    return 0;
 }

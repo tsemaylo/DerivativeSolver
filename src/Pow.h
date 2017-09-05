@@ -18,15 +18,17 @@
  */
 class Pow : public Expression, public enable_shared_from_this<Pow>  {
 public:
-    shared_ptr<Expression> lArg;
-    shared_ptr<Expression> rArg;
+    PExpression lArg;
+    PExpression rArg;
     
     Pow();
     bool isComplete() const final;
     void traverse(Visitor&) const throw(TraverseException) final;
 };
 
-typedef shared_ptr<Pow> PPow;
+// shortcuts for pointers
+typedef SPointer<Pow> PPow;
+typedef SPointer<const Pow> PConstPow;
 
 #endif /* POW_H */
 

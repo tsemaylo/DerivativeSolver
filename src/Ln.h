@@ -10,7 +10,6 @@
 #ifndef LN_H
 #define LN_H
 
-#include <memory>
 #include "Expression.h"
 
 /**
@@ -18,7 +17,7 @@
  */
 class Ln : public Expression, public enable_shared_from_this<Ln>{
 public:
-    shared_ptr<Expression> arg;
+    PExpression arg;
     
     Ln();
     
@@ -26,7 +25,9 @@ public:
     void traverse(Visitor&) const throw(TraverseException) final;
 };
 
-typedef shared_ptr<Ln> PLn;
+// shortcuts for pointers
+typedef SPointer<Ln> PLn;
+typedef SPointer<const Ln> PConstLn;
 
 #endif /* LN_H */
 

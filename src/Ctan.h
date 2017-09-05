@@ -10,7 +10,6 @@
 #ifndef CTAN_H
 #define CTAN_H
 
-#include <memory>
 #include "Expression.h"
 
 /**
@@ -18,7 +17,7 @@
  */
 class Ctan : public Expression, public enable_shared_from_this<Ctan>{
 public:
-    shared_ptr<Expression> arg;
+    SPointer<Expression> arg;
     
     Ctan();
     
@@ -26,7 +25,9 @@ public:
     void traverse(Visitor&) const throw(TraverseException) final;
 };
 
-typedef shared_ptr<Ctan> PCtan;
+// shortcuts for pointers
+typedef SPointer<Ctan> PCtan;
+typedef SPointer<const Ctan> PConstCtan;
 
 #endif /* CTAN_H */
 

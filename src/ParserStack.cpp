@@ -10,8 +10,6 @@
 #include "ParserStack.h"
 #include "StringGenerator.h"
 
-#include <string>
-
 string to_string(const ParserStack &stack) {
     return to_string(stack.begin(), stack.end());
 }

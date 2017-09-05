@@ -31,19 +31,19 @@
 class Visitor
 {
 public:	
-	virtual void visit(const shared_ptr<const Constant> expr) throw(TraverseException) = 0;
-	virtual void visit(const shared_ptr<const Variable> expr) throw(TraverseException) = 0;
-	virtual void visit(const shared_ptr<const Sum> expr) throw(TraverseException) = 0;
-	virtual void visit(const shared_ptr<const Sub> expr) throw(TraverseException) = 0;
-	virtual void visit(const shared_ptr<const Div> expr) throw(TraverseException) = 0;
-	virtual void visit(const shared_ptr<const Mult> expr) throw(TraverseException) = 0;
-        virtual void visit(const shared_ptr<const Pow> expr) throw(TraverseException) = 0;
-        virtual void visit(const shared_ptr<const Sin> expr) throw(TraverseException) = 0;
-        virtual void visit(const shared_ptr<const Cos> expr) throw(TraverseException) = 0;
-        virtual void visit(const shared_ptr<const Tan> expr) throw(TraverseException) = 0;
-        virtual void visit(const shared_ptr<const Ctan> expr) throw(TraverseException) = 0;
-        virtual void visit(const shared_ptr<const Ln> expr) throw(TraverseException) = 0;
-        virtual void visit(const shared_ptr<const Exp> expr) throw(TraverseException) = 0;
+	virtual void visit(const PConstConstant expr) throw(TraverseException) = 0;
+	virtual void visit(const PConstVariable expr) throw(TraverseException) = 0;
+	virtual void visit(const PConstSum expr) throw(TraverseException) = 0;
+	virtual void visit(const PConstSub expr) throw(TraverseException) = 0;
+	virtual void visit(const PConstDiv expr) throw(TraverseException) = 0;
+	virtual void visit(const PConstMult expr) throw(TraverseException) = 0;
+        virtual void visit(const PConstPow expr) throw(TraverseException) = 0;
+        virtual void visit(const PConstSin expr) throw(TraverseException) = 0;
+        virtual void visit(const PConstCos expr) throw(TraverseException) = 0;
+        virtual void visit(const PConstTan expr) throw(TraverseException) = 0;
+        virtual void visit(const PConstCtan expr) throw(TraverseException) = 0;
+        virtual void visit(const PConstLn expr) throw(TraverseException) = 0;
+        virtual void visit(const PConstExp expr) throw(TraverseException) = 0;
 };
 
 #endif	/* VISITOR_H */

@@ -6,14 +6,14 @@
  */
 
 #include <gtest/gtest.h>
-#include <list>
 #include <string>
-#include <memory>
 
 #include "RulePowLV.h"
 #include "Variable.h"
 #include "Sum.h"
 #include "Pow.h"
+
+#include "ExpressionFactory.h"
 
 class FX_RulePowLV : public testing::Test {
 protected:
@@ -31,28 +31,6 @@ protected:
     Token lookAheadToken(string value, TokenType type) const {
         return Token(value, type);
     }
-
-    shared_ptr<Expression> createVariable(const string name) const {
-        return make_shared<Variable>(name);
-    }
-
-    shared_ptr<Expression> createPow() const {
-        return make_shared<Pow>();
-    }
-    
-    shared_ptr<Expression> createPow(shared_ptr<Expression> lArg, shared_ptr<Expression> rArg) const {
-        shared_ptr<Pow> pow = make_shared<Pow>();
-        pow->lArg = lArg;
-        pow->rArg = rArg;
-        return pow;
-    }
-    
-    shared_ptr<Expression> createSum(shared_ptr<Expression> lArg, shared_ptr<Expression> rArg) const {
-        shared_ptr<Sum> sum = make_shared<Sum>();
-        sum->lArg = lArg;
-        sum->rArg = rArg;
-        return sum;
-    }
 };
 
 TEST_F(FX_RulePowLV, apply_LeftValueOfExponentation_Reducable) {
@@ -66,10 +44,10 @@ TEST_F(FX_RulePowLV, apply_LeftValueOfExponentation_Reducable) {
 
     ParserStack::const_iterator i = stack.begin();
 
-    shared_ptr<Pow> pow = dynamic_pointer_cast<Pow>(*i);
+    PPow pow = SPointerCast<Pow>(*i);
     EXPECT_TRUE(isTypeOf<Pow>(pow));
 
-    shared_ptr<Variable> powLArg = dynamic_pointer_cast<Variable>(pow->lArg);
+    PVariable powLArg = SPointerCast<Variable>(pow->lArg);
     EXPECT_TRUE(isTypeOf<Variable>(powLArg));
     EXPECT_STREQ("a", powLArg->name.c_str());
 }

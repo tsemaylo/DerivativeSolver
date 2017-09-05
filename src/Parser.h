@@ -12,7 +12,6 @@
 
 #include <list>
 #include <string>
-#include <memory>
 #include "Expression.h"
 #include "Token.h"
 #include "Rule.h"
@@ -77,7 +76,7 @@ protected:
      * @param tokenList The list of tokens.
      * @return Expression tree.
      */
-    shared_ptr<Expression> parseTokens(const list<Token> &tokens) const;
+    PExpression parseTokens(const list<Token> &tokens) const;
 
     // @TODO very very private area... do something with it
 
@@ -114,9 +113,9 @@ protected:
 
     Token getLookAheadToken(list<Token>::const_iterator current, list<Token>::const_iterator end) const;
 
-    shared_ptr<Expression> createFunction(const string opSymbol) const throw (ParsingException);
+    PExpression createFunction(const string opSymbol) const throw (ParsingException);
             
-    shared_ptr<Expression> createOperation(const string opSymbol) const throw (ParsingException);
+    PExpression createOperation(const string opSymbol) const throw (ParsingException);
 
     /**
      * Scan the next token in the list of tokens and put the first assumtion about corresponding Expression to the stack.
@@ -139,7 +138,7 @@ public:
      * @param strExpr input string.
      * @return Root of the Expression tree.
      */
-    const shared_ptr<Expression> parse(const string &strExpr) const throw (ParsingException);
+    const PExpression parse(const string &strExpr) const throw (ParsingException);
 };
 
 #endif /* SRC_PARSER_H_ */

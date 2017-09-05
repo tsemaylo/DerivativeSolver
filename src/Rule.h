@@ -10,8 +10,6 @@
 #ifndef RULE_H
 #define RULE_H
 
-#include <list>
-#include <memory>
 #include "Expression.h"
 #include "ParsingException.h"
 #include "ParserStack.h"

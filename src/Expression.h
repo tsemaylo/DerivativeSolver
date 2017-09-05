@@ -10,8 +10,7 @@
 #ifndef SRC_EXPRESSION_H_
 #define SRC_EXPRESSION_H_
 
-#include <string>
-#include <memory>
+#include "Pointers.h"
 #include "TraverseException.h"
 
 class Visitor;
@@ -61,10 +60,12 @@ public:
     void virtual traverse(Visitor &) const throw (TraverseException) = 0;
     
     template <class ExpressionClass>
-    friend bool isTypeOf(shared_ptr<Expression> exprInstance);
+    friend bool isTypeOf(SPointer<Expression> exprInstance);
 };
 
-typedef shared_ptr<Expression> PExpression;
+// shortcuts for pointers
+typedef SPointer<Expression> PExpression;
+typedef SPointer<const Expression> PConstExpression;
 
 /**
  * Check the concrete type of an instance of given Expression .
@@ -79,11 +80,11 @@ typedef shared_ptr<Expression> PExpression;
  * @return true if exprInstance is ExpressionClass type, otherweis - false. 
  */
 template <class ExpressionClass>
-bool isTypeOf(shared_ptr<Expression> exprInstance){
+bool isTypeOf(PExpression exprInstance){
     ExpressionClass dummy;
     return (exprInstance->type == dummy.type);
 }
 
-string to_string(const shared_ptr<Expression> &expr);
+string to_string(const PExpression expr);
 
 #endif /* SRC_EXPRESSION_H_ */

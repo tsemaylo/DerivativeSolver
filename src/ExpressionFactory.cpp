@@ -8,17 +8,18 @@
  */
 
 #include "ExpressionFactory.h"
+#include "Pointers.h"
 
 PVariable createVariable(const string name) {
-    return make_shared<Variable>(name);
+    return MakeSPointer<Variable>(name);
 }
 
 PConstant createConstant(const string val) {
-    return make_shared<Constant>(val);
+    return MakeSPointer<Constant>(val);
 }
 
 PSum createSum() {
-    return make_shared<Sum>();
+    return MakeSPointer<Sum>();
 }
 
 PSum createSum(PExpression lArg, PExpression rArg) {
@@ -29,7 +30,7 @@ PSum createSum(PExpression lArg, PExpression rArg) {
 }
 
 PSub createSub() {
-    return make_shared<Sub>();
+    return MakeSPointer<Sub>();
 }
 
 PSub createSub(PExpression lArg, PExpression rArg) {
@@ -40,7 +41,7 @@ PSub createSub(PExpression lArg, PExpression rArg) {
 }
 
 PMult createMult() {
-    return make_shared<Mult>();
+    return MakeSPointer<Mult>();
 }
 
 PMult createMult(PExpression lArg, PExpression rArg) {
@@ -51,7 +52,7 @@ PMult createMult(PExpression lArg, PExpression rArg) {
 }
 
 PDiv createDiv() {
-    return make_shared<Div>();
+    return MakeSPointer<Div>();
 }
 
 PDiv createDiv(PExpression lArg, PExpression rArg) {
@@ -62,7 +63,7 @@ PDiv createDiv(PExpression lArg, PExpression rArg) {
 }
 
 PPow createPow() {
-    return make_shared<Pow>();
+    return MakeSPointer<Pow>();
 }
 
 PPow createPow(PExpression lArg, PExpression rArg) {
@@ -72,38 +73,62 @@ PPow createPow(PExpression lArg, PExpression rArg) {
     return pow;
 }
 
+PLn createLn() {
+    return MakeSPointer<Ln>();
+}
+
 PLn createLn(PExpression arg) {
-    PLn ln = make_shared<Ln>();
+    PLn ln = createLn();
     ln->arg = arg;
     return ln;
 }
 
+PExp createExp() {
+    return MakeSPointer<Exp>();
+}
+
 PExp createExp(PExpression arg) {
-    PExp exp = make_shared<Exp>();
+    PExp exp = createExp();
     exp->arg = arg;
     return exp;
 }
 
+PCos createCos() {
+    return MakeSPointer<Cos>();
+}
+
 PCos createCos(PExpression arg) {
-    PCos cos = make_shared<Cos>();
+    PCos cos = createCos();
     cos->arg = arg;
     return cos;
 }
 
+PSin createSin() {
+    return MakeSPointer<Sin>();
+}
+
 PSin createSin(PExpression arg) {
-    PSin sin = make_shared<Sin>();
+    PSin sin = createSin();
     sin->arg = arg;
     return sin;
 }
 
+PTan createTan() {
+    return MakeSPointer<Tan>();
+}
+
 PTan createTan(PExpression arg) {
-    PTan tan = make_shared<Tan>();
+    PTan tan = createTan();
     tan->arg = arg;
     return tan;
 }
 
+PCtan createCtan() {
+    return MakeSPointer<Ctan>();
+}
+
 PCtan createCtan(PExpression arg) {
-    PCtan ctan = make_shared<Ctan>();
+    PCtan ctan = createCtan();
     ctan->arg = arg;
     return ctan;
 }

@@ -6,14 +6,13 @@
  */
 
 #include <gtest/gtest.h>
-#include <list>
-#include <string>
-#include <memory>
 
 #include "RuleDivRV.h"
 #include "Variable.h"
 #include "Div.h"
 #include "Sub.h"
+
+#include "ExpressionFactory.h"
 
 class FX_RuleDivRV : public testing::Test {
 protected:
@@ -27,28 +26,6 @@ protected:
     Token lookAheadToken() const {
         return Token("NA", TNoToken);
     }
-
-    shared_ptr<Expression> createVariable(const string name) const {
-        return make_shared<Variable>(name);
-    }
-
-    shared_ptr<Expression> createDiv() const {
-        return make_shared<Div>();
-    }
-
-    shared_ptr<Expression> createDiv(shared_ptr<Expression> lArg, shared_ptr<Expression> rArg) const {
-        shared_ptr<Div> div = make_shared<Div>();
-        div->lArg = lArg;
-        div->rArg = rArg;
-        return div;
-    }
-
-    shared_ptr<Expression> createSub(shared_ptr<Expression> lArg, shared_ptr<Expression> rArg) const {
-        shared_ptr<Sub> sub = make_shared<Sub>();
-        sub->lArg = lArg;
-        sub->rArg = rArg;
-        return sub;
-    }
 };
 
 TEST_F(FX_RuleDivRV, apply_NormalRightValueForDivision_Reducable) {
@@ -61,10 +38,10 @@ TEST_F(FX_RuleDivRV, apply_NormalRightValueForDivision_Reducable) {
 
     ParserStack::const_iterator i = stack.begin();
 
-    shared_ptr<Div> div = dynamic_pointer_cast<Div>(*i);
+    PDiv div = SPointerCast<Div>(*i);
     EXPECT_TRUE(isTypeOf<Div>(div));
 
-    shared_ptr<Variable> divRArg = dynamic_pointer_cast<Variable>(div->rArg);
+    PVariable divRArg = SPointerCast<Variable>(div->rArg);
     EXPECT_TRUE(isTypeOf<Variable>(divRArg));
     EXPECT_STREQ("b", divRArg->name.c_str());
 }

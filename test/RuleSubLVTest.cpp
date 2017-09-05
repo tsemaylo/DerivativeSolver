@@ -6,13 +6,12 @@
  */
 
 #include <gtest/gtest.h>
-#include <list>
-#include <string>
-#include <memory>
 
 #include "RuleSubLV.h"
 #include "Variable.h"
 #include "Sub.h"
+
+#include "ExpressionFactory.h"
 
 class FX_RuleSubLV : public testing::Test {
 protected:
@@ -21,21 +20,6 @@ protected:
     }
 
     virtual void TearDown() {
-    }
-
-    shared_ptr<Expression> createVariable(const string name) const {
-        return make_shared<Variable>(name);
-    }
-
-    shared_ptr<Expression> createSub() const {
-        return make_shared<Sub>();
-    }
-
-    shared_ptr<Expression> createSub(shared_ptr<Expression> lArg, shared_ptr<Expression> rArg) const {
-        shared_ptr<Sub> sub = make_shared<Sub>();
-        sub->lArg = lArg;
-        sub->rArg = rArg;
-        return sub;
     }
 
     Token lookAheadToken() {
@@ -54,10 +38,10 @@ TEST_F(FX_RuleSubLV, apply_SimpleSubtraction_Reducable) {
 
     ParserStack::const_iterator i = stack.begin();
 
-    shared_ptr<Sub> sub = dynamic_pointer_cast<Sub>(*i);
+    PSub sub = SPointerCast<Sub>(*i);
     EXPECT_TRUE(isTypeOf<Sub>(sub));
 
-    shared_ptr<Variable> subLArg = dynamic_pointer_cast<Variable>(sub->lArg);
+    PVariable subLArg = SPointerCast<Variable>(sub->lArg);
     EXPECT_TRUE(isTypeOf<Variable>(subLArg));
     EXPECT_STREQ("a", subLArg->name.c_str());
 }

@@ -6,9 +6,6 @@
  */
 
 #include <gtest/gtest.h>
-#include <list>
-#include <string>
-#include <memory>
 
 #include "Differentiator.h"
 #include "Variable.h"
@@ -39,7 +36,7 @@ TEST_F(FX_Differentiator, visit_Constant_ZeroConstant) {
     PExpression difExp=differentiator.getLastVisitResult();
     ASSERT_TRUE(isTypeOf<Constant>(difExp));
     
-    PConstant difExpTyped = dynamic_pointer_cast<Constant>(difExp);
+    PConstant difExpTyped = SPointerCast<Constant>(difExp);
     
     ASSERT_STREQ("0", difExpTyped->value.c_str());
 }
@@ -60,7 +57,7 @@ TEST_F(FX_Differentiator, visit_DifferentiatedVariable_OneConstant) {
     PExpression difExp=differentiator.getLastVisitResult();
     ASSERT_TRUE(isTypeOf<Constant>(difExp));
     
-    PConstant difExpTyped = dynamic_pointer_cast<Constant>(difExp);
+    PConstant difExpTyped = SPointerCast<Constant>(difExp);
     
     ASSERT_STREQ("1", difExpTyped->value.c_str());
 }
@@ -74,7 +71,7 @@ TEST_F(FX_Differentiator, visit_NotDifferentiatedVariable_ZeroConstant) {
     PExpression difExp=differentiator.getLastVisitResult();
     ASSERT_TRUE(isTypeOf<Constant>(difExp));
     
-    PConstant difExpTyped = dynamic_pointer_cast<Constant>(difExp);
+    PConstant difExpTyped = SPointerCast<Constant>(difExp);
     
     ASSERT_STREQ("0", difExpTyped->value.c_str());
 }
@@ -95,10 +92,10 @@ TEST_F(FX_Differentiator, visit_Summation_Summation) {
     PExpression difExp=differentiator.getLastVisitResult();
     ASSERT_TRUE(isTypeOf<Sum>(difExp));
     
-    PSum difExpTyped = dynamic_pointer_cast<Sum>(difExp);
-    PConstant sumL = dynamic_pointer_cast<Constant>(difExpTyped->lArg);
+    PSum difExpTyped = SPointerCast<Sum>(difExp);
+    PConstant sumL = SPointerCast<Constant>(difExpTyped->lArg);
     ASSERT_STREQ("0", sumL->value.c_str());
-    PConstant sumR = dynamic_pointer_cast<Constant>(difExpTyped->rArg);
+    PConstant sumR = SPointerCast<Constant>(difExpTyped->rArg);
     ASSERT_STREQ("1", sumR->value.c_str());
 }
 
@@ -118,10 +115,10 @@ TEST_F(FX_Differentiator, visit_Subtraction_Subtraction) {
     PExpression difExp=differentiator.getLastVisitResult();
     ASSERT_TRUE(isTypeOf<Sub>(difExp));
     
-    PSub difExpTyped = dynamic_pointer_cast<Sub>(difExp);
-    PConstant subL = dynamic_pointer_cast<Constant>(difExpTyped->lArg);
+    PSub difExpTyped = SPointerCast<Sub>(difExp);
+    PConstant subL = SPointerCast<Constant>(difExpTyped->lArg);
     ASSERT_STREQ("0", subL->value.c_str());
-    PConstant subR = dynamic_pointer_cast<Constant>(difExpTyped->rArg);
+    PConstant subR = SPointerCast<Constant>(difExpTyped->rArg);
     ASSERT_STREQ("1", subR->value.c_str());
 }
 
@@ -141,30 +138,30 @@ TEST_F(FX_Differentiator, visit_Division_QuotientRuleApplied) {
     PExpression difExp=differentiator.getLastVisitResult();
     ASSERT_TRUE(isTypeOf<Div>(difExp));
     
-    PDiv difExpTyped = dynamic_pointer_cast<Div>(difExp);
+    PDiv difExpTyped = SPointerCast<Div>(difExp);
     
     ASSERT_TRUE(isTypeOf<Sub>(difExpTyped->lArg));
-    PSub divident = dynamic_pointer_cast<Sub>(difExpTyped->lArg);
+    PSub divident = SPointerCast<Sub>(difExpTyped->lArg);
     
     ASSERT_TRUE(isTypeOf<Mult>(divident->lArg));
-    PMult multL = dynamic_pointer_cast<Mult>(divident->lArg);
+    PMult multL = SPointerCast<Mult>(divident->lArg);
     ASSERT_TRUE(isTypeOf<Constant>(multL->lArg));
     ASSERT_TRUE(isTypeOf<Variable>(multL->rArg));
-    ASSERT_STREQ("1", dynamic_pointer_cast<Constant>(multL->lArg)->value.c_str());
-    ASSERT_STREQ("b", dynamic_pointer_cast<Variable>(multL->rArg)->name.c_str());
+    ASSERT_STREQ("1", SPointerCast<Constant>(multL->lArg)->value.c_str());
+    ASSERT_STREQ("b", SPointerCast<Variable>(multL->rArg)->name.c_str());
     
     ASSERT_TRUE(isTypeOf<Mult>(divident->rArg));
-    PMult multR = dynamic_pointer_cast<Mult>(divident->rArg);
+    PMult multR = SPointerCast<Mult>(divident->rArg);
     ASSERT_TRUE(isTypeOf<Variable>(multR->lArg));
     ASSERT_TRUE(isTypeOf<Constant>(multR->rArg));
-    ASSERT_STREQ("a", dynamic_pointer_cast<Variable>(multR->lArg)->name.c_str());
-    ASSERT_STREQ("0", dynamic_pointer_cast<Constant>(multR->rArg)->value.c_str());
+    ASSERT_STREQ("a", SPointerCast<Variable>(multR->lArg)->name.c_str());
+    ASSERT_STREQ("0", SPointerCast<Constant>(multR->rArg)->value.c_str());
     
-    PPow divisor = dynamic_pointer_cast<Pow>(difExpTyped->rArg);
+    PPow divisor = SPointerCast<Pow>(difExpTyped->rArg);
     ASSERT_TRUE(isTypeOf<Variable>(divisor->lArg));
     ASSERT_TRUE(isTypeOf<Constant>(divisor->rArg));
-    ASSERT_STREQ("b", dynamic_pointer_cast<Variable>(divisor->lArg)->name.c_str());
-    ASSERT_STREQ("2", dynamic_pointer_cast<Constant>(divisor->rArg)->value.c_str());
+    ASSERT_STREQ("b", SPointerCast<Variable>(divisor->lArg)->name.c_str());
+    ASSERT_STREQ("2", SPointerCast<Constant>(divisor->rArg)->value.c_str());
 }
 
 TEST_F(FX_Differentiator, visit_DivisionOperationIsIncoplete_TraverseException) {
@@ -182,21 +179,21 @@ TEST_F(FX_Differentiator, visit_Multiplication_ProductRuleApplied) {
     
     PExpression difExp=differentiator.getLastVisitResult();
     ASSERT_TRUE(isTypeOf<Sum>(difExp));
-    PSum difExpTyped=dynamic_pointer_cast<Sum>(difExp);
+    PSum difExpTyped=SPointerCast<Sum>(difExp);
     
     ASSERT_TRUE(isTypeOf<Mult>(difExpTyped->lArg));
-    PMult multL = dynamic_pointer_cast<Mult>(difExpTyped->lArg);
+    PMult multL = SPointerCast<Mult>(difExpTyped->lArg);
     ASSERT_TRUE(isTypeOf<Constant>(multL->lArg));
     ASSERT_TRUE(isTypeOf<Variable>(multL->rArg));
-    ASSERT_STREQ("1", dynamic_pointer_cast<Constant>(multL->lArg)->value.c_str());
-    ASSERT_STREQ("b", dynamic_pointer_cast<Variable>(multL->rArg)->name.c_str());
+    ASSERT_STREQ("1", SPointerCast<Constant>(multL->lArg)->value.c_str());
+    ASSERT_STREQ("b", SPointerCast<Variable>(multL->rArg)->name.c_str());
     
     ASSERT_TRUE(isTypeOf<Mult>(difExpTyped->rArg));
-    PMult multR = dynamic_pointer_cast<Mult>(difExpTyped->rArg);
+    PMult multR = SPointerCast<Mult>(difExpTyped->rArg);
     ASSERT_TRUE(isTypeOf<Variable>(multR->lArg));
     ASSERT_TRUE(isTypeOf<Constant>(multR->rArg));
-    ASSERT_STREQ("a", dynamic_pointer_cast<Variable>(multR->lArg)->name.c_str());
-    ASSERT_STREQ("0", dynamic_pointer_cast<Constant>(multR->rArg)->value.c_str());
+    ASSERT_STREQ("a", SPointerCast<Variable>(multR->lArg)->name.c_str());
+    ASSERT_STREQ("0", SPointerCast<Constant>(multR->rArg)->value.c_str());
 }
 
 TEST_F(FX_Differentiator, visit_MultiplicationOperationIsIncoplete_TraverseException) {
@@ -214,36 +211,36 @@ TEST_F(FX_Differentiator, visit_Exponentiation_GeneralizedPowerRuleApplied) {
     
     PExpression difExp = differentiator.getLastVisitResult();
     ASSERT_TRUE(isTypeOf<Mult>(difExp));    
-    PMult difExpTyped=dynamic_pointer_cast<Mult>(difExp);
+    PMult difExpTyped=SPointerCast<Mult>(difExp);
     
     ASSERT_TRUE(isTypeOf<Pow>(difExpTyped->lArg));
-    PPow pow=dynamic_pointer_cast<Pow>(difExpTyped->lArg);
+    PPow pow=SPointerCast<Pow>(difExpTyped->lArg);
     ASSERT_TRUE(isTypeOf<Variable>(pow->lArg));
-    ASSERT_STREQ("x", dynamic_pointer_cast<Variable>(pow->lArg)->name.c_str());
+    ASSERT_STREQ("x", SPointerCast<Variable>(pow->lArg)->name.c_str());
     ASSERT_TRUE(isTypeOf<Constant>(pow->rArg));
-    ASSERT_STREQ("3", dynamic_pointer_cast<Constant>(pow->rArg)->value.c_str());
+    ASSERT_STREQ("3", SPointerCast<Constant>(pow->rArg)->value.c_str());
     
     ASSERT_TRUE(isTypeOf<Sum>(difExpTyped->rArg));
-    PSum sum=dynamic_pointer_cast<Sum>(difExpTyped->rArg);
+    PSum sum=SPointerCast<Sum>(difExpTyped->rArg);
     ASSERT_TRUE(isTypeOf<Mult>(sum->lArg));
-    PMult multL=dynamic_pointer_cast<Mult>(sum->lArg);
+    PMult multL=SPointerCast<Mult>(sum->lArg);
     ASSERT_TRUE(isTypeOf<Constant>(multL->lArg));
-    ASSERT_STREQ("1", dynamic_pointer_cast<Constant>(multL->lArg)->value.c_str());
+    ASSERT_STREQ("1", SPointerCast<Constant>(multL->lArg)->value.c_str());
     ASSERT_TRUE(isTypeOf<Div>(multL->rArg));
-    PDiv div=dynamic_pointer_cast<Div>(multL->rArg);
+    PDiv div=SPointerCast<Div>(multL->rArg);
     ASSERT_TRUE(isTypeOf<Constant>(div->lArg));
-    ASSERT_STREQ("3", dynamic_pointer_cast<Constant>(div->lArg)->value.c_str());
+    ASSERT_STREQ("3", SPointerCast<Constant>(div->lArg)->value.c_str());
     ASSERT_TRUE(isTypeOf<Variable>(div->rArg));
-    ASSERT_STREQ("x", dynamic_pointer_cast<Variable>(div->rArg)->name.c_str());
+    ASSERT_STREQ("x", SPointerCast<Variable>(div->rArg)->name.c_str());
     
     ASSERT_TRUE(isTypeOf<Mult>(sum->rArg));
-    PMult multR=dynamic_pointer_cast<Mult>(sum->rArg);
+    PMult multR=SPointerCast<Mult>(sum->rArg);
     ASSERT_TRUE(isTypeOf<Constant>(multR->lArg));
-    ASSERT_STREQ("0", dynamic_pointer_cast<Constant>(multR->lArg)->value.c_str());
+    ASSERT_STREQ("0", SPointerCast<Constant>(multR->lArg)->value.c_str());
     ASSERT_TRUE(isTypeOf<Ln>(multR->rArg));
-    PLn ln=dynamic_pointer_cast<Ln>(multR->rArg);
+    PLn ln=SPointerCast<Ln>(multR->rArg);
     ASSERT_TRUE(isTypeOf<Variable>(ln->arg));
-    ASSERT_STREQ("x", dynamic_pointer_cast<Variable>(ln->arg)->name.c_str());
+    ASSERT_STREQ("x", SPointerCast<Variable>(ln->arg)->name.c_str());
 }
 
 TEST_F(FX_Differentiator, visit_ExponentiationOperationIsIncoplete_TraverseException) {
@@ -261,15 +258,15 @@ TEST_F(FX_Differentiator, visit_SineFunction_ChainAndTrigonometricRulesApplied) 
     
     PExpression difExp = differentiator.getLastVisitResult();
     ASSERT_TRUE(isTypeOf<Mult>(difExp));    
-    PMult difExpTyped=dynamic_pointer_cast<Mult>(difExp);
+    PMult difExpTyped=SPointerCast<Mult>(difExp);
     
     ASSERT_TRUE(isTypeOf<Constant>(difExpTyped->lArg));
-    ASSERT_STREQ("1", dynamic_pointer_cast<Constant>(difExpTyped->lArg)->value.c_str());
+    ASSERT_STREQ("1", SPointerCast<Constant>(difExpTyped->lArg)->value.c_str());
     
     ASSERT_TRUE(isTypeOf<Cos>(difExpTyped->rArg));
-    PCos cos=dynamic_pointer_cast<Cos>(difExpTyped->rArg);
+    PCos cos=SPointerCast<Cos>(difExpTyped->rArg);
     ASSERT_TRUE(isTypeOf<Variable>(cos->arg));
-    ASSERT_STREQ("x", dynamic_pointer_cast<Variable>(cos->arg)->name.c_str());
+    ASSERT_STREQ("x", SPointerCast<Variable>(cos->arg)->name.c_str());
 }
 
 TEST_F(FX_Differentiator, visit_SineFunctionWothoutArgument_TraverseException) {
@@ -287,21 +284,21 @@ TEST_F(FX_Differentiator, visit_CosineFunction_ChainAndTrigonometricRulesApplied
     
     PExpression difExp = differentiator.getLastVisitResult();
     ASSERT_TRUE(isTypeOf<Mult>(difExp));    
-    PMult difExpTyped=dynamic_pointer_cast<Mult>(difExp);
+    PMult difExpTyped=SPointerCast<Mult>(difExp);
     
     ASSERT_TRUE(isTypeOf<Constant>(difExpTyped->lArg));
-    ASSERT_STREQ("1", dynamic_pointer_cast<Constant>(difExpTyped->lArg)->value.c_str());
+    ASSERT_STREQ("1", SPointerCast<Constant>(difExpTyped->lArg)->value.c_str());
     
     ASSERT_TRUE(isTypeOf<Mult>(difExpTyped->rArg));
-    PMult negatedSine=dynamic_pointer_cast<Mult>(difExpTyped->rArg);
+    PMult negatedSine=SPointerCast<Mult>(difExpTyped->rArg);
     
     ASSERT_TRUE(isTypeOf<Constant>(negatedSine->lArg));
-    ASSERT_STREQ("-1", dynamic_pointer_cast<Constant>(negatedSine->lArg)->value.c_str());
+    ASSERT_STREQ("-1", SPointerCast<Constant>(negatedSine->lArg)->value.c_str());
     
     ASSERT_TRUE(isTypeOf<Sin>(negatedSine->rArg));
-    PSin sin=dynamic_pointer_cast<Sin>(negatedSine->rArg);
+    PSin sin=SPointerCast<Sin>(negatedSine->rArg);
     ASSERT_TRUE(isTypeOf<Variable>(sin->arg));
-    ASSERT_STREQ("x", dynamic_pointer_cast<Variable>(sin->arg)->name.c_str());
+    ASSERT_STREQ("x", SPointerCast<Variable>(sin->arg)->name.c_str());
 }
 
 TEST_F(FX_Differentiator, visit_CosineFunctionWothoutArgument_TraverseException) {
@@ -319,25 +316,25 @@ TEST_F(FX_Differentiator, visit_TangentFunction_ChainAndTrigonometricRulesApplie
     
     PExpression difExp = differentiator.getLastVisitResult();
     ASSERT_TRUE(isTypeOf<Mult>(difExp));    
-    PMult difExpTyped=dynamic_pointer_cast<Mult>(difExp);
+    PMult difExpTyped=SPointerCast<Mult>(difExp);
     
     ASSERT_TRUE(isTypeOf<Constant>(difExpTyped->lArg));
-    ASSERT_STREQ("1", dynamic_pointer_cast<Constant>(difExpTyped->lArg)->value.c_str());
+    ASSERT_STREQ("1", SPointerCast<Constant>(difExpTyped->lArg)->value.c_str());
     
     ASSERT_TRUE(isTypeOf<Sum>(difExpTyped->rArg));
-    PSum tangentSum=dynamic_pointer_cast<Sum>(difExpTyped->rArg);
+    PSum tangentSum=SPointerCast<Sum>(difExpTyped->rArg);
     
     ASSERT_TRUE(isTypeOf<Constant>(tangentSum->lArg));
-    ASSERT_STREQ("1", dynamic_pointer_cast<Constant>(tangentSum->lArg)->value.c_str());
+    ASSERT_STREQ("1", SPointerCast<Constant>(tangentSum->lArg)->value.c_str());
     
     ASSERT_TRUE(isTypeOf<Pow>(tangentSum->rArg));
-    PPow pow=dynamic_pointer_cast<Pow>(tangentSum->rArg);
+    PPow pow=SPointerCast<Pow>(tangentSum->rArg);
     ASSERT_TRUE(isTypeOf<Tan>(pow->lArg));
-    PTan tan=dynamic_pointer_cast<Tan>(pow->lArg);
+    PTan tan=SPointerCast<Tan>(pow->lArg);
     ASSERT_TRUE(isTypeOf<Variable>(tan->arg));
-    ASSERT_STREQ("x", dynamic_pointer_cast<Variable>(tan->arg)->name.c_str());
+    ASSERT_STREQ("x", SPointerCast<Variable>(tan->arg)->name.c_str());
     ASSERT_TRUE(isTypeOf<Constant>(pow->rArg));
-    ASSERT_STREQ("2", dynamic_pointer_cast<Constant>(pow->rArg)->value.c_str());
+    ASSERT_STREQ("2", SPointerCast<Constant>(pow->rArg)->value.c_str());
 }
 
 TEST_F(FX_Differentiator, visit_TangentFunctionWithoutArgument_TraverseException) {
@@ -355,30 +352,30 @@ TEST_F(FX_Differentiator, visit_CotangentFunction_ChainAndTrigonometricRulesAppl
     
     PExpression difExp = differentiator.getLastVisitResult();
     ASSERT_TRUE(isTypeOf<Mult>(difExp));    
-    PMult difExpTyped=dynamic_pointer_cast<Mult>(difExp);
+    PMult difExpTyped=SPointerCast<Mult>(difExp);
     
     ASSERT_TRUE(isTypeOf<Constant>(difExpTyped->lArg));
-    ASSERT_STREQ("1", dynamic_pointer_cast<Constant>(difExpTyped->lArg)->value.c_str());
+    ASSERT_STREQ("1", SPointerCast<Constant>(difExpTyped->lArg)->value.c_str());
     
     ASSERT_TRUE(isTypeOf<Mult>(difExpTyped->rArg));
-    PMult negated=dynamic_pointer_cast<Mult>(difExpTyped->rArg);
+    PMult negated=SPointerCast<Mult>(difExpTyped->rArg);
     ASSERT_TRUE(isTypeOf<Constant>(negated->lArg));
-    ASSERT_STREQ("-1", dynamic_pointer_cast<Constant>(negated->lArg)->value.c_str());
+    ASSERT_STREQ("-1", SPointerCast<Constant>(negated->lArg)->value.c_str());
     
     ASSERT_TRUE(isTypeOf<Sum>(negated->rArg));
-    PSum cotangentSum=dynamic_pointer_cast<Sum>(negated->rArg);
+    PSum cotangentSum=SPointerCast<Sum>(negated->rArg);
     
     ASSERT_TRUE(isTypeOf<Constant>(cotangentSum->lArg));
-    ASSERT_STREQ("1", dynamic_pointer_cast<Constant>(cotangentSum->lArg)->value.c_str());
+    ASSERT_STREQ("1", SPointerCast<Constant>(cotangentSum->lArg)->value.c_str());
     
     ASSERT_TRUE(isTypeOf<Pow>(cotangentSum->rArg));
-    PPow pow=dynamic_pointer_cast<Pow>(cotangentSum->rArg);
+    PPow pow=SPointerCast<Pow>(cotangentSum->rArg);
     ASSERT_TRUE(isTypeOf<Ctan>(pow->lArg));
-    PCtan ctan=dynamic_pointer_cast<Ctan>(pow->lArg);
+    PCtan ctan=SPointerCast<Ctan>(pow->lArg);
     ASSERT_TRUE(isTypeOf<Variable>(ctan->arg));
-    ASSERT_STREQ("x", dynamic_pointer_cast<Variable>(ctan->arg)->name.c_str());
+    ASSERT_STREQ("x", SPointerCast<Variable>(ctan->arg)->name.c_str());
     ASSERT_TRUE(isTypeOf<Constant>(pow->rArg));
-    ASSERT_STREQ("2", dynamic_pointer_cast<Constant>(pow->rArg)->value.c_str());
+    ASSERT_STREQ("2", SPointerCast<Constant>(pow->rArg)->value.c_str());
 }
 
 TEST_F(FX_Differentiator, visit_CotangentFunctionWithoutArgument_TraverseException) {
@@ -396,17 +393,17 @@ TEST_F(FX_Differentiator, visit_NaturalLogarithmFunction_ChainAndLogarithmRulesA
     
     PExpression difExp = differentiator.getLastVisitResult();
     ASSERT_TRUE(isTypeOf<Mult>(difExp));    
-    PMult difExpTyped=dynamic_pointer_cast<Mult>(difExp);
+    PMult difExpTyped=SPointerCast<Mult>(difExp);
     
     ASSERT_TRUE(isTypeOf<Constant>(difExpTyped->lArg));
-    ASSERT_STREQ("1", dynamic_pointer_cast<Constant>(difExpTyped->lArg)->value.c_str());
+    ASSERT_STREQ("1", SPointerCast<Constant>(difExpTyped->lArg)->value.c_str());
     
     ASSERT_TRUE(isTypeOf<Div>(difExpTyped->rArg));
-    PDiv div=dynamic_pointer_cast<Div>(difExpTyped->rArg);
+    PDiv div=SPointerCast<Div>(difExpTyped->rArg);
     ASSERT_TRUE(isTypeOf<Constant>(div->lArg));
-    ASSERT_STREQ("1", dynamic_pointer_cast<Constant>(div->lArg)->value.c_str());
+    ASSERT_STREQ("1", SPointerCast<Constant>(div->lArg)->value.c_str());
     ASSERT_TRUE(isTypeOf<Variable>(div->rArg));
-    ASSERT_STREQ("x", dynamic_pointer_cast<Variable>(div->rArg)->name.c_str());
+    ASSERT_STREQ("x", SPointerCast<Variable>(div->rArg)->name.c_str());
 }
 
 TEST_F(FX_Differentiator, visit_NaturalLogarithmWithoutArgument_TraverseException) {
@@ -424,15 +421,15 @@ TEST_F(FX_Differentiator, visit_ExponentFunction_ChainRulesApplied) {
     
     PExpression difExp = differentiator.getLastVisitResult();
     ASSERT_TRUE(isTypeOf<Mult>(difExp));    
-    PMult difExpTyped=dynamic_pointer_cast<Mult>(difExp);
+    PMult difExpTyped=SPointerCast<Mult>(difExp);
     
     ASSERT_TRUE(isTypeOf<Constant>(difExpTyped->lArg));
-    ASSERT_STREQ("1", dynamic_pointer_cast<Constant>(difExpTyped->lArg)->value.c_str());
+    ASSERT_STREQ("1", SPointerCast<Constant>(difExpTyped->lArg)->value.c_str());
     
     ASSERT_TRUE(isTypeOf<Exp>(difExpTyped->rArg));
-    PExp exp=dynamic_pointer_cast<Exp>(difExpTyped->rArg);
+    PExp exp=SPointerCast<Exp>(difExpTyped->rArg);
     ASSERT_TRUE(isTypeOf<Variable>(exp->arg));
-    ASSERT_STREQ("x", dynamic_pointer_cast<Variable>(exp->arg)->name.c_str());
+    ASSERT_STREQ("x", SPointerCast<Variable>(exp->arg)->name.c_str());
 }
 
 TEST_F(FX_Differentiator, visit_ExponentWithoutArgument_TraverseException) {
