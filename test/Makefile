@@ -12,7 +12,7 @@ gtest:
 
 run: 
 	@for f in ../$(BUILD_DIR)/tests/*; do\
-		$$f || exit 1;\
+		$$f --gtest_shuffle --gtest_repeat=10 || exit 1;\
 	done
 	
 createBuildDir:
