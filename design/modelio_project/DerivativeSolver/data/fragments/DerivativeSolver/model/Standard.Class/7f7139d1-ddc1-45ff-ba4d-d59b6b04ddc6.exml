@@ -1,0 +1,52 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="Optimizer" version="4">
+  <OBJECT>
+    <ID name="Optimizer" mc="Standard.Class" uid="7f7139d1-ddc1-45ff-ba4d-d59b6b04ddc6"/>
+    <PID name="derivativesolver" mc="Standard.Package" uid="ec4176a1-17dc-4cae-ac33-1a2eef8e0c27"/>
+    <ATTRIBUTES>
+      <ATT name="IsActive">false</ATT>
+      <ATT name="IsMain">false</ATT>
+      <ATT name="IsElementary">false</ATT>
+      <ATT name="IsAbstract">false</ATT>
+      <ATT name="IsLeaf">false</ATT>
+      <ATT name="IsRoot">false</ATT>
+      <ATT name="Visibility">Public</ATT>
+      <ATT name="Name"><![CDATA[Optimizer]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES>
+      <COMP relation="DependsOnDependency">
+        <OBJECT>
+          <ID name="" mc="Standard.ElementRealization" uid="c74c3b2f-c148-4fa4-8384-fe4f90c17f4e"/>
+          <ATTRIBUTES>
+            <ATT name="Mapping"></ATT>
+            <ATT name="Name"></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES>
+            <LINK relation="DependsOn">
+              <ID name="Visitor" mc="Standard.Interface" uid="78448c93-ddbb-4cf3-b5ee-14e31e9352aa"/>
+            </LINK>
+          </DEPENDENCIES>
+        </OBJECT>
+      </COMP>
+      <COMP relation="Descriptor">
+        <OBJECT>
+          <ID name="Note" mc="Infrastructure.Note" uid="80a71d0e-de1f-4a58-8210-68f1779df008"/>
+          <ATTRIBUTES>
+            <ATT name="Content"><![CDATA[<p>Unlike Differentiator, Optimizer modifies an expression to which it was applied. New Syntax tree is not created.</p>
+]]></ATT>
+            <ATT name="MimeType"></ATT>
+            <ATT name="Name"><![CDATA[Note]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES>
+            <LINK relation="Model">
+              <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+            </LINK>
+          </DEPENDENCIES>
+        </OBJECT>
+      </COMP>
+    </DEPENDENCIES>
+  </OBJECT>
+</EXT>

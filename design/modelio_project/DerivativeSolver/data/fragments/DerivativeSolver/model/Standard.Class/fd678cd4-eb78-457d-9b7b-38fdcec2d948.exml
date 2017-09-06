@@ -127,6 +127,21 @@
             </LINK>
           </DEPENDENCIES>
         </OBJECT>
+        <OBJECT>
+          <ID name="Note1" mc="Infrastructure.Note" uid="f63a9ac4-cb74-428a-8fa2-f81a8fd9434f"/>
+          <ATTRIBUTES>
+            <ATT name="Content"><![CDATA[<p>Rule represents grammatic rule which has to be applied to the stack of tokens.</p><p>The parsing algorithm considers &quot;Shift-Reduce&quot; method.</p><p>If rule is applicable to the stack the method apply() will reduce the stack according to the concrete rule and return &quot;true&quot;. Otherwise if the rule is not applicable the false will be returned and the other rule from the grammar has to be tried.</p><p>Classes Rule 1,&nbsp;Rule 2, Rule N, represent particular grammar rule. apply() metod reduces the stack according to the logic of the rule and must be implemented by all children of the base Rule interface. &nbsp;</p>
+]]></ATT>
+            <ATT name="MimeType"></ATT>
+            <ATT name="Name"><![CDATA[Note1]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES>
+            <LINK relation="Model">
+              <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+            </LINK>
+          </DEPENDENCIES>
+        </OBJECT>
       </COMP>
     </DEPENDENCIES>
   </OBJECT>

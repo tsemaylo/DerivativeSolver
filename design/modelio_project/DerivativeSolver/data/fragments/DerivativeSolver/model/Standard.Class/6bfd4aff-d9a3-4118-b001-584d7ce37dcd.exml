@@ -272,6 +272,21 @@
             </LINK>
           </DEPENDENCIES>
         </OBJECT>
+        <OBJECT>
+          <ID name="Note" mc="Infrastructure.Note" uid="976c5509-19d1-489b-aa67-0ecd2174b6b3"/>
+          <ATTRIBUTES>
+            <ATT name="Content"><![CDATA[<p>New syntax tree is created.</p><p>06.09.2017:&nbsp;Possible issue: should the&nbsp;total cloning of elements from parsed &quot;input&quot; Expression hierarchy to be considered, or just copying of pointers is enough?</p>
+]]></ATT>
+            <ATT name="MimeType"></ATT>
+            <ATT name="Name"><![CDATA[Note]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES>
+            <LINK relation="Model">
+              <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+            </LINK>
+          </DEPENDENCIES>
+        </OBJECT>
       </COMP>
     </DEPENDENCIES>
   </OBJECT>
