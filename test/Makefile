@@ -3,6 +3,7 @@ include ../config
 .PHONY: all gtest createBuildDir testCases buildTests linkTests clean run 
 
 OBJFILES = $(patsubst ../$(SRC)/main.o, ,$(wildcard ../$(SRC)/*.o))
+LIBDIR=$(abspath ../$(BUILD_DIR)/lib)
 
 all: gtest createBuildDir buildTests run
 
@@ -21,8 +22,8 @@ createBuildDir:
 buildTests: $(wildcard *.cpp)
 	@for f in $^; do\
 		echo "Building $$f..." ;\
-		$(CXX) $(CXXFLAGS) -isystem=$(GTEST)/include -I ../$(SRC) -c $$f  || exit 1;\
-		$(CXX) $(CXXFLAGS) $(OBJFILES) $${f%.*}.o gtest-all.o gtest_main.o -lpthread -o ../$(BUILD_DIR)/tests/$${f%.*}  || exit 1;\
+		$(CXX) $(CXXFLAGS) -isystem=$(GTEST)/include -I ../$(SRC) -I$(LIBDIR)/include -c $$f  || exit 1;\
+		$(CXX) $(CXXFLAGS) $(OBJFILES) $${f%.*}.o gtest-all.o gtest_main.o $(LIBDIR)/MathParser.a -lpthread -o ../$(BUILD_DIR)/tests/$${f%.*}  || exit 1;\
 		echo " done." ;\
 	done
 

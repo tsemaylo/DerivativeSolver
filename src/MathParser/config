@@ -1,0 +1,13 @@
+# Environment 
+MKDIR=mkdir
+CP=cp
+CCADMIN=CCadmin
+CXX=g++
+#CXXFLAGS=--std=c++14 -Wall -Werror -Wextra -Wpedantic -O0 -ggdb
+ CXXFLAGS=--std=c++14 -Wall -Werror -Wextra -Wpedantic -O2 
+AR=ar
+RANLIB=ranlib
+BUILD_DIR=build
+OUT=$(BUILD_DIR)/MathParser.a
+SRC=src
+GTEST=/opt/gtest

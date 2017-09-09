@@ -10,8 +10,7 @@
 #ifndef SRC_DIFFERENTIATOR_H_
 #define SRC_DIFFERENTIATOR_H_
 
-#include "Expression.h"
-#include "Visitor.h"
+#include <Visitor.h>
 #include "TraverseException.h"
 
 using namespace std;

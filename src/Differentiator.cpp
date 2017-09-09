@@ -7,9 +7,9 @@
  * @author agor
  */
 
-#include "bootstrap.h"
+#include <ExpressionFactory.h>
+#include "ExceptionThrower.h"
 #include "Differentiator.h"
-#include "ExpressionFactory.h"
 
 Differentiator::Differentiator(string var) : variable(var) {
 }

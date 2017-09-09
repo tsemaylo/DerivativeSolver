@@ -157,11 +157,16 @@ Performed in the build time.
   - [x] also describe how to name test cases
 - [x] Implementation of Differentiator
 - [x] Implementation of StringGenerator
-- [ ] Implement visitor to simplify the expression (IN PROGRESS)
+- [ ] Implement visitor to simplify the expression (PENDING)
 - [ ] Review of the design 
 - [ ] Remove redundant unit test cases from ParserTest
 - [ ] Test runs with Valgrind
 - [ ] Testing scripts for whole application
 - [ ] Check testing coverage 
 - [x] Refactoring of shared_ptr usage 
-- [ ] Modularization of Parser (IN PROGRESS)
+- [ ] Modularization of Parser 
+  - [x] Introduce Parser as a separate library 
+  - [ ] Clean up in Makefile (IN PROGRESS)
+  - [ ] Update design doc  (IN PROGRESS)
+  - [ ] Check duplication is the source code (IN PROGRESS)
+- [ ] Add license info

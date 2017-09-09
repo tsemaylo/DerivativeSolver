@@ -1,9 +1,12 @@
 include config
 
-.PHONY: all obj test app clean 
+.PHONY: all libs obj test app clean 
 
-all: obj test app
+all: libs obj test app
 
+libs:
+	(cd src; make libs;) || exit 1;
+	
 obj:
 	(cd src; make obj;) || exit 1;
 

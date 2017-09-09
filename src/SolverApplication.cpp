@@ -8,12 +8,15 @@
  * \author agor
  */
 
-#include <iostream>
 #include "SolverApplication.h"
-#include "Expression.h"
-#include "Parser.h"
+
+#include <iostream>
+#include <Expression.h>
+#include <Parser.h>
+#include <ParserFactory.h>
+
 #include "Differentiator.h"
-#include "StringGenerator.h"
+
 
 using namespace std;
 
@@ -40,22 +43,22 @@ string SolverApplication::getStrVariable() const {
 }
 
 int SolverApplication::run() {
-    Parser parser;
+    int returnCode=0;
+    std::unique_ptr<Parser> parser=createParser();
     try {
-        PExpression expr = parser.parse(this->strExpression);
+        PExpression expr = parser->parse(this->strExpression);
 
         Differentiator differentiator = Differentiator(this->strVariable);
         expr->traverse(differentiator);
 
-        StringGenerator stringGenerator;
-        differentiator.getLastVisitResult()->traverse(stringGenerator);
-
-        cout << stringGenerator.getLastVisitResult() << endl;
+        cout << to_string(differentiator.getLastVisitResult()) << endl;
     } catch (ParsingException ex) {
         cout << "ERROR: " << ex.what();
+        returnCode=1;
     } catch (TraverseException ex) {
         cout << "ERROR: " << ex.what();
+        returnCode=1;
     }
-
-    return 0;
+    
+    return returnCode;
 }

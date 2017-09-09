@@ -8,24 +8,20 @@
  * \author agor
  */
 
-#include <cstdlib>
+#include <string>
 #include "SolverApplication.h"
-
-using namespace std;
 
 /*
  * 
  */
-int main(int argc, char** argv)
-{
-	SolverApplication app;
+int main(int argc, char** argv) {
+    SolverApplication app;
 
-	if (argc == 3)
-	{
-		app.setStrExpression(string(argv[1]));
-		app.setStrVariable(string(argv[2]));
-	}
+    if (argc == 3) {
+        app.setStrExpression(std::string(argv[1]));
+        app.setStrVariable(std::string(argv[2]));
+    }
 
-	return app.run();
+    return app.run();
 }
 

@@ -1,11 +1,9 @@
-/* 
- * \file   SolverApplication.cpp
+/**
+ * @file   SolverApplication.h
  * 
- * \brief Class which intended to implement the application logic.
+ * Definition of application class.
  * 
- * \version $Revision: $ (SVN)
- * \date $Date: $ (SVN)
- * \author agor
+ * @author agor
  */
 
 #ifndef SOLVERAPPLICATION_H
@@ -15,23 +13,25 @@
 
 using namespace std;
 
-class SolverApplication
-{
+/**
+ * Class which intended to implement the solver application logic.
+ */
+class SolverApplication {
 public:
-	SolverApplication ();
-	virtual ~ SolverApplication ();
-	
-	int run();
-	
-	void setStrExpression(const string strExpression);
-	string getStrExpression() const;
-	
-	void setStrVariable(const string strVariable);
-	string getStrVariable() const;
-	
+    SolverApplication();
+    virtual ~SolverApplication();
+
+    int run();
+
+    void setStrExpression(const string strExpression);
+    string getStrExpression() const;
+
+    void setStrVariable(const string strVariable);
+    string getStrVariable() const;
+
 private:
-	string strExpression;
-	string strVariable;
+    string strExpression;
+    string strVariable;
 };
 
 #endif /* SOLVERAPPLICATION_H */
