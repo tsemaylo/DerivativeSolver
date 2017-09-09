@@ -5,7 +5,10 @@ CCADMIN=CCadmin
 CXX=g++
 CXXFLAGS=--std=c++14 -Wall -Werror -Wextra -Wpedantic -O0 -ggdb
 # CXXFLAGS=--std=c++14 -Wall -Werror -Wextra -Wpedantic -O2 
-BUILD_DIR=build
-OUT=$(BUILD_DIR)/solver
+BUILDDIR=build
+OUT=$(BUILDDIR)/agsolver
 SRC=src
 GTEST=/opt/gtest
+
+# directory to be user for libraries compiled as dependencies for solver application
+LIBDIR=/tmp/libs

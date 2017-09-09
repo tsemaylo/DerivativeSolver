@@ -9,26 +9,26 @@ First of all, you need to [buid it](#build) before you can use it.
 
 The usage is simple
 
-solver <expression> <variable>
+agsolver <expression> <variable>
 
 Couple of examples:
 ```
-$ solver "2*x + x^2" x
+$ agsolver "2*x + x^2" x
 $ 2 + 2*x
 ```
 
 ```
-$ solver "a + b" x
+$ agsolver "a + b" x
 $ 0
 ```
 
 ```
-$ solver sin(x^2) x
+$ agsolver sin(x^2) x
 $ cos(x^2)*2x
 ```
 # Features
 
-At the current state of development the following basic features are available:
+At the current state of development the following basic features are considered:
 * Arythmetical operations: +, -, *, /, exponentiation (^)
 * Basic elementary functions: natural logarithms, trygonometric functions (sine, cosine, tangent and co-tangent), exponent
 * Command line interface
@@ -40,8 +40,11 @@ Nice to have options:
 # Building <a name="build"></a>
 
 The build procedure is standard :
-make clean all test
+make clean all 
 
 # Developing 
-The information regarding the design of application is available in [design notes](design/docs/notes.md).
 
+In the current state the application is not redy to use.
+But don't worry only one class has to be implemented to be able to use the app.
+
+The information regarding the design of application is available in [design notes](design/docs/notes.md).

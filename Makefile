@@ -19,6 +19,7 @@ app:
 
 clean:
 	rm -f *.o
-	rm -fr $(BUILD_DIR)/*
+	rm -fr $(BUILDDIR)/*
+	rm -fr $(LIBDIR)/*
 	(cd src; make clean;) || exit 1;
 	(cd test; make clean;) || exit 1;
