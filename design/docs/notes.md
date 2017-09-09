@@ -173,9 +173,10 @@ Performed in the build time.
 - [ ] Testing scripts for whole application
 - [ ] Check testing coverage 
 - [x] Refactoring of shared_ptr usage 
-- [ ] Modularization of Parser 
+- [x] Modularization of Parser 
   - [x] Introduce Parser as a separate library 
   - [x] Clean up in Makefile 
   - [x] Update design doc  
-  - [ ] Check duplication is the source code (POSTPONED, so far see no neccessity, as soon as only ExceptionThrower and build configs are duplicated)
+  - [x] Check duplication is the source code (POSTPONED, so far see no neccessity, as soon as only ExceptionThrower and build configs are duplicated)
 - [ ] Add license info
+- [ ] Check doxygen comments
