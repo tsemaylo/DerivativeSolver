@@ -123,7 +123,7 @@ void Differentiator::visit(const PConstPow expr) throw (TraverseException) {
 
 void Differentiator::visit(const PConstSin expr) throw (TraverseException) {
     if (!expr->isComplete()) {
-        THROW(TraverseException, "Expression is not consistent (sine).", "Arg: " + to_string(expr->arg));
+        THROW(TraverseException, "Expression is not consistent.", "Arg: " + to_string(expr->arg));
     }
     
     // the chain rule can be applied here
@@ -135,7 +135,7 @@ void Differentiator::visit(const PConstSin expr) throw (TraverseException) {
 
 void Differentiator::visit(const PConstCos expr) throw (TraverseException) {
     if (!expr->isComplete()) {
-        THROW(TraverseException, "Expression is not consistent (cosine).", "Arg: " + to_string(expr->arg));
+        THROW(TraverseException, "Expression is not consistent.", "Arg: " + to_string(expr->arg));
     }
 
     // the chain rule is also applied here
@@ -150,7 +150,7 @@ void Differentiator::visit(const PConstCos expr) throw (TraverseException) {
 
 void Differentiator::visit(const PConstTan expr) throw (TraverseException) {
     if (!expr->isComplete()) {
-        THROW(TraverseException, "Expression is not consistent (tangent).", "Arg: " + to_string(expr->arg));
+        THROW(TraverseException, "Expression is not consistent.", "Arg: " + to_string(expr->arg));
     }
 
     // the chain rule is also applied here
@@ -169,7 +169,7 @@ void Differentiator::visit(const PConstTan expr) throw (TraverseException) {
 
 void Differentiator::visit(const PConstCtan expr) throw (TraverseException) {
     if (!expr->isComplete()) {
-        THROW(TraverseException, "Expression is not consistent (cotangent).", "Arg: " + to_string(expr->arg));
+        THROW(TraverseException, "Expression is not consistent.", "Arg: " + to_string(expr->arg));
     }
 
     // the chain rule is also applied here
@@ -190,7 +190,7 @@ void Differentiator::visit(const PConstCtan expr) throw (TraverseException) {
 
 void Differentiator::visit(const PConstLn expr) throw (TraverseException) {
     if (!expr->isComplete()) {
-        THROW(TraverseException, "Expression is not consistent (cotangent).", "Arg: " + to_string(expr->arg));
+        THROW(TraverseException, "Expression is not consistent.", "Arg: " + to_string(expr->arg));
     }
 
     // the chain rule is also applied here
@@ -205,7 +205,7 @@ void Differentiator::visit(const PConstLn expr) throw (TraverseException) {
 
 void Differentiator::visit(const PConstExp expr) throw (TraverseException) {
         if (!expr->isComplete()) {
-        THROW(TraverseException, "Expression is not consistent (cotangent).", "Arg: " + to_string(expr->arg));
+        THROW(TraverseException, "Expression is not consistent.", "Arg: " + to_string(expr->arg));
     }
 
     // the chain rule is also applied here

@@ -180,3 +180,4 @@ Performed in the build time.
   - [x] Check duplication is the source code (POSTPONED, so far see no neccessity, as soon as only ExceptionThrower and build configs are duplicated)
 - [ ] Add license info
 - [ ] Check doxygen comments
+- [ ] Update exception text in Differentiator and Optimizer 
