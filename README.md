@@ -5,7 +5,7 @@ Project is created solely to train C++ skills and pursues only academic purposes
 This should explain why I have to develope a wheal, instead of using a large variety of existing tools.
 
 # How to use it?
-First of all, you need to [buid it](#build) before you can use it.
+First of all, you need to [build it](#build) before you can use it.
 
 The usage is simple
 
