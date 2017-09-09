@@ -1,37 +1,47 @@
 <?xml version="1.0" ?>
-<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="ParserImpl" version="4">
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="Parser" version="4">
   <OBJECT>
-    <ID name="ParserImpl" mc="Standard.Class" uid="422dbe13-ede2-473a-b001-17c21f14ab07"/>
+    <ID name="Parser" mc="Standard.Interface" uid="3be3de24-ea7d-4a04-8edb-0f0feb57d602"/>
     <PID name="derivativesolver" mc="Standard.Package" uid="ec4176a1-17dc-4cae-ac33-1a2eef8e0c27"/>
     <ATTRIBUTES>
-      <ATT name="IsActive">false</ATT>
-      <ATT name="IsMain">false</ATT>
       <ATT name="IsElementary">false</ATT>
-      <ATT name="IsAbstract">false</ATT>
+      <ATT name="IsAbstract">true</ATT>
       <ATT name="IsLeaf">false</ATT>
       <ATT name="IsRoot">false</ATT>
       <ATT name="Visibility">Public</ATT>
-      <ATT name="Name"><![CDATA[ParserImpl]]></ATT>
+      <ATT name="Name"><![CDATA[Parser]]></ATT>
       <ATT name="status">1970354901745664</ATT>
     </ATTRIBUTES>
     <DEPENDENCIES>
       <COMP relation="OwnedOperation">
         <OBJECT>
-          <ID name="parse" mc="Standard.Operation" uid="15838dc0-671a-4d4a-a7ac-303d8138ce6f"/>
+          <ID name="parse" mc="Standard.Operation" uid="5a54413b-da9c-4456-871b-5903dd88045e"/>
           <ATTRIBUTES>
             <ATT name="Concurrency">false</ATT>
-            <ATT name="Final">true</ATT>
+            <ATT name="Final">false</ATT>
             <ATT name="Passing">MethodOut</ATT>
             <ATT name="Visibility">Public</ATT>
             <ATT name="IsClass">false</ATT>
-            <ATT name="IsAbstract">false</ATT>
+            <ATT name="IsAbstract">true</ATT>
             <ATT name="Name"><![CDATA[parse]]></ATT>
             <ATT name="status">1970354901745664</ATT>
           </ATTRIBUTES>
           <DEPENDENCIES>
             <COMP relation="Thrown">
               <OBJECT>
-                <ID name="RaisedException" mc="Standard.RaisedException" uid="6fe60edb-ab45-44d5-9393-e30c32430ae9"/>
+                <ID name="RaisedException" mc="Standard.RaisedException" uid="02e19571-1f65-4d8b-afa9-958029e44fbf"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"><![CDATA[RaisedException]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <LINK relation="ThrownType">
+                    <ID name="ParsingException" mc="Standard.Class" uid="17dcc329-dc13-4848-8f84-e994154eee3a"/>
+                  </LINK>
+                </DEPENDENCIES>
+              </OBJECT>
+              <OBJECT>
+                <ID name="RaisedException" mc="Standard.RaisedException" uid="dcb429c1-4cdb-48ed-8c65-8fff5ee31650"/>
                 <ATTRIBUTES>
                   <ATT name="Name"><![CDATA[RaisedException]]></ATT>
                   <ATT name="status">1970354901745664</ATT>
@@ -45,7 +55,7 @@
             </COMP>
             <COMP relation="IO">
               <OBJECT>
-                <ID name="strExpression" mc="Standard.Parameter" uid="dd5018d1-db03-4ecd-bc3d-ea579e019f24"/>
+                <ID name="strExpression" mc="Standard.Parameter" uid="d5fcd467-af92-4402-9667-ae3b13826abe"/>
                 <ATTRIBUTES>
                   <ATT name="ParameterPassing">In</ATT>
                   <ATT name="MultiplicityMin"><![CDATA[1]]></ATT>
@@ -69,7 +79,7 @@
             </COMP>
             <COMP relation="Return">
               <OBJECT>
-                <ID name="p1" mc="Standard.Parameter" uid="652e8cce-f5c6-4e46-8232-3c99c533728d"/>
+                <ID name="p1" mc="Standard.Parameter" uid="7a713534-f5e1-46d2-aff6-00af4ed5a485"/>
                 <ATTRIBUTES>
                   <ATT name="ParameterPassing">In</ATT>
                   <ATT name="MultiplicityMin"><![CDATA[1]]></ATT>
@@ -93,7 +103,7 @@
             </COMP>
             <COMP relation="DependsOnDependency">
               <OBJECT>
-                <ID name="" mc="Standard.Usage" uid="da8d5e56-21e4-439b-981a-d2c3178f255a"/>
+                <ID name="" mc="Standard.Usage" uid="417cd8f2-4749-44ac-be1f-87d20f340751"/>
                 <ATTRIBUTES>
                   <ATT name="Name"></ATT>
                   <ATT name="status">1970354901745664</ATT>
@@ -109,7 +119,7 @@
             </COMP>
             <COMP relation="Descriptor">
               <OBJECT>
-                <ID name="" mc="Infrastructure.Note" uid="0808354f-1e06-429b-ac97-55a71b9e38bb"/>
+                <ID name="" mc="Infrastructure.Note" uid="9ba3f872-d1c4-477d-876b-267fbff08580"/>
                 <ATTRIBUTES>
                   <ATT name="Content"><![CDATA[<Enter note text here>]]></ATT>
                   <ATT name="MimeType"></ATT>
@@ -126,88 +136,11 @@
           </DEPENDENCIES>
         </OBJECT>
       </COMP>
-      <COMP relation="OwnedEnd">
-        <OBJECT>
-          <ID name="grammar" mc="Standard.AssociationEnd" uid="130e3423-1d6b-46bc-9e24-52c78bcd306a"/>
-          <ATTRIBUTES>
-            <ATT name="Aggregation">KindIsComposition</ATT>
-            <ATT name="IsChangeable">true</ATT>
-            <ATT name="Changeable">ReadWrite</ATT>
-            <ATT name="IsDerived">false</ATT>
-            <ATT name="IsOrdered">false</ATT>
-            <ATT name="IsUnique">false</ATT>
-            <ATT name="MultiplicityMin"><![CDATA[0]]></ATT>
-            <ATT name="MultiplicityMax"><![CDATA[*]]></ATT>
-            <ATT name="Visibility">Private</ATT>
-            <ATT name="IsClass">false</ATT>
-            <ATT name="IsAbstract">false</ATT>
-            <ATT name="Name"><![CDATA[grammar]]></ATT>
-            <ATT name="status">1970354901745664</ATT>
-          </ATTRIBUTES>
-          <DEPENDENCIES>
-            <LINK relation="Target">
-              <ID name="Rule" mc="Standard.Class" uid="fd678cd4-eb78-457d-9b7b-38fdcec2d948"/>
-            </LINK>
-            <COMP relation="Opposite">
-              <OBJECT>
-                <ID name="" mc="Standard.AssociationEnd" uid="c83ca346-f82b-4390-811a-ef88f48e93ea"/>
-                <ATTRIBUTES>
-                  <ATT name="Aggregation">KindIsAssociation</ATT>
-                  <ATT name="IsChangeable">true</ATT>
-                  <ATT name="Changeable">ReadWrite</ATT>
-                  <ATT name="IsDerived">false</ATT>
-                  <ATT name="IsOrdered">false</ATT>
-                  <ATT name="IsUnique">false</ATT>
-                  <ATT name="MultiplicityMin"><![CDATA[1]]></ATT>
-                  <ATT name="MultiplicityMax"><![CDATA[1]]></ATT>
-                  <ATT name="Visibility">Public</ATT>
-                  <ATT name="IsClass">false</ATT>
-                  <ATT name="IsAbstract">false</ATT>
-                  <ATT name="Name"></ATT>
-                  <ATT name="status">1970354901745664</ATT>
-                </ATTRIBUTES>
-                <DEPENDENCIES>
-                  <COMP relation="Opposite">
-                    <COMPID name="grammar" mc="Standard.AssociationEnd" uid="130e3423-1d6b-46bc-9e24-52c78bcd306a"/>
-                  </COMP>
-                  <COMP relation="Association">
-                    <OBJECT>
-                      <ID name="" mc="Standard.Association" uid="1e4f0181-45c4-43ba-8f2f-ca16edd03b21"/>
-                      <ATTRIBUTES>
-                        <ATT name="Name"></ATT>
-                        <ATT name="status">1970354901745664</ATT>
-                      </ATTRIBUTES>
-                      <DEPENDENCIES></DEPENDENCIES>
-                    </OBJECT>
-                  </COMP>
-                </DEPENDENCIES>
-              </OBJECT>
-            </COMP>
-            <COMP relation="Association">
-              <COMPID name="" mc="Standard.Association" uid="1e4f0181-45c4-43ba-8f2f-ca16edd03b21"/>
-            </COMP>
-          </DEPENDENCIES>
-        </OBJECT>
-      </COMP>
-      <COMP relation="Realized">
-        <OBJECT>
-          <ID name="InterfaceRealization" mc="Standard.InterfaceRealization" uid="1c3f0857-f7d0-4399-8058-076c1236f44b"/>
-          <ATTRIBUTES>
-            <ATT name="Name"><![CDATA[InterfaceRealization]]></ATT>
-            <ATT name="status">1970354901745664</ATT>
-          </ATTRIBUTES>
-          <DEPENDENCIES>
-            <LINK relation="Implemented">
-              <ID name="Parser" mc="Standard.Interface" uid="3be3de24-ea7d-4a04-8edb-0f0feb57d602"/>
-            </LINK>
-          </DEPENDENCIES>
-        </OBJECT>
-      </COMP>
       <COMP relation="Descriptor">
         <OBJECT>
-          <ID name="Note" mc="Infrastructure.Note" uid="6ad32ee0-6df0-45fc-ac3a-42ea5a977602"/>
+          <ID name="Note" mc="Infrastructure.Note" uid="2c6b25ba-3ef0-441a-aca7-a72765cc9593"/>
           <ATTRIBUTES>
-            <ATT name="Content"><![CDATA[<p><strong>Not a part of public interface!</strong></p><p><strong>As well as all the <u>Rules</u> and <u>StringGenerator</u>.</strong></p>
+            <ATT name="Content"><![CDATA[<p><strong>Level of details:</strong> Factories are trivial and therefore were&nbsp;omitter here.</p>
 ]]></ATT>
             <ATT name="MimeType"></ATT>
             <ATT name="Name"><![CDATA[Note]]></ATT>

@@ -69,7 +69,7 @@
               <OBJECT>
                 <ID name="Note" mc="Infrastructure.Note" uid="70c33899-9197-4f94-8ecc-8c569830fb1f"/>
                 <ATTRIBUTES>
-                  <ATT name="Content"><![CDATA[<p>Interface Visitor contains methods for each kid id Expression, not only <strong>Constant!</strong></p>
+                  <ATT name="Content"><![CDATA[<p>Interface Visitor contains methods for each child of&nbsp;Expression, not only <strong>Constant!</strong></p>
 ]]></ATT>
                   <ATT name="MimeType"></ATT>
                   <ATT name="Name"><![CDATA[Note]]></ATT>

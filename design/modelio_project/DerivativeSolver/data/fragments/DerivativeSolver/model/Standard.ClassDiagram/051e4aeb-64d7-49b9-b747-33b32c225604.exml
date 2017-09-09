@@ -28,7 +28,7 @@
         <REFOBJ>
           <ID name="" mc="Standard.Usage" uid="30a45ba7-9aae-4795-b9ad-223f1f8a7468"/>
         </REFOBJ>
-        <ID name="Parser" mc="Standard.Class" uid="422dbe13-ede2-473a-b001-17c21f14ab07"/>
+        <ID name="ParserImpl" mc="Standard.Class" uid="422dbe13-ede2-473a-b001-17c21f14ab07"/>
         <REFOBJ>
           <ID name="parse" mc="Standard.Operation" uid="15838dc0-671a-4d4a-a7ac-303d8138ce6f"/>
         </REFOBJ>
@@ -63,7 +63,6 @@
         <REFOBJ>
           <ID name="Generalization" mc="Standard.Generalization" uid="5a356e5f-8b2c-446a-bede-b7a8234e4c84"/>
         </REFOBJ>
-        <ID name="StringGenerator" mc="Standard.Class" uid="b6750f99-813b-4b70-80de-f99fb7b103c1"/>
         <ID name="Mult" mc="Standard.Class" uid="ebf66afc-7442-4b21-bd78-7d9116292eeb"/>
         <REFOBJ>
           <ID name="Generalization" mc="Standard.Generalization" uid="a9dd61a0-ad47-4d72-a3cf-7ebccc133cda"/>
@@ -94,12 +93,6 @@
           <ID name="InterfaceRealization" mc="Standard.InterfaceRealization" uid="3c0e91f1-447b-468c-8853-70945418c9da"/>
         </REFOBJ>
         <REFOBJ>
-          <ID name="InterfaceRealization" mc="Standard.InterfaceRealization" uid="12023dd6-673e-4247-8d13-1f1cc63d758d"/>
-        </REFOBJ>
-        <REFOBJ>
-          <ID name="" mc="Standard.Usage" uid="076032da-58c7-40a9-950a-ff89186958c0"/>
-        </REFOBJ>
-        <REFOBJ>
           <ID name="" mc="Standard.Usage" uid="b49ad0e6-5c20-41f7-953d-3b65bb13b1df"/>
         </REFOBJ>
         <REFOBJ>
@@ -116,15 +109,6 @@
         </REFOBJ>
         <REFOBJ>
           <ID name="getLastVisitResult" mc="Standard.Operation" uid="573e3c7a-1d39-40f8-81a2-d92f47e09ee8"/>
-        </REFOBJ>
-        <REFOBJ>
-          <ID name="result" mc="Standard.Attribute" uid="ebfd6ddf-5f8c-48f8-83aa-98366c4298d0"/>
-        </REFOBJ>
-        <REFOBJ>
-          <ID name="setLastVisitResult" mc="Standard.Operation" uid="5a3d87cb-9b95-47ec-9e4a-aa25bb4be141"/>
-        </REFOBJ>
-        <REFOBJ>
-          <ID name="getLastVisitResult" mc="Standard.Operation" uid="ac2cc295-07d9-49a8-9e2e-e329cac8deee"/>
         </REFOBJ>
         <REFOBJ>
           <ID name="result" mc="Standard.AssociationEnd" uid="dd294a1a-6495-4dfc-a8a8-c360efa32c99"/>

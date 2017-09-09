@@ -5,7 +5,7 @@ Basically the application consists of the following elements:
 
 * **SolverApplication** is the application object by itself. It is responsible 
 for interaction with user and managing activities relevant for the user.
-* **Parser** is responsible for parsing of the string input from user. 
+* **MathParser** is responsible for parsing of the string input from user. 
 It accepts string expression and builds syntax tree - the hierarchical data structure 
 representing the parsed expression. This component provides the interface to parse 
 the string, syntax tree and proposes the interface for custom operations to be performed with syntax tree.  
@@ -52,28 +52,37 @@ It is, for sure, a very coarse representation of the application structure.
 
 **SolverApplication** on this picture represent the application component.
 
-The **Mathematical expression parser** component implements the parsing mechanism 
+The **MathParser** component implements the parsing mechanism 
 and exposes the interface to the application. It also provides the data structures 
 representing the syntax tree (**Expression**) and predefines the interface (**Visitor**) to implement 
 operations over this syntax tree like differentiation or optimitzation/simplification of the structure.
 
 The component **Visitors (operations)** contains implementation of Visitor interface which is used by **SolverApplication**.
 
-### Design of the Parser component
+### Design of the MathParser component
 
-The **Parser** implement parsing logic according to the grammar. The grammar is built of 
+The parser implements parsing logic according to the grammar. The grammar is built of 
 **Rule**s which are implementing certain [grammar rules](grammar.md). The parser implements the 
 "Shift-Reduce" method, at least some sort of it, because of the simplicity of implementation. 
 With this approach the high performance can't be anticipated and it is not a priority so far.  
+
+The parser can be viewed as independent entity and distributed in the form of library,
+which can be eventually used by more than one application.
+
+Piblic interface of the **MathParser** is:
+
+* Interface **Parser**
+* **Expression** and all its children
+* Service functions: 
+  * Factories for parser and to build the syntax tree.
+  * Generating the string representation of the syntax tree.
+* **Visitor** interface
 
 Detailed decomposition of this component into classes is provided on the picture below.
 
 ![Parser of mathematical expressions](img/designParser.png)
 
-The parser can be viewed as independent entity and distributed in the form of library,
-which can be eventually used by more than one application.
-
-The digram below explains the structure of rules based on the [grammar description](grammar.md).
+The diagram below explains the structure of rules based on the [grammar description](grammar.md).
 
 ![Parser-Rule](img/parserRule.png)
 
@@ -96,12 +105,12 @@ syntax tree items.
 The relationship between the **Visitor** and **Expression** is basically the classical 
 Visitor design pattern, that maintainability advantages and adheres to OCP - adding 
 new syntax tree element leads to adding an new method to the Visitor interface.
-Adding a new operation considers adding a new **Visitor** implementation.
+Adding a new operation considers adding a new **Visitor** implementation for all related 
+expression elements.
 
 the following operations are distinguished:
 * Differentiation of the expression (**Differentiator**),
 * Simplification of the expression to avoid nonsense expressions like __X*1__ instead of just  __X__ (**Optimizer**),
-* Convertions syntax tree to the humen readable string for user output (**StringGenerator**).
 
 ![Class diagram](img/visitors.png)
 
@@ -167,6 +176,6 @@ Performed in the build time.
 - [ ] Modularization of Parser 
   - [x] Introduce Parser as a separate library 
   - [ ] Clean up in Makefile (IN PROGRESS)
-  - [ ] Update design doc  (IN PROGRESS)
+  - [x] Update design doc  (IN PROGRESS)
   - [ ] Check duplication is the source code (IN PROGRESS)
 - [ ] Add license info

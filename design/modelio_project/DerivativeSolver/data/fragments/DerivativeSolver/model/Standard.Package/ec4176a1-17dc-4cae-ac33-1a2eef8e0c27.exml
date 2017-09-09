@@ -19,7 +19,7 @@
       <COMP relation="OwnedElement">
         <COMPID name="main" mc="Standard.Class" uid="b010c90a-0952-44b2-8e4a-8f2cace82201"/>
         <COMPID name="Application" mc="Standard.Class" uid="f7396419-c344-4ff1-8808-8e27b7bbbbdc"/>
-        <COMPID name="Parser" mc="Standard.Class" uid="422dbe13-ede2-473a-b001-17c21f14ab07"/>
+        <COMPID name="ParserImpl" mc="Standard.Class" uid="422dbe13-ede2-473a-b001-17c21f14ab07"/>
         <COMPID name="Expression" mc="Standard.Class" uid="f287b197-4ac2-477a-8e52-4af3f1e330f3"/>
         <COMPID name="Differentiator" mc="Standard.Class" uid="6bfd4aff-d9a3-4118-b001-584d7ce37dcd"/>
         <COMPID name="Constant" mc="Standard.Class" uid="98d9d58a-eac9-4116-b29a-e344e39415f4"/>
@@ -27,7 +27,6 @@
         <COMPID name="Sum" mc="Standard.Class" uid="21b6b4d9-2c88-497b-b586-af470e382d84"/>
         <COMPID name="Sub" mc="Standard.Class" uid="7364e88e-5c8f-467b-ae74-8269a68d2269"/>
         <COMPID name="Div" mc="Standard.Class" uid="a9b22878-a0e6-4e85-9d8e-7788021977de"/>
-        <COMPID name="StringGenerator" mc="Standard.Class" uid="b6750f99-813b-4b70-80de-f99fb7b103c1"/>
         <COMPID name="Mult" mc="Standard.Class" uid="ebf66afc-7442-4b21-bd78-7d9116292eeb"/>
         <COMPID name="Rule" mc="Standard.Class" uid="fd678cd4-eb78-457d-9b7b-38fdcec2d948"/>
         <COMPID name="Rule 1" mc="Standard.Class" uid="4e45d7c2-c457-4047-a387-bf6d3458ae5a"/>
@@ -56,6 +55,7 @@
         <COMPID name="RuleSubRV" mc="Standard.Class" uid="3ee4c8e2-8a54-42fb-a591-02e2cac88eb3"/>
         <COMPID name="RuleOperations" mc="Standard.Class" uid="4c401396-1c24-4299-9672-88b1d465409f"/>
         <COMPID name="Optimizer" mc="Standard.Class" uid="7f7139d1-ddc1-45ff-ba4d-d59b6b04ddc6"/>
+        <COMPID name="Parser" mc="Standard.Interface" uid="3be3de24-ea7d-4a04-8edb-0f0feb57d602"/>
       </COMP>
       <COMP relation="Product">
         <COMPID name="General structure" mc="Standard.ClassDiagram" uid="051e4aeb-64d7-49b9-b747-33b32c225604"/>

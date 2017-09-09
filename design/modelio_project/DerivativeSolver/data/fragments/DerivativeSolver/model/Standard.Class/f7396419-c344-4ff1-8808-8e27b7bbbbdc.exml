@@ -38,19 +38,7 @@
                 </ATTRIBUTES>
                 <DEPENDENCIES>
                   <LINK relation="DependsOn">
-                    <ID name="Parser" mc="Standard.Class" uid="422dbe13-ede2-473a-b001-17c21f14ab07"/>
-                  </LINK>
-                </DEPENDENCIES>
-              </OBJECT>
-              <OBJECT>
-                <ID name="" mc="Standard.Usage" uid="076032da-58c7-40a9-950a-ff89186958c0"/>
-                <ATTRIBUTES>
-                  <ATT name="Name"></ATT>
-                  <ATT name="status">1970354901745664</ATT>
-                </ATTRIBUTES>
-                <DEPENDENCIES>
-                  <LINK relation="DependsOn">
-                    <ID name="StringGenerator" mc="Standard.Class" uid="b6750f99-813b-4b70-80de-f99fb7b103c1"/>
+                    <ID name="ParserImpl" mc="Standard.Class" uid="422dbe13-ede2-473a-b001-17c21f14ab07"/>
                   </LINK>
                 </DEPENDENCIES>
               </OBJECT>
