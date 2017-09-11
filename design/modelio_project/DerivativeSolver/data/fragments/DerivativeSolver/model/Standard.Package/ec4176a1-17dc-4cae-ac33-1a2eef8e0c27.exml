@@ -56,6 +56,8 @@
         <COMPID name="RuleOperations" mc="Standard.Class" uid="4c401396-1c24-4299-9672-88b1d465409f"/>
         <COMPID name="Optimizer" mc="Standard.Class" uid="7f7139d1-ddc1-45ff-ba4d-d59b6b04ddc6"/>
         <COMPID name="Parser" mc="Standard.Interface" uid="3be3de24-ea7d-4a04-8edb-0f0feb57d602"/>
+        <COMPID name="OptimizationRule" mc="Standard.Class" uid="f1fa6925-d5e7-4473-b528-f22663bfdb0b"/>
+        <COMPID name="ConcreteOptimizationRule" mc="Standard.Class" uid="dc1b6a14-2eec-4eca-aeca-39ffd43075be"/>
       </COMP>
       <COMP relation="Product">
         <COMPID name="General structure" mc="Standard.ClassDiagram" uid="051e4aeb-64d7-49b9-b747-33b32c225604"/>

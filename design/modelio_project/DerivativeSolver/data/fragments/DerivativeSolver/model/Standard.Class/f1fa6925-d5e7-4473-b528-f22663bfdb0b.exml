@@ -1,37 +1,37 @@
 <?xml version="1.0" ?>
-<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="Optimizer" version="4">
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="OptimizationRule" version="4">
   <OBJECT>
-    <ID name="Optimizer" mc="Standard.Class" uid="7f7139d1-ddc1-45ff-ba4d-d59b6b04ddc6"/>
+    <ID name="OptimizationRule" mc="Standard.Class" uid="f1fa6925-d5e7-4473-b528-f22663bfdb0b"/>
     <PID name="derivativesolver" mc="Standard.Package" uid="ec4176a1-17dc-4cae-ac33-1a2eef8e0c27"/>
     <ATTRIBUTES>
       <ATT name="IsActive">false</ATT>
       <ATT name="IsMain">false</ATT>
       <ATT name="IsElementary">false</ATT>
-      <ATT name="IsAbstract">false</ATT>
+      <ATT name="IsAbstract">true</ATT>
       <ATT name="IsLeaf">false</ATT>
       <ATT name="IsRoot">false</ATT>
       <ATT name="Visibility">Public</ATT>
-      <ATT name="Name"><![CDATA[Optimizer]]></ATT>
+      <ATT name="Name"><![CDATA[OptimizationRule]]></ATT>
       <ATT name="status">1970354901745664</ATT>
     </ATTRIBUTES>
     <DEPENDENCIES>
       <COMP relation="OwnedOperation">
         <OBJECT>
-          <ID name="getLastVisitResult" mc="Standard.Operation" uid="67c6f471-7a60-41d9-baaa-bd2c05628da2"/>
+          <ID name="apply" mc="Standard.Operation" uid="ed7bb781-c35e-4794-a726-4755684a15ce"/>
           <ATTRIBUTES>
             <ATT name="Concurrency">false</ATT>
             <ATT name="Final">false</ATT>
             <ATT name="Passing">MethodOut</ATT>
             <ATT name="Visibility">Public</ATT>
             <ATT name="IsClass">false</ATT>
-            <ATT name="IsAbstract">false</ATT>
-            <ATT name="Name"><![CDATA[getLastVisitResult]]></ATT>
+            <ATT name="IsAbstract">true</ATT>
+            <ATT name="Name"><![CDATA[apply]]></ATT>
             <ATT name="status">1970354901745664</ATT>
           </ATTRIBUTES>
           <DEPENDENCIES>
             <COMP relation="Return">
               <OBJECT>
-                <ID name="p1" mc="Standard.Parameter" uid="cde8a54f-0e4d-424b-83b0-430829e0d7ff"/>
+                <ID name="p2" mc="Standard.Parameter" uid="8fadf9c1-84bc-450d-955b-d438ec1acea1"/>
                 <ATTRIBUTES>
                   <ATT name="ParameterPassing">In</ATT>
                   <ATT name="MultiplicityMin"><![CDATA[1]]></ATT>
@@ -43,12 +43,12 @@
                   <ATT name="IsException">false</ATT>
                   <ATT name="IsStream">false</ATT>
                   <ATT name="Effect">ReadEffect</ATT>
-                  <ATT name="Name"><![CDATA[p1]]></ATT>
+                  <ATT name="Name"><![CDATA[p2]]></ATT>
                   <ATT name="status">1970354901745664</ATT>
                 </ATTRIBUTES>
                 <DEPENDENCIES>
                   <LINK relation="Type">
-                    <ID name="Expression" mc="Standard.Class" uid="f287b197-4ac2-477a-8e52-4af3f1e330f3"/>
+                    <FOREIGNID name="boolean" mc="Standard.DataType" uid="00000004-0000-0005-0000-000000000000"/>
                   </LINK>
                 </DEPENDENCIES>
               </OBJECT>
@@ -56,21 +56,21 @@
           </DEPENDENCIES>
         </OBJECT>
         <OBJECT>
-          <ID name="setLastVisitResult" mc="Standard.Operation" uid="964372b6-e916-4897-8f19-3161f34d9d45"/>
+          <ID name="OptimizationRule" mc="Standard.Operation" uid="742f7973-87bc-4190-a019-453b855dd46b"/>
           <ATTRIBUTES>
             <ATT name="Concurrency">false</ATT>
             <ATT name="Final">false</ATT>
             <ATT name="Passing">MethodOut</ATT>
-            <ATT name="Visibility">Public</ATT>
+            <ATT name="Visibility">Protected</ATT>
             <ATT name="IsClass">false</ATT>
             <ATT name="IsAbstract">false</ATT>
-            <ATT name="Name"><![CDATA[setLastVisitResult]]></ATT>
+            <ATT name="Name"><![CDATA[OptimizationRule]]></ATT>
             <ATT name="status">1970354901745664</ATT>
           </ATTRIBUTES>
           <DEPENDENCIES>
             <COMP relation="IO">
               <OBJECT>
-                <ID name="expr" mc="Standard.Parameter" uid="aaffad2b-2e05-44dc-b929-e1921f31fd85"/>
+                <ID name="expression" mc="Standard.Parameter" uid="1f82db46-3c38-417e-95a8-082e074a9696"/>
                 <ATTRIBUTES>
                   <ATT name="ParameterPassing">In</ATT>
                   <ATT name="MultiplicityMin"><![CDATA[1]]></ATT>
@@ -82,7 +82,7 @@
                   <ATT name="IsException">false</ATT>
                   <ATT name="IsStream">false</ATT>
                   <ATT name="Effect">ReadEffect</ATT>
-                  <ATT name="Name"><![CDATA[expr]]></ATT>
+                  <ATT name="Name"><![CDATA[expression]]></ATT>
                   <ATT name="status">1970354901745664</ATT>
                 </ATTRIBUTES>
                 <DEPENDENCIES>
@@ -92,14 +92,16 @@
                 </DEPENDENCIES>
               </OBJECT>
             </COMP>
+            <LINK relation="Extension">
+              <FOREIGNID name="create" mc="Infrastructure.Stereotype" uid="00700680-0000-0204-0000-000000000000"/>
+            </LINK>
             <COMP relation="Descriptor">
               <OBJECT>
-                <ID name="Note" mc="Infrastructure.Note" uid="d4f5db41-2c9d-4246-9c02-1f08864bcdba"/>
+                <ID name="" mc="Infrastructure.Note" uid="849ef5a9-2791-4395-a1de-d799539f3469"/>
                 <ATTRIBUTES>
-                  <ATT name="Content"><![CDATA[<p>setLastVisitResult() should act like a&nbsp;return statement by means of initializing of &quot;result&quot; member with the corresponding results of visit() method execution. It must be a last call in the visit() method.</p><p>Correspondingly the getLastVisitresult() delivers the &quot;return&quot; of previously called visit().</p>
-]]></ATT>
+                  <ATT name="Content"><![CDATA[<Enter note text here>]]></ATT>
                   <ATT name="MimeType"></ATT>
-                  <ATT name="Name"><![CDATA[Note]]></ATT>
+                  <ATT name="Name"></ATT>
                   <ATT name="status">1970354901745664</ATT>
                 </ATTRIBUTES>
                 <DEPENDENCIES>
@@ -111,12 +113,26 @@
             </COMP>
           </DEPENDENCIES>
         </OBJECT>
+        <OBJECT>
+          <ID name="getOptimizedExpression" mc="Standard.Operation" uid="5282cede-bcb4-4d92-8b55-71f268aecdb9"/>
+          <ATTRIBUTES>
+            <ATT name="Concurrency">false</ATT>
+            <ATT name="Final">false</ATT>
+            <ATT name="Passing">MethodOut</ATT>
+            <ATT name="Visibility">Public</ATT>
+            <ATT name="IsClass">false</ATT>
+            <ATT name="IsAbstract">true</ATT>
+            <ATT name="Name"><![CDATA[getOptimizedExpression]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES></DEPENDENCIES>
+        </OBJECT>
       </COMP>
       <COMP relation="OwnedEnd">
         <OBJECT>
-          <ID name="result" mc="Standard.AssociationEnd" uid="483b6fec-2eda-4e7f-ab1d-a8ef50e0aeda"/>
+          <ID name="expression" mc="Standard.AssociationEnd" uid="470db312-4c14-4490-a4ec-5762d901f409"/>
           <ATTRIBUTES>
-            <ATT name="Aggregation">KindIsAggregation</ATT>
+            <ATT name="Aggregation">KindIsComposition</ATT>
             <ATT name="IsChangeable">true</ATT>
             <ATT name="Changeable">ReadWrite</ATT>
             <ATT name="IsDerived">false</ATT>
@@ -124,10 +140,10 @@
             <ATT name="IsUnique">false</ATT>
             <ATT name="MultiplicityMin"><![CDATA[0]]></ATT>
             <ATT name="MultiplicityMax"><![CDATA[1]]></ATT>
-            <ATT name="Visibility">Private</ATT>
+            <ATT name="Visibility">Protected</ATT>
             <ATT name="IsClass">false</ATT>
             <ATT name="IsAbstract">false</ATT>
-            <ATT name="Name"><![CDATA[result]]></ATT>
+            <ATT name="Name"><![CDATA[expression]]></ATT>
             <ATT name="status">1970354901745664</ATT>
           </ATTRIBUTES>
           <DEPENDENCIES>
@@ -136,7 +152,7 @@
             </LINK>
             <COMP relation="Opposite">
               <OBJECT>
-                <ID name="" mc="Standard.AssociationEnd" uid="c6620221-d437-4314-96ee-8771eeaad8df"/>
+                <ID name="" mc="Standard.AssociationEnd" uid="51bfb10c-5fb0-4bd2-accc-47948d447249"/>
                 <ATTRIBUTES>
                   <ATT name="Aggregation">KindIsAssociation</ATT>
                   <ATT name="IsChangeable">true</ATT>
@@ -144,7 +160,7 @@
                   <ATT name="IsDerived">false</ATT>
                   <ATT name="IsOrdered">false</ATT>
                   <ATT name="IsUnique">false</ATT>
-                  <ATT name="MultiplicityMin"><![CDATA[0]]></ATT>
+                  <ATT name="MultiplicityMin"><![CDATA[1]]></ATT>
                   <ATT name="MultiplicityMax"><![CDATA[1]]></ATT>
                   <ATT name="Visibility">Public</ATT>
                   <ATT name="IsClass">false</ATT>
@@ -154,11 +170,11 @@
                 </ATTRIBUTES>
                 <DEPENDENCIES>
                   <COMP relation="Opposite">
-                    <COMPID name="result" mc="Standard.AssociationEnd" uid="483b6fec-2eda-4e7f-ab1d-a8ef50e0aeda"/>
+                    <COMPID name="expression" mc="Standard.AssociationEnd" uid="470db312-4c14-4490-a4ec-5762d901f409"/>
                   </COMP>
                   <COMP relation="Association">
                     <OBJECT>
-                      <ID name="" mc="Standard.Association" uid="5359f95f-d338-495c-8bd2-9859f820b893"/>
+                      <ID name="" mc="Standard.Association" uid="ccf92e05-5e9c-4802-a144-78cd91ed3246"/>
                       <ATTRIBUTES>
                         <ATT name="Name"></ATT>
                         <ATT name="status">1970354901745664</ATT>
@@ -170,83 +186,24 @@
               </OBJECT>
             </COMP>
             <COMP relation="Association">
-              <COMPID name="" mc="Standard.Association" uid="5359f95f-d338-495c-8bd2-9859f820b893"/>
-            </COMP>
-          </DEPENDENCIES>
-        </OBJECT>
-        <OBJECT>
-          <ID name="optimizationRule" mc="Standard.AssociationEnd" uid="ead74c7e-d39b-4e24-ba7e-f2c7ba1823e9"/>
-          <ATTRIBUTES>
-            <ATT name="Aggregation">KindIsAggregation</ATT>
-            <ATT name="IsChangeable">true</ATT>
-            <ATT name="Changeable">ReadWrite</ATT>
-            <ATT name="IsDerived">false</ATT>
-            <ATT name="IsOrdered">false</ATT>
-            <ATT name="IsUnique">false</ATT>
-            <ATT name="MultiplicityMin"><![CDATA[0]]></ATT>
-            <ATT name="MultiplicityMax"><![CDATA[*]]></ATT>
-            <ATT name="Visibility">Public</ATT>
-            <ATT name="IsClass">false</ATT>
-            <ATT name="IsAbstract">false</ATT>
-            <ATT name="Name"><![CDATA[optimizationRule]]></ATT>
-            <ATT name="status">1970354901745664</ATT>
-          </ATTRIBUTES>
-          <DEPENDENCIES>
-            <LINK relation="Target">
-              <ID name="OptimizationRule" mc="Standard.Class" uid="f1fa6925-d5e7-4473-b528-f22663bfdb0b"/>
-            </LINK>
-            <COMP relation="Opposite">
-              <OBJECT>
-                <ID name="" mc="Standard.AssociationEnd" uid="0b77a940-8963-4dab-9c32-2145bdee2ee8"/>
-                <ATTRIBUTES>
-                  <ATT name="Aggregation">KindIsAssociation</ATT>
-                  <ATT name="IsChangeable">true</ATT>
-                  <ATT name="Changeable">ReadWrite</ATT>
-                  <ATT name="IsDerived">false</ATT>
-                  <ATT name="IsOrdered">false</ATT>
-                  <ATT name="IsUnique">false</ATT>
-                  <ATT name="MultiplicityMin"><![CDATA[0]]></ATT>
-                  <ATT name="MultiplicityMax"><![CDATA[1]]></ATT>
-                  <ATT name="Visibility">Public</ATT>
-                  <ATT name="IsClass">false</ATT>
-                  <ATT name="IsAbstract">false</ATT>
-                  <ATT name="Name"></ATT>
-                  <ATT name="status">1970354901745664</ATT>
-                </ATTRIBUTES>
-                <DEPENDENCIES>
-                  <COMP relation="Opposite">
-                    <COMPID name="optimizationRule" mc="Standard.AssociationEnd" uid="ead74c7e-d39b-4e24-ba7e-f2c7ba1823e9"/>
-                  </COMP>
-                  <COMP relation="Association">
-                    <OBJECT>
-                      <ID name="" mc="Standard.Association" uid="243f79ba-67fc-4e56-9d12-5eb4627e2903"/>
-                      <ATTRIBUTES>
-                        <ATT name="Name"></ATT>
-                        <ATT name="status">1970354901745664</ATT>
-                      </ATTRIBUTES>
-                      <DEPENDENCIES></DEPENDENCIES>
-                    </OBJECT>
-                  </COMP>
-                </DEPENDENCIES>
-              </OBJECT>
-            </COMP>
-            <COMP relation="Association">
-              <COMPID name="" mc="Standard.Association" uid="243f79ba-67fc-4e56-9d12-5eb4627e2903"/>
+              <COMPID name="" mc="Standard.Association" uid="ccf92e05-5e9c-4802-a144-78cd91ed3246"/>
             </COMP>
           </DEPENDENCIES>
         </OBJECT>
       </COMP>
-      <COMP relation="DependsOnDependency">
+      <COMP relation="Descriptor">
         <OBJECT>
-          <ID name="" mc="Standard.ElementRealization" uid="c74c3b2f-c148-4fa4-8384-fe4f90c17f4e"/>
+          <ID name="Note" mc="Infrastructure.Note" uid="8d27ca4d-eefd-4d71-bc35-198335de2f1e"/>
           <ATTRIBUTES>
-            <ATT name="Mapping"></ATT>
-            <ATT name="Name"></ATT>
+            <ATT name="Content"><![CDATA[<p>Motivation for OptimizationRule:</p><p>Any expression considers a big variety of optimization cases. The rough estimation shows that for only one operation like summation there are about 5 basic possibilities to simplify the &nbsp;expression. Considering other operations and functions it can be more than 20 different rules. Under these conditions&nbsp;the implementation of Optimizer becomes polluted with the code of&nbsp;optimization logic. It will be hard to maintain and eventually to test. Therefore the logic of optimization rules is encapsulated within specific implementations of <strong>OptimizationRule</strong>, where each specialization (<strong>ConcreteOptimizationRule</strong>) is responsible for its own optimization case.</p>
+]]></ATT>
+            <ATT name="MimeType"></ATT>
+            <ATT name="Name"><![CDATA[Note]]></ATT>
             <ATT name="status">1970354901745664</ATT>
           </ATTRIBUTES>
           <DEPENDENCIES>
-            <LINK relation="DependsOn">
-              <ID name="Visitor" mc="Standard.Interface" uid="78448c93-ddbb-4cf3-b5ee-14e31e9352aa"/>
+            <LINK relation="Model">
+              <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
             </LINK>
           </DEPENDENCIES>
         </OBJECT>
