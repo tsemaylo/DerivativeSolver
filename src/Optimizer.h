@@ -10,11 +10,16 @@
 #ifndef OPTIMIZER_H
 #define OPTIMIZER_H
 
+#include <vector>
 #include <Visitor.h>
+
+#include "OptimizationRule.h"
 
 class Optimizer : public Visitor {
 private:
     PExpression result;
+    
+    inline std::vector<std::unique_ptr<OptimizationRule>> summationRules(PSum expr) const;
 public:
     void visit(const PConstConstant expr) throw (TraverseException) final;
     void visit(const PConstVariable expr) throw (TraverseException) final;

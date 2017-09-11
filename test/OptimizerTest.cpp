@@ -1,5 +1,7 @@
 /**
- * @file Tests for Optimizer.
+ * @file OptimizerTest.cpp
+ * 
+ * Tests for Optimizer.
  *
  * @since 09.09.2017
  * @author agor
@@ -13,7 +15,7 @@
 
 #include "ExpressionFactory.h"
 
-class FX_Differentiator : public testing::Test {
+class FX_Optimizer : public testing::Test {
 protected:
 
     virtual void SetUp() {
@@ -23,7 +25,7 @@ protected:
     }
 };
 
-TEST_F(FX_Differentiator, visit_SumOfTwoConstants_Constant) {
+TEST_F(FX_Optimizer, visit_SumOfTwoConstants_Constant) {
     PSum exp = createSum(createConstant("2"), createConstant("3"));
     
     Optimizer optimizer;

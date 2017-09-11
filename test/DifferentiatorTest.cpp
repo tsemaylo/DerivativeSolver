@@ -1,5 +1,7 @@
 /**
- * @file Tests for Differentior.
+ * @file DifferentiatorTest.cpp
+ * 
+ * Tests for Differentior.
  *
  * @since 25.08.2017
  * @author agor
