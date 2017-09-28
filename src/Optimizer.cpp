@@ -63,11 +63,6 @@ void Optimizer::visit(const PConstSum expr) throw (TraverseException) {
     this->setLastVisitResult(sumWithOptimizedArgs);
     return;
     
-    
-    // right argument and 0 constant - return right argument
-    
-    // left argument and 0 constant - return left argument
-    
     // left and right aruments are the same variable - return 2 product of this variable
     
     // both arguments have the structure like C*f then perform summation
