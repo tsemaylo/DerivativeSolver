@@ -1,7 +1,7 @@
 /**
  * @file SumConstantsRuleTest.cpp
  * 
- * Tests for SumConstantsRuleTest class .
+ * Tests for SumConstantsRule class .
  *
  * @since 11.09.2017
  * @author agor

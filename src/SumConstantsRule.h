@@ -13,7 +13,6 @@
 #include "OptimizationRule.h"
 
 #include <Sum.h>
-#include <Expression.h>
 #include <TraverseException.h>
 
 /**
