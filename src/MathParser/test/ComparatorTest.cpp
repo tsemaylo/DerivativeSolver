@@ -259,3 +259,9 @@ TEST_F(FX_Comparator, visit_ComparisonOfFunctions_NotEqual) {
     ln_1->traverse(comparator);
     ASSERT_FALSE(comparator.areEqual());
 }
+
+TEST_F(FX_Comparator, visit_WhatIfRightExprIsNull_TraverseException) {
+    PLn ln2=createLn(createVariable("x"));
+    Comparator comparator2(createLn());
+    EXPECT_THROW(ln2->traverse(comparator2), TraverseException);
+}

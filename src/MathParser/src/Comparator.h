@@ -21,6 +21,23 @@ class Comparator : public Visitor{
 private:
     PExpression exprBeingCompared;
     bool result; // true if expressions are equal
+    
+    /**
+     * Wrapper function to perform taype aware checks, like type casts for 
+     * generic expression types, null checks and so on.
+     * 
+     * @param expr Basic Expression to compare.
+     * @param f Custom lambda function to perform type related handling of expr. \n
+     *          Has two arguments: expr - see above, typedExprBeingComp - the typed expression being compared with expr.
+     */
+    template<typename T, typename PT>
+    void typeAware(PT expr, std::function<bool (PT expr, PT)> f) throw (TraverseException);
+    
+    /**
+     * Generalization of comparison for Expression's of function types (sin, cos, ln etc)
+     */
+    template<typename T, typename PT>
+    void visitFunction(PT expr) throw (TraverseException);
 public:
     /**
      * @param expr Expression to compare with
