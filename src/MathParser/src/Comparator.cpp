@@ -37,12 +37,12 @@ void Comparator::visit(const PConstSum expr) throw (TraverseException) {
         expr->lArg->traverse(cmpL);
         bool ll=cmpL.areEqual();
         expr->lArg->traverse(cmpR);
-        bool rl=cmpL.areEqual();
+        bool rl=cmpR.areEqual();
         
         expr->rArg->traverse(cmpL);
         bool lr=cmpL.areEqual();
         expr->rArg->traverse(cmpR);
-        bool rr=cmpL.areEqual();
+        bool rr=cmpR.areEqual();
         
         this->result = (ll && rr) || (lr && rl);
         return;
@@ -56,11 +56,9 @@ void Comparator::visit(const PConstSub expr) throw (TraverseException) {
         Comparator cmpR(subBeingComp->rArg);
         
         expr->lArg->traverse(cmpL);
-        bool ll=cmpL.areEqual();
         expr->rArg->traverse(cmpR);
-        bool rr=cmpL.areEqual();
         
-        this->result = ll && rr;
+        this->result = cmpL.areEqual() && cmpR.areEqual();
         return;
     }
     this->result=false;
@@ -74,12 +72,12 @@ void Comparator::visit(const PConstMult expr) throw (TraverseException) {
         expr->lArg->traverse(cmpL);
         bool ll=cmpL.areEqual();
         expr->lArg->traverse(cmpR);
-        bool rl=cmpL.areEqual();
+        bool rl=cmpR.areEqual();
         
         expr->rArg->traverse(cmpL);
         bool lr=cmpL.areEqual();
         expr->rArg->traverse(cmpR);
-        bool rr=cmpL.areEqual();
+        bool rr=cmpR.areEqual();
         
         this->result = (ll && rr) || (lr && rl);
         return;
@@ -93,11 +91,9 @@ void Comparator::visit(const PConstDiv expr) throw (TraverseException) {
         Comparator cmpR(divBeingComp->rArg);
         
         expr->lArg->traverse(cmpL);
-        bool ll=cmpL.areEqual();
         expr->rArg->traverse(cmpR);
-        bool rr=cmpL.areEqual();
         
-        this->result = ll && rr;
+        this->result = cmpL.areEqual() && cmpR.areEqual();
         return;
     }
     this->result=false;
@@ -109,11 +105,9 @@ void Comparator::visit(const PConstPow expr) throw (TraverseException) {
         Comparator cmpR(powBeingComp->rArg);
         
         expr->lArg->traverse(cmpL);
-        bool ll=cmpL.areEqual();
         expr->rArg->traverse(cmpR);
-        bool rr=cmpL.areEqual();
         
-        this->result = ll && rr;
+        this->result = cmpL.areEqual() && cmpR.areEqual();
         return;
     }
     this->result=false;
