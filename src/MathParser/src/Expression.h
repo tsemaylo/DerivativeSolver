@@ -82,6 +82,22 @@ bool isTypeOf(PExpression exprInstance){
     return (exprInstance->type == dummy.type);
 }
 
+/**
+ * Get a string representation of an expression.
+ *  
+ * @param expr The expression.
+ * @return Readable string representing the expr.
+ */
 std::string to_string(const PExpression expr);
+
+/**
+ * Check whether the two given expressions are identical.
+ * 
+ * @param exprL First expression (left-hand).
+ * @param exprR Second expression (right-hand).
+ * 
+ * @return true if expressions are equal, otherwise - false.
+ */
+bool equals(const PExpression exprL, const PExpression exprR) throw (TraverseException);
 
 #endif /* SRC_EXPRESSION_H_ */
