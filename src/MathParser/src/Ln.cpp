@@ -1,3 +1,7 @@
+/* Licensed to Oleg Tsemaylo under the MIT license.
+ * Refer to the LICENSE.txt file in the project root for more information.
+ */
+
 /**
  * @file    Ln.cpp
  * 

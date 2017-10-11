@@ -178,6 +178,6 @@ Performed in the build time.
   - [x] Clean up in Makefile 
   - [x] Update design doc  
   - [x] Check duplication is the source code (POSTPONED, so far see no neccessity, as soon as only ExceptionThrower and build configs are duplicated)
-- [ ] Add license info
+- [x] Add license info
 - [ ] Check doxygen comments
 - [ ] Update exception text in Differentiator and Optimizer 

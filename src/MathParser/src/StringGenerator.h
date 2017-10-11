@@ -1,3 +1,7 @@
+/* Licensed to Oleg Tsemaylo under the MIT license.
+ * Refer to the LICENSE.txt file in the project root for more information.
+ */
+
 /**
  * @file StringGenerator.h
  * @brief Interface of the generator of a string representation of an Expression.
