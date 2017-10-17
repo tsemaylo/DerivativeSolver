@@ -7,3 +7,4 @@ cd build
 cmake .. -DCMAKE_INSTALL_PREFIX:PATH=/tmp/testlibagmathparser 
 make 
 make install
+make test
