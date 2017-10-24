@@ -18,6 +18,17 @@ function(add_prefix var prefix)
    endforeach(f)
    set(${var} "${listVar}" PARENT_SCOPE)
 endfunction()
+
+function(add_unit_test_suite test_suite_name)
+    add_executable(${test_suite_name} "test/${test_suite_name}.cpp")
+    target_link_libraries(${test_suite_name} gtest_main libagmathparser)
+    target_include_directories(${test_suite_name} PUBLIC
+      $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/src>
+      $<INSTALL_INTERFACE:include>
+    )
+    add_test(NAME ${test_suite_name} COMMAND ${test_suite_name})
+endfunction()
+
 # end of custom functions definitions ----
 
 # version
@@ -77,13 +88,12 @@ endif()
 # ---------------------------------
 
 # Defining the list of unit test suits
-add_executable(ParserTest "test/ParserTest.cpp")
-target_link_libraries(ParserTest gtest_main libagmathparser)
-target_include_directories(ParserTest PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/src>
-  $<INSTALL_INTERFACE:include>  
-)
-add_test(NAME ParserTest COMMAND ParserTest)
+
+file(GLOB test_suites "test/*.cpp")
+foreach(suite_file_name ${test_suites})
+   get_filename_component(suite_name ${suite_file_name} NAME_WE)
+   add_unit_test_suite(${suite_name})
+endforeach()
 
 enable_testing ()
 

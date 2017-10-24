@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # procedure to build a project
-
+rm -Rf ./build #clean the build directory
 mkdir build 
 cd build 
 cmake .. -DCMAKE_INSTALL_PREFIX:PATH=/tmp/testlibagmathparser 
