@@ -72,7 +72,7 @@ if (NOT TARGET gtest)
     # Add googletest directly to our build. This defines
     # the gtest and gtest_main targets.
     add_subdirectory(${PROJECT_BINARY_DIR}/googletest-src
-                     ${PROJECT_BINARY_DIR}/googletest-build)
+                     ${PROJECT_BINARY_DIR}/googletest-build EXCLUDE_FROM_ALL)
 
     # The gtest/gtest_main targets carry header search path
     # dependencies automatically when using CMake 2.8.11 or
@@ -85,20 +85,20 @@ endif()
 
 function(add_unit_test_suite) 
    get_filename_component(test_suite_name ${ARGV0} NAME_WE)
-   add_executable(${test_suite_name} ARGV)
+   add_executable(${test_suite_name} ${ARGV})
    target_link_libraries(${test_suite_name} gtest_main libagmathparser)
    target_include_directories(${test_suite_name} PUBLIC
       $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>
       $<BUILD_INTERFACE:${MathParser_SOURCE_DIR}/src>
       $<INSTALL_INTERFACE:include/libagmathparser>
    )
-   add_test(NAME ${test_suite_name} COMMAND ${test_suite_name})
+   add_test(NAME ${test_suite_name} COMMAND ${test_suite_name} --gtest_shuffle --gtest_repeat=7)
 endfunction()
 
-add_unit_test_suite("test/DifferntiatorTest.cpp" "src/Differntiator.cpp")
-add_unit_test_suite("test/OptimizerTest.cpp" "src/Optimizer.cpp")
-add_unit_test_suite("test/SumConstantsRuleTest.cpp" "src/SumConstantsRule.cpp")
-add_unit_test_suite("test/SumWithNullArgumentRuleTest.cpp" "src/SumWithNullArgumentRule.cpp")
+add_unit_test_suite("test/DifferentiatorTest.cpp" "src/Differentiator.cpp")
+add_unit_test_suite("test/OptimizerTest.cpp" "src/Optimizer.cpp" "src/SumConstantsRule.cpp" "src/SumWithNullArgumentRule.cpp" "src/OptimizationRule.cpp")
+add_unit_test_suite("test/SumConstantsRuleTest.cpp" "src/SumConstantsRule.cpp" "src/OptimizationRule.cpp")
+add_unit_test_suite("test/SumWithNullArgumentRuleTest.cpp" "src/SumWithNullArgumentRule.cpp" "src/OptimizationRule.cpp")
 
 enable_testing ()
 

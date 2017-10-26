@@ -26,7 +26,7 @@ function(add_unit_test_suite test_suite_name)
       $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>
       $<INSTALL_INTERFACE:include>
     )
-    add_test(NAME ${test_suite_name} COMMAND ${test_suite_name})
+    add_test(NAME ${test_suite_name} COMMAND ${test_suite_name} --gtest_shuffle --gtest_repeat=7)
 endfunction()
 
 # end of custom functions definitions ----
@@ -48,7 +48,7 @@ set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/build)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
-add_library(libagmathparser 
+add_library(libagmathparser SHARED 
         src/Comparator.cpp
         src/Constant.cpp
         src/Cos.cpp
@@ -115,7 +115,7 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 # Add googletest directly to our build. This defines
 # the gtest and gtest_main targets.
 add_subdirectory(${PROJECT_BINARY_DIR}/googletest-src
-                 ${PROJECT_BINARY_DIR}/googletest-build)
+                 ${PROJECT_BINARY_DIR}/googletest-build EXCLUDE_FROM_ALL)
 
 # The gtest/gtest_main targets carry header search path
 # dependencies automatically when using CMake 2.8.11 or
@@ -135,4 +135,6 @@ endforeach()
 enable_testing ()
 
 install(TARGETS libagmathparser DESTINATION lib)
-install(FILES ${public_headers} DESTINATION include)
+# NOTICE: the includes are delivered with a stand-alone library, but they are 
+# actually not neaded for parent application. I left it commented
+# install(FILES ${public_headers} DESTINATION include/libagmathparser)
