@@ -1,5 +1,10 @@
 #!/bin/sh
 
+# small script to build everything from scratch
+# used during development
+
+set -e 
+
 # procedure to build a project
 rm -Rf ./build #clean the build directory
 mkdir build 
