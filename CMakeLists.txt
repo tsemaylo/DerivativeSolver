@@ -13,9 +13,6 @@ endfunction()
 set(DerivativeSolver_VERSION_MAJOR 0)
 set(DerivativeSolver_VERSION_MINOR 1)
 
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 # force essential compiler options if they are supported
 check_and_set_compiler_flag("-Wall")
 check_and_set_compiler_flag("-Werror")
@@ -36,6 +33,9 @@ add_executable(DerivativeSolver
     src/SumConstantsRule.cpp
     src/SumWithNullArgumentRule.cpp
 )
+
+set_property(TARGET DerivativeSolver PROPERTY CXX_STANDARD 14)
+set_property(TARGET DerivativeSolver PROPERTY CXX_STANDARD_REQUIRED ON)
 
 target_link_libraries(DerivativeSolver libagmathparser)
 target_include_directories(DerivativeSolver PUBLIC
