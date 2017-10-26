@@ -9,21 +9,21 @@ First of all, you need to [build it](#build) before you can use it.
 
 The usage is simple
 
-agsolver <expression> <variable>
+DerivativeSolver <expression> <variable>
 
 Couple of examples:
 ```
-$ agsolver "2*x + x^2" x
+$ DerivativeSolver "2*x + x^2" x
 $ 2 + 2*x
 ```
 
 ```
-$ agsolver "a + b" x
+$ DerivativeSolver "a + b" x
 $ 0
 ```
 
 ```
-$ agsolver sin(x^2) x
+$ DerivativeSolver sin(x^2) x
 $ cos(x^2)*2x
 ```
 # Features
@@ -37,10 +37,26 @@ Nice to have options:
 * LaTeX output
 * Plot the graph of calculated functions. 
 
-# Building <a name="build"></a>
+# Building and installing <a name="build"></a>
 
-The build procedure is standard :
-make clean all 
+Assuming that you are already downloaded the source code to your PC and switched 
+to a directory containig it using your favorite command shell.
+
+The CMake build system is used to configure, build and install the application.
+So make sure that you have installed the CMake on your PC.
+
+The build procedure basically consists of the following steps:
+
+```
+$ mkdir build
+$ cd build
+$ cmake .. 
+# alternatively you can specify the installation directory, for instance
+# cmake .. -DCMAKE_INSTALL_PREFIX:PATH=/home/username/derivativesolver
+$ make
+$ make test # optional, can be used during debug and development
+$ make install # installation may require super-user permissions
+```
 
 # Developing 
 
