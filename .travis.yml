@@ -10,3 +10,5 @@ addons:
     packages:
       - cmake-data
       - cmake
+      - g++-5
+      - clang-3.7
