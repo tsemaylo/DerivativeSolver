@@ -8,5 +8,5 @@ cd build
 cmake .. -DCMAKE_INSTALL_PREFIX:PATH=/tmp/derivativesolver 
 make 
 make test
-#make install
+make install
 

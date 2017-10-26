@@ -1,8 +1,6 @@
 cmake_minimum_required (VERSION 3.0.2)
 project (DerivativeSolver)
 
-# definitions of custom functions
-# ----------------------------------------
 include(CheckCXXCompilerFlag)
 function(check_and_set_compiler_flag flag_name)
     check_cxx_compiler_flag(flag_name isFlagSupported)
@@ -10,16 +8,6 @@ function(check_and_set_compiler_flag flag_name)
        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${flag_name}")
     endif()
 endfunction()
-
-function(add_prefix var prefix)
-   set(listVar "")
-   foreach(f ${ARGN})
-      list(APPEND listVar "${prefix}/${f}")
-   endforeach(f)
-   set(${var} "${listVar}" PARENT_SCOPE)
-endfunction()
-
-# end of custom functions definitions ----
 
 # version
 set(DerivativeSolver_VERSION_MAJOR 0)
@@ -49,13 +37,70 @@ add_executable(DerivativeSolver
     src/SumWithNullArgumentRule.cpp
 )
 
-message(STATUS "MathParser_BUILD_DIR = ${MathParser_BUILD_DIR}")
-
 target_link_libraries(DerivativeSolver libagmathparser)
 target_include_directories(DerivativeSolver PUBLIC
    $<BUILD_INTERFACE:${MathParser_SOURCE_DIR}/src>
    $<INSTALL_INTERFACE:include/libagmathparser>
 )
+
+# code snippet to incorporate google test library for unit tsting
+# ---------------------------------
+if (NOT TARGET gtest)
+    # Download and unpack googletest at configure time
+    configure_file(CMakeLists.txt.gtest googletest-download/CMakeLists.txt)
+
+    execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
+       RESULT_VARIABLE result
+       WORKING_DIRECTORY ${PROJECT_BINARY_DIR}/googletest-download 
+    )
+    if(result)
+       message(FATAL_ERROR "CMake step for googletest failed: ${result}")
+    endif()
+
+    execute_process(COMMAND ${CMAKE_COMMAND} --build .
+       RESULT_VARIABLE result
+       WORKING_DIRECTORY ${PROJECT_BINARY_DIR}/googletest-download 
+    )
+    if(result)
+       message(FATAL_ERROR "Build step for googletest failed: ${result}")
+    endif()
+
+    # Prevent overriding the parent project's compiler/linker
+    # settings on Windows
+    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+
+    # Add googletest directly to our build. This defines
+    # the gtest and gtest_main targets.
+    add_subdirectory(${PROJECT_BINARY_DIR}/googletest-src
+                     ${PROJECT_BINARY_DIR}/googletest-build)
+
+    # The gtest/gtest_main targets carry header search path
+    # dependencies automatically when using CMake 2.8.11 or
+    # later. Otherwise we have to add them here ourselves.
+    if (CMAKE_VERSION VERSION_LESS 2.8.11)
+      include_directories("${gtest_SOURCE_DIR}/include")
+    endif()
+# ---------------------------------
+endif()
+
+function(add_unit_test_suite) 
+   get_filename_component(test_suite_name ${ARGV0} NAME_WE)
+   add_executable(${test_suite_name} ARGV)
+   target_link_libraries(${test_suite_name} gtest_main libagmathparser)
+   target_include_directories(${test_suite_name} PUBLIC
+      $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>
+      $<BUILD_INTERFACE:${MathParser_SOURCE_DIR}/src>
+      $<INSTALL_INTERFACE:include/libagmathparser>
+   )
+   add_test(NAME ${test_suite_name} COMMAND ${test_suite_name})
+endfunction()
+
+add_unit_test_suite("test/DifferntiatorTest.cpp" "src/Differntiator.cpp")
+add_unit_test_suite("test/OptimizerTest.cpp" "src/Optimizer.cpp")
+add_unit_test_suite("test/SumConstantsRuleTest.cpp" "src/SumConstantsRule.cpp")
+add_unit_test_suite("test/SumWithNullArgumentRuleTest.cpp" "src/SumWithNullArgumentRule.cpp")
+
+enable_testing ()
 
 # ---------------------------------
 
