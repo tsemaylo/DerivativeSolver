@@ -2,6 +2,7 @@ language: cpp
 compiler:
     - clang++
     - g++
+script: ./travis.sh
 addons:
   apt:
     sources:
