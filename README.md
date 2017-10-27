@@ -1,3 +1,8 @@
+Simple Derivative Solver
+================================================================================
+
+[![Build Status](https://travis-ci.org/tsemaylo/DerrivativeSolver.svg?branch=master)](https://travis-ci.org/tsemaylo/DerrivativeSolver)
+
 # What is it?
 
 This is a small command line programm which calculates a derivative of given mathematical expression. 
