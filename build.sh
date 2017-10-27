@@ -10,7 +10,7 @@ rm -Rf ./build
 mkdir -p build
 
 cd build 
-cmake .. -DCMAKE_INSTALL_PREFIX:PATH=/tmp/derivativesolver 
+cmake .. -DCMAKE_INSTALL_PREFIX:PATH=/tmp/derivativesolver -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=g++
 
 make 
 make test

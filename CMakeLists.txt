@@ -4,8 +4,10 @@ project (DerivativeSolver)
 include(CheckCXXCompilerFlag)
 function(check_and_set_compiler_flag flag_name)
     check_cxx_compiler_flag(flag_name isFlagSupported)
+    message(STATUS "Support of compiler flag ${flag_name} is ${isFlagSupported}")
     if(isFlagSupported)
        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${flag_name}")
+add_compile_options(${flag_name})
     endif()
 endfunction()
 
@@ -36,6 +38,17 @@ add_executable(DerivativeSolver
     src/SumConstantsRule.cpp
     src/SumWithNullArgumentRule.cpp
 )
+
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    if(CMAKE_COMPILER_IS_GNUCC) 
+        check_and_set_compiler_flag("-O0")
+        check_and_set_compiler_flag("--coverage")
+        set(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} --coverage" )
+        target_link_libraries (DerivativeSolver gcov)
+    else()
+        # TODO coverage for clang?
+    endif()
+endif()
 
 target_link_libraries(DerivativeSolver libagmathparser)
 target_include_directories(DerivativeSolver PUBLIC
@@ -87,6 +100,16 @@ function(add_unit_test_suite)
    get_filename_component(test_suite_name ${ARGV0} NAME_WE)
    add_executable(${test_suite_name} ${ARGV})
    target_link_libraries(${test_suite_name} gtest_main libagmathparser)
+
+   if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+       if(CMAKE_COMPILER_IS_GNUCC) 
+           set(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} --coverage" )
+           target_link_libraries (DerivativeSolver gcov)
+       else()
+       # TODO coverage for clang?
+       endif()
+   endif()
+
    target_include_directories(${test_suite_name} PUBLIC
       $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>
       $<BUILD_INTERFACE:${MathParser_SOURCE_DIR}/src>

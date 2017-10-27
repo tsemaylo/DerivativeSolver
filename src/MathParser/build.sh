@@ -9,7 +9,6 @@ set -e
 rm -Rf ./build #clean the build directory
 mkdir build 
 cd build 
-#cmake .. -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX:PATH=/tmp/testlibagmathparser 
 cmake .. -DCMAKE_INSTALL_PREFIX:PATH=/tmp/testlibagmathparser -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=g++
 make 
 make install
