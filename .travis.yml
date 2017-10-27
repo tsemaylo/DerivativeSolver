@@ -1,18 +1,34 @@
 language: cpp
-compiler:
-    - clang++
-    - g++
 script: ./travis.sh
-os: linux
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-      - george-edison55-precise-backports
-    packages:
-      - cmake-data
-      - cmake
-      - g++-5
-      - clang-3.7
-env:
-    - MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
+matrix:
+    include:
+        - os: linux
+          compiler:
+            - clang++
+          addons:
+            apt:
+               sources:
+                 - ubuntu-toolchain-r-test
+                 - george-edison55-precise-backports
+               packages:
+                 - cmake-data
+                 - cmake
+                 - clang-3.7
+          env:
+            - MATRIX_EVAL="CC=clang-3.7 && CXX=clang++-3.7"
+        - os: linux
+          compiler:
+            - g++
+          addons:
+            apt:
+               sources:
+                 - ubuntu-toolchain-r-test
+                 - george-edison55-precise-backports
+               packages:
+                 - cmake-data
+                 - cmake
+                 - gcc-5
+                 - g++-5
+          env:
+            - MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
+            
