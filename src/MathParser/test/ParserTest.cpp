@@ -79,7 +79,7 @@ TEST_F(FX_Parser, getTokens_AllSymbolsExpression_ok) {
 
     list<Token>::const_iterator tkn = tknList.begin();
 
-    ASSERT_EQ(12, tknList.size());
+    ASSERT_EQ(12ul, tknList.size());
 
     EXPECT_STREQ("3", tkn->value.c_str());
     EXPECT_EQ(TNumeric, tkn->type);
@@ -115,7 +115,7 @@ TEST_F(FX_Parser, getTokens_MultipleParenting_ok) {
     ParserTest parser;
     list<Token> tknList = parser.getTokens("((()())())");
 
-    ASSERT_EQ(10, tknList.size());
+    ASSERT_EQ(10ul, tknList.size());
 
     for (auto tkn : tknList) {
         EXPECT_EQ(TGroupBracket, tkn.type);

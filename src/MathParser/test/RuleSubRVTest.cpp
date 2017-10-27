@@ -85,7 +85,7 @@ TEST_F(FX_RuleSubRV, apply_SimpleSummation_NotReducable) {
     RuleSubRV ruleSubRV;
     EXPECT_FALSE(ruleSubRV.apply(stack, lookAheadToken()));
 
-    EXPECT_EQ(2, stack.size());
+    EXPECT_EQ(2ul, stack.size());
 
     ParserStack::const_iterator i = stack.begin();
     EXPECT_TRUE(isTypeOf<Variable>(*i));

@@ -6,8 +6,10 @@ project (MathParser)
 include(CheckCXXCompilerFlag)
 function(check_and_set_compiler_flag flag_name)
    check_cxx_compiler_flag(${flag_name} isFlagSupported)
+   message(STATUS "Support of compiler flag ${flag_name} is ${isFlagSupported}")
    if(${isFlagSupported})
       set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${flag_name}")
+      add_compile_options(${flag_name})
    endif()
 endfunction()
 
@@ -83,6 +85,17 @@ add_library(libagmathparser SHARED
         src/TraverseException.cpp
         src/Variable.cpp
 )
+
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    if(CMAKE_COMPILER_IS_GNUCC) 
+        check_and_set_compiler_flag("-O0")
+        check_and_set_compiler_flag("--coverage")
+        set(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} --coverage" )
+        target_link_libraries (libagmathparser gcov)
+    else()
+        # TODO coverage for clang?
+    endif()
+endif()
 
 add_prefix(public_headers "src/" "Pointers.h" "Parser.h" "ParserFactory.h" "ExpressionFactory.h" "Constant.h" "Variable.h" "Sum.h" "Sub.h" "Div.h" "Mult.h" "Pow.h" "Sin.h" "Cos.h" "Tan.h" "Ctan.h" "Ln.h" "Exp.h" "Expression.h" "Visitor.h" "TraverseException.h" "ParsingException.h")
 
