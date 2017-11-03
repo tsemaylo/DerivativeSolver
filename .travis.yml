@@ -49,7 +49,10 @@ matrix:
                 sources:
                     - ubuntu-toolchain-r-test
                     - george-edison55-precise-backports
+                    - llvm-toolchain-precise-3.7
                 packages:
+                    - cmake-data
+                    - cmake
                     - clang-3.7
             env:
                 - MATRIX_EVAL="CC=clang-3.7 && CXX=clang++-3.7"
