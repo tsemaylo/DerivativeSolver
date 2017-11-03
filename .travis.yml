@@ -24,6 +24,8 @@ matrix:
                 - lcov --list coverage.info #debug info
                 # Uploading report to CodeCov
                 - bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"
+                # do code check
+                - ./cppcheck.sh
           addons:
             apt:
                 sources:
@@ -35,6 +37,7 @@ matrix:
                     - gcc-5
                     - g++-5
                     - lcov
+                    - cppcheck
           env:
             - MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
         - os: linux
