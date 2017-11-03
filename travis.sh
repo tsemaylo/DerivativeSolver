@@ -7,6 +7,6 @@ rm -Rf ./build
 mkdir -p build
 
 cd build 
-cmake .. 
+cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=g++
 make 
 make test
