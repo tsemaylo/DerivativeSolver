@@ -51,7 +51,5 @@ matrix:
                     - george-edison55-precise-backports
                 packages:
                     - clang-3.7
-                    - cmake-data
-                    - cmake
             env:
                 - MATRIX_EVAL="CC=clang-3.7 && CXX=clang++-3.7"
