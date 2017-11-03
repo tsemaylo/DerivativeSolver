@@ -50,8 +50,8 @@ matrix:
                     - ubuntu-toolchain-r-test
                     - george-edison55-precise-backports
                 packages:
+                    - clang-3.7
                     - cmake-data
                     - cmake
-                    - clang-3.7
             env:
                 - MATRIX_EVAL="CC=clang-3.7 && CXX=clang++-3.7"
