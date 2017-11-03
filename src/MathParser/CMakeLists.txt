@@ -23,7 +23,7 @@ endfunction()
 
 function(add_unit_test_suite test_suite_name)
     add_executable(${test_suite_name} "test/${test_suite_name}.cpp")
-    target_link_libraries(${test_suite_name} gtest_main libagmathparser)
+    target_link_libraries(${test_suite_name} gtest_main libagmathparser gcov)
     target_include_directories(${test_suite_name} PUBLIC
       $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>
       $<INSTALL_INTERFACE:include>
@@ -48,6 +48,15 @@ check_and_set_compiler_flag("-pedantic")
 
 set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/build)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
+
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    if(CMAKE_COMPILER_IS_GNUCC) 
+        check_and_set_compiler_flag("-O0")
+        check_and_set_compiler_flag("--coverage")
+    else()
+        # TODO coverage for clang?
+    endif()
+endif()
 
 add_library(libagmathparser SHARED 
         src/Comparator.cpp
@@ -88,9 +97,8 @@ add_library(libagmathparser SHARED
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     if(CMAKE_COMPILER_IS_GNUCC) 
-        check_and_set_compiler_flag("-O0")
-        check_and_set_compiler_flag("--coverage")
         set(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} --coverage" )
+        set(CMAKE_SHARED_LINKER_FLAGS  "${CMAKE_SHARED_LINKER_FLAGS} --coverage" )
         target_link_libraries (libagmathparser gcov)
     else()
         # TODO coverage for clang?
