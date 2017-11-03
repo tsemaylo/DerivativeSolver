@@ -170,8 +170,9 @@ Performed in the build time.
 - [ ] Review of the design 
 - [ ] Remove redundant unit test cases from ParserTest
 - [ ] Test runs with Valgrind
+- [ ] Do static analysis of the code, integrate into CI (IN PROGRESS)
 - [ ] Testing scripts for whole application
-- [ ] Check testing coverage (IN PROGRESS)
+- [x] Check testing coverage 
 - [x] Refactoring of shared_ptr usage 
 - [x] Modularization of Parser 
   - [x] Introduce Parser as a separate library 

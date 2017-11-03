@@ -2,6 +2,8 @@ Simple Derivative Solver
 ================================================================================
 
 [![Build Status](https://travis-ci.org/tsemaylo/DerrivativeSolver.svg?branch=master)](https://travis-ci.org/tsemaylo/DerrivativeSolver)
+[![codecov](https://codecov.io/gh/tsemaylo/DerrivativeSolver/branch/master/graph/badge.svg)](https://codecov.io/gh/tsemaylo/DerrivativeSolver)
+
 
 # What is it?
 
