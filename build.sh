@@ -5,12 +5,15 @@
 
 set -e 
 
+export CXX="g++"
+export CC="gcc"
+
 # reset the build directory
 rm -Rf ./build 
 mkdir -p build
 
 cd build 
-cmake .. -DCMAKE_INSTALL_PREFIX:PATH=/tmp/derivativesolver -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=g++
+cmake .. -DCMAKE_INSTALL_PREFIX:PATH=/tmp/derivativesolver -DCMAKE_BUILD_TYPE=Debug
 
 make 
 make test
@@ -18,4 +21,6 @@ make install
 
 cd ..
 
-./lcov.sh
+if [ "$CXX" = "g++" ]; then 
+    ./lcov.sh
+fi

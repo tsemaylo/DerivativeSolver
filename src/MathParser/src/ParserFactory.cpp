@@ -17,5 +17,5 @@
 
 
 std::unique_ptr<Parser> createParser(){
-    return std::move(std::make_unique<ParserImpl>());
+    return std::make_unique<ParserImpl>();
 }
