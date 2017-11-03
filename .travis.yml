@@ -7,6 +7,7 @@ matrix:
     include:
     # works on Precise and Trusty
         - os: linux
+          dist: trusty
           compiler:
                 - g++
           install:
@@ -27,7 +28,7 @@ matrix:
             apt:
                 sources:
                     - ubuntu-toolchain-r-test
-                    - george-edison55-precise-backports
+                    - george-edison55-trusty-backports
                 packages:
                     - cmake-data
                     - cmake
@@ -37,6 +38,7 @@ matrix:
           env:
             - MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
         - os: linux
+          dist: trusty
           compiler:
                 - clang++
           install:
@@ -49,8 +51,8 @@ matrix:
             apt:
                 sources:
                     - ubuntu-toolchain-r-test
-                    - george-edison55-precise-backports
-                    - llvm-toolchain-precise-3.7
+                    - george-edison55-trusty-backports
+                    - llvm-toolchain-trusty-3.7
                 packages:
                     - cmake-data
                     - cmake
