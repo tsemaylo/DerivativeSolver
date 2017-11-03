@@ -14,5 +14,6 @@ make
 make install
 make test
 
+cd ..
 
 ./lcov.sh

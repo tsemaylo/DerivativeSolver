@@ -3,12 +3,12 @@ project (DerivativeSolver)
 
 include(CheckCXXCompilerFlag)
 function(check_and_set_compiler_flag flag_name)
-    check_cxx_compiler_flag(flag_name isFlagSupported)
-    message(STATUS "Support of compiler flag ${flag_name} is ${isFlagSupported}")
-    if(isFlagSupported)
-       set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${flag_name}")
-add_compile_options(${flag_name})
-    endif()
+   check_cxx_compiler_flag(${flag_name} isFlagSupported)
+   message(STATUS "Support of compiler flag ${flag_name} is ${isFlagSupported}")
+   if(${isFlagSupported})
+      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${flag_name}")
+      add_compile_options(${flag_name})
+   endif()
 endfunction()
 
 # version
@@ -26,6 +26,15 @@ check_and_set_compiler_flag("-pedantic")
 
 set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/build)
 
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    if(CMAKE_COMPILER_IS_GNUCC) 
+        check_and_set_compiler_flag("-O0")
+        check_and_set_compiler_flag("--coverage")
+    else()
+        # TODO coverage for clang?
+    endif()
+endif()
+
 add_subdirectory(${CMAKE_SOURCE_DIR}/src/MathParser
                  ${CMAKE_BINARY_DIR}/src/MathParser/build)
 
@@ -41,8 +50,6 @@ add_executable(DerivativeSolver
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     if(CMAKE_COMPILER_IS_GNUCC) 
-        check_and_set_compiler_flag("-O0")
-        check_and_set_compiler_flag("--coverage")
         set(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} --coverage" )
         target_link_libraries (DerivativeSolver gcov)
     else()
@@ -104,7 +111,7 @@ function(add_unit_test_suite)
    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
        if(CMAKE_COMPILER_IS_GNUCC) 
            set(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} --coverage" )
-           target_link_libraries (DerivativeSolver gcov)
+           target_link_libraries (${test_suite_name} gcov)
        else()
        # TODO coverage for clang?
        endif()
