@@ -12,6 +12,7 @@ matrix:
                 - g++
           install:
                 - export CXX="g++-5" CC="gcc-5"
+                - export DO_CODE_ANALYSIS=1
                 - echo ${PATH}
                 - echo ${CXX}
           after_success:

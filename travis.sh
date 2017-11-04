@@ -11,6 +11,8 @@ cmake .. -DCMAKE_BUILD_TYPE=Debug
 make 
 make test
 
-# do code check (not the best plyce for it, but it works)
-cd ..
-./cppcheck.sh
+if [ "$DO_CODE_ANALYSIS"=="1" ]; then
+    # do code check (not the best place for it, but it works)
+    cd ..
+    ./cppcheck.sh
+fi
