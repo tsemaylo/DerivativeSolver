@@ -13,7 +13,7 @@
 #include "Comparator.h"
 #include "ExceptionThrower.h"
 
-Comparator::Comparator(PExpression expr) : exprBeingCompared(expr) {
+Comparator::Comparator(PExpression expr) : exprBeingCompared(expr), result(false) {
 }
 
 template<typename T, typename PT>

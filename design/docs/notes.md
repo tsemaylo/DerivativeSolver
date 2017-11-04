@@ -166,11 +166,11 @@ Performed in the build time.
   - [x] also describe how to name test cases
 - [x] Implementation of Differentiator
 - [x] Implementation of StringGenerator
-- [ ] Implement visitor to simplify the expression (PENDING, IN PROGRESS)
+- [ ] Implement visitor to simplify the expression (IN PROGRESS)
 - [ ] Review of the design 
 - [ ] Remove redundant unit test cases from ParserTest
 - [ ] Test runs with Valgrind
-- [ ] Do static analysis of the code, integrate into CI (IN PROGRESS)
+- [x] Do static analysis of the code, integrate into CI
 - [ ] Testing scripts for whole application
 - [x] Check testing coverage 
 - [x] Refactoring of shared_ptr usage 
