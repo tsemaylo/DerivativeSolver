@@ -3,7 +3,7 @@
  */
 
 /**
- * @file SumIdenticalExpressions.h
+ * @file SumIdenticalExpressionsRule.h
  * 
  * Definition of SumIdenticalExpressions class.
  * 
@@ -25,9 +25,9 @@
  *   (N + M)*exp
  * where N and M are Constant s
  */
-class SumIdenticalExpressions : public OptimizationRule {
+class SumIdenticalExpressionsRule : public OptimizationRule {
 public:
-    SumIdenticalExpressions(PSum _expression);
+    SumIdenticalExpressionsRule(PSum _expression);
     bool apply() throw(TraverseException) final;
 };
 

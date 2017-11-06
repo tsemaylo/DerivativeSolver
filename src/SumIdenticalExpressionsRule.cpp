@@ -3,15 +3,15 @@
  */
 
 /**
- * @file SumIdenticalExpressions.cpp
+ * @file SumIdenticalExpressionsRule.cpp
  * 
- * Implementation of SumIdenticalExpressions class.
+ * Implementation of SumIdenticalExpressionsRule class.
  * 
  * @author agor
  * @since 06.11.2017
  */
 
-#include "SumIdenticalExpressions.h"
+#include "SumIdenticalExpressionsRule.h"
 
 #include <ios>
 #include <iomanip>
@@ -23,10 +23,10 @@
 #include <ExpressionFactory.h>
 #include "ExceptionThrower.h"
 
-SumIdenticalExpressions::SumIdenticalExpressions(PSum _expression) : OptimizationRule(_expression) {
+SumIdenticalExpressionsRule::SumIdenticalExpressionsRule(PSum _expression) : OptimizationRule(_expression) {
 }
 
-bool SumIdenticalExpressions::apply() throw(TraverseException) {
+bool SumIdenticalExpressionsRule::apply() throw(TraverseException) {
     PSum typedExpression = SPointerCast<Sum>(this->expression);
     
     // is it appliable?
