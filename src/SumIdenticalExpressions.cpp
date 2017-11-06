@@ -34,8 +34,6 @@ bool SumIdenticalExpressions::apply() throw(TraverseException) {
     // - both left and right summation arguments contain equal expressions
     // - both left and right summation arguments complemented by constants
     
-    
-    
     if(!isTypeOf<Mult>(typedExpression->lArg) && !isTypeOf<Mult>(typedExpression->rArg)){
         if(equals(typedExpression->lArg, typedExpression->rArg)){
             // summation terms are the same

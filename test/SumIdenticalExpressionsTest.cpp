@@ -29,41 +29,62 @@ protected:
     }
 };
 
-TEST_F(FX_SumIdenticalExpressionsTest, visit_SumOfTwoConstants_Constant) {
-    PSum testSum1 = createSum(createMult(createConstant("2"), createVariable("x")), createMult(createConstant("3"), createVariable("x")));
+TEST_F(FX_SumIdenticalExpressionsTest, visit_SimplifiableCases_RuleApplied) {
+    std::vector<PSum> tests;
+    std::vector<PExpression> expResults;
     
-    SumIdenticalExpressions rule(testSum1);
+    tests.push_back(createSum(createMult(createConstant("2"), createVariable("x")), createMult(createConstant("3"), createVariable("x"))));
+    expResults.push_back(createMult(createConstant("5"), createVariable("x")));
     
-    ASSERT_TRUE(rule.apply());
+    tests.push_back(createSum(createMult(createVariable("x"), createConstant("2")), createMult(createVariable("x"), createConstant("3"))));
+    expResults.push_back(createMult(createConstant("5"), createVariable("x")));
     
-    PExpression optExp=rule.getOptimizedExpression();
-    ASSERT_TRUE(isTypeOf<Mult>(optExp));
+    tests.push_back(createSum(createMult(createConstant("4"), createVariable("x")), createVariable("x")));
+    expResults.push_back(createMult(createConstant("5"), createVariable("x")));
     
-    PMult optExpTyped = SPointerCast<Mult>(optExp);
+    tests.push_back(createSum(createVariable("x"), createVariable("x")));
+    expResults.push_back(createMult(createConstant("2.00"), createVariable("x")));
     
-    PConstant quotient=SPointerCast<Constant>(optExpTyped->lArg);
-    ASSERT_STREQ("5.00", quotient->value.c_str());
+    PCos cos2X=createCos(createMult(createVariable("x"),createConstant("2")));
+    tests.push_back(createSum(cos2X, createMult(cos2X, createConstant("5"))));
+    expResults.push_back(createMult(createConstant("6"), cos2X));
     
-    PVariable var=SPointerCast<Variable>(optExpTyped->rArg);
-    ASSERT_STREQ("x", var->name.c_str());
+    for(unsigned int testId=0; testId<tests.size(); testId++){
+        SumIdenticalExpressions rule(tests[testId]);
+        EXPECT_TRUE(rule.apply()) << "Test " << testId << "failed. Rule not applied.";
+        string expected=to_string(expResults[testId]);
+        string actual=to_string(rule.getOptimizedExpression());
+        EXPECT_TRUE(equals(expResults[testId], rule.getOptimizedExpression())) << 
+                "Test " << testId << "failed. " << 
+                "Reslt expression does not match expectations." << 
+                expected << " != " << actual;
+    }
 }
 
-/*
-TEST_F(FX_SumIdenticalExpressionsTest, visit_OneArgumentIsNotConstants_False) {
-    SumConstantsRule rule(createSum(createVariable("x"), createConstant("3")));
+TEST_F(FX_SumIdenticalExpressionsTest, visit_NotPossibleToSum_RuleNotApplied) {
+    std::vector<PSum> tests;
     
-    ASSERT_FALSE(rule.apply());
+    tests.push_back(createSum(createVariable("x"), createVariable("y")));
+    tests.push_back(createSum(createMult(createVariable("y"), createVariable("x")), createMult(createConstant("2"), createVariable("x"))));
+    tests.push_back(createSum(createMult(createConstant("2"), createVariable("x")), createMult(createVariable("y"), createVariable("x"))));
+    tests.push_back(createSum(createMult(createConstant("2"), createVariable("x")), createMult(createConstant("2"), createVariable("y"))));
+    tests.push_back(createSum(createMult(createConstant("4"), createVariable("x")), createPow(createVariable("x"), createConstant("2"))));
+    tests.push_back(createSum(createPow(createVariable("x"), createConstant("2")), createMult(createConstant("4"), createVariable("x"))));
     
-    PExpression optExp=rule.getOptimizedExpression();
-    // was it a sum? 
-    ASSERT_TRUE(isTypeOf<Sum>(optExp));
-    
-    // assuming that the sum is a right one, dont perform any tests
+    for(unsigned int testId=0; testId<tests.size(); testId++){
+        SumIdenticalExpressions rule(tests[testId]);
+        EXPECT_FALSE(rule.apply()) << "Test " << testId << "failed. Rule was applied.";
+        string expected=to_string(tests[testId]);
+        string actual=to_string(rule.getOptimizedExpression());
+        EXPECT_TRUE(equals(tests[testId], rule.getOptimizedExpression())) << 
+                "Test " << testId << "failed. " << 
+                "Reslt expression does not match expectations." << 
+                expected << " != " << actual;
+    }
 }
 
 TEST_F(FX_SumIdenticalExpressionsTest, visit_ConstantIsNotANUmber_TraverseException) {
-    SumConstantsRule rule(createSum(createConstant("x"), createConstant("3")));
-    
+    PSum test=createSum(createMult(createConstant("y"), createVariable("x")), createMult(createConstant("3"), createVariable("x")));
+    SumIdenticalExpressions rule(test);
     ASSERT_THROW(rule.apply(), TraverseException);
 }
-*/
