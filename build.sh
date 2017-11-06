@@ -25,5 +25,5 @@ if [ "$CXX" = "g++" ]; then
     ./lcov.sh
 fi
 
-export CPPCHECK_HOME="/opt/cppcheck/"
-./cppcheck.sh
+#export CPPCHECK_HOME="/opt/cppcheck/"
+#./cppcheck.sh
