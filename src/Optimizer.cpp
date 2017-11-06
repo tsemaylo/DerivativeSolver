@@ -19,11 +19,13 @@
 
 #include "ExceptionThrower.h"
 #include "SumConstantsRule.h"
+#include "SumWithNullArgumentRule.h"
 
 inline std::vector<std::unique_ptr<OptimizationRule>> Optimizer::summationRules(PSum expr) const {
     std::vector<std::unique_ptr<OptimizationRule>> rules;
     
     rules.push_back(std::make_unique<SumConstantsRule>(expr));
+    rules.push_back(std::make_unique<SumWithNullArgumentRule>(expr));
     
     return rules;
 }
@@ -83,6 +85,8 @@ void Optimizer::visit(const PConstSub expr) throw (TraverseException) {
     if (!expr->isComplete()) {
         THROW(TraverseException, "Expression is not consistent.", "LArg: " + to_string(expr->lArg) + "RArg:" + to_string(expr->rArg));
     }
+    
+    // @TODO reprsent as summation and apply summation rules
 }
 
 void Optimizer::visit(const PConstDiv expr) throw (TraverseException) {
