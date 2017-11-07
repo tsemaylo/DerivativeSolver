@@ -42,3 +42,34 @@ TEST_F(FX_Optimizer, visit_SumOfTwoConstants_Constant) {
     
     ASSERT_STREQ("5.00", optExpTyped->value.c_str());
 }
+
+TEST_F(FX_Optimizer, visit_Subtraction_ApplicableAndSuccessfull) {
+    std::vector<PSub> tests;
+    std::vector<PExpression> expResults;
+    
+    tests.push_back(createSub(createMult(createConstant("5"), createVariable("x")), createMult(createConstant("3"), createVariable("x"))));
+    expResults.push_back(createMult(createConstant("2"), createVariable("x")));
+    
+    tests.push_back(createSub(createMult(createConstant("3"), createVariable("x")), createMult(createConstant("5"), createVariable("x"))));
+    expResults.push_back(createMult(createConstant("-2"), createVariable("x")));
+    
+    tests.push_back(createSub(createMult(createConstant("3"), createVariable("x")), createVariable("x")));
+    expResults.push_back(createMult(createConstant("2"), createVariable("x")));
+    
+    tests.push_back(createSub(createVariable("x"), createMult(createConstant("3"), createVariable("x"))));
+    expResults.push_back(createMult(createConstant("-2"), createVariable("x")));
+    
+    tests.push_back(createSub(createVariable("x"), createVariable("x")));
+    expResults.push_back(createMult(createConstant("0"), createVariable("x")));
+    
+    for(unsigned int testId=0; testId < tests.size(); testId++){
+        Optimizer optimizer;
+        EXPECT_NO_THROW(tests[testId]->traverse(optimizer)) << "Test ID=" << testId << " threw an exception!";
+        PExpression actResult=optimizer.getLastVisitResult();
+        string expected=to_string(expResults[testId]);
+        string actual=to_string(actResult);
+        EXPECT_TRUE(equals(expResults[testId], actResult)) << 
+                "Result does not match for test ID=" << testId << "! (" 
+                << expected << " != " << actual;
+    }
+}

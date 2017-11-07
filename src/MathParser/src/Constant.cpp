@@ -25,3 +25,8 @@ void Constant::traverse(Visitor &visitor) const throw (TraverseException) {
 bool Constant::isComplete() const {
     return true;
 }
+
+double Constant::toDouble() const{
+    return 0.0;
+    // @TODO deprecated, remove
+}

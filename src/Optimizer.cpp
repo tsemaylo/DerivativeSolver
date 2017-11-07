@@ -14,18 +14,23 @@
 #include "Optimizer.h"
 
 #include <memory>
+#include <ios>
+#include <iomanip>
+#include <sstream>
 
 #include <ExpressionFactory.h>
 
 #include "ExceptionThrower.h"
 #include "SumConstantsRule.h"
 #include "SumWithNullArgumentRule.h"
+#include "SumIdenticalExpressionsRule.h"
 
 inline std::vector<std::unique_ptr<OptimizationRule>> Optimizer::summationRules(PSum expr) const {
     std::vector<std::unique_ptr<OptimizationRule>> rules;
     
     rules.push_back(std::make_unique<SumConstantsRule>(expr));
     rules.push_back(std::make_unique<SumWithNullArgumentRule>(expr));
+    rules.push_back(std::make_unique<SumIdenticalExpressionsRule>(expr));
     
     return rules;
 }
@@ -69,16 +74,46 @@ void Optimizer::visit(const PConstSum expr) throw (TraverseException) {
     this->setLastVisitResult(sumWithOptimizedArgs);
     return;
     
-    // left and right aruments are the same variable - return 2 product of this variable
+    // @TODO think about trygonometric rules: (sin(x))^2+(cos(x)^2)
+}
+
+inline PExpression Optimizer::negateExpression(PExpression expr) const throw(TraverseException){
+    if(isTypeOf<Mult>(expr)){
+        PMult typedExpr=SPointerCast<Mult>(expr);
+        if(isTypeOf<Constant>(typedExpr->lArg)){
+            try {
+                double val = std::stod(SPointerCast<Constant>(typedExpr->lArg)->value);
+                val *= -1.0;
+                
+                std::stringstream strStream;
+                strStream << std::fixed << std::setprecision(2) << val;
+                return createMult(createConstant(strStream.str()), typedExpr->rArg);
+            }
+            catch (std::exception ex) {
+                // re-throw an exception
+                THROW(TraverseException, ex.what(), "N.A.");
+            }
+        }else if(isTypeOf<Constant>(typedExpr->rArg)){
+            try {
+                double val = std::stod(SPointerCast<Constant>(typedExpr->rArg)->value);
+                val *= -1.0;
+                
+                std::stringstream strStream;
+                strStream << std::fixed << std::setprecision(2) << val;
+                return createMult(typedExpr->lArg, createConstant(strStream.str()));
+            }
+            catch (std::exception ex) {
+                // re-throw an exception
+                THROW(TraverseException, ex.what(), "N.A.");
+            }
+        }else{
+            return createMult(createConstant("-1"), expr);
+        }
+    }else{
+        return createMult(createConstant("-1"), expr);
+    }
     
-    // both arguments have the structure like C*f then perform summation
-    // for example 4sin(x)+sinx(x) or 2x+x
-    // question of equality of expressions
-    
-    
-    // trygonometric rule: (sin(x))^2+(cos(x)^2)
-    // so far, optional
-    
+    // @TODO what about Div?
 }
 
 void Optimizer::visit(const PConstSub expr) throw (TraverseException) {
@@ -86,25 +121,45 @@ void Optimizer::visit(const PConstSub expr) throw (TraverseException) {
         THROW(TraverseException, "Expression is not consistent.", "LArg: " + to_string(expr->lArg) + "RArg:" + to_string(expr->rArg));
     }
     
-    // @TODO reprsent as summation and apply summation rules
+    expr->lArg->traverse(*this);
+    PExpression optimizedLArg=this->getLastVisitResult();
+    
+    expr->rArg->traverse(*this);
+    PExpression optimizedRArg=this->getLastVisitResult();
+    
+    // reprsent as summation and apply summation rules
+    
+    PSum sumWithOptimizedArgs = createSum(optimizedLArg, this->negateExpression(optimizedRArg));
+    
+    for (auto &rule : summationRules(sumWithOptimizedArgs)){
+        if (rule->apply()) {
+            this->setLastVisitResult(rule->getOptimizedExpression());
+            return;
+        }
+    }
+    this->setLastVisitResult(sumWithOptimizedArgs);
+    return;
 }
 
 void Optimizer::visit(const PConstDiv expr) throw (TraverseException) {
     if (!expr->isComplete()) {
         THROW(TraverseException, "Expression is not consistent.", "LArg: " + to_string(expr->lArg) + "RArg:" + to_string(expr->rArg));
     }
+    this->setLastVisitResult(createDiv(expr->lArg, expr->rArg));
 }
 
 void Optimizer::visit(const PConstMult expr) throw (TraverseException) {
     if (!expr->isComplete()) {
         THROW(TraverseException, "Expression is not consistent.", "LArg: " + to_string(expr->lArg) + "RArg:" + to_string(expr->rArg));
     }
+    this->setLastVisitResult(createMult(expr->lArg, expr->rArg));
 }
 
 void Optimizer::visit(const PConstPow expr) throw (TraverseException) {
     if (!expr->isComplete()) {
         THROW(TraverseException, "Expression is not consistent.", "LArg: " + to_string(expr->lArg) + "RArg:" + to_string(expr->rArg));
     }
+    this->setLastVisitResult(createPow(expr->lArg, expr->rArg));
 }
 
 void Optimizer::visit(const PConstSin expr) throw (TraverseException) {

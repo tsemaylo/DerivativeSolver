@@ -12,7 +12,7 @@
  */
 
 #include "OptimizationRule.h"
-#include "MathParser/src/Expression.h"
+#include <Expression.h>
 
 OptimizationRule::OptimizationRule(PExpression _expression) : expression(_expression), optimizedExpression(_expression) {
 }
