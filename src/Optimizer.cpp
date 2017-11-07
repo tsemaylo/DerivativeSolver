@@ -80,32 +80,26 @@ void Optimizer::visit(const PConstSum expr) throw (TraverseException) {
 inline PExpression Optimizer::negateExpression(PExpression expr) const throw(TraverseException){
     if(isTypeOf<Mult>(expr)){
         PMult typedExpr=SPointerCast<Mult>(expr);
+        
+        auto negateConstant = [](PConstant c) throw(TraverseException) -> PConstant {
+            try {
+                double val = std::stod(SPointerCast<Constant>(c)->value);
+                val *= -1.0;
+                
+                std::stringstream strStream;
+                strStream << std::fixed << std::setprecision(2) << val;
+                return createConstant(strStream.str());
+            }
+            catch (std::exception ex) {
+                // re-throw an exception
+                THROW(TraverseException, ex.what(), "N.A.");
+            }
+        };
+        
         if(isTypeOf<Constant>(typedExpr->lArg)){
-            try {
-                double val = std::stod(SPointerCast<Constant>(typedExpr->lArg)->value);
-                val *= -1.0;
-                
-                std::stringstream strStream;
-                strStream << std::fixed << std::setprecision(2) << val;
-                return createMult(createConstant(strStream.str()), typedExpr->rArg);
-            }
-            catch (std::exception ex) {
-                // re-throw an exception
-                THROW(TraverseException, ex.what(), "N.A.");
-            }
+            return createMult(negateConstant(SPointerCast<Constant>(typedExpr->lArg)), typedExpr->rArg);
         }else if(isTypeOf<Constant>(typedExpr->rArg)){
-            try {
-                double val = std::stod(SPointerCast<Constant>(typedExpr->rArg)->value);
-                val *= -1.0;
-                
-                std::stringstream strStream;
-                strStream << std::fixed << std::setprecision(2) << val;
-                return createMult(typedExpr->lArg, createConstant(strStream.str()));
-            }
-            catch (std::exception ex) {
-                // re-throw an exception
-                THROW(TraverseException, ex.what(), "N.A.");
-            }
+            return createMult(negateConstant(SPointerCast<Constant>(typedExpr->rArg)),typedExpr->lArg);
         }else{
             return createMult(createConstant("-1"), expr);
         }
