@@ -36,14 +36,14 @@ TEST_F(FX_StringGenerator, visit_SimpleCase_ok) {
     // a+5*b-c/2 == ((a+(5*b))-(c/2))
 
     PExpression varB = createVariable("b");
-    PExpression const5 = createConstant("5");
+    PExpression const5 = createConstant(5.0);
     PExpression mult = createMult(const5, varB);
 
     PExpression varA = createVariable("a");
     PExpression sum = createSum(varA, mult);
 
     PExpression varC = createVariable("c");
-    PExpression const2 = createConstant("2");
+    PExpression const2 = createConstant(2.0);
     PExpression div = createDiv(varC, const2);
 
     PExpression sub = createSub(sum, div);

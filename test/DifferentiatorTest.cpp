@@ -34,7 +34,7 @@ protected:
 };
 
 TEST_F(FX_Differentiator, visit_Constant_ZeroConstant) {
-    PConstant exp = createConstant("42");
+    PConstant exp = createConstant(42.0);
     
     Differentiator differentiator("x");
     ASSERT_NO_THROW(exp->traverse(differentiator));
@@ -83,7 +83,7 @@ TEST_F(FX_Differentiator, visit_NotInitializedVariable_TraverseException) {
 }
 
 TEST_F(FX_Differentiator, visit_Summation_Summation) {
-    PSum exp = createSum(createConstant("42"), createVariable("x"));
+    PSum exp = createSum(createConstant(42.0), createVariable("x"));
     
     Differentiator differentiator("x");
     ASSERT_NO_THROW(exp->traverse(differentiator));
@@ -106,7 +106,7 @@ TEST_F(FX_Differentiator, visit_IncompleteSummation_TraverseException) {
 }
 
 TEST_F(FX_Differentiator, visit_Subtraction_Subtraction) {
-    PSub exp = createSub(createConstant("42"), createVariable("x"));
+    PSub exp = createSub(createConstant(42.0), createVariable("x"));
     
     Differentiator differentiator("x");
     ASSERT_NO_THROW(exp->traverse(differentiator));
@@ -203,7 +203,7 @@ TEST_F(FX_Differentiator, visit_MultiplicationOperationIsIncoplete_TraverseExcep
 }
 
 TEST_F(FX_Differentiator, visit_Exponentiation_GeneralizedPowerRuleApplied) {
-    PPow exp = createPow(createVariable("x"), createConstant("3"));
+    PPow exp = createPow(createVariable("x"), createConstant(3.0));
     
     Differentiator differentiator("x");
     ASSERT_NO_THROW(exp->traverse(differentiator));

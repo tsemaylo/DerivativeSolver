@@ -26,6 +26,5 @@ if [ "$CXX" = "g++" ]; then
 fi
 
 if [ "${DO_CODE_ANALYSIS}" = "1" ]; then
-    cd ..
     ./cppcheck.sh
 fi

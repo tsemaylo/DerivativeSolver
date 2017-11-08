@@ -24,7 +24,7 @@ bool RuleSubRV::applyRule(const ParserStack::const_iterator op, const ParserStac
         if (SPointerCast<Sub>(*op)->lArg == nullptr) {
             // assuming the negation instead of subtraction 
             // replacing subtraction with multiplication with -1
-            PMult mult = createMult(createConstant("-1"), *arg);
+            PMult mult = createMult(createConstant(-1.0), *arg);
 
             stack.insert(op, mult);
             stack.erase(op);

@@ -29,13 +29,13 @@ protected:
 };
 
 TEST_F(FX_SumWithNullArgumentRuleTest, visit_SumOfTwoConstants_NothingChangedFalse) {
-    SumWithNullArgumentRule rule(createSum(createConstant("2"), createConstant("3")));
+    SumWithNullArgumentRule rule(createSum(createConstant(2.0), createConstant(3.0)));
 
     ASSERT_FALSE(rule.apply());
 }
 
 TEST_F(FX_SumWithNullArgumentRuleTest, visit_LeftArgumentIsZero_True) {
-    SumWithNullArgumentRule rule(createSum(createConstant("0"), createVariable("x")));
+    SumWithNullArgumentRule rule(createSum(createConstant(0.0), createVariable("x")));
 
     ASSERT_TRUE(rule.apply());
 
@@ -46,7 +46,7 @@ TEST_F(FX_SumWithNullArgumentRuleTest, visit_LeftArgumentIsZero_True) {
 }
 
 TEST_F(FX_SumWithNullArgumentRuleTest, visit_RightArgumentIsZero_True) {
-    SumWithNullArgumentRule rule(createSum(createVariable("x"), createConstant("0")));
+    SumWithNullArgumentRule rule(createSum(createVariable("x"), createConstant(0.0)));
 
     ASSERT_TRUE(rule.apply());
 

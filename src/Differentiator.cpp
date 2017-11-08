@@ -29,10 +29,10 @@ void Differentiator::visit(const PConstVariable expr) throw (TraverseException) 
     }
     
     if (expr->name == this->variable) {
-        this->setLastVisitResult(createConstant("1"));
+        this->setLastVisitResult(createConstant(1.0));
         return;
     }
-    this->setLastVisitResult(createConstant("0"));
+    this->setLastVisitResult(createConstant(0.0));
 }
 
 void Differentiator::visit(const PConstSum expr) throw (TraverseException) {
@@ -75,7 +75,7 @@ void Differentiator::visit(const PConstDiv expr) throw (TraverseException) {
     PMult difDividendMRight=createMult(expr->lArg, this->getLastVisitResult());
     
     PSub difDividend=createSub(difDividendMLeft, difDividendMRight);
-    PPow difDivisor=createPow(expr->rArg, createConstant("2"));
+    PPow difDivisor=createPow(expr->rArg, createConstant(2.0));
     
     this->setLastVisitResult(createDiv(difDividend, difDivisor));
 }
@@ -143,7 +143,7 @@ void Differentiator::visit(const PConstCos expr) throw (TraverseException) {
     expr->arg->traverse(*this);
     this->setLastVisitResult(createMult(
             this->getLastVisitResult(),
-            createMult(createConstant("-1"), createSin(expr->arg))
+            createMult(createConstant(-1.0), createSin(expr->arg))
             )
             );
 }
@@ -160,8 +160,8 @@ void Differentiator::visit(const PConstTan expr) throw (TraverseException) {
     this->setLastVisitResult(createMult(
             this->getLastVisitResult(),
             createSum(
-            createConstant("1"),
-            createPow(createTan(expr->arg), createConstant("2"))
+            createConstant(1.0),
+            createPow(createTan(expr->arg), createConstant(2.0))
             )
             )
             );
@@ -178,10 +178,10 @@ void Differentiator::visit(const PConstCtan expr) throw (TraverseException) {
     expr->arg->traverse(*this);
     this->setLastVisitResult(createMult(
             this->getLastVisitResult(),
-            createMult(createConstant("-1"),
+            createMult(createConstant(-1.0),
             createSum(
-            createConstant("1"),
-            createPow(createCtan(expr->arg), createConstant("2"))
+            createConstant(1.0),
+            createPow(createCtan(expr->arg), createConstant(2.0))
             )
             )
             )
@@ -198,7 +198,7 @@ void Differentiator::visit(const PConstLn expr) throw (TraverseException) {
     expr->arg->traverse(*this);
     this->setLastVisitResult(createMult(
             this->getLastVisitResult(),
-            createDiv(createConstant("1"), expr->arg)
+            createDiv(createConstant(1.0), expr->arg)
             )
             );
 }

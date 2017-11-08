@@ -30,7 +30,7 @@ protected:
 };
 
 TEST_F(FX_Optimizer, visit_SumOfTwoConstants_Constant) {
-    PSum exp = createSum(createConstant("2"), createConstant("3"));
+    PSum exp = createSum(createConstant(2.0), createConstant(3.0));
     
     Optimizer optimizer;
     ASSERT_NO_THROW(exp->traverse(optimizer));
@@ -47,20 +47,20 @@ TEST_F(FX_Optimizer, visit_Subtraction_ApplicableAndSuccessfull) {
     std::vector<PSub> tests;
     std::vector<PExpression> expResults;
     
-    tests.push_back(createSub(createMult(createConstant("5"), createVariable("x")), createMult(createConstant("3"), createVariable("x"))));
-    expResults.push_back(createMult(createConstant("2"), createVariable("x")));
+    tests.push_back(createSub(createMult(createConstant(5.0), createVariable("x")), createMult(createConstant(3.0), createVariable("x"))));
+    expResults.push_back(createMult(createConstant(2.0), createVariable("x")));
     
-    tests.push_back(createSub(createMult(createConstant("3"), createVariable("x")), createMult(createConstant("5"), createVariable("x"))));
-    expResults.push_back(createMult(createConstant("-2"), createVariable("x")));
+    tests.push_back(createSub(createMult(createConstant(3.0), createVariable("x")), createMult(createConstant(5.0), createVariable("x"))));
+    expResults.push_back(createMult(createConstant(-2.0), createVariable("x")));
     
-    tests.push_back(createSub(createMult(createConstant("3"), createVariable("x")), createVariable("x")));
-    expResults.push_back(createMult(createConstant("2"), createVariable("x")));
+    tests.push_back(createSub(createMult(createConstant(3.0), createVariable("x")), createVariable("x")));
+    expResults.push_back(createMult(createConstant(2.0), createVariable("x")));
     
-    tests.push_back(createSub(createVariable("x"), createMult(createConstant("3"), createVariable("x"))));
-    expResults.push_back(createMult(createConstant("-2"), createVariable("x")));
+    tests.push_back(createSub(createVariable("x"), createMult(createConstant(3.0), createVariable("x"))));
+    expResults.push_back(createMult(createConstant(-2.0), createVariable("x")));
     
     tests.push_back(createSub(createVariable("x"), createVariable("x")));
-    expResults.push_back(createMult(createConstant("0"), createVariable("x")));
+    expResults.push_back(createMult(createConstant(0.0), createVariable("x")));
     
     for(unsigned int testId=0; testId < tests.size(); testId++){
         Optimizer optimizer;

@@ -22,7 +22,7 @@ protected:
 };
 
 TEST_F(FX_Expression, toString_SinOfSum_OK) {
-    PSin e=createSin(createSum(createVariable("x"), createConstant("3")));
+    PSin e=createSin(createSum(createVariable("x"), createConstant(3.0)));
     ASSERT_STREQ("sin(x+3)", to_string(e).c_str());
 }
 

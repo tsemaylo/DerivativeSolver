@@ -30,7 +30,7 @@ protected:
 };
 
 TEST_F(FX_SumConstantsRuleTest, visit_SumOfTwoConstants_Constant) {
-    SumConstantsRule rule(createSum(createConstant("2"), createConstant("3")));
+    SumConstantsRule rule(createSum(createConstant(2.0), createConstant(3.0)));
     
     ASSERT_TRUE(rule.apply());
     
@@ -43,7 +43,7 @@ TEST_F(FX_SumConstantsRuleTest, visit_SumOfTwoConstants_Constant) {
 
 
 TEST_F(FX_SumConstantsRuleTest, visit_OneArgumentIsNotConstants_False) {
-    SumConstantsRule rule(createSum(createVariable("x"), createConstant("3")));
+    SumConstantsRule rule(createSum(createVariable("x"), createConstant(3.0)));
     
     ASSERT_FALSE(rule.apply());
     

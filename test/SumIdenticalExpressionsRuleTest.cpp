@@ -33,21 +33,21 @@ TEST_F(FX_SumIdenticalExpressionsRuleTest, visit_SimplifiableCases_RuleApplied) 
     std::vector<PSum> tests;
     std::vector<PExpression> expResults;
     
-    tests.push_back(createSum(createMult(createConstant("2"), createVariable("x")), createMult(createConstant("3"), createVariable("x"))));
-    expResults.push_back(createMult(createConstant("5"), createVariable("x")));
+    tests.push_back(createSum(createMult(createConstant(2.0), createVariable("x")), createMult(createConstant(3.0), createVariable("x"))));
+    expResults.push_back(createMult(createConstant(5.0), createVariable("x")));
     
-    tests.push_back(createSum(createMult(createVariable("x"), createConstant("2")), createMult(createVariable("x"), createConstant("3"))));
-    expResults.push_back(createMult(createConstant("5"), createVariable("x")));
+    tests.push_back(createSum(createMult(createVariable("x"), createConstant(2.0)), createMult(createVariable("x"), createConstant(3.0))));
+    expResults.push_back(createMult(createConstant(5.0), createVariable("x")));
     
-    tests.push_back(createSum(createMult(createConstant("4"), createVariable("x")), createVariable("x")));
-    expResults.push_back(createMult(createConstant("5"), createVariable("x")));
+    tests.push_back(createSum(createMult(createConstant(4.0), createVariable("x")), createVariable("x")));
+    expResults.push_back(createMult(createConstant(5.0), createVariable("x")));
     
     tests.push_back(createSum(createVariable("x"), createVariable("x")));
     expResults.push_back(createMult(createConstant("2.00"), createVariable("x")));
     
-    PCos cos2X=createCos(createMult(createVariable("x"),createConstant("2")));
-    tests.push_back(createSum(cos2X, createMult(cos2X, createConstant("5"))));
-    expResults.push_back(createMult(createConstant("6"), cos2X));
+    PCos cos2X=createCos(createMult(createVariable("x"),createConstant(2.0)));
+    tests.push_back(createSum(cos2X, createMult(cos2X, createConstant(5.0))));
+    expResults.push_back(createMult(createConstant(6.0), cos2X));
     
     for(unsigned int testId=0; testId<tests.size(); testId++){
         SumIdenticalExpressionsRule rule(tests[testId]);
@@ -65,11 +65,11 @@ TEST_F(FX_SumIdenticalExpressionsRuleTest, visit_NotPossibleToSum_RuleNotApplied
     std::vector<PSum> tests;
     
     tests.push_back(createSum(createVariable("x"), createVariable("y")));
-    tests.push_back(createSum(createMult(createVariable("y"), createVariable("x")), createMult(createConstant("2"), createVariable("x"))));
-    tests.push_back(createSum(createMult(createConstant("2"), createVariable("x")), createMult(createVariable("y"), createVariable("x"))));
-    tests.push_back(createSum(createMult(createConstant("2"), createVariable("x")), createMult(createConstant("2"), createVariable("y"))));
-    tests.push_back(createSum(createMult(createConstant("4"), createVariable("x")), createPow(createVariable("x"), createConstant("2"))));
-    tests.push_back(createSum(createPow(createVariable("x"), createConstant("2")), createMult(createConstant("4"), createVariable("x"))));
+    tests.push_back(createSum(createMult(createVariable("y"), createVariable("x")), createMult(createConstant(2.0), createVariable("x"))));
+    tests.push_back(createSum(createMult(createConstant(2.0), createVariable("x")), createMult(createVariable("y"), createVariable("x"))));
+    tests.push_back(createSum(createMult(createConstant(2.0), createVariable("x")), createMult(createConstant(2.0), createVariable("y"))));
+    tests.push_back(createSum(createMult(createConstant(4.0), createVariable("x")), createPow(createVariable("x"), createConstant(2.0))));
+    tests.push_back(createSum(createPow(createVariable("x"), createConstant(2.0)), createMult(createConstant(4.0), createVariable("x"))));
     
     for(unsigned int testId=0; testId<tests.size(); testId++){
         SumIdenticalExpressionsRule rule(tests[testId]);

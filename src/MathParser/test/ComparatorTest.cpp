@@ -86,7 +86,7 @@ TEST_F(FX_Comparator, visit_SumAssociativeProperty_Equal) {
     PExpression sum1 = createSum(varX_1, const3_1);
     
     PExpression varX_2 = createVariable("x");
-    PExpression const3_2 = createConstant("3");
+    PExpression const3_2 = createConstant(3.0);
     PExpression sum2 = createSum(const3_2, varX_2);
 
     Comparator comparator(sum2);
@@ -96,11 +96,11 @@ TEST_F(FX_Comparator, visit_SumAssociativeProperty_Equal) {
 
 TEST_F(FX_Comparator, visit_IdenticalSubtractions_Equal) {
     PExpression varX_1 = createVariable("x");
-    PExpression const3_1 = createConstant("3");
+    PExpression const3_1 = createConstant(3.0);
     PExpression sub1 = createSub(varX_1, const3_1);
     
     PExpression varX_2 = createVariable("x");
-    PExpression const3_2 = createConstant("3");
+    PExpression const3_2 = createConstant(3.0);
     PExpression sub2 = createSub(varX_2, const3_2);
 
     Comparator comparator(sub2);
@@ -156,7 +156,7 @@ TEST_F(FX_Comparator, visit_MultAssociativeProperty_Equal) {
     PExpression mult1 = createMult(varX_1, const3_1);
     
     PExpression varX_2 = createVariable("x");
-    PExpression const3_2 = createConstant("3");
+    PExpression const3_2 = createConstant(3.0);
     PExpression mult2 = createMult(const3_2, varX_2);
 
     Comparator comparator(mult2);
@@ -166,11 +166,11 @@ TEST_F(FX_Comparator, visit_MultAssociativeProperty_Equal) {
 
 TEST_F(FX_Comparator, visit_IdenticalDivision_Equal) {
     PExpression varX_1 = createVariable("x");
-    PExpression const3_1 = createConstant("3");
+    PExpression const3_1 = createConstant(3.0);
     PExpression div1 = createDiv(varX_1, const3_1);
     
     PExpression varX_2 = createVariable("x");
-    PExpression const3_2 = createConstant("3");
+    PExpression const3_2 = createConstant(3.0);
     PExpression div2 = createDiv(varX_2, const3_2);
 
     Comparator comparator(div2);
