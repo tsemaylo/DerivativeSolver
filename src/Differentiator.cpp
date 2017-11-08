@@ -83,7 +83,6 @@ void Differentiator::visit(const PConstDiv expr) throw (TraverseException) {
 void Differentiator::visit(const PConstMult expr) throw (TraverseException) {
     if (!expr->isComplete()) {
         THROW(TraverseException, "Expression is not consistent.", "LArg: " + to_string(expr->lArg) + "RArg:" + to_string(expr->rArg));
-
     }
     
     // f'g + fg'

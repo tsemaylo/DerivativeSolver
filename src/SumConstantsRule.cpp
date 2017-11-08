@@ -28,17 +28,11 @@ bool SumConstantsRule::apply() throw (TraverseException) {
     PSum typedExpression = SPointerCast<Sum>(this->expression);
     // constant and constand - perform summation and return constant
     if (isTypeOf<Constant>(typedExpression->lArg) && isTypeOf<Constant>(typedExpression->rArg)) {
-        try {
-            double lArgVal = SPointerCast<Constant>(typedExpression->lArg)->value;
-            double rArgVal = SPointerCast<Constant>(typedExpression->rArg)->value;
+        double lArgVal = SPointerCast<Constant>(typedExpression->lArg)->value;
+        double rArgVal = SPointerCast<Constant>(typedExpression->rArg)->value;
 
-            this->optimizedExpression = createConstant(lArgVal + rArgVal);
-            return true;
-        }
-        catch (std::exception ex) {
-            // re-throw an exception
-            THROW(TraverseException, ex.what(), "N.A.");
-        }
+        this->optimizedExpression = createConstant(lArgVal + rArgVal);
+        return true;
     }
 
     return false;
