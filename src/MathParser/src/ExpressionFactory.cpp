@@ -17,8 +17,12 @@ PVariable createVariable(const std::string name) {
     return MakeSPointer<Variable>(name);
 }
 
-PConstant createConstant(const std::string val) {
+PConstant createConstant(const double val) {
     return MakeSPointer<Constant>(val);
+}
+
+PConstant createConstant(const std::string strVal) {
+    return MakeSPointer<Constant>(std::stod(strVal));
 }
 
 PSum createSum() {

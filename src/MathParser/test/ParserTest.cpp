@@ -150,7 +150,7 @@ TEST_F(FX_Parser, shiftToStack_NumericToken_ConstantExpressionInStack) {
     ParserStack::const_iterator exprIt=stack.begin();
     PExpression expr=*exprIt;
     EXPECT_TRUE(isTypeOf<Constant>(expr));
-    EXPECT_STREQ("42", SPointerCast<Constant>(expr)->value.c_str());
+    EXPECT_DOUBLE_EQ(42.0, SPointerCast<Constant>(expr)->value);
 }
 
 TEST_F(FX_Parser, shiftToStack_AlphaNummericToken_VariableExpressionInStack) {
@@ -308,7 +308,7 @@ TEST_F(FX_Parser, parse_AdditionOperationsWithParentness_SumWithTwoArgs) {
 
     PMult multL = SPointerCast<Mult>(sum->lArg);
     PConstant constN1 = SPointerCast<Constant>(multL->lArg);
-    EXPECT_EQ("-1", constN1->value);
+    EXPECT_DOUBLE_EQ(-1.0, constN1->value);
     PSub subL = SPointerCast<Sub>(multL->rArg);
     PVariable varA = SPointerCast<Variable>(subL->lArg);
     EXPECT_EQ("a", varA->name);
@@ -355,7 +355,7 @@ TEST_F(FX_Parser, parse_MixedExpressionWithParentness_SumWithTwoArgs) {
     PVariable varC = SPointerCast<Variable>(divC2->lArg);
     EXPECT_EQ("c", varC->name);
     PConstant const2 = SPointerCast<Constant>(divC2->rArg);
-    EXPECT_EQ("2", const2->value);
+    EXPECT_DOUBLE_EQ(2.0, const2->value);
 
     // expecting Mult: lArg=-1    rArg=(a*b)^n
     ASSERT_NE(nullptr, sum->lArg);
@@ -363,7 +363,7 @@ TEST_F(FX_Parser, parse_MixedExpressionWithParentness_SumWithTwoArgs) {
     PMult multL = SPointerCast<Mult>(sum->lArg);
     
     PConstant constN1 = SPointerCast<Constant>(multL->lArg);
-    EXPECT_EQ("-1", constN1->value);
+    EXPECT_DOUBLE_EQ(-1.0, constN1->value);
     
     // expecting Pow: lArg=a*b      rArg=n
     ASSERT_NE(nullptr, multL->rArg);
@@ -397,7 +397,7 @@ TEST_F(FX_Parser, parse_ExpressionWithFunctions_Function) {
     PVariable varX = SPointerCast<Variable>(sum->lArg);
     EXPECT_EQ("x", varX->name);
     PConstant constTwo = SPointerCast<Constant>(sum->rArg);
-    EXPECT_EQ("2", constTwo->value);
+    EXPECT_DOUBLE_EQ(2.0, constTwo->value);
 }
 
 TEST_F(FX_Parser, parse_ExpressionWithFunctions_ExpressionTree) {
@@ -437,7 +437,7 @@ TEST_F(FX_Parser, parse_ExpressionWithFunctions_ExpressionTree) {
     ASSERT_TRUE(isTypeOf<Constant>(powX2->rArg)) << stringGenerator.getLastVisitResult();
     PConstant const2_1 = SPointerCast<Constant>(powX2->rArg);
     ASSERT_STREQ("x", varX_1->name.c_str());
-    ASSERT_STREQ("2", const2_1->value.c_str());
+    ASSERT_DOUBLE_EQ(2.0, const2_1->value);
     
     // sin(x+2)
     ASSERT_NE(nullptr, multSinCos->rArg) << stringGenerator.getLastVisitResult();
@@ -454,7 +454,7 @@ TEST_F(FX_Parser, parse_ExpressionWithFunctions_ExpressionTree) {
     ASSERT_TRUE(isTypeOf<Constant>(sumX2->rArg)) << stringGenerator.getLastVisitResult();
     PConstant const2_2 = SPointerCast<Constant>(sumX2->rArg);
     ASSERT_STREQ("x", varX_2->name.c_str());
-    ASSERT_STREQ("2", const2_2->value.c_str());
+    ASSERT_DOUBLE_EQ(2.0, const2_2->value);
     
     // ln(tan(x/2))
     ASSERT_NE(nullptr, subL->rArg) << stringGenerator.getLastVisitResult();
@@ -476,7 +476,7 @@ TEST_F(FX_Parser, parse_ExpressionWithFunctions_ExpressionTree) {
     ASSERT_TRUE(isTypeOf<Constant>(divX2->rArg)) << stringGenerator.getLastVisitResult();
     PConstant const2_3 = SPointerCast<Constant>(divX2->rArg);
     ASSERT_STREQ("x", varX_3->name.c_str());
-    ASSERT_STREQ("2", const2_3->value.c_str());
+    ASSERT_DOUBLE_EQ(2.0, const2_3->value);
     
     // exp(ctan(-x)+x)
     ASSERT_NE(nullptr, sum->rArg) << stringGenerator.getLastVisitResult();
@@ -500,7 +500,7 @@ TEST_F(FX_Parser, parse_ExpressionWithFunctions_ExpressionTree) {
     ASSERT_NE(nullptr, multNeg->lArg) << stringGenerator.getLastVisitResult();
     ASSERT_TRUE(isTypeOf<Constant>(multNeg->lArg)) << stringGenerator.getLastVisitResult();
     PConstant constNeg = SPointerCast<Constant>(multNeg->lArg);
-    ASSERT_STREQ("-1", constNeg->value.c_str());
+    ASSERT_DOUBLE_EQ(-1.0, constNeg->value);
     ASSERT_NE(nullptr, multNeg->rArg) << stringGenerator.getLastVisitResult();
     ASSERT_TRUE(isTypeOf<Variable>(multNeg->rArg)) << stringGenerator.getLastVisitResult();
     PVariable varX_4 = SPointerCast<Variable>(multNeg->rArg);
@@ -528,7 +528,7 @@ TEST_F(FX_Parser, parse_ExpressionWithFunctions2_ExpressionTree) {
     ASSERT_NE(nullptr, mult->lArg) << stringGenerator.getLastVisitResult();
     ASSERT_TRUE(isTypeOf<Constant>(mult->lArg)) << stringGenerator.getLastVisitResult();
     PConstant constNeg = SPointerCast<Constant>(mult->lArg);
-    ASSERT_STREQ("-1", constNeg->value.c_str());
+    ASSERT_DOUBLE_EQ(-1.0, constNeg->value);
     
     // cos(x)^(n+3)
     ASSERT_NE(nullptr, mult->rArg) << stringGenerator.getLastVisitResult();
@@ -554,7 +554,7 @@ TEST_F(FX_Parser, parse_ExpressionWithFunctions2_ExpressionTree) {
     ASSERT_TRUE(isTypeOf<Constant>(sum->rArg)) << stringGenerator.getLastVisitResult();
     PConstant const2 = SPointerCast<Constant>(sum->rArg);
     ASSERT_STREQ("n", varN->name.c_str());
-    ASSERT_STREQ("3", const2->value.c_str());
+    ASSERT_DOUBLE_EQ(3.0, const2->value);
 }
 
 TEST_F(FX_Parser, findEndOfParentheses_NormalCase_ok) {

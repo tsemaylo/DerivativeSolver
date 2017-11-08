@@ -34,16 +34,7 @@ void Comparator::typeAware(PT expr, std::function<bool (PT, PT)> f)  throw (Trav
 
 void Comparator::visit(const PConstConstant expr) throw (TraverseException) {
     typeAware<Constant, PConstConstant>(expr, [this] (PConstConstant expr, PConstConstant typedExprBeingComp) -> bool {
-        try {
-            double val1 = std::stod(expr->value);
-            double val2 = std::stod(typedExprBeingComp->value);
-            return val1 == val2;
-        }
-        catch (std::exception ex) {
-            // re-throw an exception
-            THROW(TraverseException, ex.what(), expr->value + "!=" + typedExprBeingComp->value);
-        }
-        return false;
+        return expr->value == typedExprBeingComp->value;
     });
 }
 

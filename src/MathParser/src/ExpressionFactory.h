@@ -31,7 +31,13 @@
 #include "Exp.h"
 
 PVariable createVariable(const std::string name);
-PConstant createConstant(const std::string val);
+PConstant createConstant(const double val);
+/**
+ * Create Constant from the string representation of nummeric value.
+ * 
+ * Can throw the invalid_argument or out_of_range.
+ */
+PConstant createConstant(const std::string strVal);
 PSum createSum();
 PSum createSum(PExpression lArg, PExpression rArg);
 PSub createSub();

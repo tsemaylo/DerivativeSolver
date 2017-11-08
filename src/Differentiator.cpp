@@ -18,12 +18,8 @@
 Differentiator::Differentiator(string var) : variable(var) {
 }
 
-void Differentiator::visit(const PConstConstant expr) throw (TraverseException) {
-    if (expr->value.empty()) {
-        // inprobable situation
-        THROW(TraverseException, "Constant is empty.", "N.A");
-    }
-    this->setLastVisitResult(createConstant("0"));
+void Differentiator::visit(const PConstConstant ) throw (TraverseException) {
+    this->setLastVisitResult(createConstant(0));
 }
 
 void Differentiator::visit(const PConstVariable expr) throw (TraverseException) {

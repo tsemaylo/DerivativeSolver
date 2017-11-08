@@ -12,12 +12,16 @@
  */
 
 #include "StringGenerator.h"
+#include <sstream>
+#include <iomanip>
 #include "TraverseException.h"
 
 using namespace std;
 
 void StringGenerator::visit(const PConstConstant expr) throw (TraverseException) {
-    this->setLastVisitResult(expr->value);
+    std::stringstream strStream;
+    strStream << std::defaultfloat << std::setprecision(2) << expr->value;  
+    this->setLastVisitResult(strStream.str());
 }
 
 void StringGenerator::visit(const PConstVariable expr) throw (TraverseException) {

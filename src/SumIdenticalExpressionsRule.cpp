@@ -37,7 +37,7 @@ bool SumIdenticalExpressionsRule::apply() throw(TraverseException) {
     if(!isTypeOf<Mult>(typedExpression->lArg) && !isTypeOf<Mult>(typedExpression->rArg)){
         if(equals(typedExpression->lArg, typedExpression->rArg)){
             // summation terms are the same
-            this->optimizedExpression=createMult(createConstant("2"), typedExpression->lArg);
+            this->optimizedExpression=createMult(createConstant(2.0), typedExpression->lArg);
             return true;
         }
         // summation terms are completely different - nothing to do
@@ -59,7 +59,7 @@ bool SumIdenticalExpressionsRule::apply() throw(TraverseException) {
             sumTerm1=temp;
         }
     }else{
-        sumTerm1=createMult(createConstant("1"),typedExpression->lArg);
+        sumTerm1=createMult(createConstant(1.0),typedExpression->lArg);
     }
     
     PMult sumTerm2;
@@ -73,7 +73,7 @@ bool SumIdenticalExpressionsRule::apply() throw(TraverseException) {
             sumTerm2=temp;
         }
     }else{
-        sumTerm2=createMult(createConstant("1"),typedExpression->rArg);
+        sumTerm2=createMult(createConstant(1.0),typedExpression->rArg);
     }
     
     // allright, now both sumation terms are represented as Multiplication with 
@@ -85,23 +85,10 @@ bool SumIdenticalExpressionsRule::apply() throw(TraverseException) {
     }
     
     // calculate sum of quotients of common factor
-    double val1 = 0.0;
-    double val2 = 0.0;
-    try {
-        val1 = std::stod(SPointerCast<Constant>(sumTerm1->lArg)->value);
-        val2 = std::stod(SPointerCast<Constant>(sumTerm2->lArg)->value);
-
-        std::stringstream strStream;
-        strStream << std::fixed << std::setprecision(2) << (val1 + val2);
-        
-        PConstant sumOfConstants = createConstant(strStream.str());
-        this->optimizedExpression=createMult(sumOfConstants, sumTerm1->rArg);
-        return true;
-    }
-    catch (std::exception ex) {
-        // re-throw an exception
-        THROW(TraverseException, ex.what(), "N.A.");
-    }
+    double val1 = SPointerCast<Constant>(sumTerm1->lArg)->value;
+    double val2 = SPointerCast<Constant>(sumTerm2->lArg)->value;
+    this->optimizedExpression=createMult(createConstant(val1 + val2), sumTerm1->rArg);
+    return true;
 }
 
 

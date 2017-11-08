@@ -38,7 +38,7 @@ TEST_F(FX_SumConstantsRuleTest, visit_SumOfTwoConstants_Constant) {
     ASSERT_TRUE(isTypeOf<Constant>(optExp));
     
     PConstant optExpTyped = SPointerCast<Constant>(optExp);
-    ASSERT_STREQ("5.00", optExpTyped->value.c_str());
+    ASSERT_DOUBLE_EQ(5.0, optExpTyped->value);
 }
 
 
@@ -52,10 +52,4 @@ TEST_F(FX_SumConstantsRuleTest, visit_OneArgumentIsNotConstants_False) {
     ASSERT_TRUE(isTypeOf<Sum>(optExp));
     
     // assuming that the sum is a right one, dont perform any tests
-}
-
-TEST_F(FX_SumConstantsRuleTest, visit_ConstantIsNotANUmber_TraverseException) {
-    SumConstantsRule rule(createSum(createConstant("x"), createConstant("3")));
-    
-    ASSERT_THROW(rule.apply(), TraverseException);
 }

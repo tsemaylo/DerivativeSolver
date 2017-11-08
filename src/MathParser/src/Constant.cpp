@@ -12,10 +12,10 @@
 #include "Constant.h"
 #include "Visitor.h"
 
-Constant::Constant() : Expression(EConstant) {
+Constant::Constant() : Expression(EConstant), value(0.0) {
 }
 
-Constant::Constant(std::string value) : Expression(EConstant), value(value) {
+Constant::Constant(double value) : Expression(EConstant), value(value) {
 }
 
 void Constant::traverse(Visitor &visitor) const throw (TraverseException) {
@@ -24,9 +24,4 @@ void Constant::traverse(Visitor &visitor) const throw (TraverseException) {
 
 bool Constant::isComplete() const {
     return true;
-}
-
-double Constant::toDouble() const{
-    return 0.0;
-    // @TODO deprecated, remove
 }

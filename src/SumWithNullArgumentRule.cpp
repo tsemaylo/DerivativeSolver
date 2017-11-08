@@ -22,12 +22,12 @@ SumWithNullArgumentRule::SumWithNullArgumentRule(PSum _expression) : Optimizatio
 bool SumWithNullArgumentRule::apply()  throw(TraverseException) {
     PSum typedExpression = SPointerCast<Sum>(this->expression);
     
-    if(isTypeOf<Constant>(typedExpression->lArg) && SPointerCast<Constant>(typedExpression->lArg)->value=="0"){
+    if(isTypeOf<Constant>(typedExpression->lArg) && SPointerCast<Constant>(typedExpression->lArg)->value==0.0){
         this->optimizedExpression=typedExpression->rArg;
         return true;
     }
     
-    if(isTypeOf<Constant>(typedExpression->rArg) && SPointerCast<Constant>(typedExpression->rArg)->value=="0"){
+    if(isTypeOf<Constant>(typedExpression->rArg) && SPointerCast<Constant>(typedExpression->rArg)->value==0.0){
         this->optimizedExpression=typedExpression->lArg;
         return true;
     }

@@ -28,16 +28,11 @@ bool SumConstantsRule::apply() throw (TraverseException) {
     PSum typedExpression = SPointerCast<Sum>(this->expression);
     // constant and constand - perform summation and return constant
     if (isTypeOf<Constant>(typedExpression->lArg) && isTypeOf<Constant>(typedExpression->rArg)) {
-        double lArgVal = 0.0;
-        double rArgVal = 0.0;
         try {
-            lArgVal = std::stod(SPointerCast<Constant>(typedExpression->lArg)->value);
-            rArgVal = std::stod(SPointerCast<Constant>(typedExpression->rArg)->value);
+            double lArgVal = SPointerCast<Constant>(typedExpression->lArg)->value;
+            double rArgVal = SPointerCast<Constant>(typedExpression->rArg)->value;
 
-            std::stringstream strStream;
-            strStream << std::fixed << std::setprecision(2) << (lArgVal + rArgVal);
-            PConstant result = createConstant(strStream.str());
-            this->optimizedExpression = result;
+            this->optimizedExpression = createConstant(lArgVal + rArgVal);
             return true;
         }
         catch (std::exception ex) {

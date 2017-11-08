@@ -37,9 +37,6 @@ inline std::vector<std::unique_ptr<OptimizationRule>> Optimizer::summationRules(
 
 
 void Optimizer::visit(const PConstConstant expr) throw (TraverseException) {
-    if (expr->value.empty()) {
-        THROW(TraverseException, "Constant is empty.", "N.A");
-    }
     // Not applicable
     this->setLastVisitResult(createConstant(expr->value));
 }
@@ -82,18 +79,7 @@ inline PExpression Optimizer::negateExpression(PExpression expr) const throw(Tra
         PMult typedExpr=SPointerCast<Mult>(expr);
         
         auto negateConstant = [](PConstant c) throw(TraverseException) -> PConstant {
-            try {
-                double val = std::stod(SPointerCast<Constant>(c)->value);
-                val *= -1.0;
-                
-                std::stringstream strStream;
-                strStream << std::fixed << std::setprecision(2) << val;
-                return createConstant(strStream.str());
-            }
-            catch (std::exception ex) {
-                // re-throw an exception
-                THROW(TraverseException, ex.what(), "N.A.");
-            }
+            return createConstant(SPointerCast<Constant>(c)->value * -1.0);
         };
         
         if(isTypeOf<Constant>(typedExpr->lArg)){
@@ -101,10 +87,10 @@ inline PExpression Optimizer::negateExpression(PExpression expr) const throw(Tra
         }else if(isTypeOf<Constant>(typedExpr->rArg)){
             return createMult(negateConstant(SPointerCast<Constant>(typedExpr->rArg)),typedExpr->lArg);
         }else{
-            return createMult(createConstant("-1"), expr);
+            return createMult(createConstant(-1), expr);
         }
     }else{
-        return createMult(createConstant("-1"), expr);
+        return createMult(createConstant(-1), expr);
     }
     
     // @TODO what about Div?

@@ -40,7 +40,7 @@ TEST_F(FX_Optimizer, visit_SumOfTwoConstants_Constant) {
     
     PConstant optExpTyped = SPointerCast<Constant>(optExp);
     
-    ASSERT_STREQ("5.00", optExpTyped->value.c_str());
+    ASSERT_DOUBLE_EQ(5.0, optExpTyped->value);
 }
 
 TEST_F(FX_Optimizer, visit_Subtraction_ApplicableAndSuccessfull) {

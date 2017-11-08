@@ -82,9 +82,3 @@ TEST_F(FX_SumIdenticalExpressionsRuleTest, visit_NotPossibleToSum_RuleNotApplied
                 expected << " != " << actual;
     }
 }
-
-TEST_F(FX_SumIdenticalExpressionsRuleTest, visit_ConstantIsNotANUmber_TraverseException) {
-    PSum test=createSum(createMult(createConstant("y"), createVariable("x")), createMult(createConstant("3"), createVariable("x")));
-    SumIdenticalExpressionsRule rule(test);
-    ASSERT_THROW(rule.apply(), TraverseException);
-}
