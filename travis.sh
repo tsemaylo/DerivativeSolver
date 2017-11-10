@@ -11,6 +11,8 @@ cmake .. -DCMAKE_BUILD_TYPE=Debug
 make 
 make test
 
+cat build/src/MathParser/build/CMakeFiles/libagmathparser.dir/flags.make 
+
 if [ "${DO_CODE_ANALYSIS}" = "1" ]; then
     # do code check (not the best place for it, but it works)
     cd ..
