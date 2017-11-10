@@ -125,6 +125,15 @@ void Optimizer::visit(const PConstDiv expr) throw (TraverseException) {
     if (!expr->isComplete()) {
         THROW(TraverseException, "Expression is not consistent.", "LArg: " + to_string(expr->lArg) + "RArg:" + to_string(expr->rArg));
     }
+    
+    // 0/Expression = 0
+    
+    // Expression/1 = Expression
+    
+    // (Expression1) / (Expression2) == Expression1 * 1/Expression2  - 
+    //      constants on the right side must be precalculated if we want to 
+    //      employ multiplication rules
+    
     this->setLastVisitResult(createDiv(expr->lArg, expr->rArg));
 }
 
@@ -132,6 +141,16 @@ void Optimizer::visit(const PConstMult expr) throw (TraverseException) {
     if (!expr->isComplete()) {
         THROW(TraverseException, "Expression is not consistent.", "LArg: " + to_string(expr->lArg) + "RArg:" + to_string(expr->rArg));
     }
+    
+    // A*B = AB
+    
+    // 0 * Expression =  0
+    
+    // 1 * Expression = Expression
+    
+    // A*Expression^M * B*Expression^N =  AB*Expression^(M+N)
+    // with subcase: A/(Expression^N) * (Expression^M)/B = (A/B) * Expression^(M-N)
+    
     this->setLastVisitResult(createMult(expr->lArg, expr->rArg));
 }
 
@@ -139,6 +158,13 @@ void Optimizer::visit(const PConstPow expr) throw (TraverseException) {
     if (!expr->isComplete()) {
         THROW(TraverseException, "Expression is not consistent.", "LArg: " + to_string(expr->lArg) + "RArg:" + to_string(expr->rArg));
     }
+    
+    // A^B -> calculate results
+    
+    // Expression ^ 0 = 1
+    
+    // Expression ^ 1 = Expression
+    
     this->setLastVisitResult(createPow(expr->lArg, expr->rArg));
 }
 
