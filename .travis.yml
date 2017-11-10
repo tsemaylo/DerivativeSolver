@@ -13,6 +13,7 @@ matrix:
           install:
                 - export CXX="g++-5" CC="gcc-5"
                 - export DO_CODE_ANALYSIS=1
+                - ccache --zero-stats
                 - echo ${PATH}
                 - echo ${CXX}
           after_success:
@@ -47,6 +48,7 @@ matrix:
                 # if the current version of clang is lower then required try to set precisely the CXX value
                 #- if [[ `clang++ --version | head -n 1 | cut -c15-19` < "3.7.0" ]]; then export CXX="clang++-3.7" CC="clang-3.7"; fi
                 - export CXX="clang++-3.7" CC="clang-3.7"
+                - ccache --zero-stats
                 - echo ${PATH}
                 - echo ${CXX}
           addons:
