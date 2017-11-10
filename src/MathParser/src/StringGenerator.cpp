@@ -14,6 +14,7 @@
 #include "StringGenerator.h"
 #include <sstream>
 #include <iomanip>
+#include <ios>
 #include "TraverseException.h"
 
 using namespace std;
