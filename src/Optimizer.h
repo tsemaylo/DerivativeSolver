@@ -32,6 +32,14 @@ private:
     inline std::vector<std::unique_ptr<OptimizationRule>> summationRules(PSum expr) const;
     
     /**
+     * Initialize the vector of optimization rules for multiplication expression.
+     * 
+     * @param expr The Mult expression.
+     * @return Vector consisting of unique pointers to OptimizationRule's.
+     */
+    inline std::vector<std::unique_ptr<OptimizationRule>> multiplicationRules(PMult expr) const;
+    
+    /**
      * Get the negative counterpart of given expression.
      * 
      * For instance: for negateExpression(a) = -a

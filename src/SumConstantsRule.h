@@ -3,7 +3,7 @@
  */
 
 /**
- * @file    SumConstantsRule.cpp
+ * @file    SumConstantsRule.h
  * 
  * Definition of the SumConstantsRule class.
  * 

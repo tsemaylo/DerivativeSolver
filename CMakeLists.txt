@@ -47,6 +47,7 @@ add_executable(DerivativeSolver
     src/SumConstantsRule.cpp
     src/SumIdenticalExpressionsRule.cpp
     src/SumWithNullArgumentRule.cpp
+    src/MultConstantsRule.cpp
 )
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -127,7 +128,13 @@ function(add_unit_test_suite)
 endfunction()
 
 add_unit_test_suite("test/DifferentiatorTest.cpp" "src/Differentiator.cpp")
-add_unit_test_suite("test/OptimizerTest.cpp" "src/Optimizer.cpp" "src/SumConstantsRule.cpp" "src/SumWithNullArgumentRule.cpp" "src/SumIdenticalExpressionsRule.cpp" "src/OptimizationRule.cpp")
+add_unit_test_suite("test/OptimizerTest.cpp" 
+    "src/Optimizer.cpp" 
+    "src/SumConstantsRule.cpp" 
+    "src/SumWithNullArgumentRule.cpp" 
+    "src/SumIdenticalExpressionsRule.cpp" 
+    "src/MultConstantsRule.cpp" 
+    "src/OptimizationRule.cpp")
 add_unit_test_suite("test/SumConstantsRuleTest.cpp" "src/SumConstantsRule.cpp" "src/OptimizationRule.cpp")
 add_unit_test_suite("test/SumWithNullArgumentRuleTest.cpp" "src/SumWithNullArgumentRule.cpp" "src/OptimizationRule.cpp")
 add_unit_test_suite("test/SumIdenticalExpressionsRuleTest.cpp" "src/SumIdenticalExpressionsRule.cpp" "src/OptimizationRule.cpp")

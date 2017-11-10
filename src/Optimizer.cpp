@@ -24,6 +24,7 @@
 #include "SumConstantsRule.h"
 #include "SumWithNullArgumentRule.h"
 #include "SumIdenticalExpressionsRule.h"
+#include "MultConstantsRule.h"
 
 inline std::vector<std::unique_ptr<OptimizationRule>> Optimizer::summationRules(PSum expr) const {
     std::vector<std::unique_ptr<OptimizationRule>> rules;
@@ -35,6 +36,13 @@ inline std::vector<std::unique_ptr<OptimizationRule>> Optimizer::summationRules(
     return rules;
 }
 
+inline std::vector<std::unique_ptr<OptimizationRule>> Optimizer::multiplicationRules(PMult expr) const {
+    std::vector<std::unique_ptr<OptimizationRule>> rules;
+    
+    rules.push_back(std::make_unique<MultConstantsRule>(expr));
+    
+    return rules;
+}
 
 void Optimizer::visit(const PConstConstant expr) throw (TraverseException) {
     // Not applicable
@@ -142,16 +150,24 @@ void Optimizer::visit(const PConstMult expr) throw (TraverseException) {
         THROW(TraverseException, "Expression is not consistent.", "LArg: " + to_string(expr->lArg) + "RArg:" + to_string(expr->rArg));
     }
     
-    // A*B = AB
+    expr->lArg->traverse(*this);
+    PExpression optimizedLArg=this->getLastVisitResult();
     
-    // 0 * Expression =  0
+    expr->rArg->traverse(*this);
+    PExpression optimizedRArg=this->getLastVisitResult();
     
-    // 1 * Expression = Expression
+    PMult multWithOptimizedArgs =createMult(optimizedLArg, optimizedRArg);
+    for (auto &rule : multiplicationRules(multWithOptimizedArgs)){
+        if (rule->apply()) {
+            this->setLastVisitResult(rule->getOptimizedExpression());
+            return;
+        }
+    }
+    this->setLastVisitResult(multWithOptimizedArgs);
+    return;
     
-    // A*Expression^M * B*Expression^N =  AB*Expression^(M+N)
+    // @TODO A*Expression^M * B*Expression^N =  AB*Expression^(M+N)
     // with subcase: A/(Expression^N) * (Expression^M)/B = (A/B) * Expression^(M-N)
-    
-    this->setLastVisitResult(createMult(expr->lArg, expr->rArg));
 }
 
 void Optimizer::visit(const PConstPow expr) throw (TraverseException) {
