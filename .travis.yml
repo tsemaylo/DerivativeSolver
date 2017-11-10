@@ -45,8 +45,6 @@ matrix:
           compiler:
                 - clang++
           install:
-                # if the current version of clang is lower then required try to set precisely the CXX value
-                #- if [[ `clang++ --version | head -n 1 | cut -c15-19` < "3.7.0" ]]; then export CXX="clang++-3.7" CC="clang-3.7"; fi
                 - export CXX="clang++-3.7" CC="clang-3.7"
                 - ccache --zero-stats
                 - echo ${PATH}
@@ -61,5 +59,7 @@ matrix:
                     - cmake-data
                     - cmake
                     - clang-3.7
+                    - gcc-5
+                    - g++-5
           env:
             - MATRIX_EVAL="CC=clang-3.7 && CXX=clang++-3.7"
