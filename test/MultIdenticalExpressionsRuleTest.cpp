@@ -111,6 +111,13 @@ TEST_F(FX_MultIdenticalExpressionsRuleTest, visit_OptimizableExpressions_Applica
             createPow(createCos(createVariable("x")), createSum(createConstant(1),createConstant(1)))
     ));
     
+    // x*x^-1 = 1*x^(1+-1)
+    tests.push_back(createMult(createVariable("x"), createPow(createVariable("x"), createConstant(-1))));
+    expectedResults.push_back(createMult(
+        createConstant(1), 
+        createPow(createVariable("x"), createSum(createConstant(1), createConstant(-1)))
+    ));
+    
     for(unsigned int testId=0; testId < tests.size(); testId++){
         MultIdenticalExpressionsRule rule(tests[testId]);
         EXPECT_TRUE(rule.apply()) << "Rule for test #" << testId << " was not applied!";

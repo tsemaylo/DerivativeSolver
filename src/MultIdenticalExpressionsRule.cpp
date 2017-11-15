@@ -61,7 +61,6 @@ bool MultIdenticalExpressionsRule::apply() throw(TraverseException){
             this->optimizedExpression=createPow(typedExpr->lArg, createConstant(2.0));
             return true;
         }
-        return false;
     }
     
     // try to normalize it to canonical form: A*(x^n) * B*(x^m)

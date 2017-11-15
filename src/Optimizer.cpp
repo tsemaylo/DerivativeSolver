@@ -84,12 +84,23 @@ void Optimizer::visit(const PConstSum expr) throw (TraverseException) {
     // @TODO think about trygonometric rules: (sin(x))^2+(cos(x)^2)
 }
 
-inline PExpression Optimizer::negateExpression(PExpression expr) const throw(TraverseException){
+/**
+ * Get the negative counterpart of given expression.
+ * 
+ * For instance: for negateExpression(a) = -a
+ * If the expr is Variable or any function the Mult with 
+ * "-1" as left argument will be returned.
+ * 
+ * @param expr The expression to be negated.
+ * 
+ * @return Negative expression.
+ */
+inline PExpression negateExpression(PExpression expr) throw(TraverseException){
     if(isTypeOf<Mult>(expr)){
         PMult typedExpr=SPointerCast<Mult>(expr);
         
         auto negateConstant = [](PConstant c) throw(TraverseException) -> PConstant {
-            return createConstant(SPointerCast<Constant>(c)->value * -1.0);
+            return createConstant(c->value * -1.0);
         };
         
         if(isTypeOf<Constant>(typedExpr->lArg)){
@@ -97,7 +108,7 @@ inline PExpression Optimizer::negateExpression(PExpression expr) const throw(Tra
         }else if(isTypeOf<Constant>(typedExpr->rArg)){
             return createMult(negateConstant(SPointerCast<Constant>(typedExpr->rArg)),typedExpr->lArg);
         }else{
-            return createMult(createConstant(-1), expr);
+            return createMult(createConstant(-1.0), expr);
         }
     }else{
         return createMult(createConstant(-1), expr);
@@ -119,7 +130,7 @@ void Optimizer::visit(const PConstSub expr) throw (TraverseException) {
     
     // reprsent as summation and apply summation rules
     
-    PSum sumWithOptimizedArgs = createSum(optimizedLArg, this->negateExpression(optimizedRArg));
+    PSum sumWithOptimizedArgs = createSum(optimizedLArg, negateExpression(optimizedRArg));
     
     for (auto &rule : summationRules(sumWithOptimizedArgs)){
         if (rule->apply()) {
@@ -127,8 +138,43 @@ void Optimizer::visit(const PConstSub expr) throw (TraverseException) {
             return;
         }
     }
-    this->setLastVisitResult(sumWithOptimizedArgs);
+    this->setLastVisitResult(createSub(optimizedLArg, optimizedRArg));
     return;
+}
+
+/**
+ * Obtain the inverted expression. For example: invertDenominator(x) = 1/x
+ * 
+ * @param expr Expression to invert
+ * @return 
+ */
+inline PExpression invertDenominator(PExpression expr) throw(TraverseException){
+    if(isTypeOf<Pow>(expr)){
+        // x^n => x^-n
+        PPow typedExpr=SPointerCast<Pow>(expr);
+        if(isTypeOf<Constant>(typedExpr->rArg)){
+            return createPow(typedExpr->lArg, createConstant(SPointerCast<Constant>(typedExpr->rArg)->value*-1.0));
+        }
+        return createPow(typedExpr->lArg, createMult(typedExpr->rArg, createConstant(-1.0)));
+    }
+    if(isTypeOf<Div>(expr)){
+        // n/x => 1/n * x
+        PDiv typedExpr=SPointerCast<Div>(expr);
+        if(isTypeOf<Constant>(typedExpr->lArg)){
+            return createMult(createConstant(1.0/(SPointerCast<Constant>(typedExpr->lArg))->value), typedExpr->rArg);
+        }
+        // x/y => y/x
+        return createMult(typedExpr->lArg, typedExpr->rArg);
+    }
+    if(isTypeOf<Constant>(expr)){
+        // n => 1/n 
+        PConstant typedExpr=SPointerCast<Constant>(expr);
+        if(typedExpr->value!=0.0){
+            return createConstant(1.0/(typedExpr->value));
+        }
+    }
+    // default rule
+    return createPow(expr, createConstant(-1.0));
 }
 
 void Optimizer::visit(const PConstDiv expr) throw (TraverseException) {
@@ -136,15 +182,24 @@ void Optimizer::visit(const PConstDiv expr) throw (TraverseException) {
         THROW(TraverseException, "Expression is not consistent.", "LArg: " + to_string(expr->lArg) + "RArg:" + to_string(expr->rArg));
     }
     
-    // 0/Expression = 0
+    expr->lArg->traverse(*this);
+    PExpression optimizedLArg=this->getLastVisitResult();
     
-    // Expression/1 = Expression
+    expr->rArg->traverse(*this);
+    PExpression optimizedRArg=this->getLastVisitResult();
     
-    // (Expression1) / (Expression2) == Expression1 * 1/Expression2  - 
-    //      constants on the right side must be precalculated if we want to 
-    //      employ multiplication rules
+    // reprsent as product and apply multiplicationrules
     
-    this->setLastVisitResult(createDiv(expr->lArg, expr->rArg));
+    PMult multWithOptimizedArgs = createMult(optimizedLArg, invertDenominator(optimizedRArg));
+    
+    for (auto &rule : multiplicationRules(multWithOptimizedArgs)){
+        if (rule->apply()) {
+            this->setLastVisitResult(rule->getOptimizedExpression());
+            return;
+        }
+    }
+    this->setLastVisitResult(createDiv(optimizedLArg, optimizedRArg));
+    return;
 }
 
 void Optimizer::visit(const PConstMult expr) throw (TraverseException) {

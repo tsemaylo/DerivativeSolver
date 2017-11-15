@@ -56,11 +56,87 @@ TEST_F(FX_Optimizer, visit_Subtraction_ApplicableAndSuccessfull) {
     tests.push_back(createSub(createMult(createConstant(3.0), createVariable("x")), createVariable("x")));
     expResults.push_back(createMult(createConstant(2.0), createVariable("x")));
     
+    tests.push_back(createSub(createVariable("x"), createMult(createVariable("x"), createConstant(3.0))));
+    expResults.push_back(createMult(createConstant(-2.0), createVariable("x")));
+    
     tests.push_back(createSub(createVariable("x"), createMult(createConstant(3.0), createVariable("x"))));
     expResults.push_back(createMult(createConstant(-2.0), createVariable("x")));
     
     tests.push_back(createSub(createVariable("x"), createVariable("x")));
     expResults.push_back(createMult(createConstant(0.0), createVariable("x")));
+    
+    for(unsigned int testId=0; testId < tests.size(); testId++){
+        Optimizer optimizer;
+        EXPECT_NO_THROW(tests[testId]->traverse(optimizer)) << "Test ID=" << testId << " threw an exception!";
+        PExpression actResult=optimizer.getLastVisitResult();
+        string expected=to_string(expResults[testId]);
+        string actual=to_string(actResult);
+        EXPECT_TRUE(equals(expResults[testId], actResult)) << 
+                "Result does not match for test ID=" << testId << "! (" 
+                << expected << " != " << actual;
+    }
+}
+
+TEST_F(FX_Optimizer, visit_Subtraction_NotAppliable) {
+    std::vector<PSub> tests;
+    std::vector<PExpression> expResults;
+    
+    tests.push_back(createSub(createMult(createConstant(5.0), createVariable("x")), createMult(createVariable("y"), createVariable("x"))));
+    
+    for(unsigned int testId=0; testId < tests.size(); testId++){
+        Optimizer optimizer;
+        EXPECT_NO_THROW(tests[testId]->traverse(optimizer)) << "Test ID=" << testId << " threw an exception!";
+        PExpression actResult=optimizer.getLastVisitResult();
+        string expected=to_string(tests[testId]);
+        string actual=to_string(actResult);
+        EXPECT_TRUE(equals(tests[testId], actResult)) << 
+                "Result does not match for test ID=" << testId << "! (" 
+                << expected << " != " << actual;
+    }
+}
+
+TEST_F(FX_Optimizer, visit_Division_ApplicableAndSuccessfull) {
+    std::vector<PDiv> tests;
+    std::vector<PExpression> expResults;
+    
+    // x/1
+    tests.push_back(createDiv(createVariable("x"), createConstant(1)));
+    expResults.push_back(createVariable("x"));
+    
+    // 0/sin(x)
+    tests.push_back(createDiv(createConstant(0), createSin(createVariable("x"))));
+    expResults.push_back(createConstant(0));
+    
+    // x/x => 1*x^(1+-1)
+    tests.push_back(createDiv(createVariable("x"), createVariable("x")));
+    expResults.push_back(createMult(
+        createConstant(1), 
+        createPow(createVariable("x"), createSum(createConstant(1), createConstant(-1)))
+    ));
+    
+    // x^2/x => 1*x^(2+-1)
+    tests.push_back(createDiv(createPow(createVariable("x"),createConstant(2)), createVariable("x")));
+    expResults.push_back(createMult(
+        createConstant(1), 
+        createPow(createVariable("x"), createSum(createConstant(2), createConstant(-1)))
+    ));
+    
+    // x/(x^2) => 1*x^(1+-2)
+    tests.push_back(createDiv(createVariable("x"), createPow(createVariable("x"),createConstant(2))));
+    expResults.push_back(createMult(
+        createConstant(1), 
+        createPow(createVariable("x"), createSum(createConstant(1), createConstant(-2)))
+    ));
+    
+    // (3x)/(3/x) => 1*x^(1+1)
+    tests.push_back(createDiv(
+        createMult(createConstant(3), createVariable("x")),
+        createDiv(createConstant(3), createVariable("x"))
+    ));
+    expResults.push_back(createMult(
+        createConstant(1), 
+        createPow(createVariable("x"), createSum(createConstant(1), createConstant(1)))
+    ));
     
     for(unsigned int testId=0; testId < tests.size(); testId++){
         Optimizer optimizer;

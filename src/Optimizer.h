@@ -38,19 +38,6 @@ private:
      * @return Vector consisting of unique pointers to OptimizationRule's.
      */
     inline std::vector<std::unique_ptr<OptimizationRule>> multiplicationRules(PMult expr) const;
-    
-    /**
-     * Get the negative counterpart of given expression.
-     * 
-     * For instance: for negateExpression(a) = -a
-     * If the expr is Variable or any function the Mult with 
-     * "-1" as left argument will be returned.
-     * 
-     * @param expr The expression to be negated.
-     * 
-     * @return Negative expression.
-     */
-    inline PExpression negateExpression(PExpression expr) const throw(TraverseException);
 public:
     void visit(const PConstConstant expr) throw (TraverseException) final;
     void visit(const PConstVariable expr) throw (TraverseException) final;
