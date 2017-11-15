@@ -17,19 +17,16 @@
 MultIdenticalExpressionsRule::MultIdenticalExpressionsRule(PMult _expression): OptimizationRule(_expression) {
 }
 
-bool castRightArgToPow(PExpression expr, std::function<bool (PPow)> onSuccess){
-    if(!isTypeOf<Pow>(expr)){
-        onSuccess(createPow(expr, createConstant(1.0)));
-        return true;
+PPow castRightArgToPow(PExpression expr){
+    if(isTypeOf<Pow>(expr)){
+        return SPointerCast<Pow>(expr);
     }
-    
-    onSuccess(SPointerCast<Pow>(expr));
-    return true;
+    return createPow(expr, createConstant(1.0)); 
 }
 
 bool putConstantToLeft(PExpression expr, std::function<bool (PMult)> onSuccess){
     if(!isTypeOf<Mult>(expr)){
-        onSuccess(createMult(createConstant(1.0), SPointerCast<Mult>(expr)->lArg));
+        onSuccess(createMult(createConstant(1.0), expr));
         return true;
     }
     
@@ -43,7 +40,7 @@ bool putConstantToLeft(PExpression expr, std::function<bool (PMult)> onSuccess){
     }
         
     if(rIsConst){
-        return onSuccess(createMult(typedExpr->rArg, typedExpr->rArg));
+        return onSuccess(createMult(typedExpr->rArg, typedExpr->lArg));
     }else{
         return onSuccess(typedExpr);
     }
@@ -72,11 +69,7 @@ bool MultIdenticalExpressionsRule::apply() throw(TraverseException){
    
     if(!putConstantToLeft(typedExpr->lArg, [&canonicalForm](PMult normalizedLArg) -> bool{
         // now check that the right operand is actually the exponent or can be casted to exponent
-        if(!castRightArgToPow(normalizedLArg->rArg, [&normalizedLArg](PPow castedExpression){
-            normalizedLArg->rArg=castedExpression;
-        })){
-            return false; 
-        }
+        normalizedLArg->rArg=castRightArgToPow(normalizedLArg->rArg);
         canonicalForm->lArg=normalizedLArg;
         return true;
     })){
@@ -84,11 +77,7 @@ bool MultIdenticalExpressionsRule::apply() throw(TraverseException){
     }
     
     if(!putConstantToLeft(typedExpr->rArg, [&canonicalForm](PMult normalizedRArg) -> bool{
-        if(!castRightArgToPow(normalizedRArg->rArg, [&normalizedRArg](PPow castedExpression){
-            normalizedRArg->rArg=castedExpression;
-        })){
-            return false; 
-        }
+        normalizedRArg->rArg=castRightArgToPow(normalizedRArg->rArg);
         canonicalForm->rArg=normalizedRArg;
         return true;
     })){
@@ -97,9 +86,9 @@ bool MultIdenticalExpressionsRule::apply() throw(TraverseException){
     
     // now check whether arguments of exponentation functions are identical
     PMult canLeftMultTerm = SPointerCast<Mult>(canonicalForm->lArg);
-    PPow canLeftPow = SPointerCast<Pow>(canLeftMultTerm->lArg);
+    PPow canLeftPow = SPointerCast<Pow>(canLeftMultTerm->rArg);
     PMult canRightMultTerm = SPointerCast<Mult>(canonicalForm->rArg);
-    PPow canRightPow = SPointerCast<Pow>(canRightMultTerm->lArg);
+    PPow canRightPow = SPointerCast<Pow>(canRightMultTerm->rArg);
     if(!equals(canLeftPow->lArg, canRightPow->lArg)){
         return false;
     }

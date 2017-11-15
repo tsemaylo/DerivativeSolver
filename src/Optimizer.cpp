@@ -25,6 +25,7 @@
 #include "SumWithNullArgumentRule.h"
 #include "SumIdenticalExpressionsRule.h"
 #include "MultConstantsRule.h"
+#include "MultIdenticalExpressionsRule.h"
 
 inline std::vector<std::unique_ptr<OptimizationRule>> Optimizer::summationRules(PSum expr) const {
     std::vector<std::unique_ptr<OptimizationRule>> rules;
@@ -40,6 +41,7 @@ inline std::vector<std::unique_ptr<OptimizationRule>> Optimizer::multiplicationR
     std::vector<std::unique_ptr<OptimizationRule>> rules;
     
     rules.push_back(std::make_unique<MultConstantsRule>(expr));
+    rules.push_back(std::make_unique<MultIdenticalExpressionsRule>(expr));
     
     return rules;
 }
