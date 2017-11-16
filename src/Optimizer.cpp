@@ -26,8 +26,15 @@
 #include "SumIdenticalExpressionsRule.h"
 #include "MultConstantsRule.h"
 #include "MultIdenticalExpressionsRule.h"
+#include "PowConstantRule.h"
 
-inline std::vector<std::unique_ptr<OptimizationRule>> Optimizer::summationRules(PSum expr) const {
+/**
+ * Initialize the vector of optimization rules for summation expression.
+ * 
+ * @param expr The Summation expression.
+ * @return Vector consisting of unique pointers to OptimizationRule's.
+ */
+inline std::vector<std::unique_ptr<OptimizationRule>> summationRules(PSum expr) {
     std::vector<std::unique_ptr<OptimizationRule>> rules;
     
     rules.push_back(std::make_unique<SumConstantsRule>(expr));
@@ -37,11 +44,31 @@ inline std::vector<std::unique_ptr<OptimizationRule>> Optimizer::summationRules(
     return rules;
 }
 
-inline std::vector<std::unique_ptr<OptimizationRule>> Optimizer::multiplicationRules(PMult expr) const {
+/**
+ * Initialize the vector of optimization rules for multiplication expression.
+ * 
+ * @param expr The Mult expression.
+ * @return Vector consisting of unique pointers to OptimizationRule's.
+ */
+inline std::vector<std::unique_ptr<OptimizationRule>> multiplicationRules(PMult expr) {
     std::vector<std::unique_ptr<OptimizationRule>> rules;
     
     rules.push_back(std::make_unique<MultConstantsRule>(expr));
     rules.push_back(std::make_unique<MultIdenticalExpressionsRule>(expr));
+    
+    return rules;
+}
+
+/**
+ * Initialize the vector of optimization rules for exponentiation expression.
+ * 
+ * @param expr The Pow expression.
+ * @return Vector consisting of unique pointers to OptimizationRule's.
+ */
+inline std::vector<std::unique_ptr<OptimizationRule>> exponentiationRules(PPow expr) {
+    std::vector<std::unique_ptr<OptimizationRule>> rules;
+    
+    rules.push_back(std::make_unique<PowConstantRule>(expr));
     
     return rules;
 }
@@ -222,9 +249,6 @@ void Optimizer::visit(const PConstMult expr) throw (TraverseException) {
     }
     this->setLastVisitResult(multWithOptimizedArgs);
     return;
-    
-    // @TODO A*Expression^M * B*Expression^N =  AB*Expression^(M+N)
-    // with subcase: A/(Expression^N) * (Expression^M)/B = (A/B) * Expression^(M-N)
 }
 
 void Optimizer::visit(const PConstPow expr) throw (TraverseException) {
@@ -232,13 +256,24 @@ void Optimizer::visit(const PConstPow expr) throw (TraverseException) {
         THROW(TraverseException, "Expression is not consistent.", "LArg: " + to_string(expr->lArg) + "RArg:" + to_string(expr->rArg));
     }
     
-    // A^B -> calculate results
+    expr->lArg->traverse(*this);
+    PExpression optimizedLArg=this->getLastVisitResult();
     
-    // Expression ^ 0 = 1
+    expr->rArg->traverse(*this);
+    PExpression optimizedRArg=this->getLastVisitResult();
     
-    // Expression ^ 1 = Expression
+    PPow powWithOptimizedArgs =createPow(optimizedLArg, optimizedRArg);
+    for (auto &rule : exponentiationRules(powWithOptimizedArgs)){
+        if (rule->apply()) {
+            this->setLastVisitResult(rule->getOptimizedExpression());
+            return;
+        }
+    }
     
-    this->setLastVisitResult(createPow(expr->lArg, expr->rArg));
+    // (x^m)^n = x^mn
+    
+    this->setLastVisitResult(powWithOptimizedArgs);
+    return;
 }
 
 void Optimizer::visit(const PConstSin expr) throw (TraverseException) {

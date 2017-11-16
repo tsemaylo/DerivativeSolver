@@ -23,21 +23,6 @@ class Optimizer : public Visitor {
 private:
     PExpression result;
     
-    /**
-     * Initialize the vector of optimization rules for summation expression.
-     * 
-     * @param expr The Summation expression.
-     * @return Vector consisting of unique pointers to OptimizationRule's.
-     */
-    inline std::vector<std::unique_ptr<OptimizationRule>> summationRules(PSum expr) const;
-    
-    /**
-     * Initialize the vector of optimization rules for multiplication expression.
-     * 
-     * @param expr The Mult expression.
-     * @return Vector consisting of unique pointers to OptimizationRule's.
-     */
-    inline std::vector<std::unique_ptr<OptimizationRule>> multiplicationRules(PMult expr) const;
 public:
     void visit(const PConstConstant expr) throw (TraverseException) final;
     void visit(const PConstVariable expr) throw (TraverseException) final;

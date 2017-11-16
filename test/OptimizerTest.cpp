@@ -79,7 +79,6 @@ TEST_F(FX_Optimizer, visit_Subtraction_ApplicableAndSuccessfull) {
 
 TEST_F(FX_Optimizer, visit_Subtraction_NotAppliable) {
     std::vector<PSub> tests;
-    std::vector<PExpression> expResults;
     
     tests.push_back(createSub(createMult(createConstant(5.0), createVariable("x")), createMult(createVariable("y"), createVariable("x"))));
     
