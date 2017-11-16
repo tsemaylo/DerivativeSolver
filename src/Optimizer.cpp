@@ -27,6 +27,7 @@
 #include "MultConstantsRule.h"
 #include "MultIdenticalExpressionsRule.h"
 #include "PowConstantRule.h"
+#include "PowOfPowRule.h"
 
 /**
  * Initialize the vector of optimization rules for summation expression.
@@ -69,6 +70,7 @@ inline std::vector<std::unique_ptr<OptimizationRule>> exponentiationRules(PPow e
     std::vector<std::unique_ptr<OptimizationRule>> rules;
     
     rules.push_back(std::make_unique<PowConstantRule>(expr));
+    rules.push_back(std::make_unique<PowOfPowRule>(expr));
     
     return rules;
 }
@@ -269,8 +271,6 @@ void Optimizer::visit(const PConstPow expr) throw (TraverseException) {
             return;
         }
     }
-    
-    // (x^m)^n = x^mn
     
     this->setLastVisitResult(powWithOptimizedArgs);
     return;

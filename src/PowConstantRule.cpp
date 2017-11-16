@@ -3,9 +3,9 @@
  */
 
 /**
- * @file     PowConstantRule.h
+ * @file     PowConstantRule.cpp
  * 
- * Definition of the PowConstantRule class.
+ * Implementation of the PowConstantRule class.
  * 
  * @author   agor
  * @since 16.11.2017
