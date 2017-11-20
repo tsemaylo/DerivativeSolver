@@ -280,6 +280,9 @@ void Optimizer::visit(const PConstSin expr) throw (TraverseException) {
     if (!expr->isComplete()) {
         THROW(TraverseException, "Expression is not consistent.", "Arg: " + to_string(expr->arg));
     }
+    
+    // if constant is fiven in argument - evaluate it
+    // what else?? nothing else
 }
 
 void Optimizer::visit(const PConstCos expr) throw (TraverseException) {
@@ -304,6 +307,8 @@ void Optimizer::visit(const PConstLn expr) throw (TraverseException) {
     if (!expr->isComplete()) {
         THROW(TraverseException, "Expression is not consistent.", "Arg: " + to_string(expr->arg));
     }
+    
+    // the same a for all functins + ln(exp(x))=x
 }
 
 void Optimizer::visit(const PConstExp expr) throw (TraverseException) {
