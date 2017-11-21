@@ -17,9 +17,10 @@
 #include <ios>
 #include <iomanip>
 #include <sstream>
+#include <cmath>
 
 #include <ExpressionFactory.h>
-#include <cmath>
+#include <Expression.h>
 
 #include "ExceptionThrower.h"
 #include "SumConstantsRule.h"
@@ -29,7 +30,6 @@
 #include "MultIdenticalExpressionsRule.h"
 #include "PowConstantRule.h"
 #include "PowOfPowRule.h"
-
 #include "OptimizationRule.tpp"
 #include "FunctionEvaluateRule.tpp"
 
@@ -302,18 +302,74 @@ void Optimizer::visit(const PConstCos expr) throw (TraverseException) {
     if (!expr->isComplete()) {
         THROW(TraverseException, "Expression is not consistent.", "Arg: " + to_string(expr->arg));
     }
+    
+    expr->arg->traverse(*this);
+    PExpression optimizedArg=this->getLastVisitResult();
+    PCos cosWithOptimizedArgs =createCos(optimizedArg);
+    
+    FunctionEvaluateRule<Cos> rule(cosWithOptimizedArgs, [](double v) -> double{ return std::cos(v); });
+    if(rule.apply()){
+        this->setLastVisitResult(rule.getOptimizedExpression());
+        return;
+    }
+    
+    this->setLastVisitResult(cosWithOptimizedArgs);
 }
 
 void Optimizer::visit(const PConstTan expr) throw (TraverseException) {
     if (!expr->isComplete()) {
         THROW(TraverseException, "Expression is not consistent.", "Arg: " + to_string(expr->arg));
     }
+    
+    expr->arg->traverse(*this);
+    PExpression optimizedArg=this->getLastVisitResult();
+    PTan tanWithOptimizedArgs =createTan(optimizedArg);
+    
+    FunctionEvaluateRule<Tan> rule(tanWithOptimizedArgs, [optimizedArg](double v) -> double{ 
+        double pi=3.14159265358979323846; 
+        double n = v/(pi/2.0);
+        double nint=std::round(n);
+        if(equals(createConstant(n), createConstant(nint))){ 
+            // tangent is not defined here
+            THROW(TraverseException, "Argumenmt of tangent is not correct, infinite result is expected here!", "tan("+to_string(optimizedArg)+")");
+        }
+        return std::tan(v); 
+    });
+    
+    if(rule.apply()){
+        this->setLastVisitResult(rule.getOptimizedExpression());
+        return;
+    }
+    
+    this->setLastVisitResult(tanWithOptimizedArgs);
 }
 
 void Optimizer::visit(const PConstCtan expr) throw (TraverseException) {
     if (!expr->isComplete()) {
         THROW(TraverseException, "Expression is not consistent.", "Arg: " + to_string(expr->arg));
     }
+    
+    expr->arg->traverse(*this);
+    PExpression optimizedArg=this->getLastVisitResult();
+    PCtan ctanWithOptimizedArgs =createCtan(optimizedArg);
+    
+    FunctionEvaluateRule<Ctan> rule(ctanWithOptimizedArgs, [optimizedArg](double v) -> double{ 
+        double pi=3.14159265358979323846; 
+        double n = v/pi;
+        double nint=std::round(n);
+        if(equals(createConstant(n), createConstant(nint))){ 
+            // cotangent is not defined here
+            THROW(TraverseException, "Argumenmt of cotangent is not correct, infinite result is expected here!", "ctan("+to_string(optimizedArg)+")");
+        }
+        return std::cos(v)/std::sin(v); 
+    });
+    
+    if(rule.apply()){
+        this->setLastVisitResult(rule.getOptimizedExpression());
+        return;
+    }
+    
+    this->setLastVisitResult(ctanWithOptimizedArgs);
 }
 
 void Optimizer::visit(const PConstLn expr) throw (TraverseException) {
@@ -321,13 +377,47 @@ void Optimizer::visit(const PConstLn expr) throw (TraverseException) {
         THROW(TraverseException, "Expression is not consistent.", "Arg: " + to_string(expr->arg));
     }
     
-    // the same a for all functins + ln(exp(x))=x
+    expr->arg->traverse(*this);
+    PExpression optimizedArg=this->getLastVisitResult();
+    PLn lnWithOptimizedArgs =createLn(optimizedArg);
+    
+    FunctionEvaluateRule<Ln> rule(lnWithOptimizedArgs, [optimizedArg](double v) -> double{ 
+        if(v <= 0.0){ 
+            // cotangent is not defined here
+            THROW(TraverseException, "Argumenmt of natural logarithm cant be <= 0, infinite result is expected here!", "ln("+to_string(optimizedArg)+")");
+        }
+        return std::log(v); 
+    });
+    
+    if(rule.apply()){
+        this->setLastVisitResult(rule.getOptimizedExpression());
+        return;
+    }
+    
+    this->setLastVisitResult(lnWithOptimizedArgs);
+    
+    // the same a for all functions + ln(exp(x))=x
 }
 
 void Optimizer::visit(const PConstExp expr) throw (TraverseException) {
     if (!expr->isComplete()) {
         THROW(TraverseException, "Expression is not consistent.", "Arg: " + to_string(expr->arg));
     }
+    
+    expr->arg->traverse(*this);
+    PExpression optimizedArg=this->getLastVisitResult();
+    PExp expWithOptimizedArgs =createExp(optimizedArg);
+    
+    FunctionEvaluateRule<Exp> rule(expWithOptimizedArgs, [](double v) -> double{ 
+        return std::exp(v); 
+    });
+    
+    if(rule.apply()){
+        this->setLastVisitResult(rule.getOptimizedExpression());
+        return;
+    }
+    
+    this->setLastVisitResult(expWithOptimizedArgs);
 }
 
 PExpression Optimizer::getLastVisitResult() const {
