@@ -296,7 +296,6 @@ void Optimizer::visit(const PConstSin expr) throw (TraverseException) {
     }
     
     this->setLastVisitResult(sinWithOptimizedArgs);
-    return;
 }
 
 void Optimizer::visit(const PConstCos expr) throw (TraverseException) {

@@ -10,6 +10,9 @@
  * @since 09.10.2017
  */
 
+#include <cmath>
+#include <limits>
+#include <algorithm>
 #include "Comparator.h"
 #include "ExceptionThrower.h"
 
@@ -34,7 +37,11 @@ void Comparator::typeAware(PT expr, std::function<bool (PT, PT)> f)  throw (Trav
 
 void Comparator::visit(const PConstConstant expr) throw (TraverseException) {
     typeAware<Constant, PConstConstant>(expr, [this] (PConstConstant expr, PConstConstant typedExprBeingComp) -> bool {
-        return expr->value == typedExprBeingComp->value;
+        double a=expr->value;
+        double b=typedExprBeingComp->value;
+        double eps = 0.00000001;
+        double max = std::max( { std::fabs(a), std::fabs(b), 1.0 } );
+        return std::fabs(a - b) <= max * eps;
     });
 }
 

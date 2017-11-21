@@ -147,6 +147,7 @@ add_unit_test_suite("test/MultConstantsRuleTest.cpp" "src/MultConstantsRule.cpp"
 add_unit_test_suite("test/MultIdenticalExpressionsRuleTest.cpp" "src/MultIdenticalExpressionsRule.cpp")
 add_unit_test_suite("test/PowConstantRuleTest.cpp" "src/PowConstantRule.cpp")
 add_unit_test_suite("test/PowOfPowRuleTest.cpp" "src/PowOfPowRule.cpp")
+add_unit_test_suite("test/FunctionEvaluateRuleTest.cpp")
 
 enable_testing ()
 
