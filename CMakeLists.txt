@@ -50,6 +50,7 @@ add_executable(DerivativeSolver
     src/MultIdenticalExpressionsRule.cpp
     src/PowConstantRule.cpp
     src/PowOfPowRule.cpp
+    src/LnOfExpRule.cpp
 )
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -139,6 +140,7 @@ add_unit_test_suite("test/OptimizerTest.cpp"
     "src/MultIdenticalExpressionsRule.cpp"
     "src/PowConstantRule.cpp"
     "src/PowOfPowRule.cpp"
+    "src/LnOfExpRule.cpp"
 )
 add_unit_test_suite("test/SumConstantsRuleTest.cpp" "src/SumConstantsRule.cpp")
 add_unit_test_suite("test/SumWithNullArgumentRuleTest.cpp" "src/SumWithNullArgumentRule.cpp")
@@ -148,6 +150,7 @@ add_unit_test_suite("test/MultIdenticalExpressionsRuleTest.cpp" "src/MultIdentic
 add_unit_test_suite("test/PowConstantRuleTest.cpp" "src/PowConstantRule.cpp")
 add_unit_test_suite("test/PowOfPowRuleTest.cpp" "src/PowOfPowRule.cpp")
 add_unit_test_suite("test/FunctionEvaluateRuleTest.cpp")
+add_unit_test_suite("test/LnOfExpRuleTest.cpp" "src/LnOfExpRule.cpp")
 
 enable_testing ()
 

@@ -32,6 +32,7 @@
 #include "PowOfPowRule.h"
 #include "OptimizationRule.tpp"
 #include "FunctionEvaluateRule.tpp"
+#include "LnOfExpRule.h"
 
 /**
  * Initialize the vector of optimization rules for summation expression.
@@ -381,19 +382,24 @@ void Optimizer::visit(const PConstLn expr) throw (TraverseException) {
     PExpression optimizedArg=this->getLastVisitResult();
     PLn lnWithOptimizedArgs =createLn(optimizedArg);
     
-    FunctionEvaluateRule<Ln> rule(lnWithOptimizedArgs, [optimizedArg](double v) -> double{ 
+    FunctionEvaluateRule<Ln> ruleEval(lnWithOptimizedArgs, [optimizedArg](double v) -> double{ 
         if(v <= 0.0){ 
             // cotangent is not defined here
             THROW(TraverseException, "Argumenmt of natural logarithm cant be <= 0, infinite result is expected here!", "ln("+to_string(optimizedArg)+")");
         }
         return std::log(v); 
     });
-    
-    if(rule.apply()){
-        this->setLastVisitResult(rule.getOptimizedExpression());
+    if(ruleEval.apply()){
+        this->setLastVisitResult(ruleEval.getOptimizedExpression());
         return;
     }
     
+    LnOfExpRule ruleLnExp(lnWithOptimizedArgs);
+    if(ruleLnExp.apply()){
+        this->setLastVisitResult(ruleLnExp.getOptimizedExpression());
+        return;
+    }
+
     this->setLastVisitResult(lnWithOptimizedArgs);
     
     // the same a for all functions + ln(exp(x))=x

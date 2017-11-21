@@ -27,21 +27,23 @@
  * to test the Optimizer visitor. Therefore the logic of optimization rules is encapsulated 
  * within specific implementations of OptimizationRule, where each specialization 
  * (implementation of OptimizationRule interface) is responsible for its own optimization case.
+ * 
+ * @param ExpressionType Is a pointer type of the Expression subcalss of expression to be optimized.
  */
-
 template <typename ExpressionType>
 class OptimizationRule{
 protected:
     ExpressionType expression;
     PExpression optimizedExpression;
     
+    /**
+     * @param _expression Expression to be optimized of the given type ExpressionType.
+     */
     OptimizationRule(ExpressionType _expression) : expression(_expression), optimizedExpression(_expression) {
         
     }
     
 public:
-    
-    
     /**
      * Apply rule to the Expression. Assuming that the Expression is already known 
      * to the interface implementation, for instance it can be passed via constructor.
