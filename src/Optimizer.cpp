@@ -19,6 +19,7 @@
 #include <sstream>
 
 #include <ExpressionFactory.h>
+#include <cmath>
 
 #include "ExceptionThrower.h"
 #include "SumConstantsRule.h"
@@ -30,6 +31,7 @@
 #include "PowOfPowRule.h"
 
 #include "OptimizationRule.tpp"
+#include "FunctionEvaluateRule.tpp"
 
 /**
  * Initialize the vector of optimization rules for summation expression.
@@ -282,9 +284,19 @@ void Optimizer::visit(const PConstSin expr) throw (TraverseException) {
     if (!expr->isComplete()) {
         THROW(TraverseException, "Expression is not consistent.", "Arg: " + to_string(expr->arg));
     }
+
+    expr->arg->traverse(*this);
+    PExpression optimizedArg=this->getLastVisitResult();
+    PSin sinWithOptimizedArgs =createSin(optimizedArg);
     
-    // if constant is fiven in argument - evaluate it
-    // what else?? nothing else
+    FunctionEvaluateRule<Sin> rule(sinWithOptimizedArgs, [](double v) -> double{ return std::sin(v); });
+    if(rule.apply()){
+        this->setLastVisitResult(rule.getOptimizedExpression());
+        return;
+    }
+    
+    this->setLastVisitResult(sinWithOptimizedArgs);
+    return;
 }
 
 void Optimizer::visit(const PConstCos expr) throw (TraverseException) {
