@@ -27,17 +27,15 @@ SumIdenticalExpressionsRule::SumIdenticalExpressionsRule(PSum _expression) : Opt
 }
 
 bool SumIdenticalExpressionsRule::apply() throw(TraverseException) {
-    PSum typedExpression = SPointerCast<Sum>(this->expression);
-    
     // is it appliable?
     // criteria:
     // - both left and right summation arguments contain equal expressions
     // - both left and right summation arguments complemented by constants
     
-    if(!isTypeOf<Mult>(typedExpression->lArg) && !isTypeOf<Mult>(typedExpression->rArg)){
-        if(equals(typedExpression->lArg, typedExpression->rArg)){
+    if(!isTypeOf<Mult>(this->expression->lArg) && !isTypeOf<Mult>(this->expression->rArg)){
+        if(equals(this->expression->lArg, this->expression->rArg)){
             // summation terms are the same
-            this->optimizedExpression=createMult(createConstant(2.0), typedExpression->lArg);
+            this->optimizedExpression=createMult(createConstant(2.0), this->expression->lArg);
             return true;
         }
         // summation terms are completely different - nothing to do
@@ -47,8 +45,8 @@ bool SumIdenticalExpressionsRule::apply() throw(TraverseException) {
     // at least one term is multiplication - try to express both terms as Mult
     
     PMult sumTerm1;
-    if(isTypeOf<Mult>(typedExpression->lArg)){
-        PMult temp=SPointerCast<Mult>(typedExpression->lArg);
+    if(isTypeOf<Mult>(this->expression->lArg)){
+        PMult temp=SPointerCast<Mult>(this->expression->lArg);
         if(!isTypeOf<Constant>(temp->lArg) && !isTypeOf<Constant>(temp->rArg)){
             // one multiplication does not contain constant - nothing to do
             return false;
@@ -59,12 +57,12 @@ bool SumIdenticalExpressionsRule::apply() throw(TraverseException) {
             sumTerm1=temp;
         }
     }else{
-        sumTerm1=createMult(createConstant(1.0),typedExpression->lArg);
+        sumTerm1=createMult(createConstant(1.0),this->expression->lArg);
     }
     
     PMult sumTerm2;
-    if(isTypeOf<Mult>(typedExpression->rArg)){
-        PMult temp=SPointerCast<Mult>(typedExpression->rArg);
+    if(isTypeOf<Mult>(this->expression->rArg)){
+        PMult temp=SPointerCast<Mult>(this->expression->rArg);
         if(!isTypeOf<Constant>(temp->lArg) && !isTypeOf<Constant>(temp->rArg)){
             return false;
         }else if(isTypeOf<Constant>(temp->rArg)){
@@ -73,7 +71,7 @@ bool SumIdenticalExpressionsRule::apply() throw(TraverseException) {
             sumTerm2=temp;
         }
     }else{
-        sumTerm2=createMult(createConstant(1.0),typedExpression->rArg);
+        sumTerm2=createMult(createConstant(1.0),this->expression->rArg);
     }
     
     // allright, now both sumation terms are represented as Multiplication with 

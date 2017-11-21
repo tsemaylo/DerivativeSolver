@@ -14,7 +14,7 @@
 #ifndef SUMCONSTANTSRULE_H
 #define SUMCONSTANTSRULE_H
 
-#include "OptimizationRule.h"
+#include "OptimizationRule.tpp"
 
 #include <Sum.h>
 #include <TraverseException.h>
@@ -22,7 +22,7 @@
 /**
  * The optimization rule to optimize the sum of two constants.
  */
-class SumConstantsRule : public OptimizationRule{
+class SumConstantsRule : public OptimizationRule<PSum>{
 public:
     SumConstantsRule(PSum _expression);
 

@@ -28,12 +28,17 @@
  * within specific implementations of OptimizationRule, where each specialization 
  * (implementation of OptimizationRule interface) is responsible for its own optimization case.
  */
+
+template <typename ExpressionType>
 class OptimizationRule{
 protected:
-    PExpression expression;
+    ExpressionType expression;
     PExpression optimizedExpression;
     
-    OptimizationRule(PExpression _expression);
+    OptimizationRule(ExpressionType _expression) : expression(_expression), optimizedExpression(_expression) {
+        
+    }
+    
 public:
     
     
@@ -53,7 +58,9 @@ public:
      * 
      * @return The instance of Expression.
      */
-    PExpression getOptimizedExpression() const;
+    PExpression getOptimizedExpression() const  {
+        return this->optimizedExpression;
+    }
 };
 
 #endif /* OPTIMIZATIONRRULE_H */

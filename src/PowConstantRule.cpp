@@ -19,26 +19,24 @@
 PowConstantRule::PowConstantRule(PPow _expression) : OptimizationRule(_expression){
 }
 
-bool PowConstantRule::apply() throw(TraverseException){
-    PPow typedExpr=SPointerCast<Pow>(this->expression);
-    
-    if(!isTypeOf<Constant>(typedExpr->rArg)){
+bool PowConstantRule::apply() throw(TraverseException){    
+    if(!isTypeOf<Constant>(this->expression->rArg)){
         return false;
     }
     
-    PConstant exponent=SPointerCast<Constant>(typedExpr->rArg);
+    PConstant exponent=SPointerCast<Constant>(this->expression->rArg);
     if(exponent->value==0.0){
         this->optimizedExpression=createConstant(1.0);
         return true;
     }
     
     if(exponent->value==1.0){
-        this->optimizedExpression=typedExpr->lArg;
+        this->optimizedExpression=this->expression->lArg;
         return true;
     }
     
-    if(isTypeOf<Constant>(typedExpr->lArg)){
-        PConstant base=SPointerCast<Constant>(typedExpr->lArg);
+    if(isTypeOf<Constant>(this->expression->lArg)){
+        PConstant base=SPointerCast<Constant>(this->expression->lArg);
         this->optimizedExpression=createConstant(std::pow(base->value, exponent->value));
         return true;
     }

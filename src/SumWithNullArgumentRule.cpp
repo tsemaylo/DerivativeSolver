@@ -20,15 +20,13 @@ SumWithNullArgumentRule::SumWithNullArgumentRule(PSum _expression) : Optimizatio
 }
 
 bool SumWithNullArgumentRule::apply()  throw(TraverseException) {
-    PSum typedExpression = SPointerCast<Sum>(this->expression);
-    
-    if(isTypeOf<Constant>(typedExpression->lArg) && SPointerCast<Constant>(typedExpression->lArg)->value==0.0){
-        this->optimizedExpression=typedExpression->rArg;
+    if(isTypeOf<Constant>(this->expression->lArg) && SPointerCast<Constant>(this->expression->lArg)->value==0.0){
+        this->optimizedExpression=this->expression->rArg;
         return true;
     }
     
-    if(isTypeOf<Constant>(typedExpression->rArg) && SPointerCast<Constant>(typedExpression->rArg)->value==0.0){
-        this->optimizedExpression=typedExpression->lArg;
+    if(isTypeOf<Constant>(this->expression->rArg) && SPointerCast<Constant>(this->expression->rArg)->value==0.0){
+        this->optimizedExpression=this->expression->lArg;
         return true;
     }
             

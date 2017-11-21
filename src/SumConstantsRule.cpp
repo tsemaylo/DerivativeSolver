@@ -25,11 +25,10 @@ SumConstantsRule::SumConstantsRule(PSum _expression) : OptimizationRule(_express
 }
 
 bool SumConstantsRule::apply() throw (TraverseException) {
-    PSum typedExpression = SPointerCast<Sum>(this->expression);
     // constant and constand - perform summation and return constant
-    if (isTypeOf<Constant>(typedExpression->lArg) && isTypeOf<Constant>(typedExpression->rArg)) {
-        double lArgVal = SPointerCast<Constant>(typedExpression->lArg)->value;
-        double rArgVal = SPointerCast<Constant>(typedExpression->rArg)->value;
+    if (isTypeOf<Constant>(this->expression->lArg) && isTypeOf<Constant>(this->expression->rArg)) {
+        double lArgVal = SPointerCast<Constant>(this->expression->lArg)->value;
+        double rArgVal = SPointerCast<Constant>(this->expression->rArg)->value;
 
         this->optimizedExpression = createConstant(lArgVal + rArgVal);
         return true;

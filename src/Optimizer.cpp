@@ -29,14 +29,16 @@
 #include "PowConstantRule.h"
 #include "PowOfPowRule.h"
 
+#include "OptimizationRule.tpp"
+
 /**
  * Initialize the vector of optimization rules for summation expression.
  * 
  * @param expr The Summation expression.
  * @return Vector consisting of unique pointers to OptimizationRule's.
  */
-inline std::vector<std::unique_ptr<OptimizationRule>> summationRules(PSum expr) {
-    std::vector<std::unique_ptr<OptimizationRule>> rules;
+inline std::vector<std::unique_ptr<OptimizationRule<PSum>>> summationRules(PSum expr) {
+    std::vector<std::unique_ptr<OptimizationRule<PSum>>> rules;
     
     rules.push_back(std::make_unique<SumConstantsRule>(expr));
     rules.push_back(std::make_unique<SumWithNullArgumentRule>(expr));
@@ -51,8 +53,8 @@ inline std::vector<std::unique_ptr<OptimizationRule>> summationRules(PSum expr) 
  * @param expr The Mult expression.
  * @return Vector consisting of unique pointers to OptimizationRule's.
  */
-inline std::vector<std::unique_ptr<OptimizationRule>> multiplicationRules(PMult expr) {
-    std::vector<std::unique_ptr<OptimizationRule>> rules;
+inline std::vector<std::unique_ptr<OptimizationRule<PMult>>> multiplicationRules(PMult expr) {
+    std::vector<std::unique_ptr<OptimizationRule<PMult>>> rules;
     
     rules.push_back(std::make_unique<MultConstantsRule>(expr));
     rules.push_back(std::make_unique<MultIdenticalExpressionsRule>(expr));
@@ -66,8 +68,8 @@ inline std::vector<std::unique_ptr<OptimizationRule>> multiplicationRules(PMult 
  * @param expr The Pow expression.
  * @return Vector consisting of unique pointers to OptimizationRule's.
  */
-inline std::vector<std::unique_ptr<OptimizationRule>> exponentiationRules(PPow expr) {
-    std::vector<std::unique_ptr<OptimizationRule>> rules;
+inline std::vector<std::unique_ptr<OptimizationRule<PPow>>> exponentiationRules(PPow expr) {
+    std::vector<std::unique_ptr<OptimizationRule<PPow>>> rules;
     
     rules.push_back(std::make_unique<PowConstantRule>(expr));
     rules.push_back(std::make_unique<PowOfPowRule>(expr));

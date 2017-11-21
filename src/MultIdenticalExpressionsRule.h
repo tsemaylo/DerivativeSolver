@@ -14,7 +14,7 @@
 #ifndef MULTIDENTICALEXPRESSIONSRULE_H
 #define MULTIDENTICALEXPRESSIONSRULE_H
 
-#include "OptimizationRule.h"
+#include "OptimizationRule.tpp"
 
 #include <Mult.h>
 #include <TraverseException.h>
@@ -26,7 +26,7 @@
  *   A*Expression^M * B*Expression^N
  * and reduce it to the form: AB*Expression^(M+N)
  */
-class MultIdenticalExpressionsRule : public OptimizationRule {
+class MultIdenticalExpressionsRule : public OptimizationRule<PMult> {
 public:
     MultIdenticalExpressionsRule(PMult _expression);
     bool apply() throw(TraverseException) final;

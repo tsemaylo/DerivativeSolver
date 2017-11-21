@@ -14,7 +14,7 @@
 #ifndef MULTCONSTANTSRULE_H
 #define MULTCONSTANTSRULE_H
 
-#include "OptimizationRule.h"
+#include "OptimizationRule.tpp"
 
 #include <Mult.h>
 
@@ -26,10 +26,9 @@
  * - 0 * Expression =  0 \n
  * - 1 * Expression = Expression
  */
-class MultConstantsRule : public OptimizationRule {
+class MultConstantsRule : public OptimizationRule<PMult> {
 public:
     MultConstantsRule(PMult _expression);
-
     bool apply() throw (TraverseException) final;
 };
 

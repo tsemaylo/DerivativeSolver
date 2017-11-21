@@ -17,8 +17,6 @@
 #include <vector>
 #include <Visitor.h>
 
-#include "OptimizationRule.h"
-
 class Optimizer : public Visitor {
 private:
     PExpression result;

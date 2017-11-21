@@ -14,7 +14,7 @@
 #ifndef POWOFPOWRULE_H
 #define POWOFPOWRULE_H
 
-#include "OptimizationRule.h"
+#include "OptimizationRule.tpp"
 #include <Pow.h>
 #include <TraverseException.h>
 
@@ -25,7 +25,7 @@
  * - (x^m)^n = x^mn \n
  * - (1/x^n)^m = (x^-n)^m = x^-mn \n
  */
-class PowOfPowRule : public OptimizationRule {
+class PowOfPowRule : public OptimizationRule<PPow> {
 public:
     PowOfPowRule(PPow _expression);
     bool apply() throw(TraverseException) final;

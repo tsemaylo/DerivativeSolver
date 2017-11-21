@@ -12,7 +12,7 @@
  */
 
 #include "MultIdenticalExpressionsRule.h"
-#include "MathParser/src/ExpressionFactory.h"
+#include <ExpressionFactory.h>
 
 MultIdenticalExpressionsRule::MultIdenticalExpressionsRule(PMult _expression): OptimizationRule(_expression) {
 }
@@ -49,16 +49,14 @@ bool putConstantToLeft(PExpression expr, std::function<bool (PMult)> onSuccess){
 }
 
 bool MultIdenticalExpressionsRule::apply() throw(TraverseException){
-    PMult typedExpr=SPointerCast<Mult>(this->expression);
-    
     // check if left and right hand terms are also products (Mult)
-    bool lArgIsMult=isTypeOf<Mult>(typedExpr->lArg);
-    bool rArgIsMult=isTypeOf<Mult>(typedExpr->rArg);
+    bool lArgIsMult=isTypeOf<Mult>(this->expression->lArg);
+    bool rArgIsMult=isTypeOf<Mult>(this->expression->rArg);
     
     if(!lArgIsMult && !rArgIsMult){ 
-        if(equals(typedExpr->lArg, typedExpr->rArg)){
+        if(equals(this->expression->lArg, this->expression->rArg)){
             // x*x = x^2
-            this->optimizedExpression=createPow(typedExpr->lArg, createConstant(2.0));
+            this->optimizedExpression=createPow(this->expression->lArg, createConstant(2.0));
             return true;
         }
     }
@@ -66,7 +64,7 @@ bool MultIdenticalExpressionsRule::apply() throw(TraverseException){
     // try to normalize it to canonical form: A*(x^n) * B*(x^m)
     PMult canonicalForm=createMult(); 
    
-    if(!putConstantToLeft(typedExpr->lArg, [&canonicalForm](PMult normalizedLArg) -> bool{
+    if(!putConstantToLeft(this->expression->lArg, [&canonicalForm](PMult normalizedLArg) -> bool{
         // now check that the right operand is actually the exponent or can be casted to exponent
         normalizedLArg->rArg=castRightArgToPow(normalizedLArg->rArg);
         canonicalForm->lArg=normalizedLArg;
@@ -75,7 +73,7 @@ bool MultIdenticalExpressionsRule::apply() throw(TraverseException){
         return false;
     }
     
-    if(!putConstantToLeft(typedExpr->rArg, [&canonicalForm](PMult normalizedRArg) -> bool{
+    if(!putConstantToLeft(this->expression->rArg, [&canonicalForm](PMult normalizedRArg) -> bool{
         normalizedRArg->rArg=castRightArgToPow(normalizedRArg->rArg);
         canonicalForm->rArg=normalizedRArg;
         return true;

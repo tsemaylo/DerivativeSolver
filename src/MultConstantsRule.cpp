@@ -19,38 +19,36 @@ MultConstantsRule::MultConstantsRule(PMult _expression) : OptimizationRule(_expr
 }
 
 bool MultConstantsRule::apply() throw(TraverseException) {
-    PMult typedExpr=SPointerCast<Mult>(this->expression);
-    
-    if(isTypeOf<Constant>(typedExpr->lArg) && isTypeOf<Constant>(typedExpr->rArg)){
-        double val1=SPointerCast<Constant>(typedExpr->lArg)->value;
-        double val2=SPointerCast<Constant>(typedExpr->rArg)->value;
+    if(isTypeOf<Constant>(this->expression->lArg) && isTypeOf<Constant>(this->expression->rArg)){
+        double val1=SPointerCast<Constant>(this->expression->lArg)->value;
+        double val2=SPointerCast<Constant>(this->expression->rArg)->value;
         
         this->optimizedExpression=createConstant(val1 * val2);
         return true;
     }
     
-    if(isTypeOf<Constant>(typedExpr->lArg)){
-        double val=SPointerCast<Constant>(typedExpr->lArg)->value;
+    if(isTypeOf<Constant>(this->expression->lArg)){
+        double val=SPointerCast<Constant>(this->expression->lArg)->value;
         if(val == 0.0){
             this->optimizedExpression=createConstant(0.0);
             return true;
         }
         
         if(val == 1.0){
-            this->optimizedExpression=typedExpr->rArg;
+            this->optimizedExpression=this->expression->rArg;
             return true;
         }
     }
     
-    if(isTypeOf<Constant>(typedExpr->rArg)){
-        double val=SPointerCast<Constant>(typedExpr->rArg)->value;
+    if(isTypeOf<Constant>(this->expression->rArg)){
+        double val=SPointerCast<Constant>(this->expression->rArg)->value;
         if(val == 0.0){
             this->optimizedExpression=createConstant(0.0);
             return true;
         }
         
         if(val == 1.0){
-            this->optimizedExpression=typedExpr->lArg;
+            this->optimizedExpression=this->expression->lArg;
             return true;
         }
     }

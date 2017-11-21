@@ -14,7 +14,7 @@
 #ifndef POWCONSTANTRULE_H
 #define POWCONSTANTRULE_H
 
-#include "OptimizationRule.h"
+#include "OptimizationRule.tpp"
 #include <TraverseException.h>
 #include <Pow.h>
 
@@ -27,7 +27,7 @@
  *  Expression ^ 0 = 1 \n
  *  Expression ^ 1 = Expression 
  */
-class PowConstantRule : public OptimizationRule {
+class PowConstantRule : public OptimizationRule<PPow> {
 public:
     PowConstantRule(PPow _expression);
     bool apply() throw (TraverseException) final;

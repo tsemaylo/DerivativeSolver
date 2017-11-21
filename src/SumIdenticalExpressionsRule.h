@@ -14,7 +14,7 @@
 #ifndef SUMIDENTICALEXPRESSIONS_H
 #define SUMIDENTICALEXPRESSIONS_H
 
-#include "OptimizationRule.h"
+#include "OptimizationRule.tpp"
 
 #include <Sum.h>
 #include <TraverseException.h>
@@ -25,7 +25,7 @@
  *   (N + M)*exp
  * where N and M are Constant s
  */
-class SumIdenticalExpressionsRule : public OptimizationRule {
+class SumIdenticalExpressionsRule : public OptimizationRule<PSum> {
 public:
     SumIdenticalExpressionsRule(PSum _expression);
     bool apply() throw(TraverseException) final;

@@ -14,12 +14,12 @@
 #ifndef SUMWITHNULLARGUMENTRULE_H
 #define SUMWITHNULLARGUMENTRULE_H
 
-#include "OptimizationRule.h"
+#include "OptimizationRule.tpp"
 
 #include <Sum.h>
 #include <TraverseException.h>
 
-class SumWithNullArgumentRule : public OptimizationRule {
+class SumWithNullArgumentRule : public OptimizationRule<PSum> {
 public:
     SumWithNullArgumentRule(PSum _expression);
     bool apply() throw(TraverseException) final;
