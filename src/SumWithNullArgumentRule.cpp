@@ -16,16 +16,18 @@
 #include <Constant.h>
 #include <Sum.h>
 
+#include "Doubles.h"
+
 SumWithNullArgumentRule::SumWithNullArgumentRule(PSum _expression) : OptimizationRule(_expression) {
 }
 
 bool SumWithNullArgumentRule::apply()  throw(TraverseException) {
-    if(isTypeOf<Constant>(this->expression->lArg) && SPointerCast<Constant>(this->expression->lArg)->value==0.0){
+    if(isTypeOf<Constant>(this->expression->lArg) && equal(SPointerCast<Constant>(this->expression->lArg)->value, 0.0)){
         this->optimizedExpression=this->expression->rArg;
         return true;
     }
     
-    if(isTypeOf<Constant>(this->expression->rArg) && SPointerCast<Constant>(this->expression->rArg)->value==0.0){
+    if(isTypeOf<Constant>(this->expression->rArg) && equal(SPointerCast<Constant>(this->expression->rArg)->value, 0.0)){
         this->optimizedExpression=this->expression->lArg;
         return true;
     }

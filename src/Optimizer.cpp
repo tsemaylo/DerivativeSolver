@@ -163,8 +163,9 @@ void Optimizer::visit(const PConstSub expr) throw (TraverseException) {
     PExpression optimizedRArg=this->getLastVisitResult();
     
     // reprsent as summation and apply summation rules
-    
-    PSum sumWithOptimizedArgs = createSum(optimizedLArg, negateExpression(optimizedRArg));
+    negateExpression(optimizedRArg)->traverse(*this);
+    PExpression optimizedNegatedRArg=this->getLastVisitResult();
+    PSum sumWithOptimizedArgs = createSum(optimizedLArg, optimizedNegatedRArg);
     
     for (auto &rule : summationRules(sumWithOptimizedArgs)){
         if (rule->apply()) {
@@ -223,9 +224,9 @@ void Optimizer::visit(const PConstDiv expr) throw (TraverseException) {
     PExpression optimizedRArg=this->getLastVisitResult();
     
     // reprsent as product and apply multiplicationrules
-    
-    PMult multWithOptimizedArgs = createMult(optimizedLArg, invertDenominator(optimizedRArg));
-    
+    invertDenominator(optimizedRArg)->traverse(*this);
+    PExpression optimizedInvertedRArg=this->getLastVisitResult();
+    PMult multWithOptimizedArgs = createMult(optimizedLArg, optimizedInvertedRArg);
     for (auto &rule : multiplicationRules(multWithOptimizedArgs)){
         if (rule->apply()) {
             this->setLastVisitResult(rule->getOptimizedExpression());
@@ -328,8 +329,8 @@ void Optimizer::visit(const PConstTan expr) throw (TraverseException) {
     
     FunctionEvaluateRule<Tan> rule(tanWithOptimizedArgs, [optimizedArg](double v) -> double{ 
         double pi=3.14159265358979323846; 
-        double n = v/(pi/2.0);
-        double nint=std::round(n);
+        double n = v/pi-pi/2;
+        double nint = std::round(n);
         if(equals(createConstant(n), createConstant(nint))){ 
             // tangent is not defined here
             THROW(TraverseException, "Argumenmt of tangent is not correct, infinite result is expected here!", "tan("+to_string(optimizedArg)+")");
@@ -442,13 +443,15 @@ PExpression optimize(PExpression expr) throw (TraverseException){
     // try to otimize the expression severaltime until the optimization result 
     // will not differ
     PExpression previousExpression=expr;
-    while(!isDone && attemptN < attemtLimit){
+    while(!isDone || attemptN < attemtLimit){
         Optimizer optimizer;
-        expr->traverse(optimizer);
-        PExpression optimizedExpr=optimizer->getLastVisitResult();
+        previousExpression->traverse(optimizer);
+        PExpression optimizedExpr=optimizer.getLastVisitResult();
         isDone = equals(optimizedExpr, previousExpression);
         
         previousExpression=optimizedExpr;
         attemptN++;
     }
+    
+    return previousExpression;
 }

@@ -148,3 +148,64 @@ TEST_F(FX_Optimizer, visit_Division_ApplicableAndSuccessfull) {
                 << expected << " != " << actual;
     }
 }
+
+TEST_F(FX_Optimizer, optimize_SimpleOptimizations_Successfull) {
+    std::vector<PExpression> tests;
+    std::vector<PExpression> expResults;
+    
+    // x/1
+//    tests.push_back(createDiv(createVariable("x"), createConstant(1)));
+//    expResults.push_back(createVariable("x"));
+    
+    // cos(1-(x*x)/((x^0.5)^4)) + (1/x)*x^2 - ln(exp(x)) = 1 
+//    {
+//        PExpression term1=createCos(
+//            createSub(
+//                createConstant(1.0),
+//                createDiv(
+//                    createMult(createVariable("x"), createVariable("x")),
+//                    createPow(createPow(createVariable("x"),createConstant(0.5)),createConstant(4.))
+//                )
+//            )
+//        );
+//        PExpression term2=createMult(
+//                createDiv(createConstant(1.0), createVariable("x")),
+//                createPow(createVariable("x"), createConstant(2.0))
+//        );
+//        PExpression term3=createLn(createExp(createVariable("x")));
+//
+//        tests.push_back(createSum(term1, createSub(term2, term3)));
+//        expResults.push_back(createConstant(1.0));
+//    }
+    
+    // (tan(ctan(pi/2)) + x^5) / (3x-exp(0)*2x) = x^4
+    {
+        double pi=3.14159265358979323846;
+        
+        PExpression term1= createSum(
+            createTan(createCtan(createConstant(pi/2))),
+            createPow(createVariable("x"), createConstant(5.0))
+        );
+        PExpression term2=createSub(
+            createMult(createConstant(3), createVariable("x")),
+            createMult(createConstant(2), createMult(
+                createExp(createConstant(0)),
+                createVariable("x")
+                )
+            )
+        );
+            
+        tests.push_back(createDiv(term1, term2));
+        expResults.push_back(createPow(createVariable("x"), createConstant(4.0)));
+    }
+    
+    for(unsigned int testId=0; testId < tests.size(); testId++){
+        PExpression actResult;
+        EXPECT_NO_THROW(actResult=optimize(tests[testId])) << "Test ID=" << testId << " threw an exception!";
+        string expected=to_string(expResults[testId]);
+        string actual=to_string(actResult);
+        EXPECT_TRUE(equals(expResults[testId], actResult)) << 
+                "Result does not match for test ID=" << testId << "! (" 
+                << expected << " != " << actual;
+    }
+}
