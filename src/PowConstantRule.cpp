@@ -15,6 +15,7 @@
 #include <cmath>
 #include <ExpressionFactory.h>
 #include <Constant.h>
+#include "Doubles.h"
 
 PowConstantRule::PowConstantRule(PPow _expression) : OptimizationRule(_expression){
 }
@@ -25,12 +26,12 @@ bool PowConstantRule::apply() throw(TraverseException){
     }
     
     PConstant exponent=SPointerCast<Constant>(this->expression->rArg);
-    if(exponent->value==0.0){
+    if(equal(exponent->value, 0.0)){
         this->optimizedExpression=createConstant(1.0);
         return true;
     }
     
-    if(exponent->value==1.0){
+    if(equal(exponent->value, 1.0)){
         this->optimizedExpression=this->expression->lArg;
         return true;
     }

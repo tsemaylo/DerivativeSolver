@@ -14,6 +14,7 @@
 #include "MultConstantsRule.h"
 #include <Constant.h>
 #include <ExpressionFactory.h>
+#include "Doubles.h"
 
 MultConstantsRule::MultConstantsRule(PMult _expression) : OptimizationRule(_expression) {
 }
@@ -42,12 +43,12 @@ bool MultConstantsRule::apply() throw(TraverseException) {
     
     if(isTypeOf<Constant>(this->expression->rArg)){
         double val=SPointerCast<Constant>(this->expression->rArg)->value;
-        if(val == 0.0){
+        if(equal(val, 0.0)){
             this->optimizedExpression=createConstant(0.0);
             return true;
         }
         
-        if(val == 1.0){
+        if(equal(val, 1.0)){
             this->optimizedExpression=this->expression->lArg;
             return true;
         }

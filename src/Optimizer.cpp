@@ -22,6 +22,7 @@
 #include <ExpressionFactory.h>
 #include <Expression.h>
 
+#include "Doubles.h"
 #include "ExceptionThrower.h"
 #include "SumConstantsRule.h"
 #include "SumWithNullArgumentRule.h"
@@ -204,7 +205,7 @@ inline PExpression invertDenominator(PExpression expr) throw(TraverseException){
     if(isTypeOf<Constant>(expr)){
         // n => 1/n 
         PConstant typedExpr=SPointerCast<Constant>(expr);
-        if(typedExpr->value!=0.0){
+        if(!equal(typedExpr->value, 0.0)){
             return createConstant(1.0/(typedExpr->value));
         }
     }
@@ -331,7 +332,7 @@ void Optimizer::visit(const PConstTan expr) throw (TraverseException) {
         double pi=3.14159265358979323846; 
         double n = v/pi-pi/2;
         double nint = std::round(n);
-        if(equals(createConstant(n), createConstant(nint))){ 
+        if(equal(n, nint)){ 
             // tangent is not defined here
             THROW(TraverseException, "Argumenmt of tangent is not correct, infinite result is expected here!", "tan("+to_string(optimizedArg)+")");
         }
@@ -359,7 +360,7 @@ void Optimizer::visit(const PConstCtan expr) throw (TraverseException) {
         double pi=3.14159265358979323846; 
         double n = v/pi;
         double nint=std::round(n);
-        if(equals(createConstant(n), createConstant(nint))){ 
+        if(equal(n, nint)){ 
             // cotangent is not defined here
             THROW(TraverseException, "Argumenmt of cotangent is not correct, infinite result is expected here!", "ctan("+to_string(optimizedArg)+")");
         }
