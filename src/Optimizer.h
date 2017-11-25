@@ -17,9 +17,22 @@
 #include <vector>
 #include <Visitor.h>
 
+/**
+ * The Optimizer is intended to simtlify the Expression.
+ * 
+ * The Optimizer must allways return the new syntax tree!
+ * This allows to implement proper iterative simplification of expression:
+ * each optimization will generate new tree and therefore it will be possible to
+ * compare current optimization with previous result. In other words input expression 
+ * should be structurally immutable here. 
+ */
 class Optimizer : public Visitor {
 private:
-    PExpression result;
+    /* the optimized expression
+     Consideration: the result SPointer must not be the same as  expr
+     * argimet of visit() method!
+     */
+    PExpression result; 
     
 public:
     void visit(const PConstConstant expr) throw (TraverseException) final;
@@ -39,6 +52,16 @@ public:
     void setLastVisitResult(const PExpression result);
     PExpression getLastVisitResult() const;
 };
+
+/**
+ * Simplify the given expression.
+ * 
+ * This function is a facade for Optmizer.
+ * 
+ * @param expr Expression to be optimized.
+ * @return The SPointer to the optimized Expression (it can be in factthe same SPointer as an input.)
+ */
+PExpression optimize(PExpression expr) throw (TraverseException);
 
 #endif /* OPTIMIZER_H */
 

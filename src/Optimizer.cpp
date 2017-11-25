@@ -433,3 +433,22 @@ PExpression Optimizer::getLastVisitResult() const {
 void Optimizer::setLastVisitResult(PExpression result) {
     this->result = result;
 }
+
+PExpression optimize(PExpression expr) throw (TraverseException){
+    bool isDone=false;
+    const auto attemtLimit=10; 
+    auto attemptN=0;
+    
+    // try to otimize the expression severaltime until the optimization result 
+    // will not differ
+    PExpression previousExpression=expr;
+    while(!isDone && attemptN < attemtLimit){
+        Optimizer optimizer;
+        expr->traverse(optimizer);
+        PExpression optimizedExpr=optimizer->getLastVisitResult();
+        isDone = equals(optimizedExpr, previousExpression);
+        
+        previousExpression=optimizedExpr;
+        attemptN++;
+    }
+}
