@@ -13,6 +13,8 @@
 
 #include <gtest/gtest.h>
 
+#include <cmath>
+
 #include "FunctionEvaluateRule.tpp"
 #include <Constant.h>
 #include <Mult.h>
