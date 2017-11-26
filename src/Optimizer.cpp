@@ -413,8 +413,12 @@ void Optimizer::setLastVisitResult(PExpression result) {
 }
 
 PExpression optimize(PExpression expr) throw (TraverseException){
+    if(expr==nullptr){
+        THROW(TraverseException, "Not possible to optimize the NULL expressions.", "N.A.");
+    }
+    
     bool isDone=false;
-    const auto attemtLimit=10; 
+    const auto attemtLimit=20; 
     auto attemptN=0;
     
     // try to otimize the expression severaltime until the optimization result 

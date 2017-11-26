@@ -44,4 +44,6 @@ public:
     PExpression getLastVisitResult() const;
 };
 
+
+PExpression differentiate(PExpression expr, string var) throw(TraverseException);
 #endif /* SRC_DIFFERENTIATOR_H_ */

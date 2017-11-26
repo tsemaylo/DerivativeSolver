@@ -225,3 +225,12 @@ void Differentiator::setLastVisitResult(PExpression result) {
     this->result = result;
 }
 
+PExpression differentiate(PExpression expr, string var) throw(TraverseException){
+    if(expr==nullptr){
+        THROW(TraverseException, "Not possible to differentiate the NULL expression.", "N.A.");
+    }
+    
+    Differentiator differentiator = Differentiator(var);
+    expr->traverse(differentiator);
+    return differentiator.getLastVisitResult();
+}

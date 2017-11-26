@@ -42,7 +42,8 @@ bool putConstantToLeft(PExpression expr, std::function<bool (PMult)> onSuccess){
     if(rIsConst){
         return onSuccess(createMult(typedExpr->rArg, typedExpr->lArg));
     }else{
-        return onSuccess(typedExpr);
+        // create a new instance of mult to avoid sideeffects
+        return onSuccess(createMult(typedExpr->lArg, typedExpr->rArg));
     }
 
     return true;

@@ -213,6 +213,22 @@ TEST_F(FX_Optimizer, optimize_SimpleOptimizations_Successfull) {
         expResults.push_back(createConstant(-1));
     }
     
+    // (-1*(sin(x)^1))*cos(cos(x)) = -1*sin(x)*cos(cos(x))
+    {   
+        PExpression term1=createMult(
+            createConstant(-1),
+            createPow(createSin(createVariable("x")), createConstant(1))
+        );
+        PExpression term2=createCos(createCos(createVariable("x")));
+        PExpression resTerm1=createMult(
+            createConstant(-1),
+            createSin(createVariable("x"))
+        );
+        expResults.push_back(createMult(resTerm1, term2));
+        tests.push_back(createMult(term1, term2));
+    }
+
+    
     for(unsigned int testId=0; testId < tests.size(); testId++){
         PExpression actResult;
         EXPECT_NO_THROW(actResult=optimize(tests[testId])) << "Test ID=" << testId << " threw an exception!";

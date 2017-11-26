@@ -20,7 +20,7 @@
 #include <ParserFactory.h>
 
 #include "Differentiator.h"
-
+#include "Optimizer.h"
 
 using namespace std;
 
@@ -50,12 +50,12 @@ int SolverApplication::run() {
     int returnCode=0;
     std::unique_ptr<Parser> parser=createParser();
     try {
-        PExpression expr = parser->parse(this->strExpression);
+        PExpression parsed = parser->parse(this->strExpression);
+        PExpression preOptimized=optimize(parsed);
+        PExpression differentiated=differentiate(preOptimized, this->strVariable);
+        PExpression optimized=optimize(differentiated);
 
-        Differentiator differentiator = Differentiator(this->strVariable);
-        expr->traverse(differentiator);
-
-        cout << to_string(differentiator.getLastVisitResult()) << endl;
+        cout << to_string(optimized) << endl;
     } catch (ParsingException ex) {
         cout << "ERROR: " << ex.what();
         returnCode=1;
