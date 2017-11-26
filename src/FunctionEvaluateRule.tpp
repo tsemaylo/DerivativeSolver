@@ -41,15 +41,17 @@ public:
     }
 
     bool apply() throw (TraverseException) final {
-        if (isTypeOf<T>(this->expression)) {
-            auto typedExpr = SPointerCast<T>(this->expression);
-            if (isTypeOf<Constant>(typedExpr->arg)) {
-                this->optimizedExpression = createConstant(this->f(SPointerCast<Constant>(typedExpr->arg)->value));
-                return true;
-            }
+        if (!isTypeOf<T>(this->expression)) {
             return false;
         }
-        return false;
+        
+        auto typedExpr = SPointerCast<T>(this->expression);
+        if (!isTypeOf<Constant>(typedExpr->arg)) {
+            return false;
+        }
+        
+        this->optimizedExpression = createConstant(this->f(SPointerCast<Constant>(typedExpr->arg)->value));
+        return true;
     }
 };
 #endif /* FUNCTIONEVALUATERULE_H */

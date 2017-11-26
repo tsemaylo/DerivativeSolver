@@ -34,6 +34,30 @@ private:
      */
     PExpression result; 
     
+    /**
+     * Optimize the arguments of the expression representing diadic operation (+,-, * etc.).
+     * 
+     * @TODO This code is ugly because of PCT and PT template parameters. 
+     * @TODO PT denptes the ponter type of expression and PCT is a pointer type for constant of the same expression.
+     * @TODO I have no idea so far how to refactor it properly.
+     * 
+     * @param expr The expression which arguments have to be optimized.
+     * @param factory A lambda function that acts like a factory method to create the new instance of expression.
+     * @return The new expression of the same type as expr, but with optimized arguments.
+     */
+    template <typename PCT, typename PT>
+    PT optimizeArgumentsDiadic(const PCT expr, std::function<PT (PExpression, PExpression)> factory) ;
+    
+    /**
+     * Optimize the argument of the expression representing monadic operation (function of one arg).
+     * 
+     * @param expr The expression which arguments have to be optimized.
+     * @param factory A lambda function that acts like a factory method to create the new instance of expression.
+     * @return The new expression of the same type as expr, but with optimized argument.
+     */
+    template <typename PCT, typename PT>
+    PT optimizeArgumentMonadic(const PCT expr, std::function<PT (PExpression)> factory) ;
+    
 public:
     void visit(const PConstConstant expr) throw (TraverseException) final;
     void visit(const PConstVariable expr) throw (TraverseException) final;

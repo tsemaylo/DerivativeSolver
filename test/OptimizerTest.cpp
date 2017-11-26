@@ -244,6 +244,7 @@ TEST_F(FX_Optimizer, optimize_ExceptionalCases_TraverseException) {
     tests.push_back(createDiv(createConstant(1), createConstant(0))); // 11
     tests.push_back(createTan(createConstant(PI/2))); //12
     tests.push_back(createCtan(createConstant(2*PI))); //13
+    tests.push_back(createLn(createConstant(-2.0))); //14
     
     for(unsigned int testId=0; testId < tests.size(); testId++){
         EXPECT_THROW(optimize(tests[testId]), TraverseException) << "Test ID=" << testId << " did not throw an exception!";
