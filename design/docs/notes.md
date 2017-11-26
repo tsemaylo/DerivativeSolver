@@ -166,7 +166,8 @@ Performed in the build time.
   - [x] also describe how to name test cases
 - [x] Implementation of Differentiator
 - [x] Implementation of StringGenerator
-- [ ] Implement visitor to simplify the expression (IN PROGRESS)
+- [x] Implement visitor to simplify the expression
+- [ ] Implement the SolverApplication (IN PROGRESS) 
 - [ ] Review of the design 
 - [ ] Remove redundant unit test cases from ParserTest
 - [ ] Test runs with Valgrind
