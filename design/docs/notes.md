@@ -160,19 +160,20 @@ Performed in the build time.
 - [x] RuleFunction 
 - [ ] Rule for multiplication without sign of multiplication<br>
       Parsing Improvement 
-- [ ] Being case-irrelevant
-- [ ] Support floating point numbers <br><br>
+- [ ] Being case-irrelevant (IN PROGRESS)
+- [ ] Support floating point numbers (IN PROGRESS) <br><br>
 - [x] Update design docs 
   - [x] also describe how to name test cases
 - [x] Implementation of Differentiator
 - [x] Implementation of StringGenerator
 - [x] Implement visitor to simplify the expression
-- [ ] Implement the SolverApplication (IN PROGRESS) 
+  - [ ] Simplify expressions like "x^2*(2/x)"
+- [x] Implement the SolverApplication  
 - [ ] Review of the design 
 - [ ] Remove redundant unit test cases from ParserTest
 - [ ] Test runs with Valgrind
 - [x] Do static analysis of the code, integrate into CI
-- [ ] Testing scripts for whole application
+- [ ] Testing scripts for whole application (IN PROGRESS)
 - [x] Check testing coverage 
 - [x] Refactoring of shared_ptr usage 
 - [x] Modularization of Parser 
