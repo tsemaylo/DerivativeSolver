@@ -13,6 +13,7 @@
 
 #include "PowOfPowRule.h"
 #include <ExpressionFactory.h>
+#include "Doubles.h"
 
 PowOfPowRule::PowOfPowRule(PPow _expression) : OptimizationRule(_expression) {
 }
@@ -36,7 +37,7 @@ bool PowOfPowRule::apply() throw (TraverseException){
         return false;
     }
     
-    if(SPointerCast<Constant>(div->lArg)->value != 1.0){
+    if(!equal(SPointerCast<Constant>(div->lArg)->value, 1.0)){
         return false;
     }
 

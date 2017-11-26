@@ -150,7 +150,7 @@ add_unit_test_suite("test/SumIdenticalExpressionsRuleTest.cpp" "src/SumIdentical
 add_unit_test_suite("test/MultConstantsRuleTest.cpp" "src/MultConstantsRule.cpp" "src/Doubles.cpp")
 add_unit_test_suite("test/MultIdenticalExpressionsRuleTest.cpp" "src/MultIdenticalExpressionsRule.cpp")
 add_unit_test_suite("test/PowConstantRuleTest.cpp" "src/PowConstantRule.cpp" "src/Doubles.cpp")
-add_unit_test_suite("test/PowOfPowRuleTest.cpp" "src/PowOfPowRule.cpp")
+add_unit_test_suite("test/PowOfPowRuleTest.cpp" "src/PowOfPowRule.cpp" "src/Doubles.cpp")
 add_unit_test_suite("test/FunctionEvaluateRuleTest.cpp")
 add_unit_test_suite("test/LnOfExpRuleTest.cpp" "src/LnOfExpRule.cpp")
 

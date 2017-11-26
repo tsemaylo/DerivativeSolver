@@ -14,6 +14,8 @@
 #ifndef DOUBLES_H
 #define DOUBLES_H
 
+const double PI=3.14159265358979323846;
+
 /**
  * Check whether two doubles are equal with certain precision.
  * 

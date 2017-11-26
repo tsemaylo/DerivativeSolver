@@ -205,9 +205,10 @@ inline PExpression invertDenominator(PExpression expr) throw(TraverseException){
     if(isTypeOf<Constant>(expr)){
         // n => 1/n 
         PConstant typedExpr=SPointerCast<Constant>(expr);
-        if(!equal(typedExpr->value, 0.0)){
-            return createConstant(1.0/(typedExpr->value));
+        if(equal(typedExpr->value, 0.0)){
+            THROW(TraverseException, "Division by zero.", to_string(expr));
         }
+        return createConstant(1.0/(typedExpr->value));
     }
     // default rule
     return createPow(expr, createConstant(-1.0));
@@ -329,8 +330,7 @@ void Optimizer::visit(const PConstTan expr) throw (TraverseException) {
     PTan tanWithOptimizedArgs =createTan(optimizedArg);
     
     FunctionEvaluateRule<Tan> rule(tanWithOptimizedArgs, [optimizedArg](double v) -> double{ 
-        double pi=3.14159265358979323846; 
-        double n = v/pi-pi/2;
+        double n = ((2*v)+PI)/(2*PI);
         double nint = std::round(n);
         if(equal(n, nint)){ 
             // tangent is not defined here
@@ -357,8 +357,7 @@ void Optimizer::visit(const PConstCtan expr) throw (TraverseException) {
     PCtan ctanWithOptimizedArgs =createCtan(optimizedArg);
     
     FunctionEvaluateRule<Ctan> rule(ctanWithOptimizedArgs, [optimizedArg](double v) -> double{ 
-        double pi=3.14159265358979323846; 
-        double n = v/pi;
+        double n = v/PI;
         double nint=std::round(n);
         if(equal(n, nint)){ 
             // cotangent is not defined here

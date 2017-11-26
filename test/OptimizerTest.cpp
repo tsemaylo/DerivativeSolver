@@ -16,7 +16,7 @@
 #include "Optimizer.h"
 #include "Constant.h"
 #include "Sum.h"
-
+#include "Doubles.h"
 #include "ExpressionFactory.h"
 
 class FX_Optimizer : public testing::Test {
@@ -154,36 +154,36 @@ TEST_F(FX_Optimizer, optimize_SimpleOptimizations_Successfull) {
     std::vector<PExpression> expResults;
     
     // x/1
-//    tests.push_back(createDiv(createVariable("x"), createConstant(1)));
-//    expResults.push_back(createVariable("x"));
+    tests.push_back(createDiv(createVariable("x"), createConstant(1)));
+    expResults.push_back(createVariable("x"));
     
     // cos(1-(x*x)/((x^0.5)^4)) + (1/x)*x^2 - ln(exp(x)) = 1 
-//    {
-//        PExpression term1=createCos(
-//            createSub(
-//                createConstant(1.0),
-//                createDiv(
-//                    createMult(createVariable("x"), createVariable("x")),
-//                    createPow(createPow(createVariable("x"),createConstant(0.5)),createConstant(4.))
-//                )
-//            )
-//        );
-//        PExpression term2=createMult(
-//                createDiv(createConstant(1.0), createVariable("x")),
-//                createPow(createVariable("x"), createConstant(2.0))
-//        );
-//        PExpression term3=createLn(createExp(createVariable("x")));
-//
-//        tests.push_back(createSum(term1, createSub(term2, term3)));
-//        expResults.push_back(createConstant(1.0));
-//    }
+    {
+        PExpression term1=createCos(
+            createSub(
+                createConstant(1.0),
+                createDiv(
+                    createMult(createVariable("x"), createVariable("x")),
+                    createPow(createPow(createVariable("x"),createConstant(0.5)),createConstant(4.))
+                )
+            )
+        );
+        PExpression term2=createMult(
+                createDiv(createConstant(1.0), createVariable("x")),
+                createPow(createVariable("x"), createConstant(2.0))
+        );
+        PExpression term3=createLn(createExp(createVariable("x")));
+
+        tests.push_back(createSum(term1, createSub(term2, term3)));
+        expResults.push_back(createConstant(1.0));
+    }
     
     // (tan(ctan(pi/2)) + x^5) / (3x-exp(0)*2x) = x^4
     {
-        double pi=3.14159265358979323846;
+        
         
         PExpression term1= createSum(
-            createTan(createCtan(createConstant(pi/2))),
+            createTan(createCtan(createConstant(PI/2))),
             createPow(createVariable("x"), createConstant(5.0))
         );
         PExpression term2=createSub(
@@ -199,6 +199,20 @@ TEST_F(FX_Optimizer, optimize_SimpleOptimizations_Successfull) {
         expResults.push_back(createPow(createVariable("x"), createConstant(4.0)));
     }
     
+    // sin(-pi/2 * cos(2pi))
+    {   
+        PExpression expr= createSin(createMult(
+            createMult(
+                createConstant(-1), 
+                createDiv(createConstant(PI), createConstant(2))
+            ), 
+            createCos(createMult(createConstant(2), createConstant(PI)))
+        ));
+            
+        tests.push_back(expr);
+        expResults.push_back(createConstant(-1));
+    }
+    
     for(unsigned int testId=0; testId < tests.size(); testId++){
         PExpression actResult;
         EXPECT_NO_THROW(actResult=optimize(tests[testId])) << "Test ID=" << testId << " threw an exception!";
@@ -207,5 +221,31 @@ TEST_F(FX_Optimizer, optimize_SimpleOptimizations_Successfull) {
         EXPECT_TRUE(equals(expResults[testId], actResult)) << 
                 "Result does not match for test ID=" << testId << "! (" 
                 << expected << " != " << actual;
+    }
+}
+
+TEST_F(FX_Optimizer, optimize_ExceptionalCases_TraverseException) {
+    std::vector<PExpression> tests;
+    
+    // incomplete expressions
+    tests.push_back(createSum());  // 00
+    tests.push_back(createSub());  // 01
+    tests.push_back(createMult()); // 02
+    tests.push_back(createDiv());  // 03
+    tests.push_back(createPow());  // 04
+    tests.push_back(createSin());  // 05
+    tests.push_back(createCos());  // 06
+    tests.push_back(createTan());  // 07
+    tests.push_back(createCtan()); // 08
+    tests.push_back(createLn());   // 09
+    tests.push_back(createExp());  // 10
+    
+    // illegal arguments
+    tests.push_back(createDiv(createConstant(1), createConstant(0))); // 11
+    tests.push_back(createTan(createConstant(PI/2))); //12
+    tests.push_back(createCtan(createConstant(2*PI))); //13
+    
+    for(unsigned int testId=0; testId < tests.size(); testId++){
+        EXPECT_THROW(optimize(tests[testId]), TraverseException) << "Test ID=" << testId << " did not throw an exception!";
     }
 }
