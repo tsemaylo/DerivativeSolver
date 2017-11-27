@@ -575,6 +575,13 @@ TEST_F(FX_Parser, parse_CanParseFloatingPointNumbers_Success) {
     EXPECT_DOUBLE_EQ(5.3, termR->value);
 }
 
+TEST_F(FX_Parser, parse_NotANumber_ParsingException) {
+    ParserTest parser;
+    const string strExpr = "...";
+
+    ASSERT_THROW(parser.parse(strExpr), ParsingException);
+}
+
 TEST_F(FX_Parser, findEndOfParentheses_NormalCase_ok) {
     ParserTest parser;
     list<Token> tknList = parser.getTokens("a+(b+c)+(d+e)");

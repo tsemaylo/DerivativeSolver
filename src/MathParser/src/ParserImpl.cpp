@@ -271,7 +271,12 @@ list<Token>::const_iterator ParserImpl::shiftToStack(list<Token>::const_iterator
     switch (token.type) {
         case TNumeric:
         {
-            stackExpression = createConstant(token.value);
+            try{
+                stackExpression = createConstant(token.value);
+            }
+            catch(std::exception ex){
+                THROW(ParsingException, string("Not a number token. (") + ex.what() + ")", token.value);
+            }
             break;
         }
         case TOperation:
