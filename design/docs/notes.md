@@ -161,7 +161,7 @@ Performed in the build time.
 - [ ] Rule for multiplication without sign of multiplication<br>
       Parsing Improvement 
 - [ ] Being case-irrelevant (IN PROGRESS)
-- [ ] Support floating point numbers (IN PROGRESS) <br><br>
+- [x] Support floating point numbers <br><br>
 - [x] Update design docs 
   - [x] also describe how to name test cases
 - [x] Implementation of Differentiator

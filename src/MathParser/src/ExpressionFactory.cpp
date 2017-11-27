@@ -22,7 +22,17 @@ PConstant createConstant(const double val) {
 }
 
 PConstant createConstant(const std::string strVal) {
-    return MakeSPointer<Constant>(std::stod(strVal));
+    std::string normStrVal=strVal;
+    
+    size_t pos=0;
+    do {
+        pos = normStrVal.find_first_of(',', 0);
+        if(pos != std::string::npos){
+            normStrVal = normStrVal.replace(pos, 1, ".");
+        }
+    } while (pos != std::string::npos);
+    
+    return MakeSPointer<Constant>(std::stod(normStrVal));
 }
 
 PSum createSum() {

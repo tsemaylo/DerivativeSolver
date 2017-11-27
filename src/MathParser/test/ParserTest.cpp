@@ -557,6 +557,24 @@ TEST_F(FX_Parser, parse_ExpressionWithFunctions2_ExpressionTree) {
     ASSERT_DOUBLE_EQ(3.0, const2->value);
 }
 
+TEST_F(FX_Parser, parse_CanParseFloatingPointNumbers_Success) {
+    ParserTest parser;
+    const string strExpr = "3.7 + 5,3";
+
+    PExpression expr = parser.parse(strExpr);
+    
+    ASSERT_TRUE(isTypeOf<Sum>(expr));
+    
+    PSum typedExpr=SPointerCast<Sum>(expr);
+    ASSERT_TRUE(isTypeOf<Constant>(typedExpr->lArg));
+    ASSERT_TRUE(isTypeOf<Constant>(typedExpr->rArg));
+    
+    PConstant termL=SPointerCast<Constant>(typedExpr->lArg);
+    PConstant termR=SPointerCast<Constant>(typedExpr->rArg);
+    EXPECT_DOUBLE_EQ(3.7, termL->value);
+    EXPECT_DOUBLE_EQ(5.3, termR->value);
+}
+
 TEST_F(FX_Parser, findEndOfParentheses_NormalCase_ok) {
     ParserTest parser;
     list<Token> tknList = parser.getTokens("a+(b+c)+(d+e)");

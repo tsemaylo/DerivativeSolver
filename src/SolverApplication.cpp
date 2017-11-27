@@ -50,10 +50,7 @@ int SolverApplication::run() {
     int returnCode=0;
     std::unique_ptr<Parser> parser=createParser();
     try {
-        PExpression parsed = parser->parse(this->strExpression);
-        PExpression preOptimized=optimize(parsed);
-        PExpression differentiated=differentiate(preOptimized, this->strVariable);
-        PExpression optimized=optimize(differentiated);
+        PExpression optimized=optimize(differentiate(optimize(parser->parse(this->strExpression)), this->strVariable));
 
         cout << to_string(optimized) << endl;
     } catch (ParsingException ex) {

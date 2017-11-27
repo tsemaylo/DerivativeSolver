@@ -96,7 +96,7 @@ bool ParserImpl::isAlpha(char c) const {
 bool ParserImpl::isNumeric(char c) const {
     // assuming ASCII
 
-    if (c >= '0' && c <= '9') {
+    if ((c >= '0' && c <= '9') || c == '.' || c == ',') {
         return true;
     }
 
