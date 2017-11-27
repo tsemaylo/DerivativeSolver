@@ -154,6 +154,8 @@ add_unit_test_suite("test/PowOfPowRuleTest.cpp" "src/PowOfPowRule.cpp" "src/Doub
 add_unit_test_suite("test/FunctionEvaluateRuleTest.cpp")
 add_unit_test_suite("test/LnOfExpRuleTest.cpp" "src/LnOfExpRule.cpp")
 
+add_test(NAME testApplication COMMAND /bin/sh ${CMAKE_CURRENT_SOURCE_DIR}/testApplication.sh)
+
 enable_testing ()
 
 # ---------------------------------
