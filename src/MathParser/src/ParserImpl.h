@@ -35,7 +35,7 @@ using namespace std;
  */
 class ParserImpl : public Parser{
 private:
-    array<unique_ptr<Rule>, 16> grammar;
+    array<unique_ptr<Rule>, 17> grammar;
 
 protected:
     /**

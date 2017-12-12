@@ -85,6 +85,7 @@ add_library(libagmathparser SHARED
         src/RuleSubRV.cpp
         src/RuleSumLV.cpp
         src/RuleSumRV.cpp
+        src/RuleNoSignMult.cpp
         src/Sin.cpp
         src/StringGenerator.cpp
         src/Sub.cpp

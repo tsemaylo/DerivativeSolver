@@ -39,6 +39,7 @@
 #include "RuleSubLV.h"
 #include "RuleSubRV.h"
 #include "RuleFunction.h"
+#include "RuleNoSignMult.h"
 #include "ExpressionFactory.h"
 
 #include "ParserStack.h"
@@ -77,6 +78,8 @@ ParserImpl::ParserImpl() {
     this->grammar[14] = make_unique<RuleSubLV>();
     // Rule #33 #34
     this->grammar[15] = make_unique<RuleSubRV>();
+    // Rule #35
+    this->grammar[16] = make_unique<RuleNoSignMult>();
 }
 
 bool ParserImpl::isAlpha(char c) const {

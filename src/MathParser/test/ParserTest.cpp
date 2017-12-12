@@ -575,6 +575,31 @@ TEST_F(FX_Parser, parse_CanParseFloatingPointNumbers_Success) {
     EXPECT_DOUBLE_EQ(5.3, termR->value);
 }
 
+TEST_F(FX_Parser, parse_ImplicitMultiplication_Success) {
+    ParserTest parser;
+    const string strExpr = "(x+1)(x-1)";
+
+    PExpression expr = parser.parse(strExpr);
+    
+    ASSERT_TRUE(isTypeOf<Mult>(expr));
+    
+    PMult typedExpr=SPointerCast<Mult>(expr);
+    ASSERT_TRUE(isTypeOf<Sum>(typedExpr->lArg));
+    ASSERT_TRUE(isTypeOf<Sub>(typedExpr->rArg));
+    
+    PSum termL=SPointerCast<Sum>(typedExpr->lArg);
+    ASSERT_TRUE(isTypeOf<Variable>(termL->lArg));
+    EXPECT_EQ("x", SPointerCast<Variable>(termL->lArg)->name);
+    ASSERT_TRUE(isTypeOf<Constant>(termL->rArg));
+    EXPECT_DOUBLE_EQ(1.0, SPointerCast<Constant>(termL->rArg)->value);
+    
+    PSub termR=SPointerCast<Sub>(typedExpr->rArg);
+    ASSERT_TRUE(isTypeOf<Variable>(termR->lArg));
+    EXPECT_EQ("x", SPointerCast<Variable>(termR->lArg)->name);
+    ASSERT_TRUE(isTypeOf<Constant>(termR->rArg));
+    EXPECT_DOUBLE_EQ(1.0, SPointerCast<Constant>(termR->rArg)->value);
+}
+
 TEST_F(FX_Parser, parse_NotANumber_ParsingException) {
     ParserTest parser;
     const string strExpr = "...";

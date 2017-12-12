@@ -158,7 +158,7 @@ Performed in the build time.
 - [x] RulePowLV 
 - [x] RulePowRV 
 - [x] RuleFunction 
-- [ ] Rule for multiplication without sign of multiplication (IN PROGRESS) <br>
+- [x] Rule for multiplication without sign of multiplication <br>
       Parsing Improvement 
 - [ ] Being case-irrelevant (POSTPONED, does it really matter?)
 - [x] Support floating point numbers <br><br>
@@ -170,7 +170,7 @@ Performed in the build time.
   - [x] Simplify expressions like "x^2*(2/x)"
 - [x] Implement the SolverApplication  
 - [ ] Review of the design 
-- [ ] Remove redundant unit test cases from ParserTest
+- [ ] Remove redundant unit test cases from ParserTest (IN PROGRESS)
 - [ ] Test runs with Valgrind
 - [x] Do static analysis of the code, integrate into CI
 - [ ] Testing scripts for whole application (IN PROGRESS)
@@ -182,5 +182,5 @@ Performed in the build time.
   - [x] Update design doc  
   - [x] Check duplication is the source code (POSTPONED, so far see no neccessity, as soon as only ExceptionThrower and build configs are duplicated)
 - [x] Add license info
-- [ ] Check doxygen comments
-- [ ] Update exception text in Differentiator and Optimizer 
+- [ ] Check doxygen comments (IN PROGRESS)
+- [ ] Update exception text in Differentiator and Optimizer (IN PROGRESS)
