@@ -231,6 +231,21 @@ inline PExpression invertDenominator(PExpression expr) throw(TraverseException){
         // x/y => y/x
         return createMult(typedExpr->lArg, typedExpr->rArg);
     }
+    if(isTypeOf<Mult>(expr)) {
+	// n*x => 1/n * x^-1
+	PMult typedExpr=SPointerCast<Mult>(expr);
+	if(isTypeOf<Constant>(typedExpr->lArg)){
+	    return createMult(
+		    createDiv(createConstant(1.0), typedExpr->lArg),
+		    createPow(typedExpr->rArg, createConstant(-1.0))
+		    );
+	}else if(isTypeOf<Constant>(typedExpr->rArg)){
+	    return createMult(
+		    createDiv(createConstant(1.0), typedExpr->rArg),
+		    createPow(typedExpr->lArg, createConstant(-1.0))
+		    );
+	}
+    }
     if(isTypeOf<Constant>(expr)){
         // n => 1/n 
         PConstant typedExpr=SPointerCast<Constant>(expr);

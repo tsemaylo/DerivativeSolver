@@ -137,6 +137,16 @@ TEST_F(FX_Optimizer, visit_Division_ApplicableAndSuccessfull) {
         createPow(createVariable("x"), createSum(createConstant(1), createConstant(1)))
     ));
     
+    // (x^2)/(2*x) => 0.5 * x
+    tests.push_back(createDiv(
+        createPow(createVariable("x"), createConstant(2)),
+        createMult(createConstant(2), createVariable("x"))
+    ));
+    expResults.push_back(createMult(
+        createConstant(0.5), 
+        createPow(createVariable("x"), createSum(createConstant(2), createConstant(-1)))
+    ));
+    
     for(unsigned int testId=0; testId < tests.size(); testId++){
         Optimizer optimizer;
         EXPECT_NO_THROW(tests[testId]->traverse(optimizer)) << "Test ID=" << testId << " threw an exception!";

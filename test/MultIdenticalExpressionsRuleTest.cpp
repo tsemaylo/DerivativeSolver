@@ -118,6 +118,36 @@ TEST_F(FX_MultIdenticalExpressionsRuleTest, visit_OptimizableExpressions_Applica
         createPow(createVariable("x"), createSum(createConstant(1), createConstant(-1)))
     ));
     
+    // (x^2)*(2/x) => 2 * x^(2+-1)
+    tests.push_back(createMult(
+        createPow(createVariable("x"), createConstant(2)),
+        createDiv(createConstant(2), createVariable("x"))
+    ));
+    expectedResults.push_back(createMult(
+        createConstant(2), 
+        createPow(createVariable("x"), createSum(createConstant(2), createConstant(-1)))
+    ));
+    
+    // (2/x)* (x^2) => 2 * x^(-1+2)
+    tests.push_back(createMult(
+        createDiv(createConstant(2), createVariable("x")),
+        createPow(createVariable("x"), createConstant(2))
+    ));
+    expectedResults.push_back(createMult(
+        createConstant(2), 
+        createPow(createVariable("x"), createSum(createConstant(-1), createConstant(2)))
+    ));
+    
+    // (x/2)*(x^2) => 0.5 * x^(1+2)
+    tests.push_back(createMult(
+        createDiv(createVariable("x"), createConstant(2)),
+        createPow(createVariable("x"), createConstant(2))
+    ));
+    expectedResults.push_back(createMult(
+        createConstant(0.5), 
+        createPow(createVariable("x"), createSum(createConstant(1), createConstant(2)))
+    ));
+    
     for(unsigned int testId=0; testId < tests.size(); testId++){
         MultIdenticalExpressionsRule rule(tests[testId]);
         EXPECT_TRUE(rule.apply()) << "Rule for test #" << testId << " was not applied!";

@@ -158,16 +158,16 @@ Performed in the build time.
 - [x] RulePowLV 
 - [x] RulePowRV 
 - [x] RuleFunction 
-- [ ] Rule for multiplication without sign of multiplication<br>
+- [ ] Rule for multiplication without sign of multiplication (IN PROGRESS) <br>
       Parsing Improvement 
-- [ ] Being case-irrelevant (IN PROGRESS)
+- [ ] Being case-irrelevant (POSTPONED, does it really matter?)
 - [x] Support floating point numbers <br><br>
 - [x] Update design docs 
   - [x] also describe how to name test cases
 - [x] Implementation of Differentiator
 - [x] Implementation of StringGenerator
 - [x] Implement visitor to simplify the expression
-  - [ ] Simplify expressions like "x^2*(2/x)"
+  - [x] Simplify expressions like "x^2*(2/x)"
 - [x] Implement the SolverApplication  
 - [ ] Review of the design 
 - [ ] Remove redundant unit test cases from ParserTest

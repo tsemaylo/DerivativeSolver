@@ -49,6 +49,15 @@ bool putConstantToLeft(PExpression expr, std::function<bool (PMult)> onSuccess){
     return true;
 }
 
+
+PMult divToMult(PDiv expr){
+    if(isTypeOf<Constant>(expr->rArg)) {
+        PConstant c = SPointerCast<Constant>(expr->rArg);
+        return createMult(expr->lArg, createConstant(1.0 / c->value));
+    }
+    return createMult(expr->lArg, createPow(expr->rArg, createConstant(-1.0)));
+}
+
 bool MultIdenticalExpressionsRule::apply() throw(TraverseException){
     // check if left and right hand terms are also products (Mult)
     bool lArgIsMult=isTypeOf<Mult>(this->expression->lArg);
@@ -62,10 +71,25 @@ bool MultIdenticalExpressionsRule::apply() throw(TraverseException){
         }
     }
     
+    PExpression lArg = this->expression->lArg;
+    PExpression rArg = this->expression->rArg;
+    
+    if(!lArgIsMult){
+        if(isTypeOf<Div>(this->expression->lArg)){
+            lArg = divToMult(SPointerCast<Div>(this->expression->lArg));
+        } 
+    }
+    
+    if(!rArgIsMult){
+        if(isTypeOf<Div>(this->expression->rArg)){
+            rArg = divToMult(SPointerCast<Div>(this->expression->rArg));
+        } 
+    }
+    
     // try to normalize it to canonical form: A*(x^n) * B*(x^m)
     PMult canonicalForm=createMult(); 
    
-    if(!putConstantToLeft(this->expression->lArg, [&canonicalForm](PMult normalizedLArg) -> bool{
+    if(!putConstantToLeft(lArg, [&canonicalForm](PMult normalizedLArg) -> bool{
         // now check that the right operand is actually the exponent or can be casted to exponent
         normalizedLArg->rArg=castRightArgToPow(normalizedLArg->rArg);
         canonicalForm->lArg=normalizedLArg;
@@ -74,7 +98,7 @@ bool MultIdenticalExpressionsRule::apply() throw(TraverseException){
         return false;
     }
     
-    if(!putConstantToLeft(this->expression->rArg, [&canonicalForm](PMult normalizedRArg) -> bool{
+    if(!putConstantToLeft(rArg, [&canonicalForm](PMult normalizedRArg) -> bool{
         normalizedRArg->rArg=castRightArgToPow(normalizedRArg->rArg);
         canonicalForm->rArg=normalizedRArg;
         return true;

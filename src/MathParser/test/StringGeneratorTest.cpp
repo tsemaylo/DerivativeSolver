@@ -50,7 +50,7 @@ TEST_F(FX_StringGenerator, visit_SimpleCase_ok) {
 
     StringGenerator strGen;
     sub->traverse(strGen);
-    ASSERT_STREQ("((a+(5*b))-(c/2))", strGen.getLastVisitResult().c_str());
+    ASSERT_STREQ("(a+(5*b))-(c/2)", strGen.getLastVisitResult().c_str());
 }
 
 TEST_F(FX_StringGenerator, visit_SinusOfVariable_ok) {

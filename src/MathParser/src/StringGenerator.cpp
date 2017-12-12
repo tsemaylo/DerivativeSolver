@@ -38,11 +38,40 @@ string StringGenerator::getArgString(const PConstExpression argExpr) throw (Trav
     return this->getLastVisitResult();
 }
 
+bool isBinaryOp(PExpression expr){
+    if(expr == NULL){
+        return false;
+    }
+        
+    if(isTypeOf<Sum>(expr)){
+        return true;
+    }
+    if(isTypeOf<Sub>(expr)){
+        return true;
+    }
+    if(isTypeOf<Mult>(expr)){
+        return true;
+    }
+    if(isTypeOf<Div>(expr)){
+        return true;
+    }
+    if(isTypeOf<Pow>(expr)){
+        return true;
+    }
+    return false;
+}
+
 template <typename PointerOpClass>
 void StringGenerator::visitArythmeticalOp(const PointerOpClass expr, string op) throw (TraverseException) {
     string strLArg = this->getArgString(expr->lArg);
     string strRArg = this->getArgString(expr->rArg);
-    this->setLastVisitResult("(" + strLArg + op + strRArg + ")");
+    if(isBinaryOp(expr->lArg)){
+        strLArg = "(" + strLArg + ")";
+    }
+    if(isBinaryOp(expr->rArg)){
+        strRArg = "(" + strRArg + ")";
+    }
+    this->setLastVisitResult(strLArg + op + strRArg);
 }
 
 template <typename PointerOpClass>
