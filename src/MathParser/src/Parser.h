@@ -5,7 +5,7 @@
 /**
  * @file    Parser.h
  * 
- * Definition of the interface for the parser
+ * Definition of the interface for mathematical exppression parser.
  * 
  * @author  agor
  * @since 09.09.2017
@@ -19,18 +19,13 @@
 #include "Expression.h"
 
 /**
- * Interface of mathematical exppression parser.
+ * Parse the expression string.
+ *
+ * @param strExpr input string.
+ * @return Root of the Expression tree.
  */
-class Parser {
-public:
-    /**
-     * Parse the expression string.
-     *
-     * @param strExpr input string.
-     * @return Root of the Expression tree.
-     */
-    virtual const PExpression parse(const std::string &strExpr) const throw (ParsingException) = 0;
-};
+PExpression parse(const std::string &strExpr) throw (ParsingException);
+
 
 #endif /* PARSER_H */
 

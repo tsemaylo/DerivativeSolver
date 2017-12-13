@@ -11,6 +11,7 @@
  * @Author: agor
  */
 #include "ExceptionThrower.h"
+#include "Parser.h"
 #include "ParserImpl.h"
 
 #include "ParserStack.h"
@@ -373,8 +374,10 @@ PExpression ParserImpl::parseTokens(const list<Token> &tokens) const {
 }
 
 const PExpression ParserImpl::parse(const string &strExpr) const throw (ParsingException) {
-    //list<Token> tokensList=;
-    ///@TODO tokensList.swap(this->getTokens(strExpr));
     return this->parseTokens(this->getTokens(strExpr));
 }
 
+PExpression parse(const std::string &strExpr) throw (ParsingException) {
+    ParserImpl parserImpl;
+    return parserImpl.parse(strExpr);
+}

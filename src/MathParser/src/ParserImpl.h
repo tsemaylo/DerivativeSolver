@@ -20,7 +20,6 @@
 
 #include "ParsingException.h"
 #include "Expression.h"
-#include "Parser.h"
 
 class ParserStack;
 class Token;
@@ -33,7 +32,7 @@ using namespace std;
  *
  * Class is aimed to parse the given expression string into expression tree, which is intended to be analyzed later.
  */
-class ParserImpl : public Parser{
+class ParserImpl {
 private:
     array<unique_ptr<Rule>, 17> grammar;
 
@@ -139,7 +138,7 @@ protected:
 public:
     ParserImpl();
 
-    const PExpression parse(const string &strExpr) const throw (ParsingException) final;
+    const PExpression parse(const string &strExpr) const throw (ParsingException);
 };
 
 #endif /* PARSERIMPL_H */

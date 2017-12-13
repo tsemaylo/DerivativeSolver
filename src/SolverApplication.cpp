@@ -17,7 +17,7 @@
 #include <iostream>
 #include <Expression.h>
 #include <Parser.h>
-#include <ParserFactory.h>
+#include <Parser.h>
 
 #include "Differentiator.h"
 #include "Optimizer.h"
@@ -48,9 +48,8 @@ string SolverApplication::getStrVariable() const {
 
 int SolverApplication::run() {
     int returnCode=0;
-    std::unique_ptr<Parser> parser=createParser();
     try {
-        PExpression optimized=optimize(differentiate(optimize(parser->parse(this->strExpression)), this->strVariable));
+        PExpression optimized=optimize(differentiate(optimize(parse(this->strExpression)), this->strVariable));
 
         cout << to_string(optimized) << endl;
     } catch (ParsingException ex) {

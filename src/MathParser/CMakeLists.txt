@@ -69,7 +69,6 @@ add_library(libagmathparser SHARED
         src/ExpressionFactory.cpp
         src/Ln.cpp
         src/Mult.cpp
-        src/ParserFactory.cpp
         src/ParserImpl.cpp
         src/ParserStack.cpp
         src/ParsingException.cpp
@@ -106,7 +105,7 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     endif()
 endif()
 
-add_prefix(public_headers "src/" "Pointers.h" "Parser.h" "ParserFactory.h" "ExpressionFactory.h" "Constant.h" "Variable.h" "Sum.h" "Sub.h" "Div.h" "Mult.h" "Pow.h" "Sin.h" "Cos.h" "Tan.h" "Ctan.h" "Ln.h" "Exp.h" "Expression.h" "Visitor.h" "TraverseException.h" "ParsingException.h")
+add_prefix(public_headers "src/" "Pointers.h" "Parser.h" "ExpressionFactory.h" "Constant.h" "Variable.h" "Sum.h" "Sub.h" "Div.h" "Mult.h" "Pow.h" "Sin.h" "Cos.h" "Tan.h" "Ctan.h" "Ln.h" "Exp.h" "Expression.h" "Visitor.h" "TraverseException.h" "ParsingException.h")
 
 # code snippet to incorporate google test library for unit tsting
 # ---------------------------------
