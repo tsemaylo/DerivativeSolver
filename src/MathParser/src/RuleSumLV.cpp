@@ -16,6 +16,11 @@
 #include "Sum.h"
 
 bool RuleSumLV::applyRule(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack& stack) const throw (ParsingException) {
+    // skip if larg is already initialized
+    if(SPointerCast<Sum>(*op)->lArg != nullptr){
+        return false;
+    }
+        
     // the expression on the left side is correct
     // initialize l-side argument
     // see Grammar rule #29

@@ -16,6 +16,10 @@
 #include "Sub.h"
 
 bool RuleSubLV::applyRule(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack& stack) const throw(ParsingException) {
+    if(SPointerCast<Sub>(*op)->lArg != nullptr){
+        return false;
+    }
+        
     // see Grammar rule #32
     SPointerCast<Sub>(*op)->lArg = (*arg);
     stack.erase(arg);

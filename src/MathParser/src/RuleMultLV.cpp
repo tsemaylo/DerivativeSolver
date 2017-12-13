@@ -16,6 +16,10 @@
 #include "Mult.h"
 
 bool RuleMultLV::applyRule(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack &stack) const throw (ParsingException) {
+    if(SPointerCast<Mult>(*op)->lArg != nullptr){
+        return false;
+    }
+        
     // Grammar rule #25
     SPointerCast<Mult>(*op)->lArg = *arg;
     stack.erase(arg);

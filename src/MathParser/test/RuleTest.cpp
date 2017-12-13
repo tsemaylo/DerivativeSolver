@@ -90,11 +90,11 @@ TEST_F(FX_Rule, hasPriority_ArythmeticsVSFunctions_FunctionsHavePriority) {
     EXPECT_TRUE(hasPriority<Pow>(Token("exp", TAlphaNumeric)));
 }
 
-TEST_F(FX_Rule, hasPriority_AdditionsVSVarsAndConst_AdditionsHavePriority) {
-    EXPECT_FALSE(hasPriority<Sum>(Token("a", TAlphaNumeric)));
-    EXPECT_FALSE(hasPriority<Sum>(Token("1", TNumeric)));
-    EXPECT_FALSE(hasPriority<Sub>(Token("a", TAlphaNumeric)));
-    EXPECT_FALSE(hasPriority<Sub>(Token("1", TNumeric)));
+TEST_F(FX_Rule, hasPriority_AdditionsVSVarsAndConst_ImplicitProductHasPriority) {
+    EXPECT_TRUE(hasPriority<Sum>(Token("a", TAlphaNumeric)));
+    EXPECT_TRUE(hasPriority<Sum>(Token("1", TNumeric)));
+    EXPECT_TRUE(hasPriority<Sub>(Token("a", TAlphaNumeric)));
+    EXPECT_TRUE(hasPriority<Sub>(Token("1", TNumeric)));
 }
 
 TEST_F(FX_Rule, hasPriority_SameOperationOnBothSides_StillValid) {

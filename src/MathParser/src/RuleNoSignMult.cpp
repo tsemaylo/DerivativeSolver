@@ -14,12 +14,17 @@
 #include "RuleNoSignMult.h"
 #include "ExpressionFactory.h"
 
-bool RuleNoSignMult::apply(ParserStack& stack, const Token& ) const  throw(ParsingException) {
+bool RuleNoSignMult::apply(ParserStack& stack, const Token& lookAheadToken) const  throw(ParsingException) {
     ParserStack::iterator exprLeftIt = stack.begin();
     ParserStack::iterator exprRightIt = stack.begin();
     ++exprRightIt;
 
     for (; exprRightIt != stack.end(); ++exprLeftIt, ++exprRightIt) {
+        
+        // check the priority of operation if priority is low, then skip rule
+        if (next(exprRightIt) == stack.end() && hasPriority<Mult>(lookAheadToken)) {
+            return false;
+        }
         
         // Grammar rules: #35
         

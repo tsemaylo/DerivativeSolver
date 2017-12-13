@@ -16,6 +16,10 @@
 #include "Pow.h"
 
 bool RulePowLV::applyRule(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack &stack) const throw (ParsingException) {
+    if(SPointerCast<Pow>(*op)->lArg != nullptr){
+        return false;
+    }
+    
     // Grammar rule #23
     SPointerCast<Pow>(*op)->lArg = *arg;
     stack.erase(arg);

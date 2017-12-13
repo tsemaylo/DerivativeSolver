@@ -18,6 +18,10 @@
 #include "ParsingException.h"
 
 bool RuleDivLV::applyRule(const ParserStack::const_iterator op, const ParserStack::const_iterator arg, ParserStack &stack) const throw (ParsingException) {
+    if(SPointerCast<Div>(*op)->lArg != nullptr){
+        return false;
+    }
+        
     // Grammar rule #27
     SPointerCast<Div>(*op)->lArg = *arg;
     stack.erase(arg);

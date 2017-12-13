@@ -16,6 +16,7 @@
 
 #include "ParserImpl.h"
 #include "Expression.h"
+#include "ExpressionFactory.h"
 #include "Constant.h"
 #include "Variable.h"
 #include "Sum.h"
@@ -576,28 +577,60 @@ TEST_F(FX_Parser, parse_CanParseFloatingPointNumbers_Success) {
 }
 
 TEST_F(FX_Parser, parse_ImplicitMultiplication_Success) {
-    ParserTest parser;
-    const string strExpr = "(x+1)(x-1)";
+    vector<string> tests;
+    vector<PExpression> expectedResults;
+    
+    
+//    tests.push_back("(x+1)(x-1)");
+//    expectedResults.push_back(createMult(
+//        createSum(createVariable("x"), createConstant(1)),
+//        createSub(createVariable("x"), createConstant(1))
+//    ));
+//    
+//    tests.push_back("4-2x");
+//    expectedResults.push_back(createSub(
+//        createConstant(4),
+//        createMult(createConstant(2), createVariable("x"))
+//    ));
+//    
+//    tests.push_back("2x - 4");
+//    expectedResults.push_back(createSub(
+//        createMult(createConstant(2), createVariable("x")),
+//        createConstant(4)
+//    ));
+//    
+//    tests.push_back("2cos(x)");
+//    expectedResults.push_back(createMult(
+//        createConstant(2),
+//        createCos(createVariable("x"))
+//    ));
+//    
+//    tests.push_back("a+7(x+1)");
+//    expectedResults.push_back(createSum(
+//        createVariable("a"),
+//        createMult(
+//            createConstant(7),
+//            createSum(createVariable("x"), createConstant(1))
+//        )
+//    ));
+    
+    tests.push_back("2x^2");
+    expectedResults.push_back(createMult(
+        createConstant(2),
+        createPow(createVariable("x"), createConstant(2))
+    ));
 
-    PExpression expr = parser.parse(strExpr);
     
-    ASSERT_TRUE(isTypeOf<Mult>(expr));
-    
-    PMult typedExpr=SPointerCast<Mult>(expr);
-    ASSERT_TRUE(isTypeOf<Sum>(typedExpr->lArg));
-    ASSERT_TRUE(isTypeOf<Sub>(typedExpr->rArg));
-    
-    PSum termL=SPointerCast<Sum>(typedExpr->lArg);
-    ASSERT_TRUE(isTypeOf<Variable>(termL->lArg));
-    EXPECT_EQ("x", SPointerCast<Variable>(termL->lArg)->name);
-    ASSERT_TRUE(isTypeOf<Constant>(termL->rArg));
-    EXPECT_DOUBLE_EQ(1.0, SPointerCast<Constant>(termL->rArg)->value);
-    
-    PSub termR=SPointerCast<Sub>(typedExpr->rArg);
-    ASSERT_TRUE(isTypeOf<Variable>(termR->lArg));
-    EXPECT_EQ("x", SPointerCast<Variable>(termR->lArg)->name);
-    ASSERT_TRUE(isTypeOf<Constant>(termR->rArg));
-    EXPECT_DOUBLE_EQ(1.0, SPointerCast<Constant>(termR->rArg)->value);
+    for(unsigned int testId=0; testId < tests.size(); testId++){
+        ParserTest parser;
+        PExpression actResult;
+        EXPECT_NO_THROW(actResult=parser.parse(tests[testId])) << "Test ID=" << testId << " threw an exception!";
+        string expected=to_string(expectedResults[testId]);
+        string actual=to_string(actResult);
+        EXPECT_TRUE(equals(expectedResults[testId], actResult)) << 
+                "Result does not match for test ID=" << testId << "! " 
+                << expected << " != " << actual;
+    }
 }
 
 TEST_F(FX_Parser, parse_NotANumber_ParsingException) {
