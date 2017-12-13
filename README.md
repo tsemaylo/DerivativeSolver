@@ -1,8 +1,8 @@
 Simple Derivative Solver
 ================================================================================
 
-[![Build Status](https://travis-ci.org/tsemaylo/DerrivativeSolver.svg?branch=master)](https://travis-ci.org/tsemaylo/DerrivativeSolver)
-[![codecov](https://codecov.io/gh/tsemaylo/DerrivativeSolver/branch/master/graph/badge.svg)](https://codecov.io/gh/tsemaylo/DerrivativeSolver)
+[![Build Status](https://travis-ci.org/tsemaylo/DerivativeSolver.svg?branch=master)](https://travis-ci.org/tsemaylo/DerivativeSolver)
+[![codecov](https://codecov.io/gh/tsemaylo/DerivativeSolver/branch/master/graph/badge.svg)](https://codecov.io/gh/tsemaylo/DerivativeSolver)
 
 
 # What is it?
@@ -67,7 +67,7 @@ $ make install # installation may require super-user permissions
 
 # Developing 
 
-In the current state the application is not redy to use.
-But don't worry only one class has to be implemented to be able to use the app.
+In the current state the application is in tsting stage.
+Some rules related to reducing and simplification of final expression still have to be bugfixed and polished.
 
 The information regarding the design of application is available in [design notes](design/docs/notes.md).
