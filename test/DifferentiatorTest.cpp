@@ -405,6 +405,31 @@ TEST_F(FX_Differentiator, visit_NaturalLogarithmFunction_ChainAndLogarithmRulesA
     ASSERT_STREQ("x", SPointerCast<Variable>(div->rArg)->name.c_str());
 }
 
+TEST_F(FX_Differentiator, visit_NaturalLogarithmFunctionOfComplexArg_ChainAndLogarithmRulesApplied) {
+    PLn test = createLn(createSub(
+            createConstant(4), 
+            createMult(createConstant(2), createVariable("x"))
+            ));
+    // (0-((0*x)+(2*1)))*(1/(4-(2*x)))
+    PMult expected = createMult(
+            createSub(createConstant(0), createSum(
+                createMult(createConstant(0), createVariable("x")),
+                createMult(createConstant(2), createConstant(1))
+            )),
+            createDiv(createConstant(1), createSub(
+                createConstant(4), 
+                createMult(createConstant(2), createVariable("x"))
+                )
+            )
+            );
+    
+    Differentiator differentiator("x");
+    ASSERT_NO_THROW(test->traverse(differentiator));
+    
+    PExpression res = differentiator.getLastVisitResult();
+    ASSERT_TRUE(equals(expected, res)) << to_string(expected) << " != " << to_string(res);
+}
+
 TEST_F(FX_Differentiator, visit_NaturalLogarithmWithoutArgument_TraverseException) {
     PLn exp = createLn(nullptr);
     

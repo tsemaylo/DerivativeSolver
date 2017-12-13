@@ -26,7 +26,15 @@
 template<>
 bool hasPriority<Sum>(const Token &lookAheadToken) {
     if (lookAheadToken.type == TAlphaNumeric) {
-        return lookAheadToken.isFunction();
+        // that means, that any following alphanummeric symbol has a priority
+        // against addition operations (+ and -)
+        // it can either a function or constannt or variable
+        // in these cases it can happen, that user omited multiplication sign 
+        // and we should consider this implicitly
+        return true; 
+    }
+    if (lookAheadToken.type == TGroupBracket) {
+        return true; 
     }
     if (lookAheadToken.type == TOperation) {
         return (lookAheadToken.value == "*" ||

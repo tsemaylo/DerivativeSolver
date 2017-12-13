@@ -45,41 +45,42 @@
 #include "ParserStack.h"
 
 ParserImpl::ParserImpl() {
+    unsigned int n = 0;
     // initialize grammar
     // Rule #17
-    this->grammar[0] = make_unique<RuleFunction<Sin>>();
+    this->grammar[n++] = make_unique<RuleFunction<Sin>>();
     // Rule #18
-    this->grammar[1] = make_unique<RuleFunction<Cos>>();
+    this->grammar[n++] = make_unique<RuleFunction<Cos>>();
     // Rule #19
-    this->grammar[2] = make_unique<RuleFunction<Tan>>();
+    this->grammar[n++] = make_unique<RuleFunction<Tan>>();
     // Rule #20
-    this->grammar[3] = make_unique<RuleFunction<Ctan>>();
+    this->grammar[n++] = make_unique<RuleFunction<Ctan>>();
     // Rule #21
-    this->grammar[4] = make_unique<RuleFunction<Ln>>();
+    this->grammar[n++] = make_unique<RuleFunction<Ln>>();
     // Rule #22
-    this->grammar[5] = make_unique<RuleFunction<Exp>>();
+    this->grammar[n++] = make_unique<RuleFunction<Exp>>();
     // Rule #23
-    this->grammar[6] = make_unique<RulePowLV>();
+    this->grammar[n++] = make_unique<RulePowLV>();
     // Rule #24
-    this->grammar[7] = make_unique<RulePowRV>();
+    this->grammar[n++] = make_unique<RulePowRV>();
     // Rule #25
-    this->grammar[8] = make_unique<RuleMultLV>();
+    this->grammar[n++] = make_unique<RuleMultLV>();
     // Rule #26
-    this->grammar[9] = make_unique<RuleMultRV>();
-    // Rule #27
-    this->grammar[10] = make_unique<RuleDivLV>();
-    // Rule #28
-    this->grammar[11] = make_unique<RuleDivRV>();
-    // Rule #29
-    this->grammar[12] = make_unique<RuleSumLV>();
-    // Rule #30 #31
-    this->grammar[13] = make_unique<RuleSumRV>();
-    // Rule #32
-    this->grammar[14] = make_unique<RuleSubLV>();
-    // Rule #33 #34
-    this->grammar[15] = make_unique<RuleSubRV>();
+    this->grammar[n++] = make_unique<RuleMultRV>();
     // Rule #35
-    this->grammar[16] = make_unique<RuleNoSignMult>();
+    this->grammar[n++] = make_unique<RuleNoSignMult>();
+    // Rule #27
+    this->grammar[n++] = make_unique<RuleDivLV>();
+    // Rule #28
+    this->grammar[n++] = make_unique<RuleDivRV>();
+    // Rule #29
+    this->grammar[n++] = make_unique<RuleSumLV>();
+    // Rule #30 #31
+    this->grammar[n++] = make_unique<RuleSumRV>();
+    // Rule #32
+    this->grammar[n++] = make_unique<RuleSubLV>();
+    // Rule #33 #34
+    this->grammar[n++] = make_unique<RuleSubRV>();
 }
 
 bool ParserImpl::isAlpha(char c) const {

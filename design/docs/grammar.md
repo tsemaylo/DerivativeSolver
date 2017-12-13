@@ -35,6 +35,7 @@ No. |Stack pattern             | Reduced to   | Implmented in | Additional notes
 24  |PowL CompleteExpr         | Pow          | Reduced by **RulePowRV**      | 
 25  |CompleteExpr MultE        | MultL        | Reduced by **RuleMultLV**     | 
 26  |MultL CompleteExpr        | Mult         | Reduced by **RuleMultRV**     | 
+35  |CompleteExpr CompleteExpr | Mult         | Reduced by **RuleNoSignMult** | Mult: (CompleteExprL, CompleteExprR) 
 27  |CompleteExpr DivE         | DivL         | Reduced by **RuleDivLV**      | 
 28  |DivL CompleteExpr         | Div          | Reduced by **RuleDivRV**      | 
 29  |CompleteExpr SumE         | SumL         | Reduced by **RuleSumLV**      | 
@@ -43,4 +44,3 @@ No. |Stack pattern             | Reduced to   | Implmented in | Additional notes
 32  |CompleteExpr SubE         | SubL         | Reduced by **RuleSubLV**      | 
 33  |SubL CompleteExpr         | Sub          | Reduced by **RuleSubRV**      | 
 34  |SubE CompleteExpr         | Mult         | Reduced by **RuleSubRV**      | Mult: (-1, CompleteExpr) 
-35  |CompleteExpr CompleteExpr | Mult         | Reduced by **RuleNoSignMult** | Mult: (CompleteExprL, CompleteExprR) 

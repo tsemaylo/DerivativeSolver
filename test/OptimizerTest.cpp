@@ -237,7 +237,32 @@ TEST_F(FX_Optimizer, optimize_SimpleOptimizations_Successfull) {
         expResults.push_back(createMult(resTerm1, term2));
         tests.push_back(createMult(term1, term2));
     }
+    
+    // (0-((0*x)+(2*1)))*(1/(4-(2*x))) = -2 * (1/(4-(2*x)))
+    {
+        tests.push_back(createMult(
+        createSub(createConstant(0), createSum(
+            createMult(createConstant(0), createVariable("x")),
+            createMult(createConstant(2), createConstant(1))
+        )),
+        createDiv(createConstant(1), createSub(
+            createConstant(4), 
+            createMult(createConstant(2), createVariable("x"))
+            )
+        )
+        ));
+        
+        expResults.push_back(createMult(
+        createConstant(-2),
+        createPow(createSub(
+                createConstant(4), 
+                createMult(createConstant(2), createVariable("x"))
+            ),
+            createConstant(-1)
+        )
+        ));
 
+    }
     
     for(unsigned int testId=0; testId < tests.size(); testId++){
         PExpression actResult;
