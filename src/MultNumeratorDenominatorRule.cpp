@@ -19,123 +19,107 @@
 MultNumeratorDenominatorRule::MultNumeratorDenominatorRule(PMult _expression) : OptimizationRule(_expression){
 }
 
-/**
- * The reducable pair is a pair of left and right term of multiplication OP
- * It is reducable when:
- * 1. either e1 or e2 is Div
- * 2. denominator of Div is an exponent or can be seen as exponent of 1 (pow1)
- * 3. other multiplier is an exponent or can be seen as exponent of 1 (pow2)
- * 4. the l-argument of pow1 is equal to l-argument of pow2 
- * 
- * @param e1
- * @param e2
- * 
- * @return 
- */
-bool reduceMultipliers(PExpression e1, PExpression e2, std::function<void (PPow, PPow, PExpression)> doReduce) {
-    bool e1IsDiv=isTypeOf<Div>(e1);
-    bool e2IsDiv=isTypeOf<Div>(e2);
-   
-    if(!e1IsDiv && !e2IsDiv) {
-       return false;
-    }
-   
-    if(e1IsDiv && e2IsDiv) {
-       // more complex case, it must be a smarter way to optimize it
-       // @TODO consider this case
-       return false;
-    }
-   
-   PDiv division;
-   PExpression multiplier;
-   
-    if(e1IsDiv){
-       division=e1;
-       multiplier=e2;
-    }
-   
-    if(e2IsDiv){
-       division=e2;
-       multiplier=e1;
-    }
-   
-    PPow pow1;
-    PPow pow2;
-    if(isTypeOf<Pow>(division->rArg)){
-        PPow typed=SPointerCast<Pow>(division->rArg);
-        pow1 = createPow(typed->lArg, typed->rArg);
+bool reduciblePair(PExpression denom, PExpression numer, std::function<void (PPow, PPow)> doReduce) {
+    // 3.1. reducible means that both examined expressions are in fact exponentiations with the same base
+    
+    PPow denomExp;
+    PPow numExp;
+    if(isTypeOf<Pow>(denom)){
+        PPow typed=SPointerCast<Pow>(denom);
+        denomExp = createPow(typed->lArg, typed->rArg);
     } else {
-        pow1 = createPow(division->rArg, createConstant(1.0));
+        denomExp = createPow(denom, createConstant(1.0));
     }
        
-    if(isTypeOf<Pow>(multiplier)){
-        PPow typed=SPointerCast<Pow>(multiplier); 
-        pow2 = createPow(typed->lArg, typed->rArg);
+    if(isTypeOf<Pow>(numer)){
+        PPow typed=SPointerCast<Pow>(numer); 
+        numExp = createPow(typed->lArg, typed->rArg);
     } else {
-        pow2 = createPow(multiplier, createConstant(1.0));
+        numExp = createPow(numer, createConstant(1.0));
     }
        
-    if(equals(pow1->lArg, pow2->lArg)){
-        doReduce(pow1, pow2, division->lArg);
+    if(equals(denomExp->lArg, numExp->lArg)){
+        doReduce(denomExp, numExp);
         return true;
     }
     
     return false;
 }
 
-PExpression multiplyExponents(PPow e1, PPow e2) {
+PExpression reduce(PPow denomExp, PExpression coefB, PPow numExp, PExpression coefA) {
+    //4. Having a pair of exponentiation operations (Pows) which can be simplified
+    // reduce them them buy adding or subtracting their power exponents
+
+    // 4.1. extract power exponents
+    PExpression denomPowExponent = denomExp->rArg;
+    PExpression numPowExponent = numExp->rArg;
+    if (isTypeOf<Constant>(denomPowExponent) && isTypeOf<Constant>(numPowExponent)) {
+        // ok we have constants and we can operate with them
+
+        PConstant castedDenomPowExponent = SPointerCast<Constant>(denomPowExponent);
+        PConstant castedNumPowExponent = SPointerCast<Constant>(numPowExponent);
+
+        // 5. Form the result expression by multiplying the coefficients 
+        // (larg of left Division and remaining argument of right Multiplication) 
+        // and dividing/multiplying them with previously obtained exponentiation  
+        if (castedDenomPowExponent->value > castedNumPowExponent->value) {
+            // b/x^m * ax^n => (a*b)/x^(m-n), if m > n
+            return createDiv(createMult(coefA, coefB),
+                    createPow(denomExp->lArg, createConstant(castedDenomPowExponent->value - castedNumPowExponent->value)));
+        }
+        // b/x^m * ax^n => (a*b)*x^(n-m), if n > m
+        return createMult(createMult(coefA, coefB),
+                createPow(denomExp->lArg, createConstant(castedNumPowExponent->value - castedDenomPowExponent->value)));
+    }
+    // if they are not constants do default subtraction of exponents
+    // b/x^m * ax^n => (a*b)*x^(n-m)
+    return createMult(createMult(coefA, coefB),
+            createPow(denomExp->lArg, createSub(numPowExponent, denomPowExponent)));
     
 }
 
-bool MultNumeratorDenominatorRule::apply() const throw(TraverseException){
-    /**
-     * The procedure:
-     * 1. represent left and right multiplier as a product 
-     * 2. analyze all combinations of arguments of these products to find the pair of arguments which can be reduced
-     *    - one argument in this case must be a division operation
-     *    - other one is any expression (which seen as exponentiation with some base)
-     *    - the denominator of div function can be represented as pow which base is equal to the base of other expression (see above)#
-     * 3. reduce the product/division (depends on power exponent) of found pair of arguments
-     */
+bool MultNumeratorDenominatorRule::apply() throw(TraverseException) {
+    // Identifying ax^n*b/x^m pattern:
     
-    
-    // make sure that both larg and rarg of are products 
-    PMult lMult;
-    if(isTypeOf<Mult>(this->expression->lArg)) {
-        lMult=createMult(this->expression->lArg, this->expression->rArg);
+    // 1. One of terms must be Division
+    bool largIsDiv=isTypeOf<Div>(this->expression->lArg);
+    bool rargIsDiv=isTypeOf<Div>(this->expression->rArg);
+   
+    if(!largIsDiv && !rargIsDiv) {
+       return false;
+    }
+    if(largIsDiv && rargIsDiv) {
+       return false;
+    }
+
+    PMult normalizedExpr;
+    if(rargIsDiv) {
+        // 1.1. if so - put it on the left side of original Multiplication
+        normalizedExpr=createMult(this->expression->rArg, this->expression->lArg);
     } else {
-        lMult=createMult(createConstant(1.0), this->expression);
+        normalizedExpr=createMult(this->expression->lArg, this->expression->rArg);
     }
     
-    PMult rMult;
-    if(isTypeOf<Mult>(this->expression->lArg)) {
-        rMult=createMult(this->expression->lArg, this->expression->rArg);
+    // 2. Represent right arg of multiplication as Multiplication
+    PMult rarg;
+    if(!isTypeOf<Mult>(normalizedExpr->rArg)){
+        PMult casted=SPointerCast<Mult>(normalizedExpr->rArg);
+        rarg=createMult(casted->lArg, casted->rArg);
     } else {
-        rMult=createMult(createConstant(1.0), this->expression);
+        rarg=createMult(createConstant(1.0), normalizedExpr->rArg);
     }
-            
-    // check different combination of arguments to find reducable pair
-    if(reduceMultipliers(lMult->lArg, rMult->lArg, [this](PPow e1, PPow e2, PExpression coef){
-        // reduce a pair of expressions
-        this->optimizedExpression = createMult(createMult(lMult->rArg, createMult(coef, rMult->rArg)), multiplyExponents(e1, e2));
+    
+    PDiv larg=SPointerCast<Div>(normalizedExpr->lArg);
+
+    // 3. Check whether denominator of left arg Division is reducible with one of arguments of the right arg multiplication
+    if(reduciblePair(larg->rArg, rarg->lArg, [this, &larg, &rarg](PPow denomExp, PPow numExp) {
+        this->optimizedExpression = reduce(denomExp, larg->lArg, numExp, rarg->rArg);
     })){
         return true;
     }
     
-    if(reduceMultipliers(lMult->lArg, rMult->rArg, [this](PPow e1, PPow e2, PExpression coef){
-        this->optimizedExpression = createMult(createMult(lMult->rArg, createMult(coef, rMult->lArg)), multiplyExponents(e1, e2));
-    })){
-        return true;
-    }
-    
-    if(reduceMultipliers(lMult->rArg, rMult->lArg, [this](PPow e1, PPow e2, PExpression coef){
-        this->optimizedExpression = createMult(createMult(lMult->lArg, createMult(coef, rMult->rArg)), multiplyExponents(e1, e2));
-    })){
-        return true;
-    }
-    
-    if(reduceMultipliers(lMult->rArg, rMult->rArg, [this](PPow e1, PPow e2, PExpression coef){
-        this->optimizedExpression = createMult(createMult(lMult->lArg, createMult(coef, rMult->lArg)), multiplyExponents(e1, e2));
+    if(reduciblePair(larg->rArg, rarg->rArg, [this, &larg, &rarg](PPow denomExp, PPow numExp) {
+        this->optimizedExpression = reduce(denomExp, larg->lArg, numExp, rarg->lArg);
     })){
         return true;
     }

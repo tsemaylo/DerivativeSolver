@@ -151,6 +151,7 @@ add_unit_test_suite("test/SumWithNullArgumentRuleTest.cpp" "src/SumWithNullArgum
 add_unit_test_suite("test/SumIdenticalExpressionsRuleTest.cpp" "src/SumIdenticalExpressionsRule.cpp")
 add_unit_test_suite("test/MultConstantsRuleTest.cpp" "src/MultConstantsRule.cpp" "src/Doubles.cpp")
 add_unit_test_suite("test/MultIdenticalExpressionsRuleTest.cpp" "src/MultIdenticalExpressionsRule.cpp")
+add_unit_test_suite("test/MultNumeratorDenominatorRuleTest.cpp" "src/MultNumeratorDenominatorRule.cpp")
 add_unit_test_suite("test/MultQuotientsRuleTest.cpp" "src/MultQuotientsRule.cpp")
 add_unit_test_suite("test/PowConstantRuleTest.cpp" "src/PowConstantRule.cpp" "src/Doubles.cpp")
 add_unit_test_suite("test/PowOfPowRuleTest.cpp" "src/PowOfPowRule.cpp" "src/Doubles.cpp")
