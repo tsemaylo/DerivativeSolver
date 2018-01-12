@@ -34,14 +34,14 @@ TEST_F(FX_MultNumeratorDenominatorRuleTest, visit_OptimizableExpressions_Applica
     std::vector<PMult> tests;
     std::vector<PExpression> expectedResults;
     
-    // 3x*(4/x) = (3*(4*1))*(x^(1-1))
+    // 3x*(4/x) = (3*4)*(x^0)
     tests.push_back(createMult(
             createMult(createConstant(3), createVariable("x")),
             createDiv(createConstant(4), createVariable("x"))
     ));
     expectedResults.push_back(createMult(
-            createMult(createConstant(3), createMult(createConstant(4), createConstant(1))),
-            createPow(createVariable("x"), createSub(createConstant(1), createConstant(1)))
+            createMult(createConstant(3), createConstant(4)),
+            createPow(createVariable("x"), createConstant(0))
     ));
 
     for(unsigned int testId=0; testId < tests.size(); testId++){

@@ -37,7 +37,7 @@ bool reduciblePair(PExpression denom, PExpression numer, std::function<void (PPo
     } else {
         numExp = createPow(numer, createConstant(1.0));
     }
-       
+     
     if(equals(denomExp->lArg, numExp->lArg)){
         doReduce(denomExp, numExp);
         return true;
@@ -102,7 +102,7 @@ bool MultNumeratorDenominatorRule::apply() throw(TraverseException) {
     
     // 2. Represent right arg of multiplication as Multiplication
     PMult rarg;
-    if(!isTypeOf<Mult>(normalizedExpr->rArg)){
+    if(isTypeOf<Mult>(normalizedExpr->rArg)){
         PMult casted=SPointerCast<Mult>(normalizedExpr->rArg);
         rarg=createMult(casted->lArg, casted->rArg);
     } else {
