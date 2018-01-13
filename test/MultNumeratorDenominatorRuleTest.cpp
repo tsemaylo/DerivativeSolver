@@ -140,7 +140,7 @@ TEST_F(FX_MultNumeratorDenominatorRuleTest, visit_OptimizableExpressions_Applica
     }
 }
 
-TEST_F(FX_MultNumeratorDenominatorRuleTest, DISABLE_visit_NotOptimizableExpressions_NotApplicable) {    
+TEST_F(FX_MultNumeratorDenominatorRuleTest, visit_NotOptimizableExpressions_NotApplicable) {    
     std::vector<PMult> tests;
     
     // x*3x
