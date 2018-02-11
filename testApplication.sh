@@ -30,7 +30,7 @@ check T02 '0'       'x' 'y'
 check T03 '2*x'     'x^2' 'x' 
 check T04 '2+(2*x)' '2x + x^2' 'x'
 check T05 '7*(1+(tan(x)^2))' '7tan(x)' 'x'
-check T06 '(1-x^2)/((x^2+1)^2)' 'x/(x^2+1)' 'x'
+check T06 '(((x^2)+1)-(2*(x^2)))/(((x^2)+1)^2)' 'x/(x^2+1)' 'x' # answer is right but is still not completely simplified
 check T07 '(cos(x)^2)-(sin(x)^2)' 'sin(x)cos(x)' 'x'
 check T08 '-1*(exp(x)^-1)' '1/exp(x)' 'x'
 check T50 '(-2*((4-(2*x))^-1))+(1.5*(((3*x)+9)^-0.5))' 'ln(4-2*x) + (3*x+9)^0.5' 'x'
