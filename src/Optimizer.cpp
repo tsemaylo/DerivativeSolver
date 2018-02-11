@@ -30,6 +30,8 @@
 #include "MultConstantsRule.h"
 #include "MultIdenticalExpressionsRule.h"
 #include "MultQuotientsRule.h"
+#include "MultNumeratorDenominatorRule.h"
+#include "MultWithNumeratorRule.h"
 #include "PowConstantRule.h"
 #include "PowOfPowRule.h"
 #include "OptimizationRule.tpp"
@@ -65,6 +67,8 @@ inline std::vector<std::unique_ptr<OptimizationRule<PMult>>> multiplicationRules
     rules.push_back(std::make_unique<MultConstantsRule>(expr));
     rules.push_back(std::make_unique<MultIdenticalExpressionsRule>(expr));
     rules.push_back(std::make_unique<MultQuotientsRule>(expr));
+    rules.push_back(std::make_unique<MultNumeratorDenominatorRule>(expr));
+    rules.push_back(std::make_unique<MultWithNumeratorRule>(expr));
     
     return rules;
 }

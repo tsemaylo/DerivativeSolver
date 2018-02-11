@@ -50,6 +50,8 @@ add_executable(DerivativeSolver
     src/MultConstantsRule.cpp
     src/MultIdenticalExpressionsRule.cpp
     src/MultQuotientsRule.cpp
+    src/MultNumeratorDenominatorRule.cpp
+    src/MultWithNumeratorRule.cpp
     src/PowConstantRule.cpp
     src/PowOfPowRule.cpp
     src/LnOfExpRule.cpp
@@ -142,6 +144,8 @@ add_unit_test_suite("test/OptimizerTest.cpp"
     "src/MultConstantsRule.cpp"
     "src/MultIdenticalExpressionsRule.cpp"
     "src/MultQuotientsRule.cpp"
+    "src/MultNumeratorDenominatorRule.cpp"
+    "src/MultWithNumeratorRule.cpp"
     "src/PowConstantRule.cpp"
     "src/PowOfPowRule.cpp"
     "src/LnOfExpRule.cpp"
@@ -153,6 +157,7 @@ add_unit_test_suite("test/MultConstantsRuleTest.cpp" "src/MultConstantsRule.cpp"
 add_unit_test_suite("test/MultIdenticalExpressionsRuleTest.cpp" "src/MultIdenticalExpressionsRule.cpp")
 add_unit_test_suite("test/MultNumeratorDenominatorRuleTest.cpp" "src/MultNumeratorDenominatorRule.cpp")
 add_unit_test_suite("test/MultQuotientsRuleTest.cpp" "src/MultQuotientsRule.cpp")
+add_unit_test_suite("test/MultWithNumeratorRuleTest.cpp" "src/MultWithNumeratorRule.cpp")
 add_unit_test_suite("test/PowConstantRuleTest.cpp" "src/PowConstantRule.cpp" "src/Doubles.cpp")
 add_unit_test_suite("test/PowOfPowRuleTest.cpp" "src/PowOfPowRule.cpp" "src/Doubles.cpp")
 add_unit_test_suite("test/FunctionEvaluateRuleTest.cpp")

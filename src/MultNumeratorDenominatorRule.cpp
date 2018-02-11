@@ -84,8 +84,8 @@ bool MultNumeratorDenominatorRule::apply() throw(TraverseException) {
     // 1. One of terms must be Division
     bool largIsDiv=isTypeOf<Div>(this->expression->lArg);
     bool rargIsDiv=isTypeOf<Div>(this->expression->rArg);
-   
-    if(!largIsDiv && !rargIsDiv) {
+    
+    if(!largIsDiv && !rargIsDiv) { 
        return false;
     }
     if(largIsDiv && rargIsDiv) {
