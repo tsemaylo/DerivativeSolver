@@ -47,6 +47,7 @@ add_executable(DerivativeSolver
     src/SumConstantsRule.cpp
     src/SumIdenticalExpressionsRule.cpp
     src/SumWithNullArgumentRule.cpp
+    src/SumWithNegativeRule.cpp
     src/MultConstantsRule.cpp
     src/MultIdenticalExpressionsRule.cpp
     src/MultQuotientsRule.cpp
@@ -140,7 +141,8 @@ add_unit_test_suite("test/OptimizerTest.cpp"
     "src/Doubles.cpp"
     "src/SumConstantsRule.cpp" 
     "src/SumWithNullArgumentRule.cpp" 
-    "src/SumIdenticalExpressionsRule.cpp" 
+    "src/SumIdenticalExpressionsRule.cpp"
+    "src/SumWithNegativeRule.cpp"
     "src/MultConstantsRule.cpp"
     "src/MultIdenticalExpressionsRule.cpp"
     "src/MultQuotientsRule.cpp"
@@ -153,6 +155,7 @@ add_unit_test_suite("test/OptimizerTest.cpp"
 add_unit_test_suite("test/SumConstantsRuleTest.cpp" "src/SumConstantsRule.cpp")
 add_unit_test_suite("test/SumWithNullArgumentRuleTest.cpp" "src/SumWithNullArgumentRule.cpp" "src/Doubles.cpp")
 add_unit_test_suite("test/SumIdenticalExpressionsRuleTest.cpp" "src/SumIdenticalExpressionsRule.cpp")
+add_unit_test_suite("test/SumWithNegativeRuleTest.cpp" "src/SumWithNegativeRule.cpp" "src/Doubles.cpp")
 add_unit_test_suite("test/MultConstantsRuleTest.cpp" "src/MultConstantsRule.cpp" "src/Doubles.cpp")
 add_unit_test_suite("test/MultIdenticalExpressionsRuleTest.cpp" "src/MultIdenticalExpressionsRule.cpp")
 add_unit_test_suite("test/MultNumeratorDenominatorRuleTest.cpp" "src/MultNumeratorDenominatorRule.cpp")

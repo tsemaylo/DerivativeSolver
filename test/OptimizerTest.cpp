@@ -264,6 +264,12 @@ TEST_F(FX_Optimizer, optimize_SimpleOptimizations_Successfull) {
 
     }
     
+    // ln(exp(1)) => 1
+    {
+        tests.push_back(createLn(createExp(createConstant(1))));
+        expResults.push_back(createConstant(1));
+    }
+    
     for(unsigned int testId=0; testId < tests.size(); testId++){
         PExpression actResult;
         EXPECT_NO_THROW(actResult=optimize(tests[testId])) << "Test ID=" << testId << " threw an exception!";

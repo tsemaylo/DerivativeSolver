@@ -27,6 +27,7 @@
 #include "SumConstantsRule.h"
 #include "SumWithNullArgumentRule.h"
 #include "SumIdenticalExpressionsRule.h"
+#include "SumWithNegativeRule.h"
 #include "MultConstantsRule.h"
 #include "MultIdenticalExpressionsRule.h"
 #include "MultQuotientsRule.h"
@@ -51,6 +52,7 @@ inline std::vector<std::unique_ptr<OptimizationRule<PSum>>> summationRules(PSum 
     rules.push_back(std::make_unique<SumConstantsRule>(expr));
     rules.push_back(std::make_unique<SumWithNullArgumentRule>(expr));
     rules.push_back(std::make_unique<SumIdenticalExpressionsRule>(expr));
+    rules.push_back(std::make_unique<SumWithNegativeRule>(expr));
     
     return rules;
 }
@@ -409,6 +411,7 @@ void Optimizer::visit(const PConstLn expr) throw (TraverseException) {
 }
 
 void Optimizer::visit(const PConstExp expr) throw (TraverseException) {
+//    std::cout << "Visit EXP: entered" << std::endl;
     PExp expWithOptimizedArgs = optimizeArgumentMonadic<PConstExp, PExp>(expr, [](PExpression arg) -> PExp {
         return createExp(arg);
     });
@@ -449,6 +452,7 @@ PExpression optimize(PExpression expr) throw (TraverseException){
         Optimizer optimizer;
         previousExpression->traverse(optimizer);
         PExpression optimizedExpr=optimizer.getLastVisitResult();
+        //std::cout << "Optimization step #" << attemptN << ": " << to_string(optimizedExpr) << std::endl;
         isDone = equals(optimizedExpr, previousExpression);
         
         previousExpression=optimizedExpr;
