@@ -67,7 +67,7 @@ $ make install # installation may require super-user permissions
 
 # Developing 
 
-In the current state the application is in tsting stage.
-Some rules related to reducing and simplification of final expression still have to be bugfixed and polished.
+All the initially planned things are implemented and the alpha-version of application is ready to be used!
+What is happening now? Testing, code/design reviewing and associated bugfixing.
 
 The information regarding the design of application is available in [design notes](design/docs/notes.md).
