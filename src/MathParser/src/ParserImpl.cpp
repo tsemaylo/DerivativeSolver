@@ -205,15 +205,11 @@ PExpression ParserImpl::createOperation(const string opSymbol) const throw (Pars
     if (opSymbol == "/" || opSymbol == "\\") {
         return createDiv();
     }
-    if (opSymbol == "^") {
-        return createPow();
-    }
-
-    THROW(ParsingException, "Unknown type of token (operation is not supported).", opSymbol);
+    // onlyone possible option since getToken() considers nothing else
+    return createPow();
 }
 
 PExpression ParserImpl::createFunction(const string opSymbol) const throw (ParsingException) {
-    // @TODO make it case insensitive
     if (opSymbol == "sin") {
         return createSin();
     }
@@ -229,11 +225,8 @@ PExpression ParserImpl::createFunction(const string opSymbol) const throw (Parsi
     if (opSymbol == "ln") {
         return createLn();
     }
-    if (opSymbol == "exp") {
-        return createExp();
-    }
-
-    THROW(ParsingException, "Unknown type of function (operation is not supported).", opSymbol);
+    // onlyone possible option since Token::isFunction() considers nothing else
+    return createExp();
 }
 
 list<Token>::const_iterator ParserImpl::findEndOfParentheses(list<Token>::const_iterator start, list<Token>::const_iterator end) const throw (ParsingException) {
@@ -325,8 +318,8 @@ list<Token>::const_iterator ParserImpl::shiftToStack(list<Token>::const_iterator
 
     stack.push_back(stackExpression);
 
-    // go to the next iten in the token list
-    ++current;
+     // go to the next iten in the token list
+     ++current;
 
     return current;
 }

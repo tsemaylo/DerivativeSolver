@@ -36,18 +36,6 @@ class ParserImpl {
 private:
     array<unique_ptr<Rule>, 17> grammar;
 
-protected:
-    /**
-     * @brief Split the input string into tokens.
-     * 
-     * For instance: a+b*c => 'a', '+', 'b', '*', 'c'.
-     * 
-     * @param strExpr
-     * 
-     * @return The list of Tokens
-     */
-    list<Token> getTokens(const string &strExpr) const;
-
     /**
      * @brief Determine whether the symbol is an alphabetic character.
      * @return True/False
@@ -77,16 +65,7 @@ protected:
      * @return True/False
      */
     bool isWhitespace(char c) const;
-
-    /**
-     * @brief Analyze grammatically the list of tokens and build syntax tree.
-     * @param tokenList The list of tokens.
-     * @return Expression tree.
-     */
-    PExpression parseTokens(const list<Token> &tokens) const;
-
-    // @TODO very very private area... do something with it
-
+    
     /**
      * Search for the closing bracket in the list of Tokens 
      * 
@@ -135,6 +114,24 @@ protected:
      */
     list<Token>::const_iterator shiftToStack(list<Token>::const_iterator current, list<Token>::const_iterator end, ParserStack &stack) const throw (ParsingException);
 
+    /**
+     * @brief Split the input string into tokens.
+     * 
+     * For instance: a+b*c => 'a', '+', 'b', '*', 'c'.
+     * 
+     * @param strExpr
+     * 
+     * @return The list of Tokens
+     */
+    list<Token> getTokens(const string &strExpr) const;
+
+    /**
+     * @brief Analyze grammatically the list of tokens and build syntax tree.
+     * @param tokenList The list of tokens.
+     * @return Expression tree.
+     */
+    PExpression parseTokens(const list<Token> &tokens) const;
+    
 public:
     ParserImpl();
 

@@ -32,39 +32,6 @@
 #include "Rule.h"
 
 class ParserTest : public ParserImpl {
-public:
-
-    list<Token> getTokens(const string &strExpr) const {
-        return ParserImpl::getTokens(strExpr);
-    }
-
-    bool isAlpha(char c) const {
-        return ParserImpl::isAlpha(c);
-    }
-
-    bool isNumeric(char c) const {
-        return ParserImpl::isNumeric(c);
-    }
-
-    bool isGroupBracket(char c) const {
-        return ParserImpl::isGroupBracket(c);
-    }
-
-    bool isArithOperation(char c) const {
-        return ParserImpl::isArithOperation(c);
-    }
-
-    bool isWhitespace(char c) const {
-        return ParserImpl::isWhitespace(c);
-    }
-
-    list<Token>::const_iterator shiftToStack(list<Token>::const_iterator current, list<Token>::const_iterator end, ParserStack &stack) const throw (ParsingException) {
-        return ParserImpl::shiftToStack(current, end, stack);
-    }
-
-    list<Token>::const_iterator findEndOfParentheses(list<Token>::const_iterator start, list<Token>::const_iterator end) const throw (ParsingException) {
-        return ParserImpl::findEndOfParentheses(start, end);
-    }
 };
 
 class FX_Parser : public testing::Test {
@@ -75,186 +42,6 @@ protected:
     virtual void TearDown() {
     }
 };
-
-TEST_F(FX_Parser, getTokens_AllSymbolsExpression_ok) {
-    ParserTest parser;
-    list<Token> tknList = parser.getTokens("3*sin^2(x + a)/c");
-
-    list<Token>::const_iterator tkn = tknList.begin();
-
-    ASSERT_EQ(12ul, tknList.size());
-
-    EXPECT_STREQ("3", tkn->value.c_str());
-    EXPECT_EQ(TNumeric, tkn->type);
-    tkn++;
-
-    EXPECT_STREQ("*", tkn->value.c_str());
-    EXPECT_EQ(TOperation, tkn->type);
-    tkn++;
-
-    ASSERT_STREQ("sin", tkn->value.c_str());
-    tkn++;
-    ASSERT_STREQ("^", tkn->value.c_str());
-    tkn++;
-    ASSERT_STREQ("2", tkn->value.c_str());
-    tkn++;
-    ASSERT_STREQ("(", tkn->value.c_str());
-    tkn++;
-    ASSERT_STREQ("x", tkn->value.c_str());
-    tkn++;
-    ASSERT_STREQ("+", tkn->value.c_str());
-    tkn++;
-    ASSERT_STREQ("a", tkn->value.c_str());
-    tkn++;
-    ASSERT_STREQ(")", tkn->value.c_str());
-    tkn++;
-    ASSERT_STREQ("/", tkn->value.c_str());
-    tkn++;
-    ASSERT_STREQ("c", tkn->value.c_str());
-    tkn++;
-}
-
-TEST_F(FX_Parser, getTokens_MultipleParenting_ok) {
-    ParserTest parser;
-    list<Token> tknList = parser.getTokens("((()())())");
-
-    ASSERT_EQ(10ul, tknList.size());
-
-    for (auto tkn : tknList) {
-        EXPECT_EQ(TGroupBracket, tkn.type);
-    }
-}
-
-TEST_F(FX_Parser, isWhitespace_SpaceSymbol_true) {
-    ParserTest parser;
-    ASSERT_TRUE(parser.isWhitespace(' '));
-}
-
-TEST_F(FX_Parser, isWhitespace_tabSymbol_true) {
-    ParserTest parser;
-    ASSERT_TRUE(parser.isWhitespace('	'));
-}
-
-TEST_F(FX_Parser, shiftToStack_NumericToken_ConstantExpressionInStack) {
-    list<Token> tokens;
-    tokens.push_back(Token("42", TNumeric));
-    tokens.push_back(Token("Test", TNoToken));
-            
-    list<Token>::const_iterator start=tokens.begin();
-    list<Token>::const_iterator end=tokens.end();
-    
-    ParserStack stack;
-    
-    ParserTest parser;
-    start = parser.shiftToStack(start, end, stack);
-    
-    EXPECT_EQ("Test", start->value);
-    
-    ParserStack::const_iterator exprIt=stack.begin();
-    PExpression expr=*exprIt;
-    EXPECT_TRUE(isTypeOf<Constant>(expr));
-    EXPECT_DOUBLE_EQ(42.0, SPointerCast<Constant>(expr)->value);
-}
-
-TEST_F(FX_Parser, shiftToStack_AlphaNummericToken_VariableExpressionInStack) {
-    list<Token> tokens;
-    tokens.push_back(Token("a", TAlphaNumeric));
-    tokens.push_back(Token("Test", TNoToken));
-            
-    list<Token>::const_iterator start=tokens.begin();
-    list<Token>::const_iterator end=tokens.end();
-    
-    ParserStack stack;
-    
-    ParserTest parser;
-    start = parser.shiftToStack(start, end, stack);
-    
-    EXPECT_EQ("Test", start->value);
-    
-    ParserStack::const_iterator exprIt=stack.begin();
-    PExpression expr=*exprIt;
-    EXPECT_TRUE(isTypeOf<Variable>(expr));
-    EXPECT_STREQ("a", SPointerCast<Variable>(expr)->name.c_str());
-}
-
-TEST_F(FX_Parser, shiftToStack_ArithmeticalOperationToken_SumExpressionInStack) {
-    list<Token> tokens;
-    tokens.push_back(Token("+", TOperation));
-    tokens.push_back(Token("Test", TNoToken));
-            
-    list<Token>::const_iterator start=tokens.begin();
-    list<Token>::const_iterator end=tokens.end();
-    
-    ParserStack stack;
-    
-    ParserTest parser;
-    start = parser.shiftToStack(start, end, stack);
-    
-    EXPECT_EQ("Test", start->value);
-    
-    ParserStack::const_iterator exprIt=stack.begin();
-    EXPECT_TRUE(isTypeOf<Sum>(*exprIt));
-}
-
-TEST_F(FX_Parser, shiftToStack_BracketToken_ParsedSubExpressionInStack) {
-    list<Token> tokens;
-    tokens.push_back(Token("(", TGroupBracket));
-    tokens.push_back(Token("a", TAlphaNumeric));
-    tokens.push_back(Token("+", TOperation));
-    tokens.push_back(Token("b", TAlphaNumeric));
-    tokens.push_back(Token(")", TGroupBracket));
-            
-    list<Token>::const_iterator start=tokens.begin();
-    list<Token>::const_iterator end=tokens.end();
-    
-    ParserStack stack;
-    
-    ParserTest parser;
-    start = parser.shiftToStack(start, end, stack);
-    
-    EXPECT_EQ(end, start);
-    
-    ParserStack::const_iterator exprIt=stack.begin();
-    EXPECT_TRUE(isTypeOf<Sum>(*exprIt));
-    EXPECT_TRUE((*exprIt)->isComplete());
-}
-
-TEST_F(FX_Parser, shiftToStack_OpenedBracketInTheEnd_ParsingException) {
-    list<Token> tokens;
-    tokens.push_back(Token("a", TAlphaNumeric));
-    tokens.push_back(Token("+", TOperation));
-    tokens.push_back(Token("(", TGroupBracket));
-            
-    list<Token>::const_iterator start=tokens.begin();
-    ++start;
-    ++start;
-    list<Token>::const_iterator end=tokens.end();
-    
-    ParserStack stack;
-    
-    ParserTest parser;
-    EXPECT_THROW(parser.shiftToStack(start, end, stack), ParsingException);
-}
-
-TEST_F(FX_Parser, shiftToStack_SinFunction_SinInStack) {
-    list<Token> tokens;
-    tokens.push_back(Token("sin", TAlphaNumeric));
-    tokens.push_back(Token("Test", TNoToken));
-            
-    list<Token>::const_iterator start=tokens.begin();
-    list<Token>::const_iterator end=tokens.end();
-    
-    ParserStack stack;
-    
-    ParserTest parser;
-    start = parser.shiftToStack(start, end, stack);
-    
-    EXPECT_EQ("Test", start->value);
-    
-    ParserStack::const_iterator exprIt=stack.begin();
-    PExpression expr=*exprIt;
-    EXPECT_TRUE(isTypeOf<Sin>(expr));
-}
 
 TEST_F(FX_Parser, parse_SimpleSummation_FunctionWithTwoArgs) {
     ParserTest parser;
@@ -578,43 +365,61 @@ TEST_F(FX_Parser, parse_CanParseFloatingPointNumbers_Success) {
     EXPECT_DOUBLE_EQ(5.3, termR->value);
 }
 
+TEST_F(FX_Parser, parse_CanParseUpperCase_Success) {
+    ParserTest parser;
+    const string strExpr = "X+Y";
+
+    PExpression expr = parser.parse(strExpr);
+    
+    ASSERT_TRUE(isTypeOf<Sum>(expr));
+    
+    PSum typedExpr=SPointerCast<Sum>(expr);
+    ASSERT_TRUE(isTypeOf<Variable>(typedExpr->lArg));
+    ASSERT_TRUE(isTypeOf<Variable>(typedExpr->rArg));
+    
+    PVariable termL=SPointerCast<Variable>(typedExpr->lArg);
+    PVariable termR=SPointerCast<Variable>(typedExpr->rArg);
+    EXPECT_EQ("X", termL->name);
+    EXPECT_EQ("Y", termR->name);
+}
+
 TEST_F(FX_Parser, parse_ImplicitMultiplication_Success) {
     vector<string> tests;
     vector<PExpression> expectedResults;
     
     
-//    tests.push_back("(x+1)(x-1)");
-//    expectedResults.push_back(createMult(
-//        createSum(createVariable("x"), createConstant(1)),
-//        createSub(createVariable("x"), createConstant(1))
-//    ));
-//    
-//    tests.push_back("4-2x");
-//    expectedResults.push_back(createSub(
-//        createConstant(4),
-//        createMult(createConstant(2), createVariable("x"))
-//    ));
-//    
-//    tests.push_back("2x - 4");
-//    expectedResults.push_back(createSub(
-//        createMult(createConstant(2), createVariable("x")),
-//        createConstant(4)
-//    ));
-//    
-//    tests.push_back("2cos(x)");
-//    expectedResults.push_back(createMult(
-//        createConstant(2),
-//        createCos(createVariable("x"))
-//    ));
-//    
-//    tests.push_back("a+7(x+1)");
-//    expectedResults.push_back(createSum(
-//        createVariable("a"),
-//        createMult(
-//            createConstant(7),
-//            createSum(createVariable("x"), createConstant(1))
-//        )
-//    ));
+    tests.push_back("(x+1)(x-1)");
+    expectedResults.push_back(createMult(
+        createSum(createVariable("x"), createConstant(1)),
+        createSub(createVariable("x"), createConstant(1))
+    ));
+    
+    tests.push_back("4-2x");
+    expectedResults.push_back(createSub(
+        createConstant(4),
+        createMult(createConstant(2), createVariable("x"))
+    ));
+    
+    tests.push_back("2x - 4");
+    expectedResults.push_back(createSub(
+        createMult(createConstant(2), createVariable("x")),
+        createConstant(4)
+    ));
+    
+    tests.push_back("2cos(x)");
+    expectedResults.push_back(createMult(
+        createConstant(2),
+        createCos(createVariable("x"))
+    ));
+    
+    tests.push_back("a+7(x+1)");
+    expectedResults.push_back(createSum(
+        createVariable("a"),
+        createMult(
+            createConstant(7),
+            createSum(createVariable("x"), createConstant(1))
+        )
+    ));
     
     tests.push_back("2x^2");
     expectedResults.push_back(createMult(
@@ -642,45 +447,27 @@ TEST_F(FX_Parser, parse_NotANumber_ParsingException) {
     ASSERT_THROW(parser.parse(strExpr), ParsingException);
 }
 
-TEST_F(FX_Parser, findEndOfParentheses_NormalCase_ok) {
+TEST_F(FX_Parser, parse_FailedParentness_ParsingException) {
     ParserTest parser;
-    list<Token> tknList = parser.getTokens("a+(b+c)+(d+e)");
-    list<Token>::const_iterator tkn = tknList.begin(); // 'a'
-    ++tkn; // '+'
-    ++tkn; // '('
-    ++tkn; // 'b'
-    list<Token>::const_iterator end = parser.findEndOfParentheses(tkn, tknList.end());
-    EXPECT_STREQ(")", end->value.c_str());
-
-    EXPECT_STREQ("b", tkn->value.c_str());
-
-    tkn = end;
-    ++tkn; // ')'
-    ++tkn; // '+'
-    ++tkn; // '('
-    ++tkn; // 'd'
-
-    end = parser.findEndOfParentheses(tkn, tknList.end());
-    EXPECT_STREQ(")", end->value.c_str());
+    ASSERT_THROW(parser.parse("a+(b+(c+(d+e)+k)"), ParsingException);
 }
 
-TEST_F(FX_Parser, findEndOfParentheses_MultipleParentness_ok) {
+TEST_F(FX_Parser, parse_FailedParentnessUnexpectedClosingBracket_ParsingException) {
     ParserTest parser;
-    list<Token> tknList = parser.getTokens("a+(b+(c+(d+e))+k)");
-    list<Token>::const_iterator tkn = tknList.begin(); // 'a'
-    ++tkn; // '+'
-    ++tkn; // '('
-    ++tkn; // 'b'
-    list<Token>::const_iterator end = parser.findEndOfParentheses(tkn, tknList.end());
-    EXPECT_STREQ(")", end->value.c_str());
+    ASSERT_THROW(parser.parse("a+)b)"), ParsingException);
 }
 
-TEST_F(FX_Parser, findEndOfParentheses_FailedParentness_ParsingException) {
+TEST_F(FX_Parser, parse_FailedParentnessNoClosingBracketAtTheExndOfTheStaring_ParsingException) {
     ParserTest parser;
-    list<Token> tknList = parser.getTokens("a+(b+(c+(d+e)+k)");
-    list<Token>::const_iterator tkn = tknList.begin(); // 'a'
-    ++tkn; // '+'
-    ++tkn; // '('
-    ++tkn; // 'b'
-    ASSERT_THROW(parser.findEndOfParentheses(tkn, tknList.end()), ParsingException);
+    ASSERT_THROW(parser.parse("("), ParsingException);
+}
+
+TEST_F(FX_Parser, parse_UnknownCharacter_ParsingException) {
+    ParserTest parser;
+    ASSERT_THROW(parser.parse("a+'b'"), ParsingException);
+}
+
+TEST_F(FX_Parser, parse_WhiteSpaceString_ParsingException) {
+    ParserTest parser;
+    ASSERT_THROW(parser.parse("     "), ParsingException);
 }

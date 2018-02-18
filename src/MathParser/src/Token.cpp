@@ -19,9 +19,7 @@ bool Token::isFunction() const {
     if(this->type != TAlphaNumeric){
         return false;
     }
-    
-    // @TODO case irrelevant check
-    
+
     if(this->value == "sin" ){
         return true;
     }
