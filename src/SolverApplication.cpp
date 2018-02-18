@@ -3,7 +3,7 @@
  */
 
 /* 
- * \file   SolverApplication.h
+ * \file   SolverApplication.cpp
  * 
  * \brief Implementation of Application class.
  * 

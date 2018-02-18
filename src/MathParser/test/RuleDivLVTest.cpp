@@ -3,7 +3,9 @@
  */
 
 /**
- * @file Test cases for RuleDivLV (left value division rule).
+ * @file RuleDivLVTest.cpp
+ * 
+ * Test cases for RuleDivLV (left value division rule).
  *
  * @since 15.08.2017
  * @author agor

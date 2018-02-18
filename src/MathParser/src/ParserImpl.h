@@ -3,9 +3,9 @@
  */
 
 /**
- * @file Parser.h
+ * @file ParserImpl.h
  *
- * @brief Interface of the parser class.
+ * @brief Definition of the parser implementation class.
  *
  * @since 25.03.2016
  * @author agor

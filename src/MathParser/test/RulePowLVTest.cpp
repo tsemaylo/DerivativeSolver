@@ -3,7 +3,9 @@
  */
 
 /**
- * @file Test cases for RulePowLV (left value of exponentation rule).
+ * @file RulePowLVTest.cpp
+ * 
+ * Test cases for RulePowLV (left value of exponentation rule).
  *
  * @since 16.08.2017
  * @author agor

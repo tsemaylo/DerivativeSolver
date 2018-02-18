@@ -3,7 +3,9 @@
  */
 
 /**
- * @file Tests for RulePowRV. Handling of right hand argument of exponentation operation.
+ * @file RulePowRVTest.cpp
+ * 
+ * Tests for RulePowRV. Handling of right hand argument of exponentation operation.
  *
  * @since 16.08.2017
  * @author agor

@@ -3,7 +3,9 @@
  */
 
 /**
- * @file Tests for RuleSumRV (process expression on the right sde of summation op).
+ * @file RuleSumRVTest.cpp
+ * 
+ * Tests for RuleSumRV (process expression on the right sde of summation op).
  *
  * @since 26.07.2017
  * @author agor

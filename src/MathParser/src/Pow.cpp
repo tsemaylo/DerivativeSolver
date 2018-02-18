@@ -3,7 +3,7 @@
  */
 
 /**
- * @file    Pow.h
+ * @file    Pow.cpp
  * 
  * The implementation of Pow class.
  * 

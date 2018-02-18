@@ -3,7 +3,9 @@
  */
 
 /**
- * @file Tests for RuleFunction. Handling of right hand argument of division operation.
+ * @file RuleFunctionTest.cpp
+ * 
+ * Tests for RuleFunction. Handling of right hand argument of division operation.
  *
  * @since 15.08.2017
  * @author agor

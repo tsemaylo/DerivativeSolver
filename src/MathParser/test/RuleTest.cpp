@@ -3,8 +3,10 @@
  */
 
 /**
- * @file Test cases for Rule functions .
+ * @file RuleTest.cpp
  *
+ * Test cases for Rule functions.
+ * 
  * @since 14.08.2016
  * @author agor
  */

@@ -5,7 +5,7 @@
 /**
  * @file ComparatorTest.cpp
  *
- * test cases for comparator.
+ * Test cases for comparator.
  * 
  * @since 09.10.2017
  * @author agor

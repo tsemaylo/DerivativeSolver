@@ -3,7 +3,7 @@
  */
 
 /**
- * @file RuleNoSignMult.cpp
+ * @file RuleNoSignMultTest.cpp
  *
  * Test for RuleNoSignMult class.
  * 

@@ -7,8 +7,6 @@
  * 
  * Implementation of the  MultNumeratorDenominatorRule class.
  * 
- * @TODO to be seriously refactored...
- * 
  * @author   agor
  * @since 15.12.2017
  */

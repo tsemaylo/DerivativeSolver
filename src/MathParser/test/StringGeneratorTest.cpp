@@ -3,8 +3,8 @@
  */
 
 /**
- * @file Tests for RuleSumLV (lft value summation rule).
- *
+ * @file StringGeneratorTest.cpp
+ * 
  * @since 26.07.2017
  * @author agor
  */

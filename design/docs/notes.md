@@ -182,5 +182,5 @@ Performed in the build time.
   - [x] Update design doc  
   - [x] Check duplication is the source code (POSTPONED, so far see no neccessity, as soon as only ExceptionThrower and build configs are duplicated)
 - [x] Add license info
-- [ ] Check doxygen comments (IN PROGRESS)
+- [x] Check doxygen comments 
 - [ ] Update exception text in Differentiator and Optimizer (IN PROGRESS)

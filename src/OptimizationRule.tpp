@@ -3,7 +3,7 @@
  */
 
 /**
- * @file OptimizationRule.h
+ * @file OptimizationRule.tpp
  * 
  * The definition of interface for expression optimization rules.
  * 

@@ -3,7 +3,7 @@
  */
 
 /**
- * @file   RuleOperations.cpp
+ * @file   RuleOperations.tpp
  * 
  * @brief Implamentation of RuleOperations.
  * 

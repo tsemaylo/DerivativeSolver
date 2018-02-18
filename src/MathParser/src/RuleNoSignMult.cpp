@@ -3,7 +3,7 @@
  */
 
 /**
- * @file RuleNoSignMult.h
+ * @file RuleNoSignMult.cpp
  * 
  * The implementation of RuleNoSignMult.
  * 

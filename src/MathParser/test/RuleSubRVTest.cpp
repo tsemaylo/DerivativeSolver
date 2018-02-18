@@ -3,7 +3,7 @@
  */
 
 /**
- * @file Tests for RuleSumRV (process expression on the right sde of summation op).
+ * @file RuleSubRVTest.cpp
  *
  * @since 26.07.2017
  * @author agor

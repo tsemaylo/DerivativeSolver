@@ -3,7 +3,9 @@
  */
 
 /**
- * @file Tests for RuleSubLV (lft value subtraction rule).
+ * @file RuleSubLVTest.cpp
+ * 
+ * Tests for RuleSubLV (lft value subtraction rule).
  *
  * @since 26.07.2017
  * @author agor
