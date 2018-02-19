@@ -23,7 +23,7 @@ endfunction()
 
 function(add_unit_test_suite test_suite_name)
     add_executable(${test_suite_name} "test/${test_suite_name}.cpp")
-    target_link_libraries(${test_suite_name} gtest_main libagmathparser gcov)
+    target_link_libraries(${test_suite_name} gtest_main agmathparser gcov)
     target_include_directories(${test_suite_name} PUBLIC
       $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>
       $<INSTALL_INTERFACE:include>
@@ -58,7 +58,7 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     endif()
 endif()
 
-add_library(libagmathparser SHARED 
+add_library(agmathparser SHARED 
         src/Comparator.cpp
         src/Constant.cpp
         src/Cos.cpp
@@ -99,7 +99,7 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     if(CMAKE_COMPILER_IS_GNUCC) 
         set(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} --coverage" )
         set(CMAKE_SHARED_LINKER_FLAGS  "${CMAKE_SHARED_LINKER_FLAGS} --coverage" )
-        target_link_libraries (libagmathparser gcov)
+        target_link_libraries (agmathparser gcov)
     else()
         # TODO coverage for clang?
     endif()
@@ -154,7 +154,7 @@ foreach(suite_file_name ${test_suites})
 endforeach()
 enable_testing ()
 
-install(TARGETS libagmathparser DESTINATION lib)
+install(TARGETS agmathparser DESTINATION lib)
 # NOTICE: the includes are delivered with a stand-alone library, but they are 
 # actually not neaded for parent application. I left it commented
-# install(FILES ${public_headers} DESTINATION include/libagmathparser)
+# install(FILES ${public_headers} DESTINATION include/agmathparser)

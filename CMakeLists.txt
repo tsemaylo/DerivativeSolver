@@ -67,10 +67,10 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     endif()
 endif()
 
-target_link_libraries(DerivativeSolver libagmathparser)
+target_link_libraries(DerivativeSolver agmathparser)
 target_include_directories(DerivativeSolver PUBLIC
    $<BUILD_INTERFACE:${MathParser_SOURCE_DIR}/src>
-   $<INSTALL_INTERFACE:include/libagmathparser>
+   $<INSTALL_INTERFACE:include/agmathparser>
 )
 
 # code snippet to incorporate google test library for unit tsting
@@ -116,7 +116,7 @@ endif()
 function(add_unit_test_suite) 
    get_filename_component(test_suite_name ${ARGV0} NAME_WE)
    add_executable(${test_suite_name} ${ARGV})
-   target_link_libraries(${test_suite_name} gtest_main libagmathparser)
+   target_link_libraries(${test_suite_name} gtest_main agmathparser)
 
    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
        if(CMAKE_COMPILER_IS_GNUCC) 
@@ -130,7 +130,7 @@ function(add_unit_test_suite)
    target_include_directories(${test_suite_name} PUBLIC
       $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>
       $<BUILD_INTERFACE:${MathParser_SOURCE_DIR}/src>
-      $<INSTALL_INTERFACE:include/libagmathparser>
+      $<INSTALL_INTERFACE:include/agmathparser>
    )
    add_test(NAME ${test_suite_name} COMMAND ${test_suite_name} --gtest_shuffle --gtest_repeat=7)
 endfunction()

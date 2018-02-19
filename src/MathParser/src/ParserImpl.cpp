@@ -266,61 +266,45 @@ list<Token>::const_iterator ParserImpl::shiftToStack(list<Token>::const_iterator
     Token token = *current;
 
     PExpression stackExpression;
-    switch (token.type) {
-        case TNumeric:
-        {
-            try{
-                stackExpression = createConstant(token.value);
-            }
-            catch(std::exception ex){
-                THROW(ParsingException, string("Not a number token. (") + ex.what() + ")", token.value);
-            }
-            break;
+    if (TNumeric == token.type) {
+        try {
+            stackExpression = createConstant(token.value);
+        } catch (std::exception &ex) {
+            THROW(ParsingException, string("Not a number token. (") + ex.what() + ")", token.value);
         }
-        case TOperation:
-        {
-            stackExpression = createOperation(token.value);
-            break;
+    } else if (TOperation == token.type) {
+        stackExpression = createOperation(token.value);
+    } else if (TAlphaNumeric == token.type) {
+        // check if the token represents function
+        if (token.isFunction()) {
+            stackExpression = createFunction(token.value);
+        } else {
+            // assuming it is a variable
+            stackExpression = createVariable(token.value);
         }
-        case TAlphaNumeric:
-        {
-            // check if the token represents function
-            if(token.isFunction()){
-                stackExpression = createFunction(token.value);
-            }else{
-                // assuming it is a variable
-                stackExpression = createVariable(token.value);
-            }
-            
-            break;
+    } else if (TGroupBracket == token.type) {
+        // it must be an opening bracket
+        if (current->value == ")") {
+            THROW(ParsingException, "Unexpected closing bracket ')'.", "N.A.");
         }
-        case TGroupBracket:
-        {
-            // it must be an opening bracket
-            if (current->value == ")") {
-                THROW(ParsingException, "Unexpected closing bracket ')'.", "N.A.");
-            }
-            ParserStack subStack;
-            ++current; // this one is bracket - take the next one
-            if (current == end) {
-                THROW(ParsingException, "Unexpect end of the expression.", "No closing bracket at the end of the string.");
-            }
-            list<Token>::const_iterator endParentheses = findEndOfParentheses(current, end);
-            this->doParseTokens(current, endParentheses, subStack);
-            stackExpression = subStack.front();
-            current = endParentheses;
-            break;
+        ParserStack subStack;
+        ++current; // this one is bracket - take the next one
+        if (current == end) {
+            THROW(ParsingException, "Unexpect end of the expression.", "No closing bracket at the end of the string.");
         }
-        case TNoToken:
-        default:
-            THROW(ParsingException, "Unknown type of token", "Token(" + token.value + ")");
+        list<Token>::const_iterator endParentheses = findEndOfParentheses(current, end);
+        this->doParseTokens(current, endParentheses, subStack);
+        stackExpression = subStack.front();
+        current = endParentheses;
     }
+        
+    if(stackExpression != nullptr) {
+        stack.push_back(stackExpression);
 
-    stack.push_back(stackExpression);
-
-     // go to the next iten in the token list
-     ++current;
-
+         // go to the next iten in the token list
+         ++current;
+    }
+    
     return current;
 }
 
