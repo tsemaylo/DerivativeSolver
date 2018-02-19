@@ -8,7 +8,6 @@ mkdir -p build
 
 cd build 
 cmake .. -DCMAKE_BUILD_TYPE=Debug
-cat src/MathParser/build/CMakeFiles/libagmathparser.dir/flags.make 
 make 
 make test
 
