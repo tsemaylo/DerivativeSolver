@@ -94,3 +94,16 @@ TEST_F(FX_RuleMultLV, apply_LeftHandArgumentIsNotComplete_NotReducable) {
     RuleMultLV ruleMultLV;
     EXPECT_FALSE(ruleMultLV.apply(stack, lookAheadToken("b", TAlphaNumeric)));
 }
+
+
+TEST_F(FX_RuleMultLV, apply_LeftHandArgumentOfMultIsAlreadyParsed_NotReducable) {
+    ParserStack stack;
+
+    // 3 a*? b
+    stack.push_back(createConstant(3));
+    stack.push_back(createMult(createVariable("a"), nullptr));
+    stack.push_back(createVariable("b"));
+
+    RuleMultLV ruleMultLV;
+    EXPECT_FALSE(ruleMultLV.apply(stack, lookAheadToken("b", TAlphaNumeric)));
+}

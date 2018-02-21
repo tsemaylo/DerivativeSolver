@@ -28,10 +28,8 @@ public:
     int run();
 
     void setStrExpression(const string strExpression);
-    string getStrExpression() const;
 
     void setStrVariable(const string strVariable);
-    string getStrVariable() const;
 
 private:
     string strExpression;

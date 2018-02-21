@@ -51,3 +51,10 @@ TEST_F(FX_Expression, equals_EqualityOfComplexExpression_OK) {
     
     ASSERT_TRUE(equals(ln_1, ln_2) == equals(ln_2, ln_1));
 }
+
+TEST_F(FX_Expression, equals_NullArguments_False) {
+    PExpression varX = createVariable("x");
+    
+    EXPECT_FALSE(equals(nullptr, varX));
+    EXPECT_FALSE(equals(varX, nullptr));
+}

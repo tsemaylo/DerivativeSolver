@@ -28,7 +28,7 @@ bool ifMultIsANegation(PMult mult, std::function<bool(PExpression)> returnSub) {
         return false;
     }
     
-    if(isLConst && isRConst){
+    if(!isLConst && !isRConst){
         return false;
     }
     
@@ -41,21 +41,17 @@ bool ifMultIsANegation(PMult mult, std::function<bool(PExpression)> returnSub) {
     }
     
     PConstant c=SPointerCast<Constant>(mult->rArg);
-        if(equal(c->value, -1.0)){
-            return returnSub(mult->lArg);
-        }
-        return false;
+    if(equal(c->value, -1.0)){
+        return returnSub(mult->lArg);
+    }
+    return false;
 }
 
 bool SumWithNegativeRule::apply() throw(TraverseException) {
     // one argument of summation must be in the for -1*a
     bool largIsMult=isTypeOf<Mult>(this->expression->lArg);
     bool rargIsMult=isTypeOf<Mult>(this->expression->rArg);
-    
-    if(!largIsMult && !rargIsMult){
-        return false;
-    }
-    
+
     // find out which argument is negated
     if(largIsMult){
         return ifMultIsANegation(SPointerCast<Mult>(this->expression->lArg), [this](PExpression subArg) -> bool {
@@ -64,6 +60,7 @@ bool SumWithNegativeRule::apply() throw(TraverseException) {
         });
     }
     
+    // probably the right arg is multiplication
     if(rargIsMult){
         return ifMultIsANegation(SPointerCast<Mult>(this->expression->rArg), [this](PExpression subArg) -> bool {
             this->optimizedExpression=createSub(this->expression->lArg, subArg);

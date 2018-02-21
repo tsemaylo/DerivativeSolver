@@ -269,3 +269,10 @@ TEST_F(FX_Comparator, visit_WhatIfRightExprIsNull_TraverseException) {
     Comparator comparator2(createLn());
     EXPECT_THROW(ln2->traverse(comparator2), TraverseException);
 }
+
+TEST_F(FX_Comparator, visit_WhatIfLeftExprIsNull_TraverseException) {
+    PSum sum=createSum(createVariable("x"), createVariable("y"));
+    Comparator comparator(sum);
+    PSum sumBeingCompared; // it is nullptr
+    EXPECT_THROW(comparator.visit(sumBeingCompared), TraverseException);
+}

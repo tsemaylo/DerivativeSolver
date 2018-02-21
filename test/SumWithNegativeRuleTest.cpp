@@ -44,6 +44,16 @@ TEST_F(FX_SumWithNegativeRuleTest, visit_OptimizableExpressions_ApplicableAndExp
             createVariable("y")
     ));
     
+    // x+(y*-1) = x-y
+    tests.push_back(createSum(
+            createVariable("x"),
+            createMult(createVariable("y"), createConstant(-1))
+    ));
+    expectedResults.push_back(createSub(
+            createVariable("x"),
+            createVariable("y")
+    ));
+    
     // (-1*y)+x = x-y
     tests.push_back(createSum(
             createMult(createConstant(-1), createVariable("y")),
@@ -80,6 +90,24 @@ TEST_F(FX_SumWithNegativeRuleTest, visit_NotOptimizableExpressions_NotApplicable
     
     // x+x
     tests.push_back(createSum(createVariable("x"), createVariable("x")));
+    
+    // x+(3*4)
+    tests.push_back(createSum(
+        createVariable("x"), 
+        createMult(createConstant(3), createConstant(4))
+    ));
+    
+    // x+(sin(x)*cos(x))
+    tests.push_back(createSum(
+        createVariable("x"), 
+        createMult(createSin(createVariable("x")), createCos(createVariable("x")))
+    ));
+    
+    // x+(y*1)
+    tests.push_back(createSum(
+        createVariable("x"),
+        createMult(createVariable("y"), createConstant(1))
+    ));
     
     for(unsigned int testId=0; testId < tests.size(); testId++){
         SumWithNegativeRule rule(tests[testId]);

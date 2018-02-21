@@ -43,6 +43,13 @@ TEST_F(FX_Optimizer, visit_SumOfTwoConstants_Constant) {
     ASSERT_DOUBLE_EQ(5.0, optExpTyped->value);
 }
 
+TEST_F(FX_Optimizer, visit_VariableNotSpecified_TraverseException) {
+    PVariable emptyVar = createVariable("");
+    
+    Optimizer optimizer;
+    ASSERT_THROW(emptyVar->traverse(optimizer), TraverseException);
+}
+
 TEST_F(FX_Optimizer, visit_Subtraction_ApplicableAndSuccessfull) {
     std::vector<PSub> tests;
     std::vector<PExpression> expResults;
@@ -137,10 +144,30 @@ TEST_F(FX_Optimizer, visit_Division_ApplicableAndSuccessfull) {
         createPow(createVariable("x"), createSum(createConstant(1), createConstant(1)))
     ));
     
+    // (3x)/(x/3) => 9*x^(1+-1)
+    tests.push_back(createDiv(
+        createMult(createConstant(3), createVariable("x")),
+        createDiv(createVariable("x"), createConstant(3))
+    ));
+    expResults.push_back(createMult(
+        createConstant(9), 
+        createPow(createVariable("x"), createSum(createConstant(1), createConstant(-1)))
+    ));
+    
     // (x^2)/(2*x) => 0.5 * x
     tests.push_back(createDiv(
         createPow(createVariable("x"), createConstant(2)),
         createMult(createConstant(2), createVariable("x"))
+    ));
+    expResults.push_back(createMult(
+        createConstant(0.5), 
+        createPow(createVariable("x"), createSum(createConstant(2), createConstant(-1)))
+    ));
+    
+    // (x^2)/(x*2) => 0.5 * x
+    tests.push_back(createDiv(
+        createPow(createVariable("x"), createConstant(2)),
+        createMult(createVariable("x"), createConstant(2))
     ));
     expResults.push_back(createMult(
         createConstant(0.5), 
@@ -154,7 +181,7 @@ TEST_F(FX_Optimizer, visit_Division_ApplicableAndSuccessfull) {
         string expected=to_string(expResults[testId]);
         string actual=to_string(actResult);
         EXPECT_TRUE(equals(expResults[testId], actResult)) << 
-                "Result does not match for test ID=" << testId << "! (" 
+                "Result does not match for test ID=" << testId << "! " 
                 << expected << " != " << actual;
     }
 }
@@ -270,6 +297,16 @@ TEST_F(FX_Optimizer, optimize_SimpleOptimizations_Successfull) {
         expResults.push_back(createConstant(1));
     }
     
+    // ctan(x+2x) => ctan(3x)
+    {
+        tests.push_back(createCtan(
+            createSum(createVariable("x"), createMult(createConstant(2), createVariable("x")))
+        ));
+        expResults.push_back(createCtan(
+            createMult(createConstant(3), createVariable("x"))
+        ));
+    }
+    
     for(unsigned int testId=0; testId < tests.size(); testId++){
         PExpression actResult;
         EXPECT_NO_THROW(actResult=optimize(tests[testId])) << "Test ID=" << testId << " threw an exception!";
@@ -296,12 +333,14 @@ TEST_F(FX_Optimizer, optimize_ExceptionalCases_TraverseException) {
     tests.push_back(createCtan()); // 08
     tests.push_back(createLn());   // 09
     tests.push_back(createExp());  // 10
+    PExpression nullExpr;
+    tests.push_back(nullExpr);     // 11
     
     // illegal arguments
-    tests.push_back(createDiv(createConstant(1), createConstant(0))); // 11
-    tests.push_back(createTan(createConstant(PI/2))); //12
-    tests.push_back(createCtan(createConstant(2*PI))); //13
-    tests.push_back(createLn(createConstant(-2.0))); //14
+    tests.push_back(createDiv(createConstant(1), createConstant(0))); // 12
+    tests.push_back(createTan(createConstant(PI/2))); //13
+    tests.push_back(createCtan(createConstant(2*PI))); //14
+    tests.push_back(createLn(createConstant(-2.0))); //15
     
     for(unsigned int testId=0; testId < tests.size(); testId++){
         EXPECT_THROW(optimize(tests[testId]), TraverseException) << "Test ID=" << testId << " did not throw an exception!";

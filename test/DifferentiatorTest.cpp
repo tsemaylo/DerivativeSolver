@@ -243,7 +243,7 @@ TEST_F(FX_Differentiator, visit_Exponentiation_GeneralizedPowerRuleApplied) {
 }
 
 TEST_F(FX_Differentiator, visit_ExponentiationOperationIsIncoplete_TraverseException) {
-    PExpression exp = createMult(nullptr, createVariable("a"));
+    PExpression exp = createPow(nullptr, createVariable("a"));
     
     Differentiator differentiator("a");
     ASSERT_THROW(exp->traverse(differentiator), TraverseException);
@@ -461,4 +461,9 @@ TEST_F(FX_Differentiator, visit_ExponentWithoutArgument_TraverseException) {
     
     Differentiator differentiator("x");
     ASSERT_THROW(exp->traverse(differentiator), TraverseException);
+}
+
+TEST_F(FX_Differentiator, differentiate_NullExpression_TraverseException) {
+    PExpression nullExpr;
+    ASSERT_THROW(differentiate(nullExpr, "x"), TraverseException);
 }

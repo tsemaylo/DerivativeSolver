@@ -179,7 +179,7 @@ inline PExpression negateExpression(PExpression expr) throw(TraverseException){
     if(isTypeOf<Mult>(expr)){
         PMult typedExpr=SPointerCast<Mult>(expr);
         
-        auto negateConstant = [](PConstant c) throw(TraverseException) -> PConstant {
+       std::function<PConstant (PConstant)> negateConstant = [](PConstant c) -> PConstant {
             return createConstant(c->value * -1.0);
         };
         
@@ -237,7 +237,7 @@ inline PExpression invertDenominator(PExpression expr) throw(TraverseException){
             return createMult(createConstant(1.0/(SPointerCast<Constant>(typedExpr->lArg))->value), typedExpr->rArg);
         }
         // x/y => y/x
-        return createMult(typedExpr->lArg, typedExpr->rArg);
+        return createDiv(typedExpr->rArg, typedExpr->lArg);
     }
     if(isTypeOf<Mult>(expr)) {
 	// n*x => 1/n * x^-1

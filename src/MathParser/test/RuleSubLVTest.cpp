@@ -78,3 +78,15 @@ TEST_F(FX_RuleSubLV, apply_SubtractionOperationWithIncompleteLeftArgument_NotRed
     RuleSubLV ruleSubLV;
     EXPECT_FALSE(ruleSubLV.apply(stack, lookAheadToken()));
 }
+
+TEST_F(FX_RuleSubLV, apply_LeftHandArgumentOfSubtractionIsAlreadyParsed_NotReduced) {
+    ParserStack stack;
+
+    // 3 a-? b
+    stack.push_back(createConstant(3));
+    stack.push_back(createSub(createVariable("a"), nullptr));
+    stack.push_back(createVariable("b"));
+
+    RuleSubLV ruleSubLV;
+    EXPECT_FALSE(ruleSubLV.apply(stack, lookAheadToken()));
+}

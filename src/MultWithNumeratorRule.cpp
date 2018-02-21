@@ -21,11 +21,7 @@ bool MultWithNumeratorRule::apply() throw(TraverseException) {
     bool largIsDiv=isTypeOf<Div>(this->expression->lArg);
     bool rargIsDiv=isTypeOf<Div>(this->expression->rArg);
     
-    // right(or left) arg of this multiplication must be Div - in this case the rule is applicable
-    
-    if(!largIsDiv && !rargIsDiv){
-        return false;
-    }
+    // either right or left arg of this multiplication must be Div - in this case the rule is applicable    
     
     if(largIsDiv && rargIsDiv){
         return false;

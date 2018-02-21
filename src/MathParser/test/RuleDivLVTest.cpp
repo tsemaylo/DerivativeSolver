@@ -95,3 +95,15 @@ TEST_F(FX_RuleDivLV, apply_LeftHandArgumentIsNotComplete_NotReducable) {
     RuleDivLV ruleDivLV;
     EXPECT_FALSE(ruleDivLV.apply(stack, lookAheadToken("b", TAlphaNumeric)));
 }
+
+TEST_F(FX_RuleDivLV, apply_LeftHandArgumentOfDivIsAlreadyParsed_NotReducable) {
+    ParserStack stack;
+
+    // 3 a/? b
+    stack.push_back(createConstant(3));
+    stack.push_back(createDiv(createVariable("a"), nullptr));
+    stack.push_back(createVariable("b"));
+
+    RuleDivLV ruleDivLV;
+    EXPECT_FALSE(ruleDivLV.apply(stack, lookAheadToken("b", TAlphaNumeric)));
+}

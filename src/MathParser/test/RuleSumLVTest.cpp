@@ -74,3 +74,15 @@ TEST_F(FX_RuleSumLV, apply_SummationOperationWithoutArgument_NotReduced) {
     RuleSumLV ruleSumLV;
     EXPECT_FALSE(ruleSumLV.apply(stack, Token("NA", TNoToken)));
 }
+
+TEST_F(FX_RuleSumLV, apply_LeftHandArgumentOfSummationIsAlreadyParsed_NotReduced) {
+    ParserStack stack;
+
+    // 3 a+? b
+    stack.push_back(createConstant(3));
+    stack.push_back(createSum(createVariable("a"), nullptr));
+    stack.push_back(createVariable("b"));
+
+    RuleSumLV ruleSumLV;
+    EXPECT_FALSE(ruleSumLV.apply(stack, Token("NA", TNoToken)));
+}

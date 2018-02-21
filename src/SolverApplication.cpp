@@ -34,16 +34,8 @@ void SolverApplication::setStrExpression(const string strExpression) {
     this->strExpression = strExpression;
 }
 
-string SolverApplication::getStrExpression() const {
-    return this->strExpression;
-}
-
 void SolverApplication::setStrVariable(const string strVariable) {
     this->strVariable = strVariable;
-}
-
-string SolverApplication::getStrVariable() const {
-    return this->strVariable;
 }
 
 int SolverApplication::run() {
