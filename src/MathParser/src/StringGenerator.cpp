@@ -77,7 +77,7 @@ void StringGenerator::visitArythmeticalOp(const PointerOpClass expr, string op) 
 template <typename PointerOpClass>
 void StringGenerator::visitFunction(const PointerOpClass expr, string fname) throw (TraverseException) {
     string strArg = this->getArgString(expr->arg);
-    if (strArg.find('(', 0) != 0) {
+    if (strArg.find('(', 0) != 0 || strArg.find_last_of(')', 0) != (strArg.length() - 1)) {
         strArg = "(" + strArg + ")";
     }
     this->setLastVisitResult(fname + strArg);
