@@ -31,14 +31,15 @@ The design, as it usually happens, is evolving during the development.
 The initial model of the application are preserved here: [Initial design](initialDesign.md)
 Here you can find the actual structure of the application. 
 
-The basic elements of design, as it was mentioned above, are: application object, parser and visitors as operations.
+The basic elements of design, as it was mentioned above, are: application object, 
+parser of mathematical expressions and visitors as operations for expressions.
 
 The sequence of actions to be performed to differentiate an expression given by user is following:
 
 No. | Activity                             | Component   | Input                  |  Output 
 ----|--------------------------------------|-------------|------------------------|---------------
 1   | Get input from user                  | Application | Command line arguments | String
-2   | Parse an expression from user        | Parser      | String from #1         | Syntax tree   
+2   | Parse an expression from user        | MathParser  | String from #1         | Syntax tree   
 3   | Differentiate the expression         | Visitors    | Syntax tree from #2    | Syntax tree 
 4   | Optimize ans simplify the expression | Visitors    | Syntax tree from #3    | Syntax tree 
 5   | Get string representation of result  | Visitors    | Syntax tree from #4    | String 
@@ -63,13 +64,13 @@ The component **Visitors (operations)** contains implementation of Visitor inter
 
 The parser implements parsing logic according to the grammar. The grammar is built of 
 **Rule**s which are implementing certain [grammar rules](grammar.md). The parser implements the 
-"Shift-Reduce" method, at least some sort of it, because of the simplicity of implementation. 
+"Shift-Reduce" method ~~, at least some sort of it,~~ because of the simplicity of implementation. 
 With this approach the high performance can't be anticipated and it is not a priority so far.  
 
 The parser can be viewed as independent entity and distributed in the form of library,
 which can be eventually used by more than one application.
 
-Piblic interface of the **MathParser** is:
+Public interface of the **MathParser** is built of:
 
 * Interface **Parser**
 * **Expression** and all its children
@@ -103,16 +104,38 @@ syntax tree items.
 ### Design of the Visitors
 
 The relationship between the **Visitor** and **Expression** is basically the classical 
-Visitor design pattern, that maintainability advantages and adheres to OCP - adding 
+Visitor design pattern from GoF, that maintainability advantages and adheres to OCP - adding 
 new syntax tree element leads to adding an new method to the Visitor interface.
 Adding a new operation considers adding a new **Visitor** implementation for all related 
 expression elements.
 
-the following operations are distinguished:
+The following operations are distinguished:
 * Differentiation of the expression (**Differentiator**),
 * Simplification of the expression to avoid nonsense expressions like __X*1__ instead of just  __X__ (**Optimizer**),
 
 ![Class diagram](img/visitors.png)
+
+
+Optimizer uses a set of rules, which implement simplification heuristics for particular cases.
+The following rules are distinguished:
+
+ Name                        | Applied to | Use case                                            
+-----------------------------|------|----------------------------------------------------------
+SumWithNullArgumentRule      | Sum  | e + 0 => e, where e is a random **Expression**.
+SumWithNegativeRule          | Sum  | a+(-1*b) => a-b, where a and b are random **Expressions**.
+SumIdenticalExpressionsRule  | Sum  | N*e + M*e => (N + M)*e, where N and M are **Constant**s and e is a random **Expression**.
+SumConstantsRule             | Sum  | a+b => calculated result, where a and b are **Constant**a.
+PowOfPowRule                 | Pow  | (x^m)^n => x^mn <br> (1/x^n)^m => (x^-n)^m = x^-mn <br>, where x,m and n are random **Expression**s.
+PowConstantRule              | Pow  | A^B -> calculate results <br> e ^ 0 = > <br>  e ^ 1 => e <br>, where a and b are **Constant**s and e is a random **Expression**.
+MultWithNumeratorRule        | Mult | a*(b/c) => (ab)/c, where a, b and c are random expressions.
+MultQuotientsRule            | Mult | a*(b*x) => ab*x <br> a*(b/x) => ab/x <br>, where a and b are **Constant**s and x is a random **Expression**. <br> Also considering different combinations of arguments.
+MultNumeratorDenominatorRule | Mult | ax^n*b/x^m => (a*b)*x^(n-m), if n > m <br> ax^n*b/x^m => (a*b)/x^(m-n), if m > n <br>, where a, b, x are random **Expression**s and N and M are **Constant**s.
+MultIdenticalExpressionsRule | Mult | A*e^M * B*e^N => AB*e^(M+N), where A, B are **Constant**s and e, M, N are random **Expression**s.
+MultConstantsRule            | Mult | a*b => calculate results, where a nd b are **Constant**s.
+LnOfExpRule                  | Ln   | ln(exp(x)) => exp(x), where x is a randon Expression.
+FunctionEvaluateRule         | Sin, Cos, Tan, Ctan, Ln, Exp | Evaluation of the function of a **Constant**.
+
+Note that optimization rules for **Div** and **Sub** are not defined because they can be derived from already existing **Mult** and **Sum** fules.
 
 ### Design of the Application
 
@@ -173,7 +196,7 @@ Performed in the build time.
 - [x] Remove redundant unit test cases from ParserTest
 - [ ] Test runs with Valgrind
 - [x] Do static analysis of the code, integrate into CI
-- [ ] Testing scripts for whole application (IN PROGRESS)
+- [x] Testing scripts for whole application
 - [x] Check testing coverage 
 - [x] Refactoring of shared_ptr usage 
 - [x] Modularization of Parser 

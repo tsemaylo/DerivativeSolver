@@ -23,7 +23,7 @@
  *   N*exp + M*exp 
  * to
  *   (N + M)*exp
- * where N and M are Constant s
+ * where N and M are Constants
  */
 class SumIdenticalExpressionsRule : public OptimizationRule<PSum> {
 public:
