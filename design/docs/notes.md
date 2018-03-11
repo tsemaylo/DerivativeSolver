@@ -192,9 +192,9 @@ Performed in the build time.
 - [x] Implement visitor to simplify the expression
   - [x] Simplify expressions like "x^2*(2/x)"
 - [x] Implement the SolverApplication  
-- [ ] Review of the design (IN PROGRESS)
+- [x] Review of the design 
 - [x] Remove redundant unit test cases from ParserTest
-- [ ] Test runs with Valgrind
+- [ ] Test runs with Valgrind (IN PROGRESS)
 - [x] Do static analysis of the code, integrate into CI
 - [x] Testing scripts for whole application
 - [x] Check testing coverage 
@@ -207,3 +207,7 @@ Performed in the build time.
 - [x] Add license info
 - [x] Check doxygen comments 
 - [x] Update exception text in Differentiator and Optimizer 
+
+## Post-mortem
+
+Short analysis and review summary of final design and implementation can be found in [final report](postMortem.md).
