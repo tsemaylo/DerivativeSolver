@@ -35,7 +35,12 @@ check_fail(){
     fi
 }
 
-CMD=./DerivativeSolver
+VALGRIND=
+if [ $DS_DO_VALGRIND_TEST == "1" ]; then
+   VALGRIND="valgrind --leak-check=yes"
+fi
+
+CMD="$VALGRIND ./DerivativeSolver"
 
 failedTests=0
 
