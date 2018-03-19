@@ -132,8 +132,24 @@ function(add_unit_test_suite)
       $<BUILD_INTERFACE:${MathParser_SOURCE_DIR}/src>
       $<INSTALL_INTERFACE:include/agmathparser>
    )
+
+   if(DO_VALGRIND_TEST)
+      add_test(NAME "${test_suite_name}_valgrind"
+         COMMAND ${memcheck_command} ./${test_suite_name}
+      )
+      set_tests_properties("${test_suite_name}_valgrind" PROPERTIES LABELS "valgrind")
+   endif()
+
    add_test(NAME ${test_suite_name} COMMAND ${test_suite_name} --gtest_shuffle --gtest_repeat=7)
 endfunction()
+
+if(DO_VALGRIND_TEST)
+    find_program(CMAKE_MEMORYCHECK_COMMAND valgrind)
+    message(STATUS "Executing test suite with Valgrind (${CMAKE_MEMORYCHECK_COMMAND})")
+    set(MEMORYCHECK_COMMAND_OPTIONS "--error-exitcode=1 --leak-check=full")
+    set(memcheck_command "${CMAKE_MEMORYCHECK_COMMAND} ${CMAKE_MEMORYCHECK_COMMAND_OPTIONS}")
+    separate_arguments(memcheck_command)
+endif()
 
 add_unit_test_suite("test/DifferentiatorTest.cpp" "src/Differentiator.cpp")
 add_unit_test_suite("test/OptimizerTest.cpp" 

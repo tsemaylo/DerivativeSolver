@@ -28,6 +28,12 @@ function(add_unit_test_suite test_suite_name)
       $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>
       $<INSTALL_INTERFACE:include>
     )
+    if(DO_VALGRIND_TEST)
+        add_test(NAME "${test_suite_name}_valgrind"
+            COMMAND ${memcheck_command} ./${test_suite_name}
+        )
+        set_tests_properties("${test_suite_name}_valgrind" PROPERTIES LABELS "valgrind")
+    endif()
     add_test(NAME ${test_suite_name} COMMAND ${test_suite_name} --gtest_shuffle --gtest_repeat=7)
 endfunction()
 
@@ -145,8 +151,15 @@ if (CMAKE_VERSION VERSION_LESS 2.8.11)
 endif()
 # ---------------------------------
 
-# Defining the list of unit test suits
+if(DO_VALGRIND_TEST)
+    find_program(CMAKE_MEMORYCHECK_COMMAND valgrind)
+    message(STATUS "Executing test suite with Valgrind (${CMAKE_MEMORYCHECK_COMMAND})")
+    set(MEMORYCHECK_COMMAND_OPTIONS "--error-exitcode=1 --leak-check=full")
+    set(memcheck_command "${CMAKE_MEMORYCHECK_COMMAND} ${CMAKE_MEMORYCHECK_COMMAND_OPTIONS}")
+    separate_arguments(memcheck_command)
+endif()
 
+# Defining the list of unit test suits
 file(GLOB test_suites "test/*.cpp")
 foreach(suite_file_name ${test_suites})
    get_filename_component(suite_name ${suite_file_name} NAME_WE)

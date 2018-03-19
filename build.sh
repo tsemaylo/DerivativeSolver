@@ -13,7 +13,7 @@ rm -Rf ./build
 mkdir -p build
 
 cd build 
-cmake .. -DCMAKE_INSTALL_PREFIX:PATH=/tmp/derivativesolver -DCMAKE_BUILD_TYPE=Debug
+cmake .. -DCMAKE_INSTALL_PREFIX:PATH=/tmp/derivativesolver -DCMAKE_BUILD_TYPE=Debug -DDO_VALGRIND_TEST=On
 
 make 
 make test
