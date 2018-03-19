@@ -58,14 +58,14 @@ Exponentiation | ^      | a^2 <br> x^y <br> (sin(x))^2
 
 Functions: 
 
- Function         | Symbol | Example
-------------------|--------|---------
-Sine              | sin    | sin(x)
-Cosine            | cos    | cos(x)
-Tangent           | tan    | tan(x)
-Co-tangent        | ctan   | ctan(x)
-Natural logarithm | ln     | ln(x)
-Exponent, e^x     | exp    | exp(x)
+ Function                 | Symbol | Example
+--------------------------|--------|---------
+Sine                      | sin    | sin(x)
+Cosine                    | cos    | cos(x)
+Tangent                   | tan    | tan(x)
+Co-tangent                | ctan   | ctan(x)
+Natural logarithm         | ln     | ln(x)
+Exponential function, e^x | exp    | exp(x)
 
 # Building and installing <a name="build"></a>
 
