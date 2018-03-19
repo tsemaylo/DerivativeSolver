@@ -162,51 +162,6 @@ The naming of test cases is based on these ["Naming standards for unit tests"](h
 Represented as an automated script which performs testing of application against most relevant input data.
 Performed in the build time.
 
-## What TO-be-DOne
-- [x] Basic design
-- [x] Implement basic design elements in code
-- [x] Clarifying and verifying the grammar 
-- [x] Identify rules to be implemented
-- [x] Implementation of Parser <br/>
-      Implementation of rules
-- [x] RuleSumLV 
-- [x] RuleSumRV
-- [x] RuleSubLV 
-- [x] RuleSubRV 
-- [x] RuleMultLV 
-- [x] RuleMultRV 
-- [x] Refactoring of **Rule**s and **Parser** 
-- [x] RuleDivLV
-- [x] RuleDivRV
-- [x] RulePowLV 
-- [x] RulePowRV 
-- [x] RuleFunction 
-- [x] Rule for multiplication without sign of multiplication <br>
-      Parsing Improvement 
-- [x] Being case-irrelevant (REJECTED, not really relevant)
-- [x] Support floating point numbers <br><br>
-- [x] Update design docs 
-  - [x] also describe how to name test cases
-- [x] Implementation of Differentiator
-- [x] Implementation of StringGenerator
-- [x] Implement visitor to simplify the expression
-  - [x] Simplify expressions like "x^2*(2/x)"
-- [x] Implement the SolverApplication  
-- [x] Review of the design 
-- [x] Remove redundant unit test cases from ParserTest
-- [ ] Test runs with Valgrind (IN PROGRESS)
-- [x] Do static analysis of the code, integrate into CI
-- [x] Testing scripts for whole application
-- [x] Check testing coverage 
-- [x] Refactoring of shared_ptr usage 
-- [x] Modularization of Parser 
-  - [x] Introduce Parser as a separate library 
-  - [x] Clean up in Makefile 
-  - [x] Update design doc  
-  - [x] Check duplication is the source code (POSTPONED, so far see no neccessity, as soon as only ExceptionThrower and build configs are duplicated)
-- [x] Add license info
-- [x] Check doxygen comments 
-- [x] Update exception text in Differentiator and Optimizer 
 
 ## Post-mortem
 

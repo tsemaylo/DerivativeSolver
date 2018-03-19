@@ -40,9 +40,32 @@ At the current state of development the following basic features are considered:
 * Basic elementary functions: natural logarithms, trygonometric functions (sine, cosine, tangent and co-tangent), exponent
 * Command line interface
 
-Nice to have options:
-* LaTeX output
-* Plot the graph of calculated functions. 
+## Expression syntax
+
+Nummerical constants: 1, 2, 4.2
+
+Variables: any sequence of aplha characters. For example: a, b, var
+
+Arithmetic operations: 
+
+ Opeartion     | Symbol | Example
+---------------|--------|---------
+Addition       | +      | a + b
+Subtraction    | -      | x + 1
+Multiplication | *      | a*b <br> 2a <br> 3sin(x)
+Division       | /      | a/b
+Exponentiation | ^      | a^2 <br> x^y <br> (sin(x))^2
+
+Functions: 
+
+ Function         | Symbol | Example
+------------------|--------|---------
+Sine              | sin    | sin(x)
+Cosine            | cos    | cos(x)
+Tangent           | tan    | tan(x)
+Co-tangent        | ctan   | ctan(x)
+Natural logarithm | ln     | ln(x)
+Exponent, e^x     | exp    | exp(x)
 
 # Building and installing <a name="build"></a>
 
@@ -61,13 +84,9 @@ $ cmake ..
 # alternatively you can specify the installation directory, for instance
 # cmake .. -DCMAKE_INSTALL_PREFIX:PATH=/home/username/derivativesolver
 $ make
-$ make test # optional, can be used during debug and development
 $ make install # installation may require super-user permissions
 ```
 
-# Developing 
-
-All the initially planned things are implemented and the alpha-version of application is ready to be used!
-What is happening now? Testing, code/design reviewing and associated bugfixing.
+# Contribute 
 
 The information regarding the design of application is available in [design notes](design/docs/notes.md).

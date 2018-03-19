@@ -12,7 +12,7 @@ rm -Rf ./build
 mkdir -p build
 
 cd build 
-cmake .. -DCMAKE_BUILD_TYPE=Debug -DDO_VALGRIND_TEST=$VALGRIND_FLAG
+cmake .. -DCMAKE_BUILD_TYPE=Debug -DDO_VALGRIND_TEST=$VALGRIND_FLAG -DDO_TESTING=On
 make 
 make test
 

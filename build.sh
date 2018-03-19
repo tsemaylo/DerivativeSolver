@@ -19,7 +19,7 @@ if [ "$DO_VALGRIND_TEST" = "1" ]; then
     VALGRIND_FLAG="On"
 fi
 
-cmake .. -DCMAKE_INSTALL_PREFIX:PATH=/tmp/derivativesolver -DCMAKE_BUILD_TYPE=Debug -DDO_VALGRIND_TEST=$VALGRIND_FLAG
+cmake .. -DCMAKE_INSTALL_PREFIX:PATH=/tmp/derivativesolver -DCMAKE_BUILD_TYPE=Debug -DDO_VALGRIND_TEST=$VALGRIND_FLAG -DDO_TESTING=On
 
 make 
 make test
