@@ -13,6 +13,7 @@ matrix:
           install:
                 - export CXX="g++-5" CC="gcc-5"
                 - export DO_CODE_ANALYSIS=1
+                - export DO_VALGRIND_TEST=1
                 - ccache --zero-stats
                 - echo ${PATH}
                 - echo ${CXX}
@@ -38,6 +39,7 @@ matrix:
                     - g++-5
                     - lcov
                     - cppcheck
+                    - valgrind
           env:
             - MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
         - os: linux
