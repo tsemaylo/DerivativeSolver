@@ -13,7 +13,13 @@ rm -Rf ./build
 mkdir -p build
 
 cd build 
-cmake .. -DCMAKE_INSTALL_PREFIX:PATH=/tmp/derivativesolver -DCMAKE_BUILD_TYPE=Debug -DDO_VALGRIND_TEST=On
+
+VALGRIND_FLAG="Off"
+if [ "$DO_VALGRIND_TEST" = "1" ]; then
+    VALGRIND_FLAG="On"
+fi
+
+cmake .. -DCMAKE_INSTALL_PREFIX:PATH=/tmp/derivativesolver -DCMAKE_BUILD_TYPE=Debug -DDO_VALGRIND_TEST=$VALGRIND_FLAG
 
 make 
 make test
